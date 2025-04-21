@@ -1,22 +1,10 @@
-\chapter{Desenvolvimento e Construção do Veículo F1TENTH}
+\chapter{Construção do Veículo F1TENTH}
 
 Este capítulo detalha o processo de desenvolvimento e construção do veículo
 para a competição F1TENTH, abrangendo desde a seleção de componentes até a
 integração dos sistemas e validação do protótipo. Cada decisão de projeto foi
 tomada considerando tanto as regulamentações da competição quanto os objetivos
 de desempenho estabelecidos.
-
-\section{Visão Geral do Projeto}
-
-O desenvolvimento do veículo F1TENTH seguiu uma abordagem sistemática, dividida
-em quatro fases principais:
-
-\begin{enumerate}
-    \item Análise das regulamentações e requisitos da competição
-    \item Seleção de componentes e arquitetura do sistema
-    \item Projeto e fabricação de peças customizadas
-    \item Integração de hardware e software e testes de validação
-\end{enumerate}
 
 O objetivo principal foi criar um veículo que não apenas atendesse às
 especificações técnicas obrigatórias, mas que também oferecesse uma plataforma
@@ -33,7 +21,32 @@ sistema.
 
 \subsection{Chassi e Sistema Mecânico}
 
-[Esta seção será completada posteriormente com informações sobre o chassi selecionado, modificações realizadas e justificativas para as escolhas.]
+Para a estrutura base do veículo, foi selecionado o chassi modelo D5 da marca
+Emida, específico para a escala 1:10. A escolha deste chassi foi baseada em
+suas características e compatibilidade com os requisitos da competição F1TENTH.
+
+As especificações técnicas principais do chassi D5 incluem:
+\begin{itemize}
+      \item Dimensões: Comprimento de 38.2 cm, largura de 19.5 cm e distância entre eixos
+            de 257 mm.
+      \item Peso: Aproximadamente 0.78 kg (sem eletrônica), proporcionando uma base leve.
+      \item Materiais: Estrutura principal em fibra de carbono, com componentes mecânicos
+            em metal, oferecendo um bom equilíbrio entre rigidez e peso.
+      \item Configuração: Posição do motor central (mid-motor), favorecendo a distribuição
+            de peso.
+      \item Suspensão: Sistema independente na dianteira e duplo braço (double wishbone) na
+            traseira, com amortecedores ajustáveis, permitindo adaptação a diferentes
+            condições de pista.
+      \item Compatibilidade: Projetado para superfícies on-road e compatível com
+            componentes eletrônicos padrão da escala 1:10.
+      \item Ajustabilidade: Múltiplas posições para montagem da bateria e do motor,
+            permitindo otimizar o centro de gravidade.
+\end{itemize}
+
+A estrutura em fibra de carbono garante a rigidez necessária para suportar as
+cargas dinâmicas durante a operação em alta velocidade, enquanto a configuração
+mid-motor e as opções de ajuste contribuem para a otimização do balanceamento e
+da dirigibilidade do veículo.
 
 \subsection{Sistema de Propulsão}
 
@@ -47,16 +60,16 @@ O motor EZRUN 3665SD-3200KV-G3 foi escolhido por suas características técnicas
 alinhadas com os requisitos da competição:
 
 \begin{itemize}
-    \item Rating KV de 3200KV, dentro do limite regulamentar equivalente ao Velineon
-          3500KV
-    \item Compatibilidade com baterias 2-3S LiPo, comum em veículos RC em escala 1:10
-    \item Dimensões físicas (37mm de diâmetro e 65.8mm de comprimento) adequadas para
-          instalação no chassi padrão
-    \item Construção robusta com carcaça de alumínio usinado em CNC e rolamentos de alta
-          precisão
-    \item Sistema de refrigeração otimizado para operação contínua em alta carga
-    \item Classificação IP-67, oferecendo proteção contra água e poeira, importante para
-          a durabilidade durante testes e competições
+      \item Rating KV de 3200KV, dentro do limite regulamentar equivalente ao Velineon
+            3500KV
+      \item Compatibilidade com baterias 2-3S LiPo, comum em veículos RC em escala 1:10
+      \item Dimensões físicas (37mm de diâmetro e 65.8mm de comprimento) adequadas para
+            instalação no chassi padrão
+      \item Construção robusta com carcaça de alumínio usinado em CNC e rolamentos de alta
+            precisão
+      \item Sistema de refrigeração otimizado para operação contínua em alta carga
+      \item Classificação IP-67, oferecendo proteção contra água e poeira, importante para
+            a durabilidade durante testes e competições
 \end{itemize}
 
 O motor apresenta um equilíbrio ideal entre torque e velocidade, fundamental
@@ -76,20 +89,20 @@ de controle do motor.
 O VESC MINI 6.7 foi selecionado pelas seguintes características:
 
 \begin{itemize}
-    \item Dimensões compactas (46.5mm x 36.5mm x 12mm) e peso reduzido (aproximadamente
-          30g), ideais para aplicações em veículos em escala 1:10
-    \item Ampla faixa de tensão operacional (8V-60V DC), compatível com diversos sistemas
-          de bateria
-    \item Capacidade de corrente contínua de 40A, suficiente para o motor selecionado
-    \item Microcontrolador STM32F405RGT6, oferecendo poder de processamento para
-          implementação de algoritmos avançados de controle
-    \item Suporte para operação com e sem sensores, permitindo flexibilidade no modo de
-          controle
-    \item Capacidade de frenagem regenerativa, importante para manobras precisas
-    \item Múltiplas interfaces de comunicação (USB, CAN, UART, PPM, I2C), facilitando a
-          integração com a unidade de processamento principal
-    \item Proteções integradas contra sobretensão, subtensão, sobrecorrente e
-          sobretemperatura
+      \item Dimensões compactas (46.5mm x 36.5mm x 12mm) e peso reduzido (aproximadamente
+            30g), ideais para aplicações em veículos em escala 1:10
+      \item Ampla faixa de tensão operacional (8V-60V DC), compatível com diversos sistemas
+            de bateria
+      \item Capacidade de corrente contínua de 40A, suficiente para o motor selecionado
+      \item Microcontrolador STM32F405RGT6, oferecendo poder de processamento para
+            implementação de algoritmos avançados de controle
+      \item Suporte para operação com e sem sensores, permitindo flexibilidade no modo de
+            controle
+      \item Capacidade de frenagem regenerativa, importante para manobras precisas
+      \item Múltiplas interfaces de comunicação (USB, CAN, UART, PPM, I2C), facilitando a
+            integração com a unidade de processamento principal
+      \item Proteções integradas contra sobretensão, subtensão, sobrecorrente e
+            sobretemperatura
 \end{itemize}
 
 A escolha deste controlador permite a implementação de controle vetorial de
@@ -110,20 +123,20 @@ O LiDAR YDLIDAR X4PRO foi escolhido por suas características técnicas que
 atendem aos requisitos da competição:
 
 \begin{itemize}
-    \item Varredura omnidirecional de 360°, permitindo detecção completa do ambiente ao
-          redor do veículo
-    \item Alcance de medição de 0.12-10m, adequado para ambientes de competição indoor
-    \item Frequência de amostragem de até 5000Hz, fornecendo dados detalhados para
-          algoritmos de percepção
-    \item Frequência de varredura ajustável entre 6-12Hz, permitindo equilíbrio entre
-          resolução e tempo de resposta
-    \item Resolução angular entre 0.43° e 0.86° (dependendo da frequência), suficiente
-          para detecção precisa dos limites da pista e outros veículos
-    \item Alta resistência a interferências luminosas (até 40000 Lux), importante para
-          ambientes com iluminação variável
-    \item Classificação de segurança laser Class I, atendendo aos requisitos de segurança
-          da competição
-    \item Dimensões compactas e peso de 178g, facilitando a integração no veículo
+      \item Varredura omnidirecional de 360°, permitindo detecção completa do ambiente ao
+            redor do veículo
+      \item Alcance de medição de 0.12-10m, adequado para ambientes de competição indoor
+      \item Frequência de amostragem de até 5000Hz, fornecendo dados detalhados para
+            algoritmos de percepção
+      \item Frequência de varredura ajustável entre 6-12Hz, permitindo equilíbrio entre
+            resolução e tempo de resposta
+      \item Resolução angular entre 0.43° e 0.86° (dependendo da frequência), suficiente
+            para detecção precisa dos limites da pista e outros veículos
+      \item Alta resistência a interferências luminosas (até 40000 Lux), importante para
+            ambientes com iluminação variável
+      \item Classificação de segurança laser Class I, atendendo aos requisitos de segurança
+            da competição
+      \item Dimensões compactas e peso de 178g, facilitando a integração no veículo
 \end{itemize}
 
 Este sensor fornece dados cruciais para algoritmos de mapeamento, localização,
@@ -143,18 +156,18 @@ A Raspberry Pi 4B foi escolhida como plataforma de processamento principal
 pelas seguintes razões:
 
 \begin{itemize}
-    \item Processador quad-core Cortex-A72 (ARM v8) 64-bit operando a 1.5GHz, oferecendo
-          poder computacional suficiente para algoritmos de tempo real
-    \item Disponibilidade de 4GB ou 8GB de RAM, dependendo da configuração, permitindo
-          processamento de dados sensoriais complexos
-    \item Múltiplas interfaces de comunicação (USB 3.0, Ethernet Gigabit, Wi-Fi,
-          Bluetooth, GPIO), facilitando a integração com diversos sensores e atuadores
-    \item Dimensões compactas e peso reduzido, adequados para instalação em veículos em
-          escala 1:10
-    \item Amplo suporte para ROS2 (Robot Operating System 2), framework utilizado para
-          implementação dos algoritmos de navegação autônoma
-    \item Comunidade ativa e extensa documentação, facilitando o desenvolvimento
-    \item Custo acessível em comparação com outras plataformas de desempenho similar
+      \item Processador quad-core Cortex-A72 (ARM v8) 64-bit operando a 1.5GHz, oferecendo
+            poder computacional suficiente para algoritmos de tempo real
+      \item Disponibilidade de 4GB ou 8GB de RAM, dependendo da configuração, permitindo
+            processamento de dados sensoriais complexos
+      \item Múltiplas interfaces de comunicação (USB 3.0, Ethernet Gigabit, Wi-Fi,
+            Bluetooth, GPIO), facilitando a integração com diversos sensores e atuadores
+      \item Dimensões compactas e peso reduzido, adequados para instalação em veículos em
+            escala 1:10
+      \item Amplo suporte para ROS2 (Robot Operating System 2), framework utilizado para
+            implementação dos algoritmos de navegação autônoma
+      \item Comunidade ativa e extensa documentação, facilitando o desenvolvimento
+      \item Custo acessível em comparação com outras plataformas de desempenho similar
 \end{itemize}
 
 A Raspberry Pi 4B executa o sistema operacional Ubuntu 22.04 LTS com ROS2
@@ -165,11 +178,45 @@ arquitetura de software modular e extensível.
 
 \subsection{Sistema de Alimentação}
 
-[Esta seção será completada posteriormente com informações sobre a bateria utilizada, sistema de distribuição de energia e considerações sobre autonomia.]
+O sistema de alimentação do veículo foi projetado com duas fontes de energia
+distintas para garantir a estabilidade operacional: uma bateria de alta
+descarga para o sistema de propulsão e um power bank para a eletrônica de
+controle e processamento.
 
-\subsection{Sensores Adicionais}
+\subsubsection{Bateria de Propulsão: HRB LiPo 3S 5000mAh 50C}
 
-[Esta seção será completada posteriormente com informações sobre sensores complementares como IMU, encoders, câmeras ou quaisquer outros sensores utilizados.]
+A alimentação principal do motor EZRUN e do controlador VESC é fornecida por
+uma bateria HRB LiPo 3S de 5000mAh. Suas características são:
+\begin{itemize}
+      \item Tipo: Polímero de Lítio (LiPo)
+      \item Configuração: 3 células em série (3S)
+      \item Tensão Nominal: 11.1V
+      \item Capacidade: 5000mAh
+      \item Taxa de Descarga: 50C contínua (250A), 100C pico
+      \item Dimensões: 155mm x 48mm x 24mm
+      \item Peso: 376g
+\end{itemize}
+Esta bateria foi escolhida por sua alta capacidade e taxa de descarga, capaz de
+fornecer a corrente necessária para o motor durante acelerações intensas,
+garantindo o desempenho requerido na competição.
+
+\subsubsection{Alimentação da Eletrônica: Essager Power Bank 15000mAh 65W}
+
+Para alimentar a Raspberry Pi 4B, o LiDAR, servo motor e outros periféricos de
+baixa tensão, foi utilizado um power bank Essager modelo Xuneng de 15000mAh.
+Suas características relevantes incluem:
+\begin{itemize}
+      \item Capacidade: 15000mAh
+      \item Potência Máxima de Saída: 65W
+      \item Portas: 2x USB-C, 1x USB-A
+      \item Peso: Aproximadamente 300g
+      \item Funcionalidade Adicional: Display LED e cabo USB-C integrado.
+\end{itemize}
+O uso de um power bank dedicado para a eletrônica desacopla a alimentação da
+Raspberry Pi das flutuações de tensão causadas pelo motor, garantindo uma
+operação mais estável e prevenindo reinicializações inesperadas da unidade de
+processamento. A capacidade de 15000mAh oferece autonomia suficiente para
+sessões prolongadas de teste e operação.
 
 \section{Projeto e Fabricação de Peças Customizadas}
 
@@ -177,23 +224,9 @@ Para acomodar os diversos componentes e garantir a integridade estrutural do
 veículo, várias peças customizadas foram projetadas e fabricadas utilizando
 tecnologia de impressão 3D.
 
-\subsection{Metodologia de Projeto}
-
-[Esta seção será completada posteriormente com informações sobre o processo de design, software utilizado, considerações de projeto e metodologia de validação.]
-
 \subsection{Suportes e Estruturas Principais}
 
-\subsubsection{Base para Raspberry Pi e VESC}
-
 [Esta seção será completada posteriormente com detalhes sobre o suporte para a unidade de processamento e controlador eletrônico.]
-
-\subsubsection{Suporte para LiDAR}
-
-[Esta seção será completada posteriormente com informações sobre o suporte do sensor LiDAR, incluindo considerações sobre posicionamento e calibração.]
-
-\subsubsection{Para-choques e Estruturas de Proteção}
-
-[Esta seção será completada posteriormente com detalhes sobre os para-choques frontais e traseiros conforme exigido pelas regulamentações.]
 
 \subsection{Sistema de Montagem e Integração}
 
@@ -212,40 +245,75 @@ um sistema coeso, abordando tanto aspectos de hardware quanto de software.
 
 [Esta seção será completada posteriormente com um diagrama detalhado da arquitetura de hardware e explicações sobre as conexões entre componentes.]
 
-\subsection{Arquitetura de Software}
+\section{Arquitetura de Software do Veículo}
 
 A arquitetura de software do veículo é baseada em ROS2, implementando uma
 estrutura modular que facilita o desenvolvimento, teste e otimização dos
 algoritmos de controle.
 
-\subsubsection{Integração do VESC com ROS2}
+\subsection{Integração do VESC com ROS2}
 
 Para integrar o controlador VESC MINI 6.7 com o sistema ROS2, foi desenvolvido
 um driver específico baseado em comunicação serial. Este driver implementa:
 
 \begin{itemize}
-    \item Comunicação bidirecional entre a Raspberry Pi e o VESC através de porta serial
-          (UART)
-    \item Publicação de tópicos ROS2 para estados do motor (velocidade, corrente,
-          temperatura)
-    \item Subscrição a tópicos de comando para controle de velocidade ou torque
-    \item Conversão entre unidades físicas (m/s) e unidades do motor (ERPM)
-    \item Configuração de parâmetros dinâmicos através de serviços ROS2
-    \item Mecanismos de diagnóstico e recuperação de erros
+      \item Comunicação bidirecional entre a Raspberry Pi e o VESC através de porta serial
+            (UART)
+      \item Publicação de tópicos ROS2 para estados do motor (velocidade, corrente,
+            temperatura)
+      \item Subscrição a tópicos de comando para controle de velocidade ou torque
+      \item Conversão entre unidades físicas (m/s) e unidades do motor (ERPM)
+      \item Configuração de parâmetros dinâmicos através de serviços ROS2
+      \item Mecanismos de diagnóstico e recuperação de erros
 \end{itemize}
 
-O código implementa uma classe `VescInterface` que gerencia a comunicação e os
-tópicos ROS2 relacionados, permitindo controle preciso do motor baseado em
-comandos de alto nível provenientes dos algoritmos de navegação.
+O código implementa uma classe \texttt{VescInterface} que gerencia a
+comunicação e os tópicos ROS2 relacionados, permitindo controle preciso do
+motor baseado em comandos de alto nível provenientes dos algoritmos de
+navegação.
 
-\subsubsection{Integração do LiDAR com ROS2}
+\subsection{Integração do LiDAR com ROS2}
 
-[Esta seção será completada posteriormente com detalhes sobre a integração do LiDAR YDLIDAR X4PRO com ROS2, incluindo pacotes utilizados e configurações específicas.]
+A integração do sensor LiDAR YDLIDAR X4PRO com o sistema ROS2 é realizada
+através do pacote oficial \texttt{ydlidar\_ros2\_driver}\footnote{Repositório
+      oficial do driver: \url{https://github.com/YDLIDAR/ydlidar_ros2_driver}}. Este
+driver atua como uma ponte entre o hardware do sensor e o framework ROS2,
+permitindo que os dados de varredura laser sejam processados e utilizados pelos
+algoritmos de navegação.
 
-\subsubsection{Algoritmos de Percepção e Controle}
+Principais aspectos da integração:
+\begin{itemize}
+      \item Comunicação: O driver estabelece comunicação com o LiDAR através da porta
+            serial (tipicamente \texttt{/dev/ttyUSB0} ou um alias como
+            \texttt{/dev/ydlidar}) na Raspberry Pi. Os parâmetros de comunicação, como
+            \texttt{baudrate} (230400 para o X4PRO) e \texttt{port}, são configuráveis.
+      \item Publicação de Dados: O driver processa os dados brutos do LiDAR e os publica no
+            tópico ROS2 \texttt{/scan}. A mensagem publicada é do tipo
+            \texttt{sensor\_msgs/LaserScan}, um formato padrão em ROS para dados de
+            varredura laser 2D. Esta mensagem contém informações como ângulos, distâncias e
+            intensidades (se aplicável) para cada ponto da varredura.
+      \item Configuração: Parâmetros específicos do LiDAR, como faixa angular
+            (\texttt{angle\_min}, \texttt{angle\_max}), limites de alcance
+            (\texttt{range\_min}, \texttt{range\_max}), frequência de varredura
+            (\texttt{frequency}), e \texttt{frame\_id} (identificador da coordenada TF,
+            e.g., \texttt{laser\_frame}), são definidos em arquivos de configuração (YAML)
+            ou diretamente em arquivos de inicialização (arquivos \texttt{.launch.py}).
+      \item Execução: O nó do driver é iniciado utilizando \texttt{ros2 launch},
+            tipicamente com um arquivo \texttt{launch.py} customizado que carrega os
+            parâmetros corretos para o X4PRO (e.g., \texttt{ydlidar\_launch.py}
+            referenciado no repositório).
+      \item Serviços: O driver também oferece serviços ROS2 básicos, como
+            \texttt{start\_scan} e \texttt{stop\_scan}, permitindo ligar e desligar o
+            sensor programaticamente.
+\end{itemize}
+
+Essa integração fornece os dados de percepção essenciais, no formato
+\texttt{sensor\_msgs/LaserScan}, para os nós ROS2 responsáveis pelo mapeamento
+SLAM (Simultaneous Localization and Mapping), localização (como AMCL --
+Adaptive Monte Carlo Localization), planejamento de trajetória e detecção de
+obstáculos. A padronização da mensagem facilita a interoperabilidade com outros
+pacotes ROS2 do ecossistema de navegação.
+
+\subsection{Algoritmos de Percepção e Controle}
 
 [Esta seção será completada posteriormente com informações sobre os algoritmos implementados para mapeamento, localização, planejamento de trajetória e controle do veículo.]
-
-\section{Testes e Validação}
-
- [Esta seção será completada posteriormente com metodologias de teste, resultados preliminares e processos de validação do veículo.]
