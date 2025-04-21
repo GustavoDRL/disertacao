@@ -236,14 +236,9 @@ tecnologia de impressão 3D.
 
 [Esta seção será completada posteriormente com detalhes sobre os parâmetros de impressão 3D, materiais utilizados e técnicas de pós-processamento.]
 
-\section{Integração de Sistemas}
+\section{Arquitetura de Hardware do Veículo}
 
-Esta seção descreve como os diversos componentes foram integrados para formar
-um sistema coeso, abordando tanto aspectos de hardware quanto de software.
-
-\subsection{Arquitetura de Hardware}
-
-[Esta seção será completada posteriormente com um diagrama detalhado da arquitetura de hardware e explicações sobre as conexões entre componentes.]
+ [Esta seção será completada posteriormente com um diagrama detalhado da arquitetura de hardware e explicações sobre as conexões entre componentes.]
 
 \section{Arquitetura de Software do Veículo}
 
@@ -253,24 +248,49 @@ algoritmos de controle.
 
 \subsection{Integração do VESC com ROS2}
 
-Para integrar o controlador VESC MINI 6.7 com o sistema ROS2, foi desenvolvido
-um driver específico baseado em comunicação serial. Este driver implementa:
-
+A integração do controlador VESC MINI 6.7 com o sistema ROS2 é realizada
+utilizando os pacotes ROS2 mantidos pela comunidade F1TENTH, especificamente o
+metapacote \texttt{vesc}\footnote{Repositório F1TENTH VESC ROS2 Driver:
+      \url{https://github.com/f1tenth/vesc/tree/ros2}}. Este metapacote inclui:
 \begin{itemize}
-      \item Comunicação bidirecional entre a Raspberry Pi e o VESC através de porta serial
-            (UART)
-      \item Publicação de tópicos ROS2 para estados do motor (velocidade, corrente,
-            temperatura)
-      \item Subscrição a tópicos de comando para controle de velocidade ou torque
-      \item Conversão entre unidades físicas (m/s) e unidades do motor (ERPM)
-      \item Configuração de parâmetros dinâmicos através de serviços ROS2
-      \item Mecanismos de diagnóstico e recuperação de erros
+      \item \texttt{vesc\_driver}: O nó principal que gerencia a comunicação serial com o
+            VESC via USB (tipicamente na porta \texttt{/dev/ttyACM0}).
+      \item \texttt{vesc\_msgs}: Define os tipos de mensagens customizadas para
+            comunicação com o VESC, como \texttt{VescStateStamped} para telemetria e
+            comandos.
+      \item \texttt{vesc\_ackermann}: Converte comandos de \texttt{AckermannDriveStamped} (velocidade
+            linear e ângulo de direção) em comandos de baixo nível compreensíveis pelo
+            VESC (velocidade do motor em ERPM e posição do servo).
 \end{itemize}
 
-O código implementa uma classe \texttt{VescInterface} que gerencia a
-comunicação e os tópicos ROS2 relacionados, permitindo controle preciso do
-motor baseado em comandos de alto nível provenientes dos algoritmos de
-navegação.
+A comunicação se dá da seguinte forma:
+\begin{itemize}
+      \item Publicação de Estado: O nó \texttt{vesc\_driver} lê dados do VESC via serial e
+            publica a telemetria (tensão, corrente, ERPM, temperatura, etc.) no tópico
+            \texttt{/sensors/core} (tipo \texttt{vesc\_msgs/VescStateStamped}) e a posição
+            do servo (se configurado) em \texttt{/sensors/servo\_position\_command}.
+      \item Recebimento de Comandos: O nó \texttt{vesc\_ackermann} recebe comandos de alto
+            nível de velocidade e direção no tópico \texttt{/drive} (tipo
+            \texttt{ackermann\_msgs/AckermannDriveStamped}).
+      \item Conversão e Envio: \texttt{vesc\_ackermann} converte os comandos de Ackermann
+            em comandos de ERPM para o motor e posição para o servo, publicando-os nos
+            tópicos \texttt{/commands/motor/speed} e \texttt{/commands/servo/position}
+            respectivamente.
+      \item Atuação: O nó \texttt{vesc\_driver} subscreve a esses tópicos de comando e
+            envia as instruções correspondentes ao VESC via comunicação serial.
+\end{itemize}
+
+A configuração do sistema, incluindo a porta serial, ganhos de conversão
+(velocidade para ERPM, ângulo para posição do servo) e limites operacionais, é
+gerenciada através de arquivos de parâmetros YAML (como o
+\texttt{vesc\_config.yaml} no pacote \texttt{vesc\_driver}), carregados durante
+a inicialização dos nós com \texttt{ros2 launch}.
+
+Essa arquitetura modular permite que os algoritmos de planejamento e controle
+operem em um nível de abstração mais alto, enviando comandos
+\texttt{AckermannDriveStamped}, enquanto os pacotes \texttt{vesc} cuidam da
+comunicação de baixo nível e da conversão necessária para o hardware
+específico.
 
 \subsection{Integração do LiDAR com ROS2}
 
