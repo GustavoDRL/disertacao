@@ -1,12 +1,1847 @@
 \chapter{Sistema Proposto}\label{cap:proposta}
 
-Esse trabalho propõe um sistema de... 
+\section{Visão Geral dos Sistemas de Software para o Veículo Autônomo F1TENTH}
+
+O desenvolvimento do software para o veículo autônomo F1TENTH foi estruturado
+em uma arquitetura modular baseada no framework ROS2 (Robot Operating System
+2), aproveitando suas capacidades de comunicação, gerenciamento de nós e
+ecossistema de bibliotecas para robótica. A escolha do ROS2 se alinha com as
+melhores práticas da área, facilitando a integração de diferentes subsistemas e
+a reutilização de código, além de promover a extensibilidade do sistema para
+futuras evoluções. Adicionalmente, o ambiente de desenvolvimento foi
+containerizado utilizando Docker, visando garantir a reprodutibilidade do
+ambiente, simplificar a configuração e facilitar a colaboração e o deployment
+do sistema em diferentes plataformas.
+
+A arquitetura do software do veículo autônomo F1TENTH foi projetada seguindo os
+princípios da modularidade e da organização em pacotes ROS2. Conforme ilustrado
+na estrutura do repositório do projeto
+(\url{https://github.com/GustavoDRL/f1tenth_code.git}), o software é composto
+por diversos pacotes, cada um responsável por uma funcionalidade específica,
+facilitando o desenvolvimento, teste e manutenção. A Figura X (inserir diagrama
+da arquitetura do software, conforme sugerido anteriormente) ilustra a
+arquitetura geral, destacando os principais pacotes e o fluxo de dados entre
+eles.
+
+Os principais pacotes desenvolvidos incluem:
+
+\begin{itemize}
+    \item \textbf{joy\_control}: Implementa o sistema de controle manual do veículo através de um
+          gamepad. Este pacote permite operar o veículo virtualmente, sendo fundamental para
+          testes iniciais de dinâmica veicular e manobras básicas.
+
+    \item \textbf{gap\_follow}: Responsável pela navegação autônoma reativa utilizando a estratégia
+          de ``Gap Following''. Este pacote processa dados do sensor LiDAR para identificar e
+          seguir gaps navegáveis no ambiente, permitindo a navegação em ambientes desconhecidos
+          e dinâmicos.
+
+    \item \textbf{wall\_follow}: Implementa o sistema de ``Wall Following'', utilizando controle
+          PID para manter o veículo a uma distância constante de paredes. Este pacote representa
+          uma estratégia de navegação autônoma baseada em manter o veículo próximo a limites
+          do ambiente.
+
+    \item \textbf{mapping}: Contém a implementação do SLAM (Simultaneous Localization and Mapping)
+          utilizando o Google Cartographer. Este pacote permite construir mapas 2D do ambiente
+          de corrida e localizar o veículo simultaneamente, sendo crucial para a navegação
+          autônoma mais avançada.
+
+    \item \textbf{visualization}: Agrupa ferramentas de visualização de dados sensoriais e
+          parâmetros do sistema. O pacote \texttt{perfil\_lidar}, por exemplo, permite visualizar
+          em tempo real os dados do sensor LiDAR, auxiliando no debugging e análise do desempenho
+          do sistema de percepção.
+
+    \item \textbf{f1tenth\_gym\_ros}: Este pacote integra o simulador oficial F1TENTH, fornecendo
+          o ambiente virtual para desenvolvimento, teste e validação dos algoritmos de navegação
+          e controle.
+\end{itemize}
+
+A comunicação entre os diferentes pacotes e nós ROS2 é realizada através de
+tópicos, serviços e actions, seguindo as convenções do ROS2. Esta arquitetura
+baseada em mensagens permite a troca de informações de forma eficiente e
+flexível entre os diferentes subsistemas do veículo autônomo.
+
+\subsection{Implementação dos Algoritmos de Controle}
+
+A implementação dos algoritmos de controle abrange tanto o controle manual
+quanto o controle autônomo do veículo.
+
+Para o controle manual, o pacote \texttt{joy\_control} foi desenvolvido. Este
+pacote recebe mensagens do tipo \texttt{Joy} provenientes de um
+joystick/gamepad e as converte em comandos de direção Ackermann
+(\texttt{AckermannDriveStamped}) para o veículo virtual. O nó
+\texttt{joy\_to\_ackermann.py} é o principal componente deste pacote e oferece
+funcionalidades como:
+
+\begin{itemize}
+    \item \textbf{Mapeamento dos eixos do joystick para comandos Ackermann}: O eixo vertical do
+          joystick esquerdo controla a velocidade do veículo, enquanto o eixo horizontal do
+          joystick direito controla o ângulo de direção.
+
+    \item \textbf{Limites configuráveis de velocidade e ângulo de direção}: Parâmetros como
+          \texttt{max\_speed} e \texttt{max\_angle} permitem ajustar os limites de atuação
+          do controle manual.
+
+    \item \textbf{Filtro de ``dead zone''}: O parâmetro \texttt{controller\_error} define uma
+          zona morta nos inputs do joystick para evitar movimentos indesejados devido a pequenas
+          variações nos controles físicos.
+
+    \item \textbf{Reset da pose inicial}: Através do botão PS do gamepad, é possível resetar
+          a posição do veículo para a pose inicial definida.
+\end{itemize}
+
+No âmbito do controle autônomo, foram implementados controladores PID
+(Proportional-Integral-Derivative) nos pacotes \texttt{wall\_follow} e
+\texttt{gap\_follow}.
+
+No pacote \texttt{wall\_follow}, o nó \texttt{wall\_follow.py} utiliza um
+controlador PID para manter o veículo a uma distância desejada da parede. O
+sistema opera medindo as distâncias até a parede em dois ângulos específicos
+(75° e 85° em relação à direção frontal do veículo) através do sensor LiDAR.
+Com base nessas medições e na distância desejada (parâmetro \texttt{dist}), o
+controlador PID calcula o ângulo de direção necessário para corrigir o erro e
+manter o veículo paralelo à parede. Os parâmetros do controlador PID
+(\texttt{kp}, \texttt{ki}, \texttt{kd}) podem ser ajustados para otimizar o
+desempenho do wall following em diferentes cenários.
+
+Similarmente, o pacote \texttt{gap\_follow} utiliza controladores PID para
+regular tanto a direção quanto a velocidade do veículo. O nó
+\texttt{gap\_follow\_node.py} processa os dados do LiDAR para detectar gaps
+navegáveis e, utilizando o controle PID, gera comandos de direção e velocidade
+para seguir o gap identificado. Os parâmetros PID para direção
+(\texttt{steering\_pid}) e velocidade (\texttt{speed\_pid}), assim como outros
+parâmetros de configuração como \texttt{max\_speed},
+\texttt{max\_steering\_angle}, \texttt{safety\_margin}, são configuráveis via
+parâmetros ROS2, permitindo a adaptação do algoritmo a diferentes pistas e
+comportamentos desejados.
+
+\section{Sistema de Seguimento de Parede para Veículos F1TENTH}
+
+Este capítulo apresenta uma análise detalhada do sistema de seguimento de
+parede implementado para veículos autônomos da categoria F1TENTH. O sistema
+proposto utiliza sensores LiDAR para determinar a posição relativa do veículo
+em relação às paredes da pista e implementa um controlador PID para manter o
+veículo a uma distância constante predefinida dos limites do percurso.
+
+\subsection{Visão Geral da Arquitetura}
+
+O núcleo do sistema é implementado como um nó ROS2 denominado
+\texttt{WallFollow}, que estabelece a seguinte estrutura de comunicação:
+
+\begin{figure}[ht]
+    \centering
+    \begin{tikzpicture}[
+            node distance=1.5cm,
+            box/.style={rectangle, draw, minimum width=2.5cm, minimum height=1cm, align=center},
+            arrow/.style={->, >=stealth, thick}
+        ]
+
+        % Definição do nó principal
+        \node[rectangle, draw, minimum width=8cm, minimum height=5cm, label={[align=center]above:WallFollow Node}] (main) {};
+
+        % Componentes internos
+        \node[box, anchor=north west, xshift=1cm, yshift=-0.6cm] (proc) at (main.north west) {Processador\\\\Geométrico};
+        \node[box, anchor=north east, xshift=-1cm, yshift=-0.6cm] (pid) at (main.north east) {Controlador\\\\PID};
+        \node[box, anchor=south, yshift=0.6cm] (vel) at (main.south) {Controlador de\\\\Velocidade};
+
+        % Componentes externos
+        \node[box, left=2.4cm of main] (lidar) {Sensor\\\\LiDAR};
+        \node[box, right=2.4cm of main] (steer) {Sistema de\\\\Direção do\\\\Veículo};
+
+        % Conexões
+        \draw[arrow] (lidar) -- node[above] {LaserScan} (main.west);
+        \draw[arrow] (main.east) -- node[above, align=center] {Ackermann\\\\Drive} (steer);
+        \draw[arrow] (proc) -- (pid);
+        \draw[arrow] (proc) -- (vel);
+        \draw[arrow] (vel) -- (pid);
+
+    \end{tikzpicture}
+    \caption{Arquitetura do sistema de seguimento de parede}
+    \label{fig:wall_follow_arch}
+\end{figure}
+
+O nó recebe mensagens do tipo \texttt{LaserScan} através do tópico
+\texttt{/scan}, processa estas informações para determinar a posição relativa
+do veículo, e publica comandos de controle no formato
+\texttt{AckermannDriveStamped} através do tópico \texttt{/drive}.
+
+\subsection{Componentes do Sistema}
+
+O sistema é composto por quatro componentes principais:
+
+\begin{enumerate}
+    \item \textbf{Subsistema de Aquisição de Dados}: Responsável por receber e interpretar os dados brutos do sensor LiDAR.
+    \item \textbf{Processador Geométrico}: Implementa o modelo matemático para determinar a distância e orientação em relação à parede.
+    \item \textbf{Sistema de Controle}: Aplica algoritmos PID para calcular a correção necessária na direção do veículo.
+    \item \textbf{Módulo de Visualização}: Fornece capacidade de monitoramento em tempo real do desempenho do sistema (opcional).
+\end{enumerate}
+
+\subsection{Implementação e Funcionamento dos Componentes}
+
+\subsubsection{Inicialização e Configuração do Nó}
+
+\begin{verbatim}
+def __init__(self):
+    super().__init__('wall_follow')
+
+    # Configuração de visualização em tempo real
+    plt.ion()  # Enable interactive mode for real-time updates
+    self.fig, self.ax = plt.subplots()
+    self.line, = self.ax.plot([], [])
+    self.ax.set_xlabel('Time (seconds)')
+    self.ax.set_ylabel('Error')
+    self.ax.set_title('Error vs. Time')
+    self.ax.grid(True)
+
+    # Configuração de comunicação ROS2
+    self.scan_subscriber = self.create_subscription(
+        LaserScan,
+        '/scan',
+        self.scan_callback,
+        10
+    )
+
+    self.publisher = self.create_publisher(
+        AckermannDriveStamped,
+        '/drive',
+        10
+    )
+\end{verbatim}
+
+O construtor da classe \texttt{WallFollow} estabelece a infraestrutura
+necessária para o funcionamento do nó:
+
+\begin{enumerate}
+    \item \textbf{Inicialização ROS2}: Registra o nó com o nome 'wall\_follow', permitindo sua identificação na rede ROS2.
+
+    \item \textbf{Configuração da Visualização}: Inicializa a interface gráfica utilizando matplotlib para visualização em tempo real do erro de controle, uma ferramenta essencial para depuração e análise de desempenho.
+
+    \item \textbf{Estabelecimento de Comunicação}:
+          \begin{itemize}
+              \item Cria um subscriber para o tópico \texttt{/scan}, conectando uma função de
+                    callback (\texttt{scan\_callback}) que será invocada a cada nova leitura do
+                    LiDAR.
+              \item Cria um publisher para o tópico \texttt{/drive}, que será utilizado para enviar
+                    comandos no formato Ackermann ao sistema de direção do veículo.
+              \item Configura um QoS (Quality of Service) de 10 para ambas as conexões, balanceando
+                    confiabilidade e latência.
+          \end{itemize}
+\end{enumerate}
+
+A configuração de visualização, embora não crítica para o funcionamento básico
+do sistema, representa uma abordagem sofisticada de monitoramento que facilita
+o processo de desenvolvimento e ajuste de parâmetros.
+
+\subsubsection{Configuração de Parâmetros do Sistema}
+
+\begin{verbatim}
+# PID parameters
+self.kp = 14.0
+self.ki = 0.007
+self.kd = 0.09
+
+# Store history
+self.integral = 0.0
+self.prev_error = 0.0
+self.error_list = []
+self.time_list = []
+
+# LIDAR measurement angle
+self.angleA = 75
+self.angleB = 85 
+self.dist = 0.7
+\end{verbatim}
+
+Os parâmetros do sistema são organizados em três categorias principais:
+
+\begin{enumerate}
+    \item \textbf{Parâmetros do Controlador PID}:
+          \begin{itemize}
+              \item \texttt{kp} (14.0): Ganho proporcional, determinando a amplitude da resposta imediata a desvios.
+              \item \texttt{ki} (0.007): Ganho integral, responsável pela correção de erros acumulados ao longo do tempo.
+              \item \texttt{kd} (0.09): Ganho derivativo, que compensa tendências futuras e reduz oscilações.
+          \end{itemize}
+
+          A significativa diferença entre os valores dos ganhos (kp $\gg$ kd $\gg$ ki)
+          indica uma estratégia de controle que prioriza resposta rápida a desvios
+          imediatos (termo proporcional), com estabilização moderada (termo derivativo) e
+          correção lenta de erros sistemáticos (termo integral).
+
+    \item \textbf{Variáveis de Estado do Controlador}:
+          \begin{itemize}
+              \item \texttt{integral}: Acumulador para o cálculo do termo integral do PID.
+              \item \texttt{prev\_error}: Armazena o erro anterior para cálculo do termo derivativo.
+              \item \texttt{error\_list} e \texttt{time\_list}: Arrays para armazenamento do histórico de erro para visualização.
+          \end{itemize}
+
+    \item \textbf{Parâmetros do Modelo Geométrico}:
+          \begin{itemize}
+              \item \texttt{angleA} (75°) e \texttt{angleB} (85°): Ângulos utilizados para medição com o LiDAR, selecionados para fornecer duas leituras próximas mas suficientemente separadas para calcular a orientação.
+              \item \texttt{dist} (0.7m): Distância de referência desejada entre o veículo e a parede.
+          \end{itemize}
+\end{enumerate}
+
+A escolha destes parâmetros específicos representa um compromisso entre
+responsividade do sistema e estabilidade, otimizado empiricamente durante o
+processo de desenvolvimento.
+
+\subsubsection{Processamento de Dados do LiDAR}
+
+\begin{verbatim}
+def get_range(self, range_data, angle):
+    if not range_data:
+        return 0.0
+    if math.isnan(range_data[angle]):
+        return 0.0
+    elif range_data[angle] == float('inf'):
+        return 0.0
+    else:
+        return range_data[angle]
+
+def get_range_by_angle(self, scan: LaserScan, angle: float): 
+    if angle < scan.angle_min or angle > scan.angle_max:
+        return 0.0
+    possible_desired_angle = angle - (angle % scan.angle_increment)
+    desired_range_index = int((possible_desired_angle - scan.angle_min) // scan.angle_increment)
+    if desired_range_index < 0 or desired_range_index >= len(scan.ranges):
+        return 0.0
+    return scan.ranges[desired_range_index]
+\end{verbatim}
+
+O subsistema de processamento de dados do LiDAR é responsável por extrair
+informações relevantes das varreduras brutas do sensor. Este módulo implementa
+duas funções complementares:
+
+\begin{enumerate}
+    \item \textbf{Função \texttt{get\_range}}:
+          \begin{itemize}
+              \item Realiza tratamento defensivo de casos especiais, como arrays vazios, valores
+                    NaN (Not a Number) ou infinito.
+              \item Garante robustez ao sistema, evitando falhas em condições adversas de leitura
+                    do sensor.
+          \end{itemize}
+
+    \item \textbf{Função \texttt{get\_range\_by\_angle}}:
+          \begin{itemize}
+              \item Implementa um algoritmo sofisticado para converter ângulos contínuos (em
+                    radianos) para índices discretos no array de distâncias do LiDAR.
+              \item Verifica se o ângulo solicitado está dentro do intervalo de medição do sensor.
+              \item Calcula o ângulo mais próximo disponível nas medições discretizadas.
+              \item Converte este ângulo em um índice utilizando operações matemáticas que
+                    consideram o incremento angular e o ângulo mínimo do sensor.
+              \item Implementa verificações de limite para garantir que o índice calculado está
+                    dentro dos limites válidos.
+          \end{itemize}
+\end{enumerate}
+
+A função \texttt{get\_range\_by\_angle} é particularmente sofisticada, pois
+lida com a transformação entre o domínio contínuo (ângulos teóricos) e o
+domínio discreto (índices no array de medições do LiDAR), um desafio comum em
+sistemas robóticos que interpretam dados de sensores.
+
+\subsubsection{Modelo Geométrico para Cálculo do Erro}
+
+\begin{verbatim}
+def get_error(self, msg):
+    a = self.get_range_by_angle(msg, math.radians(self.angleA))
+    b = self.get_range_by_angle(msg, math.radians(self.angleB))
+
+    teta = math.radians(self.angleB - self.angleA)
+
+    alpha = math.atan((a * math.cos(teta) - b) / (a * math.sin(teta)))
+
+    D = b * math.cos(alpha)
+    error = self.dist - D
+    return error
+\end{verbatim}
+
+O modelo geométrico implementado na função \texttt{get\_error} constitui o
+núcleo do algoritmo de seguimento de parede, transformando dados brutos do
+sensor em informações de alto nível sobre a posição relativa do veículo. O
+algoritmo implementa as seguintes etapas:
+
+\begin{enumerate}
+    \item \textbf{Aquisição de Medições}:
+          \begin{itemize}
+              \item Obtém as distâncias \texttt{a} e \texttt{b} nos ângulos predefinidos (75° e
+                    85°), convertendo-os para radianos.
+              \item Estas medições formam a base para a triangulação da posição relativa do
+                    veículo.
+          \end{itemize}
+
+    \item \textbf{Cálculo do Ângulo Diferencial}:
+          \begin{itemize}
+              \item Determina o ângulo \texttt{teta} entre as duas medições (10° = 85° - 75°),
+                    convertendo para radianos.
+              \item Este parâmetro é crucial para os cálculos trigonométricos subsequentes.
+          \end{itemize}
+
+    \item \textbf{Determinação da Orientação}:
+          \begin{itemize}
+              \item Calcula o ângulo \texttt{alpha} que representa a orientação do veículo em
+                    relação à parede utilizando a fórmula:
+                    \begin{equation}
+                        \alpha = \arctan\left(\frac{a \cdot \cos(\theta) - b}{a \cdot \sin(\theta)}\right)
+                    \end{equation}
+              \item Esta equação deriva da análise geométrica do problema, considerando a
+                    configuração espacial do veículo, sensor e parede.
+          \end{itemize}
+
+    \item \textbf{Cálculo da Distância Perpendicular}:
+          \begin{itemize}
+              \item Determina a distância perpendicular \texttt{D} entre o veículo e a parede:
+                    \begin{equation}
+                        D = b \cdot \cos(\alpha)
+                    \end{equation}
+              \item Esta equação projeta a medição \texttt{b} ao longo do eixo perpendicular à
+                    parede.
+          \end{itemize}
+
+    \item \textbf{Determinação do Erro}:
+          \begin{itemize}
+              \item Calcula o erro como a diferença entre a distância desejada e a distância atual:
+                    \begin{equation}
+                        erro = dist - D
+                    \end{equation}
+              \item Um erro positivo indica que o veículo está mais próximo da parede do que o
+                    desejado, enquanto um erro negativo indica o contrário.
+          \end{itemize}
+\end{enumerate}
+
+Esta implementação representa uma aplicação direta dos princípios matemáticos
+apresentados na fundamentação teórica, transformando conceitos trigonométricos
+abstratos em um algoritmo prático para navegação autônoma.
+
+\subsubsection{Estratégia de Controle de Velocidade}
+
+\begin{verbatim}
+def calculate_velocity(self, error):
+    if error < 0.5:
+        velocity = 1.0 
+    else:
+        velocity = 0.5
+    return velocity
+\end{verbatim}
+
+O sistema implementa uma estratégia adaptativa de controle de velocidade que
+ajusta dinamicamente a velocidade do veículo com base na precisão do seguimento
+de parede:
+
+\begin{enumerate}
+    \item \textbf{Lógica Adaptativa}:
+          \begin{itemize}
+              \item Em condições de baixo erro ($<$ 0.5m), o sistema mantém velocidade normal (1.0
+                    m/s).
+              \item Em condições de erro significativo ($\geq$ 0.5m), o sistema reduz a velocidade
+                    (0.5 m/s).
+          \end{itemize}
+
+    \item \textbf{Fundamentação da Abordagem}:
+          \begin{itemize}
+              \item Esta estratégia permite um equilíbrio entre velocidade e precisão, priorizando
+                    a segurança em condições de maior incerteza.
+              \item Em trechos onde o veículo mantém boa aderência à trajetória desejada, a
+                    velocidade é maximizada para otimizar o tempo de volta.
+              \item Em trechos com desvios significativos, a velocidade é reduzida para permitir
+                    correções mais precisas e evitar oscilações.
+          \end{itemize}
+\end{enumerate}
+
+Embora implementada como uma função limiar simples, esta abordagem representa
+uma primeira aproximação ao conceito de planejamento de velocidade adaptativo,
+um dos aspectos mais críticos para otimização de desempenho em competições
+F1TENTH.
+
+\subsubsection{Implementação do Controlador PID}
+
+\begin{verbatim}
+def pid_control(self, error, velocity):
+    self.integral += error
+    angle = self.kp * error + self.ki * self.integral + self.kd * (error - self.prev_error)
+    self.prev_error = error
+
+    # Publish Ackermann commands
+    ackermann_cmd = AckermannDriveStamped()
+    ackermann_cmd.drive.speed = velocity
+    ackermann_cmd.drive.steering_angle = math.radians(-angle)
+    print(angle)
+    self.publisher.publish(ackermann_cmd)
+\end{verbatim}
+
+O controlador PID implementa a lei de controle clássica proporcionamento
+inteligente para aplicações de seguimento de trajetória em robótica móvel:
+
+\begin{enumerate}
+    \item \textbf{Cálculo dos Termos de Controle}:
+          \begin{itemize}
+              \item \textbf{Termo Integral}: Acumula o erro ao longo do tempo (\texttt{self.integral += error}), permitindo correção de erros sistemáticos.
+              \item \textbf{Termo Derivativo}: Calcula a taxa de variação do erro (\texttt{error - self.prev\_error}), antecipando tendências e reduzindo oscilações.
+              \item \textbf{Termo Proporcional}: Aplica correção diretamente proporcional ao erro atual.
+          \end{itemize}
+
+    \item \textbf{Aplicação da Lei de Controle PID}:
+          \begin{equation}
+              angle = K_p \cdot error + K_i \cdot integral + K_d \cdot (error - prev\_error)
+          \end{equation}
+          Esta equação combina os três termos, ponderados pelos respectivos ganhos, para determinar o ângulo de direção necessário.
+
+    \item \textbf{Preparação do Comando de Controle}:
+          \begin{itemize}
+              \item Cria uma mensagem no formato \texttt{AckermannDriveStamped}, o padrão para
+                    veículos com geometria Ackermann.
+              \item Define a velocidade conforme calculado pelo módulo de controle de velocidade.
+              \item Define o ângulo de direção como o negativo do ângulo calculado pelo PID,
+                    convertido para radianos.
+              \item A negação do ângulo (\texttt{-angle}) reflete a convenção de sinal adotada: um
+                    erro positivo (veículo próximo demais da parede) deve resultar em um ângulo de
+                    direção negativo (afastando-se da parede).
+          \end{itemize}
+
+    \item \textbf{Publicação do Comando}:
+          \begin{itemize}
+              \item Transmite o comando formatado para o tópico \texttt{/drive}, onde será recebido
+                    pelo subsistema de controle do veículo.
+              \item Imprime o ângulo calculado para fins de depuração.
+          \end{itemize}
+\end{enumerate}
+
+A implementação segue fielmente a equação teórica do controlador PID,
+demonstrando uma transposição direta entre a fundamentação matemática e a
+implementação computacional.
+
+\subsubsection{Sistema de Visualização em Tempo Real}
+
+\begin{verbatim}
+def plot_error_vs_time(self):
+    self.line.set_xdata(self.time_list)
+    self.line.set_ydata(self.error_list)
+    self.ax.relim()
+    self.ax.autoscale_view()
+    self.fig.canvas.draw()
+    self.fig.canvas.flush_events()
+\end{verbatim}
+
+O sistema inclui capacidades avançadas de visualização em tempo real,
+permitindo o monitoramento dinâmico do desempenho do controlador:
+
+\begin{enumerate}
+    \item \textbf{Atualização da Visualização}:
+          \begin{itemize}
+              \item Define os dados para os eixos x (tempo) e y (erro) do gráfico.
+              \item Recalcula os limites dos eixos para acomodar novos dados (\texttt{relim} e
+                    \texttt{autoscale\_view}).
+              \item Redesenha o gráfico e processa eventos pendentes da interface gráfica.
+          \end{itemize}
+
+    \item \textbf{Aplicabilidade para Desenvolvimento}:
+          \begin{itemize}
+              \item Esta funcionalidade, embora desativada no código principal
+                    (\texttt{\#self.plot\_error\_vs\_time()}), representa uma ferramenta invaluável
+                    durante o processo de desenvolvimento e ajuste.
+              \item Permite visualização imediata do impacto de modificações nos parâmetros do
+                    controlador.
+              \item Facilita a identificação de comportamentos problemáticos como oscilações ou
+                    erros sistemáticos.
+          \end{itemize}
+\end{enumerate}
+
+A implementação desta capacidade de visualização demonstra uma abordagem de
+desenvolvimento orientada a dados, onde o comportamento do sistema é
+continuamente monitorado e analisado para otimização.
+
+\subsubsection{Fluxo Principal de Processamento}
+
+\begin{verbatim}
+def scan_callback(self, msg):
+    error = self.get_error(msg)
+    self.error_list.append(error)
+
+    velocity = self.calculate_velocity(error)
+    self.pid_control(error, velocity)
+
+    # Calculate elapsed time
+    current_time = time.time() - self.start_time
+    self.time_list.append(current_time)
+
+    # Plot the error vs. time
+    #self.plot_error_vs_time()
+\end{verbatim}
+
+A função \texttt{scan\_callback} representa o núcleo operacional do sistema,
+sendo invocada a cada nova mensagem do LiDAR e orquestrando todo o fluxo de
+processamento:
+
+\begin{enumerate}
+    \item \textbf{Processamento de Dados e Cálculo do Erro}:
+          \begin{itemize}
+              \item Invoca \texttt{get\_error} para processar os dados do LiDAR e determinar o erro
+                    de posicionamento.
+              \item Registra o erro no histórico para análise posterior.
+          \end{itemize}
+
+    \item \textbf{Determinação da Velocidade Adaptativa}:
+          \begin{itemize}
+              \item Calcula a velocidade apropriada com base no erro atual através da função
+                    \texttt{calculate\_velocity}.
+          \end{itemize}
+
+    \item \textbf{Aplicação do Controle PID e Envio de Comandos}:
+          \begin{itemize}
+              \item Invoca \texttt{pid\_control} para calcular a correção de direção necessária e
+                    publicar os comandos Ackermann.
+          \end{itemize}
+
+    \item \textbf{Registro Temporal e Visualização (Opcional)}:
+          \begin{itemize}
+              \item Calcula e registra o tempo decorrido desde o início da execução.
+              \item Opcionalmente atualiza a visualização em tempo real (atualmente desativada).
+          \end{itemize}
+\end{enumerate}
+
+Esta função implementa o laço de controle completo, integrando percepção,
+planejamento e controle em um único fluxo de execução. A frequência de execução
+deste laço é determinada pela taxa de publicação do sensor LiDAR, tipicamente
+em torno de 10-40Hz para sistemas F1TENTH.
+
+\subsection{Análise Técnica da Implementação}
+
+\subsubsection{Características Arquiteturais}
+
+A arquitetura do sistema apresenta as seguintes características técnicas
+relevantes:
+
+\begin{enumerate}
+    \item \textbf{Modularidade e Coesão}: A implementação segue princípios de design modular, com funções claramente especializadas e bem delimitadas.
+
+    \item \textbf{Encapsulamento}: A classe \texttt{WallFollow} encapsula todos os dados e comportamentos relacionados ao algoritmo, facilitando manutenção e evolução.
+
+    \item \textbf{Padrão de Comunicação Publisher-Subscriber}: Utiliza o padrão de comunicação baseado em tópicos do ROS2, permitindo desacoplamento entre componentes.
+
+    \item \textbf{Paralelismo Implícito}: A arquitetura ROS2 possibilita processamento paralelo, com o sistema operacional gerenciando a execução concorrente de múltiplos nós.
+
+    \item \textbf{Orientação a Eventos}: O sistema é fundamentalmente dirigido por eventos, com todo o processamento iniciado pela recepção de novas mensagens do LiDAR.
+\end{enumerate}
+
+Estas características arquiteturais proporcionam bases sólidas para
+extensibilidade e manutenibilidade do sistema, alinhando-se com as melhores
+práticas de desenvolvimento de software para robótica.
+
+\subsubsection{Aspectos de Implementação Dignos de Nota}
+
+Além da estrutura geral, vários aspectos específicos da implementação merecem
+destaque:
+
+\begin{enumerate}
+    \item \textbf{Tratamento Robusto de Dados do Sensor}: O código implementa verificações extensivas para lidar com casos especiais e valores potencialmente problemáticos nos dados do LiDAR.
+
+    \item \textbf{Utilização de Tipagem em Interfaces Críticas}: A função \texttt{get\_range\_by\_angle} utiliza anotações de tipo (\texttt{scan: LaserScan, angle: float}), melhorando legibilidade e facilitando verificação estática de tipos.
+
+    \item \textbf{Depuração Instrumentada}: A inclusão do comando \texttt{print(angle)} na função \texttt{pid\_control} e a implementação da visualização em tempo real demonstram preocupação com instrumentação para depuração.
+
+    \item \textbf{Inicialização Adequada}: A estrutura de inicialização garante que todas as variáveis de estado e parâmetros do sistema estejam apropriadamente configurados antes do processamento.
+
+    \item \textbf{Manipulação Temporal Precisa}: O código utiliza \texttt{time.time()} para registro temporal preciso, essencial para análise de desempenho e visualização.
+\end{enumerate}
+
+Estes aspectos refletem boas práticas de engenharia de software, contribuindo
+para a robustez, manutenibilidade e extensibilidade da implementação.
+
+\subsubsection{Potencialidades e Limitações}
+
+A análise da implementação revela tanto potencialidades quanto limitações:
+
+\textbf{Potencialidades}:
+
+\begin{enumerate}
+    \item \textbf{Baixo Requisito Computacional}: A implementação é computacionalmente eficiente, adequada para processadores embarcados.
+
+    \item \textbf{Robustez a Condições Variáveis}: O sistema lida adequadamente com limitações de sensores e variações no ambiente.
+
+    \item \textbf{Base para Extensões}: A arquitetura modular facilita a integração de funcionalidades avançadas como filtragem adaptativa ou controle preditivo.
+\end{enumerate}
+
+\textbf{Limitações}:
+
+\begin{enumerate}
+    \item \textbf{Parametrização Estática}: Os parâmetros do controlador PID e do modelo geométrico são fixos, sem adaptação dinâmica a diferentes condições.
+
+    \item \textbf{Ausência de Filtragem de Ruído}: Não há implementação de técnicas para redução de ruído nas medições, potencialmente afetando a estabilidade.
+
+    \item \textbf{Estratégia de Velocidade Simplificada}: O controle de velocidade utiliza uma abordagem limiar binária, sem considerar fatores como curvatura da pista.
+
+    \item \textbf{Visualização Desativada}: A funcionalidade de visualização em tempo real está comentada, embora implementada.
+\end{enumerate}
+
+Estas observações sugerem direções para futuras melhorias e otimizações do
+sistema, alinhadas com as estratégias discutidas na fundamentação teórica.
+
+\subsection{Integração dos Componentes e Fluxo de Dados}
+
+O sistema opera como um pipeline de processamento de dados, com informações
+fluindo sequencialmente através dos diversos componentes:
+
+\begin{figure}[ht]
+    \centering
+    \begin{tikzpicture}[
+            node distance=1.5cm,
+            box/.style={rectangle, draw, minimum width=2.5cm, minimum height=1cm, align=center},
+            arrow/.style={->, >=stealth, thick}
+        ]
+
+        % Componentes principais em linha horizontal
+        \node[box] (lidar) {Sensor\\LiDAR};
+        \node[box, right=2cm of lidar] (proc) {Processador\\Geométrico};
+        \node[box, right=2cm of proc] (vel) {Controlador de\\Velocidade};
+        \node[box, right=2cm of vel] (pid) {Controlador\\PID};
+
+        % Sistema de atuação abaixo do controlador PID
+        \node[box, below=1.5cm of pid] (act) {Sistema de\\Atuação};
+
+        % Conexões
+        \draw[arrow] (lidar) -- node[above, midway] {} (proc);
+        \draw[arrow] (proc) -- node[above, midway] {} (vel);
+        \draw[arrow] (vel) -- node[above, midway] {} (pid);
+        \draw[arrow] (pid) -- node[right, midway] {} (act);
+
+    \end{tikzpicture}
+    \caption{Fluxo de dados do sistema de seguimento de parede}
+    \label{fig:wall_follow_flow}
+\end{figure}
+
+Este fluxo de dados apresenta as seguintes características:
+
+\begin{enumerate}
+    \item \textbf{Transformação Progressiva de Informação}:
+          \begin{itemize}
+              \item Dados brutos do sensor → Informações geométricas → Comandos de controle
+              \item Cada etapa agrega valor semântico e contextual aos dados
+          \end{itemize}
+
+    \item \textbf{Laço de Controle Completo}:
+          \begin{itemize}
+              \item Percepção (LiDAR) → Interpretação (modelo geométrico) → Planejamento
+                    (velocidade) → Controle (PID) → Atuação (comandos Ackermann)
+              \item Representa o ciclo clássico de controle em robótica autônoma
+          \end{itemize}
+
+    \item \textbf{Sincronização Implícita}:
+          \begin{itemize}
+              \item Todo o processamento é iniciado e sincronizado pela chegada de novas mensagens
+                    do LiDAR
+              \item A taxa de atualização do controle é determinada pela frequência de publicação
+                    do sensor
+          \end{itemize}
+
+    \item \textbf{Propagação de Incertezas}:
+          \begin{itemize}
+              \item Ruídos ou imprecisões nas leituras do sensor propagam-se através do pipeline
+              \item Ausência de filtragem implica em suscetibilidade a perturbações transitórias
+          \end{itemize}
+\end{enumerate}
+
+Esta análise do fluxo de dados evidencia tanto a elegância conceitual quanto as
+vulnerabilidades potenciais do sistema, fornecendo bases para avaliação de
+desempenho e otimização.
+
+\subsection{Considerações sobre a Implementação e Oportunidades de Aprimoramento}
+
+\subsubsection{Análise Crítica da Implementação Atual}
+
+A implementação atual apresenta características que merecem análise crítica:
+
+\begin{enumerate}
+    \item \textbf{Calibração do Controlador PID}:
+          \begin{itemize}
+              \item Os parâmetros do PID (Kp=14.0, Ki=0.007, Kd=0.09) revelam uma estratégia de
+                    controle que enfatiza significativamente o termo proporcional.
+              \item Esta configuração favorece resposta rápida a desvios, potencialmente às custas
+                    de estabilidade em altas velocidades.
+              \item O processo de calibração destes parâmetros, mencionado como um desafio de
+                    aprendizagem prática, representa um componente crítico para o desempenho do
+                    sistema.
+          \end{itemize}
+
+    \item \textbf{Tratamento de Condições Extremas}:
+          \begin{itemize}
+              \item A implementação atual não inclui limitações explícitas para valores extremos de
+                    erro ou ângulo de direção.
+              \item Esta ausência poderia levar a comportamentos instáveis em condições atípicas,
+                    como aproximação excessiva da parede ou sensoriamento impreciso.
+          \end{itemize}
+
+    \item \textbf{Gestão de Estado}:
+          \begin{itemize}
+              \item O acumulador integral não possui mecanismos de anti-windup, podendo levar a
+                    sobrecorreção após períodos prolongados de erro sistemático.
+              \item O histórico de erro é armazenado indefinidamente, potencialmente consumindo
+                    memória em execuções prolongadas.
+          \end{itemize}
+
+    \item \textbf{Depuração e Instrumentação}:
+          \begin{itemize}
+              \item A instrumentação atual (print de ângulo e visualização comentada) sugere que o
+                    sistema ainda está em fase de desenvolvimento e ajuste.
+              \item Uma abordagem mais estruturada de logging e instrumentação facilitaria
+                    depuração e otimização sistemática.
+          \end{itemize}
+\end{enumerate}
+
+\subsubsection{Oportunidades de Aprimoramento}
+
+Com base na análise da implementação atual e nas estratégias de otimização
+discutidas na fundamentação teórica, identificam-se as seguintes oportunidades
+de aprimoramento:
+
+\begin{enumerate}
+    \item \textbf{Parametrização Dinâmica do Controlador}:
+          \begin{itemize}
+              \item Implementação de ajuste automático dos parâmetros PID baseado em condições
+                    operacionais.
+              \item Adaptação dos ganhos conforme velocidade ou características da pista.
+              \item Utilização de técnicas de aprendizado por reforço para otimização dos
+                    parâmetros.
+          \end{itemize}
+
+    \item \textbf{Filtragem de Sinais}:
+          \begin{itemize}
+              \item Adição de filtros de média móvel ou filtros de Kalman para redução de ruído nas
+                    medições do LiDAR.
+              \item Implementação de detecção e rejeição de outliers para maior robustez a leituras
+                    anômalas.
+          \end{itemize}
+
+    \item \textbf{Aprimoramento do Perfil de Velocidade}:
+          \begin{itemize}
+              \item Substituição da estratégia binária por um perfil de velocidade contínuo baseado
+                    na magnitude do erro.
+              \item Implementação de estimação de curvatura da pista para otimização proativa da
+                    velocidade.
+              \item Desenvolvimento de um modelo preditivo que antecipe a necessidade de redução de
+                    velocidade.
+          \end{itemize}
+
+    \item \textbf{Mecanismos de Segurança}:
+          \begin{itemize}
+              \item Adição de limitações de saturação para o ângulo de direção calculado.
+              \item Implementação de detecção de falhas e modos de recuperação.
+              \item Desenvolvimento de um sistema de monitoramento que identifique comportamentos
+                    potencialmente instáveis.
+          \end{itemize}
+
+    \item \textbf{Integração com Técnicas Avançadas de Navegação}:
+          \begin{itemize}
+              \item Combinação do seguimento de parede com mapeamento e localização simultâneos
+                    (SLAM).
+              \item Implementação de planejamento de trajetória baseado em experiências anteriores
+                    na mesma pista.
+              \item Desenvolvimento de sistemas de percepção redundantes para maior robustez.
+          \end{itemize}
+\end{enumerate}
+
+Estas oportunidades de aprimoramento representam direções promissoras para
+evolução do sistema, alinhadas com o estado da arte em robótica móvel e
+especificamente otimizadas para o contexto competitivo da categoria F1TENTH.
+
+\section{Sistema de Seguimento de Gap para Veículos F1TENTH}
+
+Este capítulo apresenta uma análise detalhada do sistema de seguimento de gap
+implementado para veículos autônomos da categoria F1TENTH. O sistema proposto
+utiliza dados de sensor LiDAR para detectar espaços navegáveis (gaps) no
+ambiente, classifica-os segundo critérios de qualidade, e implementa
+controladores PID para guiar o veículo através do gap selecionado de maneira
+eficiente e segura.
+
+\subsection{Visão Geral da Arquitetura}
+
+O núcleo do sistema é implementado como um nó ROS2 denominado
+\texttt{gap\_follower}, que estabelece uma arquitetura multithreading para
+processamento paralelo de dados sensoriais e execução de comandos de controle.
+A estrutura de comunicação estabelecida é ilustrada na figura a seguir:
+
+\begin{figure}[ht]
+    \centering
+    \begin{tikzpicture}[
+            node distance=1.5cm,
+            box/.style={rectangle, draw, minimum width=2.5cm, minimum height=1cm, align=center},
+            arrow/.style={->, >=stealth, thick}
+        ]
+
+        % Definição do nó principal
+        \node[rectangle, draw, minimum width=10cm, minimum height=6cm] (main) {};
+        % Adiciona o título dentro do nó principal
+        \node[anchor=north, yshift=-0.2cm] at (main.north) {ThreadedGapFollower Node};
+
+        % Componentes internos (yshift ajustado em -0.4cm)
+        \node[box, anchor=north west, xshift=1.5cm, yshift=-0.8cm] (scan_proc) at (main.north west) {Processador\\de Scan};
+        \node[box, anchor=north east, xshift=-1.5cm, yshift=-0.8cm] (control) at (main.north east) {Loop de\\Controle};
+
+        % Queues de comunicação (yshift ajustado em -0.4cm)
+        \node[box, anchor=center, yshift=0.3cm] (scan_queue) at (main.center) {Scan Queue};
+        \node[box, anchor=center, yshift=-1.2cm] (cmd_queue) at (main.center) {Command Queue};
+
+        % Threads
+        \node[ellipse, draw, anchor=south west, xshift=1.5cm, yshift=0.50cm] (scan_thread) at (main.south west) {Scan Thread};
+        \node[ellipse, draw, anchor=south east, xshift=-1.5cm, yshift=0.50cm] (control_thread) at (main.south east) {Control Thread};
+
+        % Componentes externos
+        \node[box, above=2cm of main] (lidar) {Sensor\\LiDAR};
+        \node[box, below=2cm of main] (drive) {Sistema de\\Direção};
+
+        % Conexões
+        \draw[arrow] (lidar.south) -- node[right] {LaserScan} (main.north);
+        \draw[arrow] (main.south) -- node[right, align=center] {Ackermann\\Drive} (drive.north);
+        \draw[arrow] (scan_proc) -- (scan_queue);
+        \draw[arrow] (scan_queue) -- (cmd_queue);
+        \draw[arrow] (cmd_queue) -- (control);
+
+        % Conexões de threads
+        \draw[arrow, dashed] (scan_thread) -- (scan_proc);
+        \draw[arrow, dashed] (control_thread) -- (control);
+    \end{tikzpicture}
+    \caption{Arquitetura do sistema de seguimento de gap}
+    \label{fig:gap_follow_arch}
+\end{figure}
+
+O nó recebe mensagens do tipo \texttt{LaserScan} através do tópico
+\texttt{/scan}, processa estes dados em uma thread dedicada para identificar e
+classificar gaps, e utiliza outra thread para computar e publicar comandos de
+controle no formato \texttt{AckermannDriveStamped} através do tópico
+\texttt{/drive}. Esta arquitetura paralela permite alta responsividade e
+minimiza latências críticas para navegação em alta velocidade.
+
+\subsection{Componentes do Sistema}
+
+O sistema é composto por seis componentes principais:
+
+\begin{enumerate}
+    \item \textbf{Gerenciador de Parâmetros}: Responsável pela declaração, validação e carregamento de parâmetros de configuração.
+    \item \textbf{Controladores PID}: Implementação de controladores PID robustos para direção e velocidade.
+    \item \textbf{Processador de Scan}: Módulo que processa dados do LiDAR para detecção e classificação de gaps.
+    \item \textbf{Sistema de Comunicação Interthread}: Filas thread-safe para troca de dados entre threads.
+    \item \textbf{Loop de Controle}: Componente que calcula comandos de direção e velocidade.
+    \item \textbf{Subsistema de Segurança}: Mecanismos para detecção de falhas e procedimentos de emergência.
+\end{enumerate}
+
+\subsection{Implementação e Funcionamento dos Componentes}
+
+\subsubsection{Estruturas de Dados e Classes Auxiliares}
+
+O sistema utiliza estruturas de dados bem definidas para organizar informações,
+aumentar a legibilidade do código e facilitar manutenção:
+
+\begin{verbatim}
+@dataclass(frozen=True)
+class PIDParameters:
+    """PID controller configuration parameters."""
+    kp: float
+    ki: float
+    kd: float
+    min_output: float
+    max_output: float
+    antiwindup_threshold: float = 0.8
+    d_filter_alpha: float = 0.2
+
+@dataclass
+class PIDDebugData:
+    """PID controller debug information container."""
+    timestamp: float
+    error: float
+    p_term: float
+    i_term: float
+    d_term: float
+    output: float
+    compute_time: float
+
+@dataclass
+class ScanData:
+    """Container for processed scan data."""
+    timestamp: float
+    target_angle: float
+    ranges: np.ndarray
+    is_valid: bool = True
+\end{verbatim}
+
+A utilização de dataclasses (\texttt{@dataclass}) representa uma abordagem
+moderna em Python para definição de classes centradas em dados. Destaca-se:
+
+\begin{enumerate}
+    \item \textbf{PIDParameters}: Encapsula todos os parâmetros de configuração de um controlador PID, incluindo:
+          \begin{itemize}
+              \item Ganhos proporcionais, integrais e derivativos
+              \item Limites de saída e threshold para anti-windup
+              \item Coeficiente do filtro para o termo derivativo
+              \item Atributo \texttt{frozen=True} garantindo imutabilidade após inicialização
+          \end{itemize}
+
+    \item \textbf{PIDDebugData}: Estrutura para armazenamento de informações de debug do controlador PID, facilitando diagnóstico e otimização.
+
+    \item \textbf{ScanData}: Container para dados processados do LiDAR, incluindo timestamp, ângulo-alvo calculado e indicador de validade.
+\end{enumerate}
+
+Esta abordagem baseada em dataclasses demonstra preocupação com princípios de
+clean code, tipagem estática opcional e redução de código boilerplate.
+
+\subsubsection{Implementação do Controlador PID}
+
+O sistema implementa um controlador PID robusto com recursos avançados:
+
+\begin{verbatim}
+def compute(self, error: float, current_time: Time) -> float:
+    """Compute PID output with time-based differentiation."""
+    try:
+        if self.last_time is None:
+            self.last_time = current_time
+            self.prev_error = error
+            return 0.0
+
+        dt = 0.01  # 100Hz fixed rate
+        self.last_time = current_time
+
+        p_term = self.params.kp * error
+        self.integral += error * dt
+        raw_d_term = (error - self.prev_error) / dt
+
+        self.d_filter = (1 - self.params.d_filter_alpha) * self.d_filter + \
+                       self.params.d_filter_alpha * raw_d_term
+        d_term = self.params.kd * self.d_filter
+
+        output = p_term + (self.params.ki * self.integral) + d_term
+        limited_output = self._clamp_output(output)
+
+        self._store_debug_data(
+            error=error,
+            p_term=p_term,
+            i_term=self.params.ki * self.integral,
+            d_term=d_term,
+            output=limited_output
+        )
+        
+        self.prev_error = error
+        return limited_output
+
+    except Exception as e:
+        print(f"PID computation error: {str(e)}")
+        return 0.0
+\end{verbatim}
+
+A implementação do controlador PID apresenta características técnicas
+sofisticadas:
+
+\begin{enumerate}
+    \item \textbf{Inicialização Segura}: Tratamento especial para primeira execução, prevenindo erros derivativos.
+
+    \item \textbf{Taxa Fixa de Controle}: Utilização de intervalo de tempo fixo (dt = 0.01s) correspondendo a execução a 100Hz, garantindo estabilidade independentemente da frequência real de chamada.
+
+    \item \textbf{Filtragem do Termo Derivativo}: Implementação de filtro passa-baixa:
+          \begin{equation}
+              d_{filtered} = (1 - \alpha) \cdot d_{filtered_{prev}} + \alpha \cdot d_{raw}
+          \end{equation}
+
+          Este filtro reduz a amplificação de ruídos de alta frequência comuns em sinais
+          derivativos, um problema clássico em controladores PID.
+
+    \item \textbf{Limitação com Anti-Windup}: Implementado na função auxiliar \texttt{\_clamp\_output}:
+          \begin{verbatim}
+    def _clamp_output(self, output: float) -> float:
+        """Apply output limits with anti-windup compensation."""
+        clipped = np.clip(output, self.params.min_output, self.params.max_output)
+        
+        if self.params.ki != 0.0 and clipped != output:
+            self.integral -= (output - clipped) / self.params.ki
+            
+        return clipped
+    \end{verbatim}
+
+          O mecanismo de anti-windup ajusta o termo integral quando ocorre saturação do
+          atuador, prevenindo acúmulo excessivo de erro integral e consequentes problemas
+          de overshooting.
+
+    \item \textbf{Instrumentação de Diagnóstico}: Armazenamento de dados detalhados sobre o comportamento do controlador, facilitando depuração e otimização.
+
+    \item \textbf{Tratamento de Exceções}: Implementação de mecanismo robusto de tratamento de erros, garantindo que falhas internas não interrompam o funcionamento do sistema.
+\end{enumerate}
+
+Esta implementação representa uma versão industrial de controlador PID, com
+recursos tipicamente encontrados em sistemas de controle profissionais.
+
+\subsubsection{Carregamento e Validação de Parâmetros}
+
+O sistema implementa um mecanismo abrangente de carregamento e validação de
+parâmetros:
+
+\begin{verbatim}
+def _load_parameters(self):
+    """Load and validate node parameters for autonomous navigation."""
+    param_definitions = [
+        # Maximum range for valid laser scan readings in meters
+        # Readings beyond this range are discarded to ensure reliable obstacle detection
+        ('max_range', 10.0),
+        
+        # Minimum width threshold for navigable gaps in meters
+        # Gaps narrower than this are considered unsafe and ignored
+        # Should be set wider than robot width plus safety margin
+        ('min_gap_width', 0.8),
+        
+        # Maximum allowed discontinuity between consecutive scan points in meters
+        # Used to detect potential gaps - larger values allow detecting wider openings
+        # but may miss smaller obstacles
+        ('max_gap_depth', 5.0),
+        
+        # [...]
+    ]
+    
+    try:
+        self.declare_parameters(namespace='', parameters=param_definitions)
+        self.params = {name: self.get_parameter(name).value 
+                      for name, _ in param_definitions}
+        
+        if self.params['min_speed'] > self.params['max_speed']:
+            raise ValueError("Minimum speed cannot exceed maximum speed")
+            
+        if self.params['safety_margin'] < 0.1:
+            raise ValueError("Safety margin too small (minimum 0.1m)")
+
+    except Exception as e:
+        self.get_logger().error(f"Parameter loading error: {str(e)}")
+        raise
+\end{verbatim}
+
+Este componente demonstra uma abordagem robusta para gerenciamento de
+configuração:
+
+\begin{enumerate}
+    \item \textbf{Definição Centralizada}: Todos os parâmetros são definidos em uma única estrutura, com valores padrão e documentação detalhada.
+
+    \item \textbf{Documentação Integrada}: Cada parâmetro é acompanhado de comentários detalhados explicando seu propósito, unidades e implicações.
+
+    \item \textbf{Validação Semântica}: Além da validação de tipos realizada automaticamente pelo ROS2, o código implementa verificações de coerência lógica entre parâmetros relacionados.
+
+    \item \textbf{Tratamento de Erros}: Implementação de mecanismo explícito de captura e relato de erros, facilitando diagnóstico de problemas de configuração.
+\end{enumerate}
+
+Esta abordagem para gerenciamento de parâmetros segue princípios de robustez e
+clareza, facilitando a configuração e manutenção do sistema.
+
+\subsubsection{Detecção e Seleção de Gaps}
+
+O núcleo algorítmico do sistema é implementado nas funções de detecção e
+seleção de gaps:
+
+\begin{verbatim}
+def _detect_gaps(self, points: np.ndarray, angle_inc: float) -> List[Dict]:
+    """Identify navigable gaps in the environment."""
+    print("[DEBUG] Starting gap detection")
+    diffs = np.diff(points, axis=0)
+    distances = np.linalg.norm(diffs, axis=1)
+    gap_indices = np.where(distances > self.params['max_gap_depth'])[0]
+    
+    gaps = []
+    for idx in gap_indices:
+        if idx + 1 >= len(points):
+            continue
+            
+        p1 = points[idx]
+        p2 = points[idx + 1]
+        midpoint = (p1 + p2) / 2
+        gap_width = np.linalg.norm(p2 - p1)
+        
+        # Calculate angle relative to robot's heading
+        angle = np.arctan2(midpoint[1], midpoint[0])
+        
+        gap = {
+            'start_idx': idx,
+            'end_idx': idx + 1,
+            'width': gap_width,
+            'angle': angle,
+            'distance': np.linalg.norm(midpoint),
+            'midpoint': midpoint,
+            'score': self._calculate_gap_score(gap_width, midpoint)
+        }
+        
+        if self._is_valid_gap(gap):
+            gaps.append(gap)
+            
+    return sorted(gaps, key=lambda x: x['score'], reverse=True)
 
 
-\section{Primeira Parte do Sistema Proposto}
+def _calculate_gap_score(self, width: float, midpoint: np.ndarray) -> float:
+    """Calculate combined score for gap quality assessment."""
+    distance_score = (1 - (midpoint[0] / self.params['max_range']))
+    width_score = width / self.params['max_gap_depth']
+    return (self.params['distance_weight'] * distance_score +
+            (1 - self.params['distance_weight']) * width_score)
 
-\lipsum[67]
+def _is_valid_gap(self, gap: Dict) -> bool:
+    """Validate gap against safety criteria."""
+    return (gap['width'] >= self.params['min_gap_width'] and
+            gap['midpoint'][0] > self.params['safety_margin'])
 
-\section{Considerações Finais}
+def _select_optimal_gap(self, gaps: List[Dict]) -> Dict:
+    """Select the best navigable gap from detected options."""
+    return gaps[0]
+\end{verbatim}
 
-\lipsum[68]
+A implementação do algoritmo de detecção e seleção de gaps utiliza conceitos de
+processamento vetorizado e álgebra linear:
+
+\begin{enumerate}
+    \item \textbf{Detecção de Descontinuidades}:
+          \begin{itemize}
+              \item Calcula diferenças vetoriais entre pontos consecutivos usando \texttt{np.diff}
+              \item Determina magnitude das diferenças usando norma euclidiana
+                    (\texttt{np.linalg.norm})
+              \item Identifica índices onde a diferença excede um limiar (potenciais gaps)
+          \end{itemize}
+
+    \item \textbf{Caracterização Geométrica}:
+          \begin{itemize}
+              \item Para cada gap potencial, calcula propriedades geométricas como:
+                    \begin{itemize}
+                        \item Largura (distância entre pontos)
+                        \item Ponto médio (centroide do gap)
+                        \item Ângulo relativo ao veículo
+                        \item Distância ao veículo
+                    \end{itemize}
+          \end{itemize}
+
+    \item \textbf{Avaliação e Classificação}:
+          \begin{itemize}
+              \item Implementa função de pontuação (\texttt{\_calculate\_gap\_score}) combinando
+                    múltiplos critérios:
+                    \begin{itemize}
+                        \item Largura do gap (normalizada)
+                        \item Proximidade ao veículo (invertida e normalizada)
+                        \item Pesos configuráveis para balancear os critérios
+                    \end{itemize}
+              \item Valida gaps contra critérios de segurança
+              \item Ordena gaps por pontuação decrescente
+          \end{itemize}
+
+    \item \textbf{Seleção do Gap Ótimo}:
+          \begin{itemize}
+              \item Seleciona o gap de maior pontuação (primeiro após ordenação)
+          \end{itemize}
+\end{enumerate}
+
+Esta implementação representa uma abordagem multicriterial para navegação
+reativa, priorizando espaços navegáveis com base em uma combinação ponderada de
+características desejáveis.
+
+\subsubsection{Arquitetura Multithreading}
+
+Uma característica distintiva do sistema é sua arquitetura multithreading para
+processamento paralelo:
+
+\begin{verbatim}
+def __init__(self):
+    super().__init__('gap_follower')
+    
+    # Queues for thread communication
+    self.scan_queue = Queue(maxsize=1)
+    self.command_queue = Queue(maxsize=1)
+    
+    # Threading locks
+    self.pid_lock = threading.Lock()
+    self.scan_lock = threading.Lock()
+    
+    # State variables
+    self.current_speed = 0.0
+    self.should_run = True
+    
+    self._load_parameters()
+    self._init_controllers()
+    self._setup_ros_components()
+    
+    # Start worker threads
+    self.scan_thread = threading.Thread(target=self._scan_processing_loop)
+    self.control_thread = threading.Thread(target=self._control_loop)
+    self.scan_thread.start()
+    self.control_thread.start()
+\end{verbatim}
+
+A implementação multithreading utiliza conceitos avançados de programação
+concorrente:
+
+\begin{enumerate}
+    \item \textbf{Filas Thread-Safe}:
+          \begin{itemize}
+              \item Utiliza a classe \texttt{Queue} do módulo \texttt{queue} para comunicação entre
+                    threads
+              \item Limitação do tamanho das filas (maxsize=1) implementa o padrão
+                    publisher-subscriber com semântica de sobreposição de mensagens
+          \end{itemize}
+
+    \item \textbf{Sincronização com Locks}:
+          \begin{itemize}
+              \item Implementa locks específicos para diferentes recursos compartilhados
+              \item Utiliza construção \texttt{with self.scan\_lock:} para garantia de liberação de
+                    recurso mesmo em caso de exceção
+          \end{itemize}
+
+    \item \textbf{Threads Dedicadas}:
+          \begin{itemize}
+              \item Thread de processamento de scan (\texttt{\_scan\_processing\_loop})
+              \item Thread de controle (\texttt{\_control\_loop})
+              \item Segregação de responsabilidades entre threads para isolamento de falhas
+          \end{itemize}
+
+    \item \textbf{Gerenciamento de Ciclo de Vida}:
+          \begin{itemize}
+              \item Variável de controle compartilhada (\texttt{should\_run})
+              \item Método \texttt{destroy\_node} implementa terminação segura de threads
+          \end{itemize}
+\end{enumerate}
+
+Esta arquitetura multithreading representa uma solução sofisticada para
+minimização de latência em sistemas de navegação reativa, particularmente
+valiosa no contexto de corridas autônomas onde o tempo de resposta é crítico.
+
+\subsubsection{Loop de Controle}
+
+O sistema implementa um loop dedicado para cálculo e aplicação de comandos de
+controle:
+
+\begin{verbatim}
+def _control_loop(self):
+    """Dedicated thread for control computation."""
+    print("[DEBUG] Control loop started")
+    while self.should_run:
+        try:
+            scan_data = self.command_queue.get(timeout=0.1)
+            
+            if not scan_data.is_valid:
+                print("[DEBUG] Invalid scan data, executing emergency stop")
+                self._execute_emergency_stop()
+                continue
+            
+            with self.pid_lock:
+                steering_cmd = self._compute_steering_command(scan_data.target_angle)
+                speed_cmd = self._compute_speed_command(steering_cmd)
+                self._publish_control_command(steering_cmd, speed_cmd)
+        except Empty:
+            continue
+        except Exception as e:
+            self.get_logger().error(f"Control loop error: {str(e)}")
+            self._execute_emergency_stop()
+\end{verbatim}
+
+O loop de controle implementa conceitos avançados de teoria de controle e
+robustez:
+
+\begin{enumerate}
+    \item \textbf{Recuperação de Dados}: Obtém dados processados da fila de comandos, com timeout para evitar bloqueio indefinido.
+
+    \item \textbf{Validação de Dados}: Verifica a validade dos dados antes de prosseguir, executando procedimento de emergência em caso de dados inválidos.
+
+    \item \textbf{Proteção de Recursos Compartilhados}: Utiliza lock para acesso thread-safe aos controladores PID.
+
+    \item \textbf{Pipeline de Controle}:
+          \begin{itemize}
+              \item Calcula comando de direção (steering) baseado no ângulo-alvo
+              \item Determina comando de velocidade adaptativo baseado no ângulo de direção
+              \item Publica comando combinado no formato Ackermann
+          \end{itemize}
+
+    \item \textbf{Tratamento Robusto de Exceções}: Implementa procedimento de emergência em caso de erro durante o processamento.
+\end{enumerate}
+
+Um aspecto notável é a estratégia adaptativa de velocidade, que modula
+automaticamente a velocidade em função do ângulo de direção:
+
+\begin{verbatim}
+def _compute_speed_command(self, steering: float) -> float:
+    """Calculate speed command based on steering angle."""
+    target_speed = self.params['max_speed'] * (
+        1 - abs(steering) / self.params['max_steering_angle']
+    )
+    return self.speed_pid.compute(
+        target_speed - self.current_speed,
+        self.get_clock().now()
+    )
+\end{verbatim}
+
+Esta abordagem implementa um modelo de velocidade que:
+\begin{itemize}
+    \item Reduz a velocidade proporcionalmente à magnitude do ângulo de direção
+    \item Atinge velocidade máxima em trechos retilíneos (steering $\approx$ 0)
+    \item Reduz para velocidade mínima em curvas fechadas (steering $\approx$
+          max\_steering\_angle)
+    \item Utiliza controlador PID para transições suaves entre diferentes velocidades
+\end{itemize}
+
+Esta estratégia adaptativa de velocidade contribui significativamente para a
+estabilidade do veículo em altas velocidades e representa uma técnica essencial
+para competições de alto desempenho.
+
+\subsection{Análise Técnica da Implementação}
+
+\subsubsection{Características Arquiteturais}
+
+A arquitetura da implementação apresenta características técnicas relevantes:
+
+\begin{enumerate}
+    \item \textbf{Arquitetura Multithread}: Segregação de responsabilidades entre threads dedicadas, maximizando responsividade e minimizando latência em operações críticas.
+
+    \item \textbf{Comunicação Assíncrona}: Utilização de filas thread-safe para comunicação entre componentes, permitindo operação assíncrona e evitando bloqueios.
+
+    \item \textbf{Design Orientado a Objetos}: Utilização de classes bem definidas com responsabilidades claras, facilitando manutenção e evolução.
+
+    \item \textbf{Princípio da Responsabilidade Única}: Cada método e classe tem uma responsabilidade claramente definida, aumentando coesão e facilitando manutenção.
+
+    \item \textbf{Tratamento Defensivo}: Implementação abrangente de validações e tratamento de exceções, aumentando robustez em condições adversas.
+\end{enumerate}
+
+\subsubsection{Aspectos Algorítmicos}
+
+Os aspectos algorítmicos da implementação revelam consideração por eficiência e
+precisão:
+
+\begin{enumerate}
+    \item \textbf{Processamento Vetorizado}: Utilização intensiva de operações vetorizadas do NumPy, maximizando eficiência computacional.
+
+    \item \textbf{Álgebra Linear Eficiente}: Uso de funções otimizadas de álgebra linear para cálculos geométricos, essenciais para o processamento em tempo real.
+
+    \item \textbf{Cálculo Multi-critério}: Implementação de função de pontuação combinando múltiplos critérios para seleção ótima de gaps.
+
+    \item \textbf{Filtragem de Sinal}: Utilização de filtro passa-baixa para o termo derivativo e filtro de mediana para dados do LiDAR, aumentando robustez a ruídos.
+
+    \item \textbf{Técnicas de Clipping}: Aplicação sistemática de limites nas saídas de controle, garantindo comportamento previsível mesmo em condições extremas.
+\end{enumerate}
+
+\subsubsection{Considerações sobre Desempenho}
+
+Diversos aspectos da implementação são relevantes para o desempenho
+computacional:
+
+\begin{enumerate}
+    \item \textbf{Gerenciamento de Memória}: Utilização eficiente de estruturas de dados como arrays NumPy e filas com tamanho limitado.
+
+    \item \textbf{Processamento Paralelo}: Divisão de tarefas entre threads permite utilização eficiente de múltiplos núcleos de processamento.
+
+    \item \textbf{Operações Vetorizadas}: Uso extensivo de operações vetorizadas em vez de loops explícitos, aproveitando otimizações de baixo nível.
+
+    \item \textbf{Loop de Controle Otimizado}: Utilização de timeouts nas operações de fila para evitar bloqueios e garantir responsividade.
+
+    \item \textbf{Filtragem Seletiva}: Aplicação de filtro de mediana apenas quando configurado, evitando processamento desnecessário.
+\end{enumerate}
+
+\subsubsection{Robustez e Mecanismos de Segurança}
+
+A implementação incorpora diversos mecanismos para garantia de robustez:
+
+\begin{enumerate}
+    \item \textbf{Validação de Parâmetros}: Verificação extensiva de parâmetros de configuração, rejeitando configurações potencialmente perigosas.
+
+    \item \textbf{Detecção de Falhas}: Verificação de validade dos dados de scan e detecção de situações sem gaps navegáveis.
+
+    \item \textbf{Procedimento de Emergência}: Implementação de procedimento de parada de emergência em caso de detecção de falhas ou exceções.
+
+    \item \textbf{Tratamento Abrangente de Exceções}: Captura e tratamento de exceções em todos os pontos críticos, prevenindo falhas não tratadas.
+
+    \item \textbf{Anti-windup PID}: Mecanismo de anti-windup nos controladores PID, prevenindo acúmulo excessivo de erro integral.
+\end{enumerate}
+
+Estes mecanismos de segurança são essenciais para operação robusta em ambientes
+reais, onde imprevistos e condições adversas são inevitáveis.
+
+\subsection{Integração dos Componentes e Fluxo de Dados}
+
+O sistema opera com um fluxo de dados bem definido entre seus componentes:
+
+\begin{figure}[ht]
+    \centering
+    \begin{tikzpicture}[
+            node distance=1.5cm,
+            box/.style={rectangle, draw, minimum width=2.5cm, minimum height=1cm, align=center},
+            arrow/.style={->, >=stealth, thick}
+        ]
+
+        % Componentes principais
+        \node[box] (lidar) {LiDAR};
+        \node[box, right=4cm of lidar] (preproc) {Pré-\\processamento};
+        \node[box, right=4cm of preproc] (detect) {Detecção\\de Gaps};
+        \node[box, below=1.5cm of detect] (select) {Seleção\\do Gap};
+        \node[box, left=4cm of select] (control) {Controle\\PID};
+        \node[box, left=4cm of control] (drive) {Comando\\de Direção};
+
+        % Conexões
+        \draw[arrow] (lidar) -- node[above] {Scan bruto} (preproc);
+        \draw[arrow] (preproc) -- node[above] {Scan filtrado} (detect);
+        \draw[arrow] (detect) -- node[right] {Lista de gaps} (select);
+        \draw[arrow] (select) -- node[above] {Ângulo alvo} (control);
+        \draw[arrow] (control) -- node[above] {Comando Ackermann} (drive);
+
+    \end{tikzpicture}
+    \caption{Fluxo de dados do sistema de seguimento de gap}
+    \label{fig:gap_follow_flow}
+\end{figure}
+
+Este fluxo de dados implementa o pipeline completo de processamento:
+
+\begin{enumerate}
+    \item \textbf{Aquisição de Dados}: O sensor LiDAR produz varreduras 2D do ambiente.
+
+    \item \textbf{Pré-processamento}: O scan é filtrado para remoção de valores inválidos e redução de ruído.
+
+    \item \textbf{Detecção de Gaps}: O scan pré-processado é analisado para identificação de descontinuidades significativas (potenciais gaps).
+
+    \item \textbf{Seleção do Gap Ótimo}: Os gaps detectados são avaliados e classificados conforme critérios configuráveis, com seleção do gap mais promissor.
+
+    \item \textbf{Controle PID}: O ângulo relativo ao gap selecionado é utilizado como referência para o controlador PID de direção.
+
+    \item \textbf{Comando de Atuadores}: O comando final, combinando direção e velocidade adaptativa, é publicado para o sistema de controle do veículo.
+\end{enumerate}
+
+A implementação multithreading adiciona uma dimensão de paralelismo a este
+fluxo:
+
+\begin{itemize}
+    \item A thread de processamento de scan executa as etapas de pré-processamento,
+          detecção e seleção de gaps.
+    \item A thread de controle executa o cálculo e aplicação dos comandos de direção e
+          velocidade.
+    \item As filas atuam como buffer entre as threads, permitindo desacoplamento
+          temporal.
+\end{itemize}
+
+Esta separação permite que o processamento de novos dados sensoriais ocorra
+simultaneamente à execução de comandos anteriores, maximizando a taxa de
+atualização e minimizando latência.
+
+\subsection{Considerações sobre a Implementação e Oportunidades de Aprimoramento}
+
+\subsubsection{Análise Crítica da Implementação Atual}
+
+A implementação atual apresenta diversas características dignas de nota:
+
+\begin{enumerate}
+    \item \textbf{Arquitetura Paralela}: A utilização de threads dedicadas para processamento sensorial e controle representa uma abordagem sofisticada, essencial para minimização de latência em aplicações de alta velocidade.
+
+    \item \textbf{Controladores PID Avançados}: A implementação de controladores PID com filtragem derivativa e mecanismos anti-windup representa estado da arte em técnicas de controle clássico.
+
+    \item \textbf{Detecção Robusta de Gaps}: O algoritmo de detecção e classificação de gaps implementa técnicas eficientes de processamento vetorizado, essenciais para desempenho em tempo real.
+
+    \item \textbf{Velocidade Adaptativa}: A estratégia de modulação de velocidade em função do ângulo de direção representa uma técnica sofisticada para otimização de desempenho e estabilidade.
+
+    \item \textbf{Instrumentação para Depuração}: A captura e armazenamento de dados de depuração facilita análise post-mortem e otimização do sistema.
+\end{enumerate}
+
+Contudo, algumas limitações podem ser identificadas:
+
+\begin{enumerate}
+    \item \textbf{Seleção Simplificada de Gap}: A função \texttt{\_select\_optimal\_gap} simplesmente seleciona o gap de maior pontuação, sem considerar aspectos como suavidade de trajetória ou continuidade temporal.
+
+    \item \textbf{Ausência de Memória entre Ciclos}: O sistema não mantém informação sobre gaps anteriormente selecionados, resultando em potencial instabilidade em ambientes com múltiplos gaps de qualidade similar.
+
+    \item \textbf{Detecção de Gap Binária}: A abordagem atual detecta gaps como descontinuidades binárias acima de um limiar, sem considerar gradações de navegabilidade.
+
+    \item \textbf{Parâmetros PID Fixos}: Os controladores utilizam parâmetros fixos, sem adaptação a diferentes condições ou regimes de operação.
+
+    \item \textbf{Documentação de Código Inconsistente}: Embora partes do código sejam extensivamente documentadas, outras carecem de documentação detalhada sobre algoritmos e decisões de implementação.
+\end{enumerate}
+
+\subsubsection{Oportunidades de Aprimoramento}
+
+Com base na análise da implementação atual, identificam-se diversas
+oportunidades para aprimoramento futuro:
+
+\begin{enumerate}
+    \item \textbf{Filtragem Temporal de Gaps}:
+          \begin{itemize}
+              \item Implementação de filtro de Kalman para rastreamento de gaps ao longo do tempo
+              \item Utilização de informação histórica para previsão de evolução dos gaps
+              \item Introdução de penalidade para mudanças bruscas na seleção de gaps
+          \end{itemize}
+
+    \item \textbf{Aprimoramento da Função de Pontuação}:
+          \begin{itemize}
+              \item Inclusão de critérios adicionais como alinhamento com direção atual
+              \item Implementação de pesos adaptativos baseados em características do ambiente
+              \item Normalização dinâmica para robustez a diferentes escalas de ambiente
+          \end{itemize}
+
+    \item \textbf{Fusão Sensorial}:
+          \begin{itemize}
+              \item Integração com dados de odometria para estimação de movimento
+              \item Utilização de múltiplas fontes sensoriais para robustez a falhas
+              \item Implementação de técnicas SLAM para construção de mapa incremental
+          \end{itemize}
+
+    \item \textbf{Controle Preditivo}:
+          \begin{itemize}
+              \item Substituição do PID por controlador preditivo baseado em modelo (MPC)
+              \item Utilização de modelo cinemático Ackermann para previsão de movimento
+              \item Otimização de trajetória com múltiplos horizontes temporais
+          \end{itemize}
+
+    \item \textbf{Adaptação e Aprendizado}:
+          \begin{itemize}
+              \item Implementação de ajuste automático de parâmetros baseado em desempenho
+              \item Utilização de técnicas de aprendizado por reforço para otimização contínua
+              \item Classificação de padrões de ambiente para aplicação de estratégias
+                    especializadas
+          \end{itemize}
+\end{enumerate}
+
+Estas oportunidades de aprimoramento representam direções promissoras para
+evolução do sistema, especialmente no contexto competitivo da categoria
+F1TENTH, onde pequenas vantagens em desempenho e robustez podem resultar em
+diferenças significativas no resultado final.
+
+\section{Comparação entre Seguimento de Gap e Seguimento de Parede}
+
+O contraste entre as abordagens de seguimento de gap e seguimento de parede
+revela diferenças fundamentais em termos de princípios, implementação e
+desempenho.
+
+\subsection{Princípios Fundamentais}
+
+\begin{enumerate}
+    \item \textbf{Seguimento de Parede}:
+          \begin{itemize}
+              \item Baseado no princípio de manter distância constante em relação a uma referência
+                    lateral
+              \item Utiliza modelo geométrico para determinar posição e orientação relativa à
+                    parede
+              \item Fundamentado na premissa de que a linha de corrida ótima frequentemente
+                    acompanha o contorno da pista
+          \end{itemize}
+
+    \item \textbf{Seguimento de Gap}:
+          \begin{itemize}
+              \item Baseado no princípio de detecção e navegação através de espaços abertos
+              \item Utiliza análise de descontinuidades em dados sensoriais para identificação de
+                    opções navegáveis
+              \item Fundamentado na premissa de que a trajetória ótima passa por espaços abertos
+                    maximais
+          \end{itemize}
+\end{enumerate}
+
+\subsection{Aspectos Implementacionais}
+
+\begin{enumerate}
+    \item \textbf{Seguimento de Parede}:
+          \begin{itemize}
+              \item Arquitetura sequencial simples
+              \item Processamento focado em regiões específicas do scan (ângulos pré-determinados)
+              \item Controlador PID único para correção de direção
+              \item Menor complexidade computacional
+          \end{itemize}
+
+    \item \textbf{Seguimento de Gap}:
+          \begin{itemize}
+              \item Arquitetura paralela com múltiplas threads
+              \item Processamento de scan completo para detecção abrangente de gaps
+              \item Controladores PID duais (direção e velocidade) com características avançadas
+              \item Maior complexidade computacional com processamento vetorizado
+          \end{itemize}
+\end{enumerate}
+
+\subsection{Características de Desempenho}
+
+\begin{enumerate}
+    \item \textbf{Seguimento de Parede}:
+          \begin{itemize}
+              \item Excelente em circuitos com paredes contínuas e curvas suaves
+              \item Menor adaptabilidade a obstáculos ou descontinuidades
+              \item Calibração dependente de características específicas do circuito
+              \item Maior sensibilidade a ruídos em regiões específicas do scan
+          \end{itemize}
+
+    \item \textbf{Seguimento de Gap}:
+          \begin{itemize}
+              \item Superior em circuitos técnicos com chicanes e passagens estreitas
+              \item Maior adaptabilidade a obstáculos móveis e configurações variáveis
+              \item Parâmetros mais genéricos, aplicáveis a diversos circuitos
+              \item Maior robustez a falhas localizadas por considerar múltiplas regiões do scan
+          \end{itemize}
+\end{enumerate}
+
+\subsection{Considerações para Competições F1TENTH}
+
+Para maximizar o desempenho em competições F1TENTH, as seguintes considerações
+sobre a escolha entre seguimento de gap e seguimento de parede são relevantes:
+
+\begin{enumerate}
+    \item \textbf{Características do Circuito}:
+          \begin{itemize}
+              \item Circuitos com longas retas e curvas suaves favorecem seguimento de parede
+              \item Circuitos técnicos com chicanes e passagens estreitas favorecem seguimento de
+                    gap
+          \end{itemize}
+
+    \item \textbf{Formato da Competição}:
+          \begin{itemize}
+              \item Corridas time-trial em pista vazia favorecem seguimento de parede pela sua
+                    estabilidade
+              \item Corridas com múltiplos veículos favorecem seguimento de gap pela sua
+                    adaptabilidade
+          \end{itemize}
+
+    \item \textbf{Capacidade Computacional}:
+          \begin{itemize}
+              \item Plataformas com recursos limitados podem beneficiar-se da menor exigência
+                    computacional do seguimento de parede
+              \item Plataformas robustas podem aproveitar o potencial superior do seguimento de gap
+          \end{itemize}
+
+    \item \textbf{Abordagem Híbrida}:
+          \begin{itemize}
+              \item Para desempenho máximo, considerar implementação híbrida que alterna entre as
+                    estratégias conforme o segmento da pista
+              \item Utilizar seguimento de parede em segmentos de alta velocidade e seguimento de
+                    gap em seções técnicas
+          \end{itemize}
+\end{enumerate}
+
+Esta análise comparativa evidencia a complementaridade entre as abordagens,
+sugerindo que uma estratégia integrada, que combine elementos de ambas ou
+alterne entre elas conforme o contexto, pode representar a solução ótima para
+maximização de desempenho em competições F1TENTH.
+
+\chapter{Simulador F1TENTH}
+
+\section{Arquitetura do Simulador F1TENTH em ROS2}
+
+O simulador F1TENTH funciona como uma ponte de comunicação que conecta o
+ambiente F1TENTH Gym ao framework ROS2, transformando-o em uma plataforma de
+simulação completamente integrada ao ecossistema ROS2 Humble. Esta
+implementação possibilita o desenvolvimento e teste de algoritmos em ambiente
+virtual antes da implementação em hardware real \cite{f1tenthgymufabc}.
+
+A arquitetura do sistema baseia-se em um modelo de comunicação por tópicos
+ROS2, estabelecendo clara separação entre os componentes de simulação física e
+os algoritmos de controle. Esta abordagem modular facilita a implementação de
+diferentes estratégias sem necessidade de modificar o código-base do simulador
+\cite{f1tenthgymros}.
+
+A versão atual do simulador incorpora significativos avanços oriundos da
+migração para ROS2 Humble, incluindo melhor suporte para sistemas de tempo
+real, comunicação mais robusta entre componentes e suporte nativo a sistemas
+multi-robôs. Esta atualização permitiu não apenas manter todas as
+funcionalidades originais do simulador, mas também aproveitar as vantagens
+intrínsecas da nova plataforma.
+
+\section{Ambiente de Execução e Opções de Instalação}
+
+O simulador F1TENTH foi projetado para ser executado em diferentes
+configurações de hardware e sistemas operacionais, oferecendo três principais
+métodos de instalação:
+
+\begin{enumerate}
+    \item \textbf{Instalação nativa em Ubuntu 20.04}: Esta opção permite a execução direta do simulador no sistema operacional, sendo ideal para desenvolvimento intensivo. A instalação nativa requer:
+          \begin{itemize}
+              \item ROS2 Humble instalado conforme documentação oficial
+              \item Pacote F1TENTH Gym instalado via repositório Git
+              \item Criação de um workspace ROS2 para compilação e execução
+          \end{itemize}
+
+    \item \textbf{Containerização com suporte a GPU NVIDIA}: Utilizando Docker com suporte a aceleração gráfica, esta opção garante isolamento do ambiente de desenvolvimento e portabilidade entre diferentes sistemas. Requer:
+          \begin{itemize}
+              \item Docker com suporte a containers
+              \item nvidia-docker2 para aceleração gráfica
+              \item Ferramenta rocker para encaminhamento gráfico
+          \end{itemize}
+
+    \item \textbf{Solução baseada em noVNC}: Esta abordagem permite a execução em sistemas sem suporte a GPU NVIDIA, incluindo Windows e macOS, disponibilizando a interface gráfica através do navegador web. A configuração utiliza:
+          \begin{itemize}
+              \item Docker e Docker Compose
+              \item Container noVNC para encaminhamento da interface gráfica
+              \item Acesso via navegador web na porta 8080
+          \end{itemize}
+\end{enumerate}
+
+Esta flexibilidade de instalação representa um avanço significativo na
+acessibilidade do simulador, permitindo que pesquisadores com diferentes
+configurações de hardware possam utilizá-lo sem restrições tecnológicas,
+democratizando o acesso a ferramentas de desenvolvimento para veículos
+autônomos.
+
+\section{Configuração e Personalização}
+
+O simulador foi desenvolvido para ser altamente configurável, adaptando-se a
+diferentes cenários de teste através do arquivo \texttt{sim.yaml}. Os
+principais parâmetros incluem:
+
+\begin{itemize}
+    \item \textbf{Mapas}: O parâmetro \texttt{map\_path} permite a configuração de diferentes layouts de pistas para simulação. O sistema segue a convenção ROS para mapas, onde arquivos de imagem e configuração compartilham o mesmo nome e localização.
+
+    \item \textbf{Número de agentes}: O parâmetro \texttt{num\_agent} possibilita a configuração de simulações com um ou dois veículos, permitindo tanto o desenvolvimento de estratégias de controle individual quanto cenários de corrida com múltiplos agentes.
+
+    \item \textbf{Posições iniciais}: As poses iniciais dos veículos (ego e oponente) podem ser configuradas através de parâmetros específicos, facilitando a reprodução de cenários de teste.
+
+    \item \textbf{Namespaces e tópicos}: A estrutura de comunicação ROS2 pode ser personalizada, embora seja recomendado manter a configuração padrão para compatibilidade.
+
+    \item \textbf{Teleoperação}: O parâmetro \texttt{kb\_teleop} permite habilitar o controle manual dos veículos através do teclado, facilitando testes iniciais do sistema.
+\end{itemize}
+
+Essa configurabilidade ampla, combinada com os benefícios da arquitetura ROS2,
+permite que o simulador seja adaptado para diversos cenários de pesquisa e
+desenvolvimento em robótica móvel e veículos autônomos, desde implementações
+básicas de controle até algoritmos avançados de planejamento de trajetória e
+percepção.
+
+\section{Integração com o Ecossistema ROS2}
+
+O simulador F1TENTH integra-se ao ecossistema ROS2 através de um sistema bem
+definido de tópicos para publicação e assinatura, facilitando o desenvolvimento
+modular de algoritmos. A arquitetura de comunicação é estruturada de acordo com
+o modo de operação:
+
+\subsection{Tópicos publicados (modo de agente único)}
+\begin{itemize}
+    \item \texttt{/scan}: Dados do sensor LIDAR do veículo, fornecendo informações sobre o ambiente ao redor do carro
+    \item \texttt{/ego\_racecar/odom}: Odometria do veículo principal, contendo posição, orientação e velocidades
+    \item \texttt{/map}: Mapa do ambiente de simulação, representando a pista e seus limites
+    \item Sistema completo de transformações TF, mantendo as relações espaciais entre os
+          diferentes componentes
+\end{itemize}
+
+\subsection{Tópicos publicados (modo de dois agentes)}
+Além dos tópicos do modo de agente único, o sistema adiciona:
+\begin{itemize}
+    \item \texttt{/opp\_scan}: Dados do sensor LIDAR do veículo oponente
+    \item \texttt{/ego\_racecar/opp\_odom}: Odometria do oponente para o planejador do veículo principal
+    \item \texttt{/opp\_racecar/odom}: Odometria completa do veículo oponente
+    \item \texttt{/opp\_racecar/opp\_odom}: Odometria do ego para o planejador do oponente
+\end{itemize}
+
+\subsection{Tópicos de controle}
+\begin{itemize}
+    \item \texttt{/drive}: Comandos de direção e aceleração via mensagens \texttt{AckermannDriveStamped}
+    \item \texttt{/initialpose}: Tópico para redefinir a pose do veículo principal, integrado com a ferramenta 2D Pose Estimate do RViz2
+    \item \texttt{/opp\_drive}: Comandos para o veículo oponente (no modo dois agentes)
+    \item \texttt{/goal\_pose}: Reposicionamento do veículo oponente, integrado com a ferramenta 2D Goal Pose do RViz2
+\end{itemize}
+
+A migração para ROS2 Humble trouxe significativas melhorias neste sistema de
+comunicação, como maior determinismo temporal, melhor qualidade de serviço
+(QoS) nas comunicações e protocolos mais robustos para sistemas distribuídos.
+Estas melhorias são particularmente importantes para aplicações críticas como
+veículos autônomos, onde a confiabilidade e previsibilidade da comunicação são
+essenciais.
+
+O simulador também se beneficia da visualização aprimorada através do RViz2,
+permitindo a representação gráfica dos dados dos sensores, odometria e mapa,
+além de ferramentas interativas para reposicionamento dos veículos. Esta
+integração facilita significativamente o desenvolvimento e depuração de
+algoritmos de controle e percepção.
+
+Esta estrutura de comunicação padronizada permite que diferentes componentes de
+software sejam desenvolvidos independentemente, seguindo o princípio modular do
+ROS2. Algoritmos de controle, percepção, planejamento e localização podem ser
+implementados como nós separados, consumindo e produzindo dados através desta
+interface bem definida.
+
+Para desenvolvimento, o simulador oferece duas abordagens principais:
+
+\begin{enumerate}
+    \item \textbf{Criação de pacotes no workspace do simulador}: Permite o desenvolvimento integrado no mesmo ambiente, ideal para prototipagem rápida
+    \item \textbf{Containerização de agentes}: Possibilita o desenvolvimento em contêineres separados, comunicando-se via rede, apropriado para arquiteturas mais complexas ou distribuídas
+\end{enumerate}
+
+Estas opções de desenvolvimento, combinadas com a robustez da implementação
+ROS2, fazem do simulador F1TENTH uma plataforma ideal para pesquisa e educação
+em veículos autônomos, oferecendo um ambiente realista e flexível para
+implementação e teste de algoritmos avançados de controle e percepção em
+robótica móvel.
+

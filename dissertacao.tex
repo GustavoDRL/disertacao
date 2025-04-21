@@ -49,6 +49,8 @@
 \usepackage{tabularx} 					% Para poder ter tabelas com colunas de largura auto-ajustável
 \usepackage{afterpage} 					% Para executar um comando depois do fim da página corrente
 \usepackage{url} 						% Para formatar URLs (endereços da Web)
+\usepackage{tikz} 						% Para desenhar diagramas e figuras
+\usetikzlibrary{positioning,arrows,shapes}
 % ---------------------
 
 % ---------------------
@@ -106,7 +108,7 @@
 \include{pretextual/assinaturas}
 
 % Dedicatória
-\include{pretextual/dedicatoria}
+%\include{pretextual/dedicatoria}
 
 % Agradecimentos
 \include{pretextual/agradecimentos}
@@ -160,8 +162,11 @@
 
 % PARTE - Define a divisão do documento em partes (Não é obrigatório)
 \part{Preparação da pesquisa}
-\include{capitulos/estadodaarte}
+%\include{capitulos/estadodaarte}
 \include{capitulos/ferramentas}
+\include{capitulos/construcao_veiculo}
+\include{capitulos/regulamentacao}
+\include{capitulos/consideracoes}
 
 % PARTE
 \part{Proposta}
@@ -187,10 +192,10 @@
 %\glossary
 
 % Apêndices
-\include{postextual/apendices}
+%\include{postextual/apendices}
 
 % Anexos
-\include{postextual/anexos}
+%\include{postextual/anexos}
 
 % Índice remissivo (Consultar manual)
 %\phantompart

@@ -1,0 +1,251 @@
+\chapter{Desenvolvimento e Construção do Veículo F1TENTH}
+
+Este capítulo detalha o processo de desenvolvimento e construção do veículo
+para a competição F1TENTH, abrangendo desde a seleção de componentes até a
+integração dos sistemas e validação do protótipo. Cada decisão de projeto foi
+tomada considerando tanto as regulamentações da competição quanto os objetivos
+de desempenho estabelecidos.
+
+\section{Visão Geral do Projeto}
+
+O desenvolvimento do veículo F1TENTH seguiu uma abordagem sistemática, dividida
+em quatro fases principais:
+
+\begin{enumerate}
+    \item Análise das regulamentações e requisitos da competição
+    \item Seleção de componentes e arquitetura do sistema
+    \item Projeto e fabricação de peças customizadas
+    \item Integração de hardware e software e testes de validação
+\end{enumerate}
+
+O objetivo principal foi criar um veículo que não apenas atendesse às
+especificações técnicas obrigatórias, mas que também oferecesse uma plataforma
+flexível para o desenvolvimento e teste de algoritmos avançados de percepção,
+planejamento e controle.
+
+\section{Seleção de Componentes}
+
+A seleção de componentes foi realizada considerando múltiplos fatores como
+conformidade com as regulamentações, desempenho, disponibilidade, custo e
+potencial de integração. Cada componente foi avaliado quanto à sua contribuição
+para os objetivos gerais do projeto e complementaridade com outros elementos do
+sistema.
+
+\subsection{Chassi e Sistema Mecânico}
+
+[Esta seção será completada posteriormente com informações sobre o chassi selecionado, modificações realizadas e justificativas para as escolhas.]
+
+\subsection{Sistema de Propulsão}
+
+Para o sistema de propulsão, foi selecionado o motor EZRUN 3665SD-3200KV-G3, um
+motor brushless DC que atende às especificações da competição, oferecendo
+excelente relação entre desempenho e conformidade regulatória.
+
+\subsubsection{Motor EZRUN 3665SD-3200KV-G3}
+
+O motor EZRUN 3665SD-3200KV-G3 foi escolhido por suas características técnicas
+alinhadas com os requisitos da competição:
+
+\begin{itemize}
+    \item Rating KV de 3200KV, dentro do limite regulamentar equivalente ao Velineon
+          3500KV
+    \item Compatibilidade com baterias 2-3S LiPo, comum em veículos RC em escala 1:10
+    \item Dimensões físicas (37mm de diâmetro e 65.8mm de comprimento) adequadas para
+          instalação no chassi padrão
+    \item Construção robusta com carcaça de alumínio usinado em CNC e rolamentos de alta
+          precisão
+    \item Sistema de refrigeração otimizado para operação contínua em alta carga
+    \item Classificação IP-67, oferecendo proteção contra água e poeira, importante para
+          a durabilidade durante testes e competições
+\end{itemize}
+
+O motor apresenta um equilíbrio ideal entre torque e velocidade, fundamental
+para o desempenho tanto em acelerações rápidas quanto em trechos de velocidade
+constante nos circuitos da competição. A compatibilidade com sensores hall
+integrados também facilita o controle preciso de velocidade necessário para
+algoritmos de navegação autônoma.
+
+\subsection{Sistema de Controle Eletrônico}
+
+Para o controle eletrônico do motor, foi escolhido o Makerbase VESC MINI 6.7,
+um controlador avançado que permite implementação de estratégias sofisticadas
+de controle do motor.
+
+\subsubsection{Makerbase VESC MINI 6.7}
+
+O VESC MINI 6.7 foi selecionado pelas seguintes características:
+
+\begin{itemize}
+    \item Dimensões compactas (46.5mm x 36.5mm x 12mm) e peso reduzido (aproximadamente
+          30g), ideais para aplicações em veículos em escala 1:10
+    \item Ampla faixa de tensão operacional (8V-60V DC), compatível com diversos sistemas
+          de bateria
+    \item Capacidade de corrente contínua de 40A, suficiente para o motor selecionado
+    \item Microcontrolador STM32F405RGT6, oferecendo poder de processamento para
+          implementação de algoritmos avançados de controle
+    \item Suporte para operação com e sem sensores, permitindo flexibilidade no modo de
+          controle
+    \item Capacidade de frenagem regenerativa, importante para manobras precisas
+    \item Múltiplas interfaces de comunicação (USB, CAN, UART, PPM, I2C), facilitando a
+          integração com a unidade de processamento principal
+    \item Proteções integradas contra sobretensão, subtensão, sobrecorrente e
+          sobretemperatura
+\end{itemize}
+
+A escolha deste controlador permite a implementação de controle vetorial de
+campo orientado (FOC), resultando em operação mais eficiente e precisa do
+motor. A capacidade de programação através do VESC Tool possibilita ajustes
+finos nos parâmetros de controle, adaptando o comportamento do veículo para
+diferentes seções da pista e estratégias de corrida.
+
+\subsection{Sistema de Sensoriamento}
+
+O principal sensor para percepção do ambiente é o LiDAR YDLIDAR X4PRO, que
+fornece dados de distância em 360 graus para navegação e detecção de
+obstáculos.
+
+\subsubsection{YDLIDAR X4PRO}
+
+O LiDAR YDLIDAR X4PRO foi escolhido por suas características técnicas que
+atendem aos requisitos da competição:
+
+\begin{itemize}
+    \item Varredura omnidirecional de 360°, permitindo detecção completa do ambiente ao
+          redor do veículo
+    \item Alcance de medição de 0.12-10m, adequado para ambientes de competição indoor
+    \item Frequência de amostragem de até 5000Hz, fornecendo dados detalhados para
+          algoritmos de percepção
+    \item Frequência de varredura ajustável entre 6-12Hz, permitindo equilíbrio entre
+          resolução e tempo de resposta
+    \item Resolução angular entre 0.43° e 0.86° (dependendo da frequência), suficiente
+          para detecção precisa dos limites da pista e outros veículos
+    \item Alta resistência a interferências luminosas (até 40000 Lux), importante para
+          ambientes com iluminação variável
+    \item Classificação de segurança laser Class I, atendendo aos requisitos de segurança
+          da competição
+    \item Dimensões compactas e peso de 178g, facilitando a integração no veículo
+\end{itemize}
+
+Este sensor fornece dados cruciais para algoritmos de mapeamento, localização,
+planejamento de trajetória e detecção de outros veículos durante as corridas
+head-to-head. Sua capacidade de detecção omnidirecional é particularmente
+importante para a implementação de estratégias defensivas e ofensivas durante
+ultrapassagens.
+
+\subsection{Unidade de Processamento}
+
+Para processamento dos algoritmos de percepção, planejamento e controle, foi
+selecionada a Raspberry Pi 4B como unidade computacional principal.
+
+\subsubsection{Raspberry Pi 4B}
+
+A Raspberry Pi 4B foi escolhida como plataforma de processamento principal
+pelas seguintes razões:
+
+\begin{itemize}
+    \item Processador quad-core Cortex-A72 (ARM v8) 64-bit operando a 1.5GHz, oferecendo
+          poder computacional suficiente para algoritmos de tempo real
+    \item Disponibilidade de 4GB ou 8GB de RAM, dependendo da configuração, permitindo
+          processamento de dados sensoriais complexos
+    \item Múltiplas interfaces de comunicação (USB 3.0, Ethernet Gigabit, Wi-Fi,
+          Bluetooth, GPIO), facilitando a integração com diversos sensores e atuadores
+    \item Dimensões compactas e peso reduzido, adequados para instalação em veículos em
+          escala 1:10
+    \item Amplo suporte para ROS2 (Robot Operating System 2), framework utilizado para
+          implementação dos algoritmos de navegação autônoma
+    \item Comunidade ativa e extensa documentação, facilitando o desenvolvimento
+    \item Custo acessível em comparação com outras plataformas de desempenho similar
+\end{itemize}
+
+A Raspberry Pi 4B executa o sistema operacional Ubuntu 22.04 LTS com ROS2
+Humble Hawksbill, fornecendo um ambiente robusto para desenvolvimento e
+execução dos algoritmos de controle. A integração com o VESC e o LiDAR é
+realizada através de interfaces seriais e pacotes ROS2 específicos, criando uma
+arquitetura de software modular e extensível.
+
+\subsection{Sistema de Alimentação}
+
+[Esta seção será completada posteriormente com informações sobre a bateria utilizada, sistema de distribuição de energia e considerações sobre autonomia.]
+
+\subsection{Sensores Adicionais}
+
+[Esta seção será completada posteriormente com informações sobre sensores complementares como IMU, encoders, câmeras ou quaisquer outros sensores utilizados.]
+
+\section{Projeto e Fabricação de Peças Customizadas}
+
+Para acomodar os diversos componentes e garantir a integridade estrutural do
+veículo, várias peças customizadas foram projetadas e fabricadas utilizando
+tecnologia de impressão 3D.
+
+\subsection{Metodologia de Projeto}
+
+[Esta seção será completada posteriormente com informações sobre o processo de design, software utilizado, considerações de projeto e metodologia de validação.]
+
+\subsection{Suportes e Estruturas Principais}
+
+\subsubsection{Base para Raspberry Pi e VESC}
+
+[Esta seção será completada posteriormente com detalhes sobre o suporte para a unidade de processamento e controlador eletrônico.]
+
+\subsubsection{Suporte para LiDAR}
+
+[Esta seção será completada posteriormente com informações sobre o suporte do sensor LiDAR, incluindo considerações sobre posicionamento e calibração.]
+
+\subsubsection{Para-choques e Estruturas de Proteção}
+
+[Esta seção será completada posteriormente com detalhes sobre os para-choques frontais e traseiros conforme exigido pelas regulamentações.]
+
+\subsection{Sistema de Montagem e Integração}
+
+[Esta seção será completada posteriormente com informações sobre como as peças customizadas se integram ao chassi e entre si, incluindo considerações sobre manutenção e acesso aos componentes.]
+
+\subsection{Processo de Fabricação}
+
+[Esta seção será completada posteriormente com detalhes sobre os parâmetros de impressão 3D, materiais utilizados e técnicas de pós-processamento.]
+
+\section{Integração de Sistemas}
+
+Esta seção descreve como os diversos componentes foram integrados para formar
+um sistema coeso, abordando tanto aspectos de hardware quanto de software.
+
+\subsection{Arquitetura de Hardware}
+
+[Esta seção será completada posteriormente com um diagrama detalhado da arquitetura de hardware e explicações sobre as conexões entre componentes.]
+
+\subsection{Arquitetura de Software}
+
+A arquitetura de software do veículo é baseada em ROS2, implementando uma
+estrutura modular que facilita o desenvolvimento, teste e otimização dos
+algoritmos de controle.
+
+\subsubsection{Integração do VESC com ROS2}
+
+Para integrar o controlador VESC MINI 6.7 com o sistema ROS2, foi desenvolvido
+um driver específico baseado em comunicação serial. Este driver implementa:
+
+\begin{itemize}
+    \item Comunicação bidirecional entre a Raspberry Pi e o VESC através de porta serial
+          (UART)
+    \item Publicação de tópicos ROS2 para estados do motor (velocidade, corrente,
+          temperatura)
+    \item Subscrição a tópicos de comando para controle de velocidade ou torque
+    \item Conversão entre unidades físicas (m/s) e unidades do motor (ERPM)
+    \item Configuração de parâmetros dinâmicos através de serviços ROS2
+    \item Mecanismos de diagnóstico e recuperação de erros
+\end{itemize}
+
+O código implementa uma classe `VescInterface` que gerencia a comunicação e os
+tópicos ROS2 relacionados, permitindo controle preciso do motor baseado em
+comandos de alto nível provenientes dos algoritmos de navegação.
+
+\subsubsection{Integração do LiDAR com ROS2}
+
+[Esta seção será completada posteriormente com detalhes sobre a integração do LiDAR YDLIDAR X4PRO com ROS2, incluindo pacotes utilizados e configurações específicas.]
+
+\subsubsection{Algoritmos de Percepção e Controle}
+
+[Esta seção será completada posteriormente com informações sobre os algoritmos implementados para mapeamento, localização, planejamento de trajetória e controle do veículo.]
+
+\section{Testes e Validação}
+
+ [Esta seção será completada posteriormente com metodologias de teste, resultados preliminares e processos de validação do veículo.]

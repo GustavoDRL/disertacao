@@ -1,8 +1,262 @@
-\chapter{Materiais e Métodos}\label{cap:ferramentas}
+\chapter{Fundamentação Teórica}\label{cap:ferramentas}
 
-\section{Fundamentação Teórica}
+\section{Sistemas Operacionais e Frameworks para Veículos Autônomos}
 
-\subsection{Odometria: Estimativa de Pose por Sensoriamento de Movimento}
+\subsection{Evolução dos Sistemas de Software para Robótica Móvel}
+
+O desenvolvimento de veículos autônomos representa um dos maiores desafios da
+robótica moderna, exigindo sistemas de software capazes de integrar percepção,
+decisão e controle em tempo real \cite{quigley2009ros}. A evolução destes
+sistemas acompanhou o avanço da robótica móvel, transitando de arquiteturas
+monolíticas para frameworks modulares e distribuídos.
+
+Os primeiros sistemas para robôs móveis, desenvolvidos nas décadas de 1980 e
+1990, frequentemente utilizavam arquiteturas proprietárias, resultando em
+incompatibilidades entre plataformas e dificuldades na reutilização de código
+\cite{kortenkamp2016robotic}. O advento de frameworks padronizados como
+Player/Stage \cite{gerkey2003player} e, posteriormente, ROS (Robot Operating
+System) em 2007, representou um ponto de inflexão no desenvolvimento de
+sistemas robóticos, estabelecendo paradigmas de comunicação e interfaces
+padronizadas.
+
+Para competições de veículos autônomos em escala como o F1TENTH, onde o
+desempenho em tempo real é crítico, a escolha da infraestrutura de software
+possui implicações diretas na capacidade de processamento, latência de resposta
+e confiabilidade do sistema \cite{OKelly2020F1TENTH}. Neste contexto, o ROS2
+emergiu como plataforma preferencial por endereçar limitações específicas do
+ROS original relacionadas a aplicações de tempo real e sistemas críticos.
+
+\subsection{Arquitetura e Fundamentos do ROS2}
+
+O ROS2 representa uma reconstrução fundamental do ROS, projetado para suportar
+os requisitos contemporâneos de sistemas robóticos, incluindo desempenho
+determinístico, segurança e capacidade para sistemas embarcados
+\cite{macenski2022robot}. A arquitetura do ROS2 foi concebida a partir de
+princípios distintos do seu antecessor:
+
+\subsubsection{Modelo de Comunicação Baseado em DDS}
+
+Diferentemente do ROS original, que implementava protocolos de comunicação
+próprios, o ROS2 fundamenta-se no padrão Data Distribution Service (DDS),
+desenvolvido pela Object Management Group (OMG) e amplamente utilizado em
+setores como aeroespacial, defesa e sistemas automotivos
+\cite{maruyama2016exploring}. Esta escolha arquitetural proporciona:
+
+\begin{itemize}
+    \item \textbf{Comunicação determinística}: Essencial para veículos F1TENTH, onde decisões de controle precisam ocorrer em milissegundos para navegação em alta velocidade.
+    \item \textbf{Discovery dinâmico}: Permite que novos nós sejam descobertos automaticamente, facilitando a reconfiguração do sistema durante operação.
+    \item \textbf{Interoperabilidade}: Possibilita a comunicação com outros sistemas baseados em DDS, expandindo as possibilidades de integração.
+\end{itemize}
+
+\subsubsection{Paradigmas de Comunicação}
+
+O ROS2 implementa múltiplos paradigmas de comunicação para atender diferentes
+requisitos de interação entre componentes:
+
+\begin{itemize}
+    \item \textbf{Publicação/Assinatura (Pub/Sub)}: Modelo assíncrono onde nós publicam mensagens em tópicos que podem ser consumidos por múltiplos assinantes. Em aplicações F1TENTH, este paradigma é particularmente útil para dados de sensores como LiDAR, onde múltiplos algoritmos (localização, detecção de obstáculos, mapeamento) precisam processar simultaneamente os mesmos dados \cite{staranowicz2013survey}.
+    \item \textbf{Serviços}: Comunicação síncrona do tipo requisição-resposta, adequada para operações que exigem confirmação, como a inicialização de subsistemas ou verificações de estado. Por exemplo, no contexto F1TENTH, a verificação do estado do motor antes de iniciar uma manobra de ultrapassagem.
+    \item \textbf{Ações}: Combinação de serviços e tópicos, projetada para tarefas de longa duração que requerem feedback contínuo. Útil para manobras complexas como ultrapassagens ou navegação em curvas acentuadas.
+\end{itemize}
+
+\subsubsection{Qualidade de Serviço (QoS) e Políticas de Comunicação}
+
+Uma inovação significativa do ROS2 é a incorporação de políticas de Qualidade
+de Serviço configuráveis, permitindo ajustar parâmetros de comunicação conforme
+requisitos específicos \cite{gutierrez2019time}:
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \textbf{Política QoS} & \textbf{Aplicação F1TENTH} & \textbf{Benefício}     \\
+        \hline
+        Reliability           & Comandos críticos          & Garantia de entrega    \\
+        \hline
+        Durability            & Mapas e configurações      & Persistência de dados  \\
+        \hline
+        Deadline              & Controle em tempo real     & Monitoramento temporal \\
+        \hline
+        Liveliness            & Subsistemas críticos       & Detecção de falhas     \\
+        \hline
+    \end{tabular}
+    \caption{Políticas de QoS em veículos F1TENTH}
+    \label{tab:qos_policies}
+\end{table}
+
+Em veículos F1TENTH, esta flexibilidade permite otimizar a comunicação entre
+subsistemas conforme sua criticidade: dados de sensores de alta frequência como
+IMUs podem utilizar configurações "best effort" para minimizar latência,
+enquanto comandos de controle para o motor e direção utilizam "reliable" para
+garantir entrega mesmo com sobrecarga de rede.
+
+\subsection{Middleware e Camadas de Abstração}
+
+O ROS2 oferece a possibilidade de selecionar diferentes implementações de
+middleware DDS, cada qual com características distintas
+\cite{maruyama2016exploring}:
+
+\begin{itemize}
+    \item \textbf{Fast DDS} (anteriormente FastRTPS): Otimizado para desempenho em sistemas embarcados com recursos limitados, apropriado para plataformas F1TENTH baseadas em Raspberry Pi ou NVIDIA Jetson.
+    \item \textbf{Cyclone DDS}: Implementação eficiente com baixo consumo de recursos, adequada para sistemas onde múltiplos nós computacionalmente intensivos competem por recursos.
+    \item \textbf{Connext DDS}: Implementação comercial com extensões para aplicações críticas, proporcionando ferramentas adicionais de monitoramento e configuração.
+\end{itemize}
+
+A escolha do middleware pode impactar significativamente o desempenho do
+sistema em cenários de corrida, onde a latência é crítica e os recursos
+computacionais limitados. Testes comparativos realizados por
+\cite{kronauer2021latency} demonstraram que o Cyclone DDS apresenta menor
+latência em configurações típicas de F1TENTH, sendo frequentemente a escolha
+preferencial para estas aplicações.
+
+\subsection{Integração de Sensores e Atuadores para F1TENTH}
+
+\subsubsection{Interface com Sensores}
+
+O ROS2 fornece frameworks padronizados para integração de sensores comumente
+utilizados em plataformas F1TENTH:
+
+\begin{itemize}
+    \item \textbf{LiDAR}: Pacotes como urg\_node2 para sensores Hokuyo ou rplidar\_ros para RPLIDAR proporcionam interfaces padronizadas que publicam dados em formato compatível com algoritmos de SLAM e detecção de obstáculos \cite{quigley2015programming}.
+    \item \textbf{IMU}: O pacote sensor\_msgs define mensagens padronizadas para sensores inerciais, facilitando a integração com algoritmos de odometria e controle. Em aplicações F1TENTH, IMUs são frequentemente utilizados para estimar aceleração lateral em curvas e compensar derrapagens.
+    \item \textbf{Encoders}: Sensores de rotação nas rodas fornecem dados cruciais para odometria, implementados através da interface joint\_state\_publisher que permite a estimativa de velocidade e posição.
+\end{itemize}
+
+\subsubsection{Controle de Atuadores}
+
+O framework ros2\_control proporciona uma arquitetura unificada para interface
+com atuadores, particularmente relevante para veículos F1TENTH que utilizam:
+
+\begin{itemize}
+    \item \textbf{Motor BLDC}: Tipicamente controlado via ESC (Electronic Speed Controller), requer sinais PWM precisos para controle de velocidade com baixa latência.
+    \item \textbf{Servo-direção}: Exige controle proporcional preciso para manobras em alta velocidade, implementado através de controladores especializados para modelos Ackermann.
+\end{itemize}
+
+A arquitetura do ros2\_control separa a interface de hardware (drivers) da
+camada de controle, permitindo implementar diferentes algoritmos de controle
+(PID, MPC, etc.) sem modificar o código de interface com o hardware
+\cite{macenski2022robot}.
+
+\subsubsection{Sistema de Transformações (TF2)}
+
+O subsistema TF2 (Transform Library) mantém e propaga relações espaciais entre
+diferentes sistemas de coordenadas do veículo e do ambiente \cite{foote2013tf}.
+Em aplicações F1TENTH, isto é crítico para:
+
+\begin{itemize}
+    \item Converter medidas do LiDAR para o referencial do veículo
+    \item Compensar o posicionamento dos sensores em relação ao centro de massa
+    \item Integrar múltiplas fontes de localização (odometria, SLAM, etc.)
+\end{itemize}
+
+A importância do TF2 em sistemas F1TENTH é evidenciada em situações de
+derrapagem controlada, onde as transformações dinâmicas entre referenciais
+permitem estimar o comportamento do veículo mesmo quando as rodas não seguem
+trajetórias puramente cinemáticas.
+
+\subsection{Navigation2 (Nav2): Framework para Navegação Autônoma}
+
+O Navigation2 representa uma evolução significativa do stack de navegação,
+reimplementado para ROS2 com arquitetura modular baseada em comportamentos
+\cite{macenski2020marathon}. Para veículos F1TENTH, o Nav2 oferece
+funcionalidades essenciais:
+
+\subsubsection{Arquitetura Baseada em Behavior Trees}
+
+Diferentemente da arquitetura original de navegação do ROS, o Nav2 utiliza
+Behavior Trees (BT) para modelar comportamentos complexos de navegação. Esta
+abordagem permite:
+
+\begin{itemize}
+    \item Representação explícita de estratégias de corrida como ultrapassagem, defesa de
+          posição e manobras de recuperação
+    \item Monitoramento contínuo de condições de segurança e desempenho
+    \item Composição hierárquica de comportamentos simples em estratégias complexas
+\end{itemize}
+
+Os Behavior Trees oferecem vantagens sobre máquinas de estado finito
+tradicionais, particularmente em cenários de corrida onde múltiplas condições
+precisam ser avaliadas simultaneamente e falhas devem ser tratadas
+graciosamente \cite{colledanchise2018behavior}.
+
+\subsubsection{Componentes e Plugins}
+
+A arquitetura modular do Nav2 permite selecionar e configurar algoritmos
+específicos para cada aspecto da navegação:
+
+\begin{itemize}
+    \item \textbf{Planejadores globais}: Geram trajetórias ótimas em escala de pista. Algoritmos como A*, RRT* e State Lattice são implementados como plugins intercambiáveis.
+    \item \textbf{Planejadores locais}: Responsáveis por desvio de obstáculos dinâmicos e ajustes de trajetória. Para F1TENTH, o TEB (Timed Elastic Band) Planner oferece bom desempenho em velocidades elevadas \cite{rosmann2017integrated}.
+    \item \textbf{Controladores de trajetória}: Convertem trajetórias planejadas em comandos de velocidade e direção. O Pure Pursuit e o controlador MPC (Model Predictive Control) são particularmente relevantes para seguimento de trajetória em alta velocidade \cite{verschueren2016time}.
+    \item \textbf{Recuperação e segurança}: Comportamentos para situações anômalas como colisões iminentes ou perda de localização.
+\end{itemize}
+
+\subsubsection{Localização e Mapeamento}
+
+O Nav2 incorpora algoritmos de localização probabilística como o AMCL (Adaptive
+Monte Carlo Localization), que estima a posição do veículo em um mapa conhecido
+utilizando varreduras de LiDAR \cite{fox2003adapting}. Em competições F1TENTH,
+onde os mapas das pistas são frequentemente conhecidos a priori, o AMCL
+proporciona localização robusta mesmo em condições de alta velocidade e
+vibração.
+
+Para mapeamento, o Nav2 é compatível com pacotes como slam\_toolbox, que
+implementa algoritmos de SLAM (Simultaneous Localization and Mapping) para
+construção de mapas precisos durante sessões de treino
+\cite{koide2019portable}.
+
+\subsection{Considerações de Tempo Real para F1TENTH}
+
+Em competições F1TENTH, onde veículos operam a velocidades de até 50 km/h em
+pistas estreitas, o determinismo temporal é crítico para segurança e
+desempenho. O ROS2 endereça requisitos de tempo real através de:
+
+\subsubsection{Executor com Priorização}
+
+O ROS2 implementa executores configuráveis que permitem:
+
+\begin{itemize}
+    \item Atribuir prioridades a callbacks críticos, garantindo que o controle do veículo
+          seja processado antes de tarefas secundárias
+    \item Separar threads para processamento de alto e baixo nível
+    \item Limitar a inversão de prioridade através de mutexes adequados
+\end{itemize}
+
+\cite{casini2019response} demonstraram que, com configuração apropriada, o ROS2 pode atingir desempenho de tempo real brando (soft real-time) suficiente para aplicações F1TENTH.
+
+\subsubsection{Configuração de Sistemas Embarcados}
+
+Para obter desempenho ideal em plataformas como NVIDIA Jetson ou Raspberry Pi,
+frequentemente utilizadas em F1TENTH, recomenda-se:
+
+\begin{itemize}
+    \item Isolamento de CPUs para tarefas críticas através de cgroups e cpusets
+    \item Configuração de governador de CPU para modo performance
+    \item Utilização de armazenamento com baixa latência (NVMe)
+    \item Ajuste de parâmetros de rede para minimizar latência
+\end{itemize}
+
+Estas técnicas, documentadas por \cite{kronauer2021latency}, permitem extrair o
+máximo desempenho das plataformas computacionais compactas utilizadas em
+veículos F1TENTH.
+
+\subsection{Ferramentas de Desenvolvimento e Depuração}
+
+O ecossistema ROS2 oferece diversas ferramentas essenciais para o
+desenvolvimento iterativo de veículos autônomos:
+
+\begin{itemize}
+    \item \textbf{rviz2}: Visualização 3D de dados de sensores, transformações e estado do veículo. Particularmente útil para visualizar varreduras de LiDAR, trajetórias planejadas e estimativas de localização.
+    \item \textbf{rqt}: Suite de ferramentas gráficas para inspeção de tópicos, serviços e parâmetros. Permite monitorar em tempo real variáveis críticas como velocidade, aceleração lateral e erros de controle.
+    \item \textbf{rosbag2}: Gravação e reprodução de dados de sensores, possibilitando debug post-mortem e desenvolvimento off-line. Crucial para analisar comportamentos em situações de corrida específicas como ultrapassagens ou falhas.
+    \item \textbf{launch}: Sistema de inicialização e configuração que permite definir a arquitetura do sistema e parâmetros em arquivos XML ou Python. Facilita a transição entre configurações de desenvolvimento, teste e competição.
+\end{itemize}
+
+Estas ferramentas, em conjunto com práticas de integração contínua (CI) e
+testes automatizados, permitem desenvolvimento iterativo rápido e confiável de
+veículos F1TENTH \cite{macenski2022robot}.
+
+\section{Odometria: Estimativa de Pose por Sensoriamento de Movimento}
 
 Em sistemas de robótica móvel, a capacidade de estimar a pose do robô (posição
 e orientação) ao longo do tempo é fundamental para a navegação autônoma. Uma
@@ -15,7 +269,7 @@ acumula erros ao longo do tempo, mas que fornece uma estimativa contínua da
 pose do robô em alta frequência, sendo crucial para diversas tarefas de
 controle e planejamento em robótica móvel.
 
-\subsubsection{Princípios da Odometria de Rodas}
+\subsection{Princípios da Odometria de Rodas}
 
 Para robôs móveis com rodas, a forma mais comum de odometria é a odometria de
 rodas. Esta técnica baseia-se na medição do movimento rotacional das rodas do
@@ -31,7 +285,7 @@ diferencial, a diferença na rotação das rodas direita e esquerda indica a
 rotação do robô, enquanto a média da rotação indica o movimento linear para
 frente ou para trás.
 
-\subsubsection{Odometria e Sistemas de Coordenadas no ROS2}
+\subsection{Odometria e Sistemas de Coordenadas no ROS2}
 
 No contexto do ROS2, a odometria desempenha um papel fundamental na manutenção
 do sistema de coordenadas \texttt{odom}. Conforme mencionado anteriormente, o
@@ -43,7 +297,7 @@ odometria.
 
 É importante notar que o frame \texttt{odom} não é um sistema de coordenadas global e fixo como o frame \texttt{map}. O frame \texttt{odom} é um referencial local que se move e deriva ao longo do tempo, acompanhando a estimativa de pose da odometria.
 
-\subsubsection{Limitações da Odometria}
+\subsection{Limitações da Odometria}
 
 Apesar de sua importância, a odometria é inerentemente propensa a erros. Como a
 pose é estimada através da integração de pequenos movimentos incrementais, os
@@ -62,7 +316,7 @@ Devido à acumulação de erros, a odometria não é adequada para localização
 global precisa a longo prazo. A pose estimada pela odometria torna-se cada vez
 mais incerta com o tempo e a distância percorrida.
 
-\subsubsection{Importância da Odometria na Navegação Robótica}
+\subsection{Importância da Odometria na Navegação Robótica}
 
 Apesar de suas limitações, a odometria continua sendo um componente essencial
 em sistemas de navegação robótica. Suas principais vantagens incluem:
@@ -82,7 +336,7 @@ localização mais precisos, como o AMCL (Adaptive Monte Carlo Localization)
 mencionado anteriormente, que frequentemente utiliza a odometria como uma de
 suas fontes de informação.
 
-\subsubsection{Odometria no ROS2 e Navigation2}
+\subsection{Odometria no ROS2 e Navigation2}
 
 No ecossistema ROS2 e na biblioteca Navigation2, a odometria é um dado de
 entrada fundamental para diversos módulos. O Nav2 espera receber dados de
@@ -94,7 +348,7 @@ de Medida Inercial), através de pacotes como o \texttt{robot\_localization},
 para obter uma estimativa de pose mais robusta e precisa através de técnicas de
 fusão de sensores.
 
-\subsection{Base\_link: Frame de Referência Central do Robô}
+\section{Base\_link: Frame de Referência Central do Robô}
 
 Em arquiteturas robóticas, especialmente no contexto do ROS2 e da biblioteca
 Navigation2, o frame \texttt{base\_link} assume um papel central como o sistema
@@ -104,7 +358,7 @@ seção sobre sistemas de coordenadas \cite{Babu2020Simulator}, o
 referência para a localização de todos os outros componentes e sensores do
 sistema robótico.
 
-\subsubsection{Definição e Significado do Base\_link}
+\subsection{Definição e Significado do Base\_link}
 
 O \texttt{base\_link} é definido como um sistema de coordenadas local e fixo em
 relação ao corpo principal do robô. Tipicamente, a origem do
@@ -116,7 +370,7 @@ para frente, Y para a esquerda, Z para cima).
 
 É crucial entender que o \texttt{base\_link} é um frame abstrato e virtual. Ele não corresponde necessariamente a um componente físico específico do robô. Em vez disso, ele representa um ponto de referência conceitual que facilita a organização e a transformação de dados sensoriais e de controle dentro do sistema robótico.
 
-\subsubsection{Importância do Base\_link na Arquitetura Robótica}
+\subsection{Importância do Base\_link na Arquitetura Robótica}
 
 O \texttt{base\_link} é essencial por diversas razões na arquitetura de um robô
 móvel. Como ponto de referência unificado, ele serve como um sistema de
@@ -141,7 +395,7 @@ Em ambientes de simulação e ferramentas de modelagem CAD, o \texttt{base\_link
 simplifica a representação do robô como uma entidade coesa, facilitando a
 definição de suas propriedades físicas e cinemáticas.
 
-\subsubsection{Relação do Base\_link com Map e Odom}
+\subsection{Relação do Base\_link com Map e Odom}
 
 O \texttt{base\_link} se relaciona diretamente com outros frames de coordenadas
 cruciais na navegação robótica, como \texttt{map} e \texttt{odom}. A relação
@@ -159,11 +413,11 @@ global e fixo do ambiente. A transformação entre \texttt{map} e \texttt{odom}
 permite corrigir os erros acumulados na odometria, ancorando a pose do robô no
 mapa global.
 
-\subsubsection{Base\_footprint: Projeção no Plano do Chão}
+\subsection{Base\_footprint: Projeção no Plano do Chão}
 
 É importante mencionar também o frame \texttt{base\_footprint}, que é a projeção do \texttt{base\_link} no plano do chão. O \texttt{base\_footprint} é frequentemente utilizado em planejadores de trajetória e controladores de movimento que operam em um plano 2D. A transformação entre \texttt{base\_link} e \texttt{base\_footprint} é tipicamente uma translação vertical ao longo do eixo Z, representando a altura do \texttt{base\_link} em relação ao solo.
 
-\subsubsection{Considerações Práticas e Utilização no ROS2}
+\subsection{Considerações Práticas e Utilização no ROS2}
 
 No ROS2, a configuração correta do \texttt{base\_link} e suas transformações é
 fundamental para o funcionamento adequado da Navigation2 e de outros pacotes
@@ -180,7 +434,7 @@ consistentes. A configuração e calibração adequadas dos sensores de odometri
 dos algoritmos de localização são cruciais para obter uma estimativa de pose
 robusta e confiável do \texttt{base\_link} no ambiente.
 
-\subsection{Conceitos Básicos de Robótica Móvel e Navegação ROS2}
+\section{Conceitos Básicos de Robótica Móvel e Navegação ROS2}
 
 A navegação autônoma de robôs móveis representa um dos desafios fundamentais da
 robótica moderna, exigindo a integração de múltiplos subsistemas para permitir
@@ -189,7 +443,7 @@ ROS2 (Robot Operating System 2), a biblioteca Navigation2 (Nav2) fornece uma
 arquitetura modular e extensível para implementação de navegação autônoma
 \cite{OKelly2020F1TENTH}.
 
-\subsubsection{Sistemas de Coordenadas e Transformações}
+\subsection{Sistemas de Coordenadas e Transformações}
 
 Um conceito fundamental para a navegação robótica é o sistema de coordenadas e
 suas transformações. No ROS2, o pacote tf2 (Transform Frame 2) é responsável
@@ -209,7 +463,7 @@ robô. O Nav2 utiliza estas transformações para converter medições de sensor
 comandos de controle entre diferentes sistemas de coordenadas, permitindo uma
 navegação precisa e coerente.
 
-\subsubsection{Mapeamento e Localização}
+\subsection{Mapeamento e Localização}
 
 O processo de SLAM (Simultaneous Localization and Mapping) é essencial para a
 navegação autônoma, permitindo que o robô construa um mapa do ambiente enquanto
@@ -222,7 +476,7 @@ suporta diferentes algoritmos de SLAM, incluindo:
     \item \textbf{Loop Closure}: Detecção e correção de inconsistências no mapa quando revisitando áreas conhecidas
 \end{itemize}
 
-\subsubsection{Planejamento de Trajetória}
+\subsection{Planejamento de Trajetória}
 
 O planejamento de trajetória é estruturado em duas camadas principais, conforme
 descrito por \cite{Karaman2011Optimal}:
@@ -243,7 +497,7 @@ descrito por \cite{Karaman2011Optimal}:
           \end{itemize}
 \end{itemize}
 
-\subsubsection{Controle e Execução}
+\subsection{Controle e Execução}
 
 O sistema de controle no Nav2 é responsável por converter os planos de
 trajetória em comandos de movimento para os atuadores do robô.
@@ -255,7 +509,7 @@ trajetória em comandos de movimento para os atuadores do robô.
     \item \textbf{Camada de Segurança}: Garante operação segura através de monitores de colisão e limites de velocidade
 \end{itemize}
 
-\subsubsection{Arquitetura de Navegação}
+\subsection{Arquitetura de Navegação}
 
 A arquitetura do Nav2 é construída sobre o conceito de Behavior Trees, que
 segundo \cite{Ivanov2020Verifying}, oferece várias vantagens:
@@ -279,7 +533,7 @@ Esta arquitetura modular permite que desenvolvedores adaptem e estendam o
 sistema para diferentes aplicações e plataformas robóticas, mantendo a robustez
 e confiabilidade necessárias para navegação autônoma.
 
-\subsection{Sistemas de Controle e Navegação Autônoma}
+\section{Sistemas de Controle e Navegação Autônoma}
 
 A navegação autônoma de veículos requer uma arquitetura de controle robusta que
 integre diferentes níveis de abstração, desde o controle de baixo nível dos
@@ -290,7 +544,7 @@ e eficiente. O campo das corridas autônomas, revisado por
 \cite{Betz2022Survey}, apresenta desafios únicos nesta integração,
 especialmente ao operar nos limites dinâmicos do veículo.
 
-\subsubsection{Controle de Baixo Nível}
+\subsection{Controle de Baixo Nível}
 
 O controle de baixo nível é responsável pela execução direta dos comandos nos
 atuadores do veículo. Para veículos com geometria Ackermann, como é o caso do
@@ -301,96 +555,12 @@ gerenciar dois aspectos fundamentais:
     \item \textbf{Controle de Direção}: Responsável por ajustar o ângulo das rodas dianteiras através do servomotor. O modelo cinemático da direção Ackermann pode ser expresso pela equação:
           \begin{equation}
               \tan(\delta) = \frac{L}{R}
+              \label{eq:ackermann_steering}
           \end{equation}
           Onde $\delta$ é o ângulo de esterçamento, $L$ é a distância entre eixos e $R$ é o raio de curvatura instantâneo.
-
-    \item \textbf{Controle de Velocidade}: Gerencia a velocidade longitudinal do veículo através do motor de tração. O modelo dinâmico simplificado pode ser representado por:
-          \begin{equation}
-              \dot{v} = \frac{F_t - F_r}{m}
-          \end{equation}
-          Onde $v$ é a velocidade, $F_t$ é a força de tração, $F_r$ representa as forças resistivas e $m$ é a massa do veículo.
 \end{itemize}
 
-\subsubsection{Controle Preditivo Baseado em Modelo (MPC)}
-
-O controle preditivo baseado em modelo representa uma abordagem avançada para
-navegação autônoma. \cite{Stachowicz2023FastRLAP} explicam que o MPC opera
-resolvendo um problema de otimização em tempo real que considera:
-
-\begin{itemize}
-    \item \textbf{Modelo do Sistema}: Representa a dinâmica do veículo através de equações diferenciais:
-          \begin{equation}
-              \dot{x} = f(x,u)
-          \end{equation}
-          Onde $x$ é o estado do sistema e $u$ são as entradas de controle.
-
-    \item \textbf{Função Objetivo}: Define os objetivos de controle, tipicamente incluindo:
-          \begin{itemize}
-              \item Minimização do erro de trajetória
-              \item Suavidade dos comandos de controle
-              \item Eficiência energética
-          \end{itemize}
-
-    \item \textbf{Restrições}: Limitações físicas e operacionais:
-          \begin{itemize}
-              \item Limites de velocidade e aceleração
-              \item Restrições de esterçamento
-              \item Limites de segurança
-          \end{itemize}
-\end{itemize}
-
-\subsubsection{Controle Adaptativo e Aprendizado}
-
-O controle adaptativo tem se mostrado particularmente relevante para aplicações
-de corrida autônoma. \cite{Karaman2011Optimal} destacam que sistemas
-adaptativos podem ajustar seus parâmetros em tempo real para:
-
-\begin{itemize}
-    \item \textbf{Compensar Incertezas}: Adaptação a variações nas condições da pista e dinâmica do veículo através de:
-          \begin{itemize}
-              \item Estimação online de parâmetros
-              \item Ajuste automático de ganhos de controle
-              \item Compensação de perturbações (por exemplo, \cite{Jain2020Bayesrace} exploram o
-                    uso de Processos Gaussianos para corrigir modelos cinemáticos simples com base
-                    na experiência prévia)
-          \end{itemize}
-
-    \item \textbf{Otimização de Desempenho}: Melhoria contínua através de:
-          \begin{itemize}
-              \item Aprendizado por reforço iterativo
-              \item Ajuste baseado em experiência prévia
-              \item Adaptação a diferentes condições de corrida
-          \end{itemize}
-\end{itemize}
-
-\subsubsection{Arquitetura de Segurança}
-
-\cite{Ivanov2020Verifying} enfatizam a importância de uma arquitetura de segurança robusta que inclua:
-
-\begin{itemize}
-    \item \textbf{Monitoramento de Estado}: Sistema que avalia continuamente:
-          \begin{itemize}
-              \item Integridade dos sensores
-              \item Estado dos atuadores
-              \item Consistência das medições
-          \end{itemize}
-
-    \item \textbf{Sistema de Supervisão}: Responsável por:
-          \begin{itemize}
-              \item Detecção de falhas
-              \item Ativação de comportamentos de recuperação
-              \item Garantia de operação dentro de limites seguros
-          \end{itemize}
-
-    \item \textbf{Camada de Verificação}: Implementa:
-          \begin{itemize}
-              \item Verificação formal de propriedades de segurança
-              \item Validação de comandos de controle
-              \item Garantias de estabilidade
-          \end{itemize}
-\end{itemize}
-
-\subsubsection{Integração dos Sistemas}
+\subsection{Integração dos Sistemas}
 
 A integração efetiva destes diferentes níveis de controle é crucial para o
 desempenho global do sistema. \cite{OKelly2020F1TENTH} propõem uma arquitetura
@@ -423,7 +593,7 @@ Esta estrutura hierárquica de controle permite que o veículo autônomo navegue
 de forma segura e eficiente, adaptando-se a diferentes condições e cenários de
 corrida enquanto mantém garantias de segurança e desempenho.
 
-\subsection{Sensoriamento e Percepção do Ambiente}
+\section{Sensoriamento e Percepção do Ambiente}
 
 O sistema de percepção em veículos autônomos de corrida desempenha um papel
 fundamental na compreensão do ambiente e na tomada de decisões em tempo real.
@@ -431,7 +601,7 @@ Este sistema precisa processar informações de diversos sensores para criar uma
 representação precisa e atualizada do ambiente, permitindo uma navegação segura
 em altas velocidades.
 
-\subsubsection{Sensores Principais}
+\subsection{Sensores Principais}
 
 No contexto da plataforma F1TENTH, \cite{OKelly2020F1TENTH} descrevem que os
 principais sensores utilizados podem ser categorizados em três grupos
@@ -445,6 +615,7 @@ fundamentais:
           ser expressa matematicamente como:
           \begin{equation}
               d_i = \frac{c \cdot \Delta t_i}{2}
+              \label{eq:lidar_measurement}
           \end{equation}
           Onde $d_i$ é a distância medida para o ponto $i$, $c$ é a velocidade da luz, e $\Delta t_i$ é o tempo de voo do pulso laser.
 
@@ -467,6 +638,7 @@ fundamentais:
                   g_y \\
                   g_z
               \end{bmatrix}
+              \label{eq:imu_acceleration}
           \end{equation}
           Onde $a$ representa as acelerações medidas, $\ddot{x}$ as acelerações reais do veículo, e $g$ a aceleração gravitacional.
 
@@ -475,11 +647,12 @@ fundamentais:
           deslocamento linear pode ser expressa como:
           \begin{equation}
               \Delta s = \frac{2\pi r}{N} \cdot n
+              \label{eq:encoder_displacement}
           \end{equation}
           Onde $r$ é o raio da roda, $N$ é o número de pulsos por revolução, e $n$ é o número de pulsos contados.
 \end{itemize}
 
-\subsubsection{Fusão Sensorial}
+\subsection{Fusão Sensorial}
 
 A fusão sensorial é essencial para combinar dados de diferentes sensores e
 criar uma estimativa mais precisa do estado do veículo e do ambiente.
@@ -489,18 +662,18 @@ comumente utilizado para este propósito, operando em duas etapas:
 \begin{itemize}
     \item \textbf{Predição}:
           \begin{align}
-              \hat{x}_{k|k-1} & = f(\hat{x}_{k-1|k-1}, u_k)   \\
-              P_{k|k-1}       & = F_k P_{k-1|k-1} F_k^T + Q_k
+              \hat{x}_{k|k-1} & = f(\hat{x}_{k-1|k-1}, u_k) \label{eq:ekf_prediction_state}        \\
+              P_{k|k-1}       & = F_k P_{k-1|k-1} F_k^T + Q_k \label{eq:ekf_prediction_covariance}
           \end{align}
 
     \item \textbf{Atualização}:
           \begin{align}
-              K_k           & = P_{k|k-1} H_k^T (H_k P_{k|k-1} H_k^T + R_k)^{-1} \\
-              \hat{x}_{k|k} & = \hat{x}_{k|k-1} + K_k(z_k - h(\hat{x}_{k|k-1}))
+              K_k           & = P_{k|k-1} H_k^T (H_k P_{k|k-1} H_k^T + R_k)^{-1} \label{eq:ekf_update_gain} \\
+              \hat{x}_{k|k} & = \hat{x}_{k|k-1} + K_k(z_k - h(\hat{x}_{k|k-1})) \label{eq:ekf_update_state}
           \end{align}
 \end{itemize}
 
-\subsubsection{Processamento de Dados LiDAR}
+\subsection{Processamento de Dados LiDAR}
 
 O processamento dos dados do LiDAR é particularmente importante para a
 navegação em alta velocidade. \cite{Wang2020LMPC} descrevem as principais
@@ -517,7 +690,7 @@ etapas deste processamento:
           \end{itemize}
 \end{itemize}
 
-\subsubsection{Localização e Mapeamento}
+\subsection{Localização e Mapeamento}
 
 A localização precisa é crucial para navegação em alta velocidade.
 \cite{Karaman2011Optimal} destacam que o sistema de localização deve integrar
@@ -527,47 +700,63 @@ múltiplas fontes de informação:
     \item \textbf{Localização Baseada em Mapa}:
           \begin{equation}
               p(x_t | z_{1:t}, u_{1:t}, m) = \eta p(z_t | x_t, m) \int p(x_t | x_{t-1}, u_t) p(x_{t-1} | z_{1:t-1}, u_{1:t-1}, m) dx_{t-1}
+              \label{eq:bayes_filter}
           \end{equation}
 
     \item \textbf{Mapeamento Online}:
           \begin{equation}
               p(m | z_{1:t}, x_{1:t}) = \prod_i p(m_i | z_{1:t}, x_{1:t})
+              \label{eq:mapping_probability}
           \end{equation}
 \end{itemize}
 
-\subsubsection{Detecção e Rastreamento de Obstáculos}
+\subsection{Detecção de Obstáculos}
 
-Em ambientes de corrida, a detecção e rastreamento de outros veículos é
-fundamental. \cite{Ivanov2020Verifying} descrevem que este processo envolve:
+Em ambientes de corrida autônoma, a detecção precisa de obstáculos e outros
+veículos é fundamental para navegação segura e estratégias competitivas.
+\cite{Ivanov2020Verifying} descrevem que este processo envolve múltiplas etapas
+e técnicas complementares:
 
 \begin{itemize}
-    \item \textbf{Detecção}: Identificação de objetos dinâmicos através de:
-          \begin{itemize}
-              \item Segmentação de nuvem de pontos
-              \item Classificação de objetos
-              \item Estimação de posição e velocidade
-          \end{itemize}
-
-    \item \textbf{Rastreamento}: Acompanhamento de objetos ao longo do tempo usando filtros bayesianos:
+    \item \textbf{Segmentação de nuvem de pontos}: O processo inicia com a segmentação dos dados brutos do LiDAR, separando pontos que representam obstáculos daqueles que representam o ambiente estático. Uma abordagem comum utiliza o algoritmo DBSCAN (Density-Based Spatial Clustering of Applications with Noise):
           \begin{equation}
-              p(x_k | z_{1:k}) = \frac{p(z_k | x_k) p(x_k | z_{1:k-1})}{p(z_k | z_{1:k-1})}
+              C = \{p_i \in P | \exists p_j \in P: dist(p_i, p_j) \leq \epsilon \wedge |N_\epsilon(p_j)| \geq MinPts\}
+              \label{eq:dbscan_clustering}
+          \end{equation}
+          Onde $C$ representa o cluster identificado, $P$ é o conjunto de pontos, $\epsilon$ define o raio de vizinhança, e $MinPts$ estabelece o número mínimo de pontos para formar um cluster.
+
+    \item \textbf{Classificação de objetos}: Após a segmentação, algoritmos de classificação identificam o tipo de obstáculo (veículo, barreira, etc.) utilizando características geométricas e estatísticas. Para classificação baseada em aprendizado de máquina, utiliza-se frequentemente redes neurais convolucionais (CNN) que minimizam a função de perda:
+          \begin{equation}
+              L = -\frac{1}{N} \sum_{i=1}^{N} \sum_{c=1}^{C} y_{i,c} \log(p_{i,c})
+              \label{eq:classification_loss}
+          \end{equation}
+          Onde $N$ é o número de amostras, $C$ é o número de classes, $y_{i,c}$ é um indicador binário se a classe $c$ é a correta para a amostra $i$, e $p_{i,c}$ é a probabilidade prevista.
+
+    \item \textbf{Estimação de posição e velocidade}: Para cada obstáculo detectado, estimam-se parâmetros como posição, dimensões e, quando possível, velocidade. A posição é geralmente representada pelo centroide do cluster:
+          \begin{equation}
+              centroid = \frac{1}{|C|} \sum_{p \in C} p
+              \label{eq:centroid}
           \end{equation}
 \end{itemize}
 
-A integração eficiente destes sistemas de sensoriamento e percepção é crucial
-para o desempenho global do veículo autônomo, permitindo uma navegação segura e
-eficiente em ambientes dinâmicos de alta velocidade.
+A implementação eficiente destes algoritmos de detecção é crucial para o
+desempenho global do veículo autônomo em alta velocidade, possibilitando
+decisões rápidas e precisas em ambientes dinâmicos. A complexidade
+computacional e a latência do sistema devem ser cuidadosamente balanceadas para
+atender aos requisitos de tempo real exigidos em competições de corrida
+autônoma.
 
-\subsection{Algoritmos de Planejamento de Trajetória}
+\section{Algoritmos de Planejamento de Trajetória}
 
 O planejamento de trajetória em veículos autônomos de corrida representa um
 desafio complexo que requer a consideração simultânea de múltiplos objetivos:
 minimização do tempo de volta, garantia de segurança, respeito às restrições
 dinâmicas do veículo e adaptação a condições variáveis da pista. Esta seção
-explora os principais algoritmos e técnicas utilizados para enfrentar estes
-desafios.
+explora os principais algoritmos e técnicas relevantes para este domínio,
+estabelecendo a base teórica necessária e contextualizando a implementação
+prática realizada neste trabalho.
 
-\subsubsection{Planejamento Global de Trajetória}
+\subsection{Fundamentos Teóricos do Planejamento Global de Trajetória}
 
 O planejamento global de trajetória estabelece um caminho ótimo considerando o
 conhecimento completo da pista. Segundo \cite{Karaman2011Optimal}, este
@@ -575,12 +764,13 @@ processo pode ser formulado como um problema de otimização:
 
 \begin{equation}
     \min_{x(t), u(t)} \int_0^T L(x(t), u(t))dt
+    \label{eq:trajectory_optimization}
 \end{equation}
 
 Sujeito às restrições:
 \begin{align}
-    \dot{x}(t)    & = f(x(t), u(t)) \\
-    g(x(t), u(t)) & \leq 0
+    \dot{x}(t)    & = f(x(t), u(t)) \label{eq:trajectory_constraint_dynamics} \\
+    g(x(t), u(t)) & \leq 0 \label{eq:trajectory_constraint_limits}
 \end{align}
 
 Onde $x(t)$ representa o estado do veículo, $u(t)$ os comandos de controle,
@@ -593,45 +783,100 @@ dinâmica do veículo, e $g(\cdot)$ as restrições do sistema.
     \item \textbf{Métodos Baseados em Amostragem (RRT*, PRM*)}: Estes algoritmos exploram o espaço de estados através de amostragem aleatória, construindo uma árvore ou grafo de trajetórias possíveis. O RRT* (Rapidly-exploring Random Tree*) garante otimalidade assintótica através de reconexão contínua da árvore:
           \begin{equation}
               d_{new} = \min_{x_{near}} \{cost(x_{init} \rightarrow x_{near}) + d(x_{near}, x_{new})\}
+              \label{eq:rrt_star_cost}
           \end{equation}
 
     \item \textbf{Métodos de Otimização Numérica}: Utilizam técnicas como programação quadrática sequencial (SQP) ou métodos de pontos interiores para encontrar trajetórias ótimas. A função objetivo típica inclui múltiplos termos:
           \begin{equation}
               J = w_t T + w_c \int_0^T \kappa(s)^2 ds + w_s \int_0^T \dot{s}(t)^2 dt
+              \label{eq:trajectory_objective}
           \end{equation}
           Onde $T$ é o tempo total, $\kappa(s)$ é a curvatura da trajetória, e $\dot{s}(t)$ é a velocidade ao longo do caminho.
 
     \item \textbf{Métodos Baseados em Curvas Paramétricas}: Utilizam representações matemáticas como splines ou polinômios de Bernstein para gerar trajetórias suaves. Por exemplo, uma spline cúbica pode ser expressa como:
           \begin{equation}
               x(t) = a_0 + a_1t + a_2t^2 + a_3t^3
+              \label{eq:cubic_spline}
           \end{equation}
 \end{itemize}
 
-\subsubsection{Planejamento Local de Trajetória}
+Embora a implementação completa destes métodos de planejamento global esteja
+além do escopo deste trabalho, eles representam o estado da arte que guiou
+nossas escolhas e fornecerão a base para trabalhos futuros. A etapa de
+mapeamento implementada via SLAM Toolbox, discutida na Seção
+\ref{sec:implementacao_pratica}, estabelece o alicerce necessário para a
+eventual aplicação destes algoritmos.
 
-O planejamento local adapta a trajetória global em tempo real para lidar com
-obstáculos dinâmicos e condições variáveis. \cite{Stachowicz2023FastRLAP}
-apresentam três técnicas principais:
+\subsection{Planejamento Local de Trajetória Implementado}
+
+A implementação do planejamento local de trajetória neste trabalho focou em
+abordagens práticas e robustas para navegação reativa em ambientes de corrida.
+Duas estratégias principais foram utilizadas:
 
 \begin{itemize}
-    \item \textbf{Dynamic Window Approach (DWA)}: Considera um espaço de velocidades admissíveis $(v, \omega)$ baseado nas limitações dinâmicas do veículo:
-          \begin{equation}
-              V_a = \{(v,\omega) | v \in [v_{min}, v_{max}], \omega \in [\omega_{min}, \omega_{max}], \ddot{v} \leq a_{max}, \dot{\omega} \leq \alpha_{max}\}
-          \end{equation}
+    \item \textbf{Algoritmo de Seguidor de Parede}: Desenvolvemos um algoritmo simples mas eficaz para seguimento de barreiras laterais, adequado para circuitos de corrida com contornos bem definidos.
 
-    \item \textbf{Timed Elastic Band (TEB)}: Otimiza uma sequência de poses intermediárias considerando tempo e suavidade:
-          \begin{equation}
-              F_{total} = \sum_{i} (w_k F_{kin} + w_d F_{dyn} + w_t F_{time} + w_o F_{obs})
-          \end{equation}
-
-    \item \textbf{Model Predictive Contouring Control (MPCC)}: Combina seguimento de trajetória com otimização de tempo através de um horizonte deslizante:
-          \begin{equation}
-              \min_{u(\cdot)} \sum_{k=0}^{N-1} (l_{lag,k}^2 + l_{con,k}^2 - \rho v_{k})
-          \end{equation}
-          Outras abordagens, como as comparadas por \cite{Misra2024Report}, utilizam RRT* ou campos potenciais gaussianos para o desvio de obstáculos local.
+    \item \textbf{Navegação Reativa com Nav2}: Utilizamos funcionalidades do framework Nav2, que implementa internamente o algoritmo Dynamic Window Approach (DWA) para evitar obstáculos em tempo real.
 \end{itemize}
 
-\subsubsection{Otimização de Linha de Corrida}
+\subsubsection{Algoritmo de Seguidor de Parede}
+
+O algoritmo de seguidor de parede implementado representa uma solução
+pragmática para o planejamento local de trajetória em circuitos de corrida.
+Esta abordagem reativa utiliza leituras de sensores para manter o veículo a uma
+distância consistente das barreiras laterais.
+
+O controlador implementado segue um modelo PD (Proporcional-Derivativo):
+
+\begin{equation}
+    \omega = K_p(d_{desejada} - d_{medida}) + K_d\frac{d(d_{medida})}{dt}
+    \label{eq:wall_follower_control}
+\end{equation}
+
+Onde:
+\begin{itemize}
+    \item $\omega$ é a velocidade angular comandada
+    \item $d_{desejada}$ representa a distância ideal que o veículo deve manter da parede
+    \item $d_{medida}$ é a distância atual medida pelo sensor laser
+    \item $K_p$ e $K_d$ são os ganhos proporcional e derivativo do controlador
+\end{itemize}
+
+A implementação prática deste algoritmo envolveu as seguintes etapas:
+
+\begin{enumerate}
+    \item Processamento das leituras do sensor laser para identificar a parede mais
+          próxima
+    \item Filtragem de ruídos e outliers nas medições de distância
+    \item Cálculo da velocidade angular usando o controlador PD
+    \item Aplicação de uma velocidade linear constante ou adaptativa baseada na curvatura
+          estimada
+\end{enumerate}
+
+Esta abordagem oferece vantagens significativas para aplicações em tempo real:
+
+\begin{itemize}
+    \item \textbf{Baixo custo computacional}: O algoritmo é extremamente leve e pode ser executado em hardware limitado
+    \item \textbf{Robustez a incertezas}: Não depende de um mapa global preciso ou localização absoluta
+    \item \textbf{Resposta reativa}: Adapta-se instantaneamente a mudanças no ambiente
+\end{itemize}
+
+\subsubsection{Integração com Nav2}
+
+O framework Navigation2 (Nav2) foi utilizado como complemento ao algoritmo de
+seguidor de parede, fornecendo capacidades adicionais de navegação. Nav2
+implementa internamente o Dynamic Window Approach (DWA), que considera um
+espaço de velocidades admissíveis baseado nas limitações dinâmicas do veículo:
+
+\begin{equation}
+    V_a = \{(v,\omega) | v \in [v_{min}, v_{max}], \omega \in [\omega_{min}, \omega_{max}], \ddot{v} \leq a_{max}, \dot{\omega} \leq \alpha_{max}\}
+    \label{eq:dwa_velocity_space}
+\end{equation}
+
+Esta integração permitiu combinar a simplicidade e eficiência do seguidor de
+parede com as capacidades mais avançadas de evitação de obstáculos e
+planejamento local do Nav2 quando necessário.
+
+\subsection{Otimização de Linha de Corrida}
 
 \cite{OKelly2020F1TENTH} explicam que a otimização da linha de corrida envolve encontrar o caminho que minimiza o tempo de volta considerando as características dinâmicas do veículo. Este processo considera:
 
@@ -639,16 +884,45 @@ apresentam três técnicas principais:
     \item \textbf{Maximização da Velocidade em Curvas}: A velocidade máxima em uma curva é limitada pela força lateral máxima:
           \begin{equation}
               v_{max} = \sqrt{\mu g R}
+              \label{eq:max_cornering_speed}
           \end{equation}
 
     \item \textbf{Otimização de Pontos de Entrada e Saída}: A posição lateral na pista é otimizada para maximizar a velocidade média:
           \begin{equation}
               y(s) = \sum_{i=0}^N a_i \phi_i(s)
+              \label{eq:racing_line_optimization}
           \end{equation}
           Onde $\phi_i(s)$ são funções base e $a_i$ são coeficientes a serem otimizados.
 \end{itemize}
 
-\subsubsection{Considerações de Segurança e Robustez}
+\subsection{Implementação Prática: Mapeamento com SLAM Toolbox}
+\label{sec:implementacao_pratica}
+
+Para fornecer a base necessária para navegação autônoma, implementamos um
+sistema de mapeamento usando a SLAM Toolbox. Esta ferramenta foi essencial para
+construir uma representação consistente do ambiente de corrida:
+
+\begin{itemize}
+    \item \textbf{Mapeamento em Tempo Real}: A SLAM Toolbox permite a construção incremental de mapas 2D enquanto o veículo navega pelo circuito, criando uma representação precisa das barreiras e obstáculos.
+
+    \item \textbf{Localização Simultânea}: Além do mapeamento, o sistema fornece estimativas contínuas da posição e orientação do veículo dentro do mapa, essenciais para qualquer estratégia de navegação.
+
+    \item \textbf{Correção de Loop}: Os algoritmos implementados na SLAM Toolbox detectam e corrigem automaticamente erros acumulados quando o veículo revisita áreas previamente mapeadas, garantindo a consistência global do mapa.
+\end{itemize}
+
+O processo de mapeamento foi executado em duas fases:
+
+\begin{enumerate}
+    \item \textbf{Mapeamento Inicial}: O veículo foi controlado manualmente ao redor do circuito para gerar um mapa completo e preciso, que foi então salvo para uso posterior.
+
+    \item \textbf{Localização em Mapa Conhecido}: Durante a operação autônoma, o mapa pré-construído foi utilizado para localização, reduzindo a carga computacional e aumentando a precisão do posicionamento.
+\end{enumerate}
+
+Este mapeamento serviu como fundação para as estratégias de navegação
+implementadas, fornecendo o contexto espacial necessário tanto para o seguidor
+de parede quanto para a navegação baseada em Nav2.
+
+\subsection{Considerações de Segurança e Robustez}
 
 \cite{Ivanov2020Verifying} enfatizam a importância de garantir segurança e robustez no planejamento de trajetória através de:
 
@@ -656,16 +930,19 @@ apresentam três técnicas principais:
     \item \textbf{Margens de Segurança Adaptativas}:
           \begin{equation}
               d_{safe}(v) = d_{min} + k_v v + k_a a
+              \label{eq:adaptive_safety_margin}
           \end{equation}
 
     \item \textbf{Verificação de Colisão Contínua}:
           \begin{equation}
               d_{obs}(t) > d_{safe}(v(t)) \quad \forall t \in [0,T]
+              \label{eq:collision_check}
           \end{equation}
 
     \item \textbf{Consideração de Incertezas}:
           \begin{equation}
               P(collision) \leq \epsilon
+              \label{eq:collision_probability}
           \end{equation}
           Técnicas específicas como o teste de estresse baseado em RRT podem ser usadas para encontrar cenários de falha em manobras complexas como ultrapassagens \cite{Bak2021Stress}.
 \end{itemize}
@@ -674,6 +951,3 @@ A integração efetiva destes diferentes aspectos do planejamento de trajetória
 crucial para o desenvolvimento de um sistema de corrida autônomo capaz de
 operar de forma segura e eficiente em condições de alta velocidade.
 
-\section{Considerações Finais}
-
-\lipsum[23]

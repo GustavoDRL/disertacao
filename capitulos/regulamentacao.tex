@@ -1,0 +1,293 @@
+\chapter{Regulamentações e Dinâmica da Competição F1TENTH}
+
+A categoria F1TENTH estabelece um framework competitivo rigoroso através de
+regulamentações técnicas específicas que moldam diretamente o desenvolvimento
+dos veículos e as estratégias de corrida~\cite{F1TENTHRules2023}.
+Diferentemente de outras competições de robótica, a F1TENTH enfatiza o
+desenvolvimento algorítmico em detrimento de vantagens puramente mecânicas,
+criando um ambiente que aproxima os desafios enfrentados por veículos autônomos
+em escala real~\cite{OBrienF1TENTH2020}.
+
+\section{Especificações Técnicas Obrigatórias e suas Implicações}
+
+\subsection{Plataforma mecânica e propulsão}
+
+As regulamentações dividem a competição em duas categorias distintas: Classe
+Restrita e Classe Aberta. Na Classe Restrita, foco principal da competição, o
+chassi deve obrigatoriamente ser em escala 1:10, preferencialmente baseado em
+modelos Traxxas, permitindo tanto configurações 4WD quanto 2WD
+~\cite{F1TENTHRules2023}. Esta padronização não é arbitrária -- visa garantir
+que todas as equipes enfrentem desafios físicos comparáveis, evitando vantagens
+derivadas exclusivamente de plataformas superiores.
+
+O sistema de propulsão também é rigidamente controlado, limitando-se a motores
+DC sem escovas com especificações máximas equivalentes ao Velineon 3500 kV. A
+escolha do motor EZRUN 3665SD-3200KV-G3 para o projeto representa uma
+implementação adequada, pois seu rating de 3200KV está em conformidade com as
+especificações máximas permitidas (3500kV). Além disso, suas dimensões e padrão
+de montagem são compatíveis com chassis em escala 1:10, garantindo conformidade
+com o regulamento~\cite{F1TENTHRules2023}. Esta restrição impõe um teto de
+desempenho que:
+
+\begin{itemize}
+      \item Força as equipes a otimizarem seus algoritmos de controle para extrair o máximo
+            da plataforma
+      \item Minimiza as vantagens derivadas puramente de potência mecânica superior
+      \item Cria condições para avaliar a eficiência dos sistemas de navegação e controle
+\end{itemize}
+
+\subsection{Sistemas de sensoriamento e computação}
+
+O sistema de sensoriamento incorpora limitações estratégicas que simulam
+restrições de orçamento e espaço em veículos reais. O LiDAR principal deve ser
+equivalente ou inferior ao Hokuyo UTM-30LX, com alcance máximo de 30 metros,
+frequência de varredura de 40 Hz e resolução angular de 0,25 graus
+~\cite{GopalarathnamF1TENTH2022}. O LiDAR YDLIDAR X4PRO selecionado para o
+projeto atende adequadamente aos requisitos regulamentares, apresentando
+especificações compatíveis com os limites estabelecidos: alcance de 0,12--10m
+(inferior ao limite de 30m), frequência de varredura ajustável de 6--12Hz e
+resolução angular entre 0,43° e 0,86° dependendo da frequência utilizada. Sua
+conformidade com a classificação Class I de segurança laser também é um aspecto
+importante para atender às normas de segurança da competição
+~\cite{F1TENTHRules2023}. Estas especificações restringem a quantidade e
+qualidade dos dados disponíveis para percepção ambiental, exigindo:
+
+\begin{itemize}
+      \item Algoritmos eficientes de processamento de nuvem de pontos
+      \item Técnicas robustas de filtragem para lidar com ruído e reflexões no ambiente de
+            competição
+      \item Estratégias de fusão sensorial para compensar as limitações do LiDAR
+\end{itemize}
+
+Quanto ao sistema computacional, as regulamentações permitem flexibilidade,
+exigindo apenas que o processamento seja totalmente realizado a bordo e que o
+hardware se adeque fisicamente ao veículo~\cite{F1TENTHRules2023}. A escolha da
+Raspberry Pi 4B como plataforma de processamento satisfaz plenamente estes
+requisitos, oferecendo processamento suficiente para algoritmos de navegação e
+controle em um formato compacto que se adequa facilmente ao chassi do veículo.
+Sua ampla compatibilidade com frameworks de software como ROS2 facilita a
+implementação dos algoritmos necessários para a competição. Esta flexibilidade
+reconhece a importância do poder computacional para algoritmos avançados de
+percepção e controle, permitindo o uso de plataformas como Nvidia Jetson, Intel
+NUC ou Raspberry Pi, conforme as necessidades específicas de processamento da
+solução implementada.
+
+O controlador eletrônico Makerbase VESC MINI 6.7 representa uma escolha
+estratégica para o projeto, visto que suas capacidades avançadas de controle de
+motor BLDC e PMSM, incluindo recursos de posicionamento preciso e controle de
+velocidade/corrente, permitem a implementação de algoritmos sofisticados de
+controle. Suas interfaces de comunicação múltiplas (USB, CAN, UART) facilitam a
+integração com o sistema ROS2 executado na Raspberry Pi, criando um sistema de
+controle robusto e responsivo que atende aos requisitos de processamento a
+bordo exigidos pelo regulamento~\cite{F1TENTHRules2023}.
+
+\subsection{Requisitos de segurança obrigatórios}
+
+Os requisitos de segurança não são meras formalidades, mas elementos cruciais
+que simulam preocupações de veículos autônomos em escala real. Todo veículo
+deve incorporar:
+
+\begin{itemize}
+      \item Para-choques frontais e traseiros funcionais
+      \item Área mínima de detecção por LiDAR de 12×12 centímetros entre 10--30 centímetros do solo
+      \item Sistema de parada de emergência acionável remotamente
+      \item Algoritmos de detecção e prevenção de colisões demonstráveis
+\end{itemize}
+
+A configuração do sistema VESC MINI 6.7 com capacidade de frenagem regenerativa
+e limites de corrente programáveis contribui significativamente para atender
+aos requisitos de segurança da competição, permitindo implementar um sistema
+eficaz de parada de emergência. Sua capacidade de resposta rápida (com
+limitação de corrente e proteções integradas) permite implementar algoritmos
+confiáveis de detecção e prevenção de colisões, conforme exigido pelo
+regulamento~\cite{MoralesF1TENTH2021}.
+
+Estes requisitos são testados rigorosamente antes da competição, e falhas em
+qualquer um deles resultam em desqualificação~\cite{MoralesF1TENTH2021}.
+Particularmente para as corridas head-to-head, os veículos devem passar por
+testes de evitação de obstáculos estáticos e dinâmicos, simulando situações
+reais de tráfego.
+
+\section{Ambientes de Competição e suas Características Técnicas}
+
+O ambiente de corrida é meticulosamente projetado para apresentar desafios
+específicos aos sistemas autônomos. A pista, construída em superfície plana e
+reflexiva com bordas formadas por dutos de ar de 33 cm de diâmetro, cria
+condições particularmente desafiadoras para sistemas de percepção
+~\cite{OKelly2020F1TENTH}:
+
+\begin{itemize}
+      \item Os feixes do LiDAR frequentemente refletem no solo reflexivo, gerando ruídos e
+            falsas leituras
+      \item As câmeras de profundidade enfrentam dificuldades com a detecção adequada dos
+            limites da pista
+      \item As bordas curvas dos dutos de ar criam padrões de reflexão não-lineares e
+            complexos
+\end{itemize}
+
+O LiDAR YDLIDAR X4PRO apresenta características que podem ajudar a lidar com
+essas condições desafiadoras da pista, incluindo sua forte resistência a
+interferências de luz ambiente (tolerância de até 40000 Lux) e capacidade de
+medição estável em superfícies com diferentes refletividades. A resolução
+angular configurável permite ajustes para obter o equilíbrio ideal entre
+densidade de pontos e frequência de atualizações, fundamentais para a navegação
+precisa nas condições específicas da competição~\cite{OKelly2020F1TENTH}.
+
+A largura mínima de 90 centímetros (equivalente a três larguras de carro) é
+especificamente calculada para permitir manobras de ultrapassagem durante as
+corridas head-to-head, exigindo sistemas sofisticados de planejamento de
+trajetória. O circuito combina intencionalmente elementos diversos como:
+
+\begin{itemize}
+      \item Pontos de estrangulamento que forçam decisões estratégicas de posicionamento
+      \item Curvas fechadas que testam os limites dos algoritmos de controle
+      \item Retas que permitem maximização de velocidade e avaliação de sistemas de
+            controle longitudinal
+      \item Curvas extra-largas que abrem possibilidades para múltiplas linhas de corrida
+            otimizadas
+\end{itemize}
+
+A combinação do motor EZRUN 3665SD-3200KV com o controlador VESC MINI 6.7
+oferece uma resposta dinâmica adequada para enfrentar estes diversos elementos
+da pista. O motor fornece torque suficiente para aceleração rápida nas retas,
+enquanto o controle preciso oferecido pelo VESC permite ajustes finos nas
+curvas e manobras de ultrapassagem. A capacidade de programação avançada do
+VESC possibilita a implementação de diferentes perfis de controle otimizados
+para cada seção do circuito~\cite{BalachandranF1TENTH2020}.
+
+Esta diversidade de elementos não é aleatória, mas cuidadosamente planejada
+para testar a versatilidade dos algoritmos implementados sob diferentes
+condições, simulando os variados cenários que veículos autônomos reais
+enfrentam~\cite{BalachandranF1TENTH2020}.
+
+\section{Estrutura e Funcionamento da Competição}
+
+\subsection{Inspeção técnica e verificação de conformidade}
+
+A competição inicia com uma rigorosa fase de inspeção técnica, onde cada
+veículo é minuciosamente avaliado quanto à conformidade com as especificações
+técnicas~\cite{F1TENTHRules2023}. Esta etapa inclui:
+
+\begin{itemize}
+      \item Verificação dimensional do chassi e componentes
+      \item Teste dos sistemas de parada de emergência sob diferentes condições
+      \item Validação das especificações do LiDAR e outros sensores
+      \item Confirmação de que todo processamento ocorre a bordo
+\end{itemize}
+
+Os componentes selecionados para o projeto – motor EZRUN 3665SD-3200KV, VESC
+MINI 6.7, LiDAR YDLIDAR X4PRO e Raspberry Pi 4B – foram escolhidos considerando
+sua conformidade com os requisitos da inspeção técnica. As especificações
+detalhadas de cada componente facilitam a documentação necessária para este
+processo, enquanto as capacidades de diagnóstico do sistema VESC e a interface
+de software ROS2 permitem demonstrar claramente o funcionamento dos sistemas
+críticos durante a avaliação~\cite{F1TENTHRules2023}.
+
+Veículos que não atendem integralmente às especificações são desclassificados
+ou reclassificados para a Classe Aberta, dependendo da natureza da
+não-conformidade.
+
+\subsection{Time Trial: avaliação de desempenho individual}
+
+O Time Trial constitui a segunda fase da competição, estruturada em duas
+baterias de 5 minutos cada. Nesta modalidade, cada veículo compete
+individualmente na pista, buscando:
+
+\begin{itemize}
+      \item Completar o maior número possível de voltas consecutivas sem interrupções
+      \item Registrar a volta mais rápida possível durante o período alocado
+\end{itemize}
+
+O sistema de pontuação é deliberadamente projetado para equilibrar velocidade e
+consistência, combinando o tempo da volta mais rápida com o número de voltas
+consecutivas completadas sem intervenção humana~\cite{ShinF1TENTH2020}. Esta
+abordagem força as equipes a desenvolverem soluções que balanceiem:
+
+\begin{itemize}
+      \item Algoritmos agressivos de otimização de trajetória para velocidade máxima
+      \item Sistemas robustos de controle que garantam consistência entre múltiplas voltas
+      \item Estratégias de gerenciamento de risco que minimizem a probabilidade de falhas
+\end{itemize}
+
+A integração do VESC MINI 6.7 com ROS2 conforme detalhado na documentação do
+projeto proporciona um sistema de controle preciso e adaptável, crucial para o
+desempenho consistente na fase de Time Trial. A capacidade de ajustar
+parâmetros de controle PID e perfis de velocidade permite otimizar o veículo
+tanto para voltas rápidas quanto para desempenho consistente ao longo de
+múltiplas voltas, alinhando-se perfeitamente com os critérios de pontuação
+desta fase~\cite{ShinF1TENTH2020}.
+
+\subsection{Corridas Head-to-Head: o desafio máximo da autonomia}
+
+A fase final e mais complexa é a Corrida Head-to-Head, onde dois veículos
+competem simultaneamente na pista. Esta modalidade representa o ápice dos
+desafios de autonomia, exigindo:
+
+\begin{itemize}
+      \item Sistemas robustos de detecção e rastreamento de outros veículos em movimento
+      \item Algoritmos adaptativos de planejamento de trajetória que considerem obstáculos
+            dinâmicos
+      \item Estratégias sofisticadas de ultrapassagem que calculem riscos e oportunidades
+      \item Capacidade de ajuste dinâmico da linha de corrida baseado na posição do
+            oponente
+\end{itemize}
+
+O LiDAR YDLIDAR X4PRO, com sua capacidade de varredura de 360° e alta
+frequência de amostragem (5kHz), fornece dados cruciais para a detecção de
+outros veículos durante as corridas head-to-head. A resolução angular permite
+identificar com precisão a posição do oponente, enquanto a Raspberry Pi 4B
+oferece o poder de processamento necessário para executar algoritmos complexos
+de planejamento de trajetória e tomada de decisões em tempo real, fundamentais
+para implementar estratégias eficazes de ultrapassagem
+~\cite{GopalarathnamF1TENTH2022}.
+
+As corridas são organizadas em formato de eliminatórias, com os veículos mais
+rápidos das fases de Time Trial recebendo posições favoráveis no grid
+~\cite{GopalarathnamF1TENTH2022}. Uma característica crucial desta fase é a
+necessidade de combinar velocidade máxima com tomada de decisão defensiva e
+ofensiva, similar aos desafios enfrentados por veículos autônomos em ambientes
+urbanos densos.
+
+\section{Implicações das Regulamentações para o Desenvolvimento Customizado}
+
+As regulamentações da F1TENTH impactam diretamente as decisões de projeto no
+desenvolvimento de veículos customizados. Considerando o desenvolvimento de uma
+versão personalizada que atenda às regulações, é necessário:
+
+\begin{enumerate}
+      \item Equilibrar o poder computacional com restrições de tamanho e energia, optando
+            por plataformas que ofereçam desempenho otimizado para algoritmos específicos
+            implementados. A Raspberry Pi 4B representa este equilíbrio, oferecendo
+            processamento suficiente em um formato compacto e com consumo energético
+            moderado compatível com as baterias típicas de veículos RC em escala 1:10.
+
+      \item Desenvolver estratégias de fusão sensorial que compensem as limitações do LiDAR
+            principal, potencialmente incorporando dados de IMUs, encoders e câmeras dentro
+            dos limites regulatórios~\cite{YangF1TENTH2022}. A integração entre o LiDAR
+            YDLIDAR X4PRO e os encoders disponíveis através do VESC MINI 6.7 possibilita
+            implementar fusão sensorial eficaz para melhorar a percepção e navegação.
+
+      \item Implementar sistemas de controle adaptáveis que possam alternar entre modos de
+            operação otimizados para diferentes segmentos da pista e situações
+            competitivas. O VESC MINI 6.7, com sua capacidade de programação avançada e
+            ajuste de parâmetros em tempo real via comunicação com a Raspberry Pi, permite
+            a implementação destes sistemas de controle adaptáveis.
+
+      \item Criar algoritmos de planejamento que incorporem tanto conhecimento a priori do
+            circuito quanto capacidade de adaptação a condições dinâmicas durante as
+            corridas head-to-head~\cite{MoralesF1TENTH2021}
+
+      \item Projetar sistemas de segurança que não apenas atendam aos requisitos mínimos,
+            mas que também sejam suficientemente robustos para permitir operação agressiva
+            próxima aos limites físicos do veículo. As proteções integradas do VESC MINI
+            6.7 (sobrecorrente, sobretensão, temperatura) fornecem uma base sólida para
+            implementar estes sistemas de segurança.
+\end{enumerate}
+
+As regulamentações, embora restritivas, criam um ambiente de inovação focada
+onde soluções algorítmicas sofisticadas ganham precedência sobre vantagens de
+hardware, refletindo adequadamente os desafios enfrentados no desenvolvimento
+de veículos autônomos em escala real~\cite{OKelly2020F1TENTH}. Os componentes
+selecionados para este projeto demonstram um equilíbrio adequado entre
+desempenho e conformidade regulatória, proporcionando uma plataforma viável
+para competir efetivamente na categoria F1TENTH.
