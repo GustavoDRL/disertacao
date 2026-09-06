@@ -1,8 +1,820 @@
 \chapter{Estado da Arte}\label{cap:estArte}
 
-\lipsum[34]
+A corrida autônoma ocupa uma posição peculiar na literatura de veículos
+autônomos: é o único cenário em que o objetivo declarado é operar o veículo no
+limite da aderência, e em que o critério de sucesso --- o tempo de volta --- é
+um número escalar, medido sem ambiguidade e comparável entre trabalhos
+\cite{Betz2022Survey}. Essa combinação transformou a corrida num banco de
+provas para percepção, planejamento, controle e aprendizado de máquina, num
+regime em que as aproximações que sustentam a condução urbana deixam de valer.
 
-\section*{Trabalhos Relacionados a Isto}\label{sec:primTrab}
-\addcontentsline{toc}{section}{Trabalhos Relacionados a Isto}
+Este capítulo organiza a literatura em torno das decisões de projeto que este
+trabalho de fato tomou. A cascata implementada tem três etapas encadeadas, e
+cada uma delas herda um problema aberto de uma linha de pesquisa distinta:
 
-\lipsum[34-36]
+\begin{itemize}
+    \item \textbf{E1} --- um especialista de \textit{pure pursuit} operando
+          sobre uma linha de corrida de curvatura mínima, que fixa o tempo de
+          referência $T_{pp}$ e produz os rótulos das etapas seguintes. Herda a
+          literatura de otimização de trajetória e seguimento geométrico.
+    \item \textbf{E2} --- uma rede convolucional unidimensional compacta que
+          aprende por imitação a política do especialista, com ruído de coleta
+          estilo DART calibrado por pista. Herda a literatura de clonagem de
+          comportamento e o problema de desvio de distribuição.
+    \item \textbf{E3} --- um agente de aprendizado por reforço \textit{residual}
+          cuja ação se soma à saída da rede de imitação, e não à do especialista
+          geométrico. Herda a literatura de aprendizado por reforço para corrida
+          e de políticas residuais.
+\end{itemize}
+
+Uma advertência precede tudo o que se segue. \textbf{Todos os resultados deste
+trabalho citados neste capítulo foram obtidos em simulação}, no ambiente
+\texttt{f110\_gym} \cite{OKelly2020F1TENTH} e na ponte ROS2 derivada dele
+\cite{f1tenthgymros, f1tenthgymufabc}. Nenhuma política foi executada no veículo
+físico. Sempre que este capítulo comparar um resultado próprio com um resultado
+da literatura obtido em hardware, a assimetria será dita explicitamente ---
+porque ela é, hoje, a principal limitação do trabalho e o objeto da fase
+seguinte.
+
+O capítulo está organizado em seis partes. A Seção~\ref{sec:arte-plataformas}
+trata das plataformas e simuladores para corrida em escala reduzida, e do que
+significa escolher um simulador em vez de outro. A
+Seção~\ref{sec:arte-classico} percorre o planejamento e o controle clássicos:
+linha de corrida, \textit{pure pursuit}, controle preditivo e os métodos
+reativos. A Seção~\ref{sec:arte-il} trata do aprendizado por imitação e do
+desvio de distribuição que o DART ataca. A Seção~\ref{sec:arte-rl} trata do
+aprendizado por reforço aplicado à corrida, com atenção particular à
+formulação residual. A Seção~\ref{sec:arte-s2r} trata da transferência
+simulação-realidade, que é a fase seguinte deste trabalho e não uma entrega
+dele. A Seção~\ref{sec:arte-lacuna} fecha posicionando a lacuna: o que este
+trabalho faz que os citados não fazem, e o que eles fazem que este não faz.
+
+\section{Plataformas e simuladores para corrida autônoma em escala}\label{sec:arte-plataformas}
+
+\subsection{Do veículo de competição ao modelo em escala}
+
+A pesquisa em corrida autônoma se distribui por uma faixa larga de escalas. No
+extremo superior estão os veículos de competição de tamanho real, como os da
+Indy Autonomous Challenge, cujo software integra percepção multissensorial,
+planejamento em ambiente adversarial e controle a mais de 250~km/h
+\cite{Betz2023TUM}. No extremo inferior estão os modelos 1:43 usados para
+estudar controle ótimo em ciclo fechado, em que a pista cabe numa mesa e a
+captura de movimento externa fornece pose exata a alta frequência
+\cite{Liniger2015Optimization}. Entre os dois, a escala 1:10 se estabeleceu como
+o compromisso dominante: reproduz a dinâmica de um veículo Ackermann com
+deslizamento lateral relevante, admite os mesmos sensores e a mesma pilha de
+software de um veículo real, e cabe num orçamento acadêmico
+\cite{Betz2022Survey}.
+
+A revisão sistemática de Betz e colaboradores \cite{Betz2022Survey}, que examina
+233 trabalhos publicados até 2021, é a referência de mapa do campo utilizada
+neste capítulo. Ela organiza a literatura em percepção, planejamento, controle e
+abordagens fim a fim, e registra dois achados que interessam diretamente ao
+posicionamento deste trabalho: a predominância de estudos de veículo único sobre
+estudos multiagente, e a carência de conjuntos de dados públicos para o regime de
+alta velocidade --- carência que empurra a validação inicial para a simulação e
+torna a fidelidade do simulador uma questão de primeira ordem, e não de
+engenharia acessória.
+
+\subsection{A plataforma F1TENTH}
+
+A plataforma F1TENTH foi apresentada como ambiente aberto de avaliação para
+controle contínuo e aprendizado por reforço \cite{OKelly2020F1TENTH}. Sua
+proposta original combina três elementos que raramente aparecem juntos: um
+veículo físico de custo acessível com sensoriamento LiDAR e computação
+embarcada; um simulador com modelo de veículo de faixa única (\textit{single
+track}) calibrado contra o veículo físico; e um conjunto de \textit{benchmarks}
+padronizados --- planejamento cinodinâmico estático, planejamento cinodinâmico
+\textit{online} e jogos dinâmicos multiagente.
+
+O número mais citado desse trabalho é a discrepância de 0,61\% entre tempos de
+volta simulados e medidos no veículo real \cite{OKelly2020F1TENTH}. Ele merece
+leitura cuidadosa, porque é frequentemente lido como se o simulador fosse fiel
+por construção. Ele não é: a discrepância foi obtida com identificação
+sistemática de parâmetros e com randomização de domínio aplicada exatamente para
+fechar essa diferença. O que o número atesta é que a diferença \textbf{pode} ser
+fechada nessa escala, com esse esforço --- não que ela seja pequena por padrão.
+
+A plataforma consolidou-se também como veículo pedagógico. Agnihotri e
+colaboradores \cite{Agnihotri2020Teaching} descrevem o currículo de oito
+laboratórios construído sobre o carro 1/10, e Ueter e colaboradores
+\cite{Ueter2020CPS} relatam o caso de um projeto estudantil de dois semestres em
+sistemas ciber-físicos organizado sobre a mesma base. Esses dois trabalhos são
+relevantes aqui menos pelos seus resultados e mais por um efeito colateral: o uso
+educacional consolidou um repertório de algoritmos de referência --- seguimento
+de parede, seguimento de vão, \textit{pure pursuit} --- que qualquer trabalho
+sobre a plataforma pode assumir como conhecido, e contra o qual qualquer
+proposta nova é implicitamente comparada.
+
+\subsection{Simuladores: o compromisso entre fidelidade e taxa de amostragem}
+
+Existem pelo menos duas famílias de simuladores para a plataforma, e a escolha
+entre elas não é neutra.
+
+A primeira é a dos simuladores baseados em ROS e Gazebo, exemplificada pelo
+\textit{f1tenth.dev} \cite{Babu2020Simulator}. A vantagem é a fidelidade da
+interface: os mesmos nós, os mesmos tópicos e as mesmas mensagens do veículo
+real, o que torna a transferência de código para o hardware quase trivial. A
+desvantagem é o custo por passo de simulação --- física tridimensional com
+detecção de colisão de malha e um grafo de computação distribuído entre
+processos. Para aprendizado por reforço, que exige centenas de milhares a
+milhões de transições, esse custo é proibitivo.
+
+A segunda é a dos simuladores dedicados de duas dimensões, com modelo de faixa
+única e varredura LiDAR sintetizada por lançamento de raios sobre um mapa de
+ocupação. É o caso do ambiente \texttt{f110\_gym} distribuído com a plataforma
+\cite{OKelly2020F1TENTH}, adotado por este trabalho. O ganho é de ordem de
+grandeza em vazão; a perda é a interface, que deixa de ser ROS2.
+
+A resposta deste trabalho a esse compromisso é não escolher: usar o ambiente
+rápido para treinar e avaliar, e a ponte ROS2 \cite{f1tenthgymros,
+f1tenthgymufabc} como camada final de verificação, em que o artefato exportado
+roda como nó ROS2 dentro de um contêiner, sujeito ao mesmo relógio e à mesma
+fila de mensagens do veículo. A justificativa dessa camada e o defeito que ela
+capturou --- e que nenhuma outra camada capturou --- estão no
+Capítulo~\ref{cap:metodologia}. O ponto de estado da arte é que a divisão entre
+``simulador de treino'' e ``simulador de interface'' não é um detalhe de
+implementação: ela é o que permite treinar com o orçamento de amostras que o
+aprendizado por reforço exige sem abrir mão de medir a política no formato em
+que ela será embarcada.
+
+\subsection{Verificação e teste como parte da plataforma}
+
+Duas linhas de trabalho tratam a plataforma não como ambiente de execução, mas
+como objeto de verificação.
+
+Ivanov e colaboradores \cite{Ivanov2020Verifying} tomam um controlador neural
+treinado por aprendizado por reforço profundo (DDPG e TD3) sobre varreduras
+LiDAR e tentam verificar formalmente propriedades de segurança com a ferramenta
+Verisig. O resultado é um limite: as ferramentas da época escalam até cerca de
+40 raios LiDAR, e a verificação exige um modelo de observação analítico do
+sensor. O trabalho também documenta padrões de falha do LiDAR real que podem ser
+reproduzidos em simulação, e estabelece um \textit{benchmark} deliberadamente
+difícil para a comunidade de verificação. Para este trabalho, a leitura relevante
+é negativa e deve ser dita: a rede de imitação aqui empregada consome
+\textbf{1080} feixes e é uma rede convolucional, duas características que a
+colocam fora do alcance das ferramentas descritas naquele estudo.
+
+Bak e colaboradores \cite{Bak2021Stress} atacam o mesmo problema por amostragem
+em vez de por prova. O método usa RRT \cite{Karaman2011Optimal} para explorar
+sistematicamente perturbações no cenário de ultrapassagem, e encontra até 4,7
+vezes mais colisões que a busca aleatória, chegando a um aumento de 109,6 vezes
+na segunda metade da pista. É um argumento forte a favor de teste dirigido
+contra teste por amostragem uniforme, e um recado sobre o significado de uma
+taxa de conclusão de voltas medida em condições nominais: ela mede o
+comportamento médio, não a existência de um cenário adversarial que o quebre.
+Este trabalho mede taxa de conclusão de voltas em condições nominais e sob
+randomização de coeficiente de atrito, e \textbf{não} executa busca adversarial
+--- uma limitação declarada na Seção~\ref{sec:arte-lacuna}.
+
+\section{Planejamento e controle clássicos em corrida}\label{sec:arte-classico}
+
+\subsection{Linha de corrida: da centerline à curvatura mínima}
+
+O problema de encontrar a trajetória mais rápida dentro dos limites da pista é
+distinto do problema de planejamento de movimento em ambiente com obstáculos. A
+análise formal de Karaman e Frazzoli \cite{Karaman2011Optimal} estabeleceu que
+PRM e RRT, embora probabilisticamente completos, \textbf{não} são
+assintoticamente ótimos, e propôs PRM*, RRG e RRT* com garantia de otimalidade
+assintótica. Esse arcabouço é a referência para planejamento em espaços de
+configuração de alta dimensão e ambientes desestruturados, e é justamente por
+isso que ele não é a ferramenta natural para a linha de corrida: o circuito é
+fechado, periódico e sem obstáculos, e o que se quer é um ótimo global de um
+funcional de tempo sobre uma faixa, não um caminho viável num espaço cheio.
+
+A formulação que domina a literatura de corrida é a otimização de curvatura
+mínima de Heilmeier e colaboradores \cite{Heilmeier2020MinCurv}, que resolve um
+problema quadrático sobre o afastamento lateral em relação à linha central,
+minimizando a curvatura ao longo do circuito, e em seguida computa um perfil de
+velocidade compatível com um modelo de aderência. A implementação de referência
+desse método \cite{TUMFTMRaceTrajectory} é a origem das linhas de corrida
+distribuídas com os mapas oficiais da plataforma \cite{F1TENTHRaceTracks}.
+Abordagens alternativas usam otimização sem derivadas: o relatório de Misra,
+Zheng e Tang \cite{Misra2024Report} emprega CMA-ES para otimizar conjuntamente
+a trajetória e o perfil de velocidade sobre a mesma plataforma.
+
+Este trabalho \textbf{não} reimplementa o otimizador. Ele consome a linha de
+corrida publicada com os mapas e aplica sobre ela duas correções que a
+literatura de otimização de trajetória não precisa fazer, e que aparecem quando
+a linha encontra um simulador de dinâmica diferente do que a produziu. A
+primeira é geométrica: a linha publicada usa a pista inteira, aproximando-se a
+0,925~m do centro onde a meia-largura é 1,10~m; descontada a meia-largura do
+veículo, restam cerca de dois centímetros de folga. A linha foi otimizada para
+um veículo pontual, e segui-la com perfeição já raspa o muro. A segunda é
+dinâmica: o perfil de velocidade foi otimizado para o modelo de pneu do
+otimizador, não para o modelo de faixa única deste simulador, e chega a pedir
+8~m/s numa curva de raio 6,5~m. As duas correções --- encolher o afastamento
+lateral e limitar a velocidade por uma aceleração lateral admissível --- são
+calibrações que o modelo mínimo não enxerga. O registro dessa incompatibilidade
+é, em si, um dado sobre a portabilidade de linhas de corrida publicadas entre
+simuladores.
+
+\subsection{Seguimento geométrico de trajetória: pure pursuit}
+
+O \textit{pure pursuit} \cite{Coulter1992PurePursuit} é o controlador de
+seguimento de caminho mais antigo e mais usado da robótica móvel de tração
+Ackermann. A formulação é puramente geométrica: escolhe-se um ponto da
+trajetória a uma distância de antecipação à frente do veículo e computa-se o
+arco de circunferência que liga a pose atual a esse ponto, do qual sai
+diretamente o ângulo de esterço. A distância de antecipação é tipicamente afim
+na velocidade, o que dá ao controlador um comportamento estável em regime e uma
+tendência conhecida a cortar curvas fechadas quando a antecipação é longa
+demais.
+
+As limitações do método são bem documentadas e relevantes aqui. Ele não tem
+modelo dinâmico, portanto não antecipa perda de aderência; ele responde à
+geometria e não ao erro de curvatura, portanto acumula desvio em curvas de raio
+variável; e, sobretudo, ele exige \textbf{pose global} --- o veículo precisa
+saber onde está no mapa para escolher o ponto de mira. Em um veículo real isso
+significa depender de uma pilha de localização, com todo o custo computacional e
+todos os modos de falha associados \cite{fox2003adapting, thrun2005}.
+
+Este trabalho usa o \textit{pure pursuit} como \textbf{especialista}, e não como
+controlador de entrega. A escolha é motivada por três propriedades: o
+controlador é determinístico, é barato e é sem estado interno --- o que, como o
+Capítulo~\ref{cap:metodologia} detalha, torna-o imune a uma classe de erro de
+avaliação que atingiu as políticas aprendidas. Sobre a linha de corrida
+encolhida e com o limite de aceleração lateral, ele completa 50 de 50 voltas sem
+colisão e fixa o tempo de referência $T_{pp} = 59{,}000$~s, que é o denominador
+de todos os critérios das etapas seguintes.
+
+\subsection{Controle preditivo e suas variantes com aprendizado}
+
+A família de controle preditivo baseado em modelo (MPC) é a resposta clássica ao
+que falta ao \textit{pure pursuit}: um modelo do veículo e um horizonte de
+predição sobre o qual otimizar. Verschueren e colaboradores
+\cite{verschueren2016time} formulam a corrida como problema de tempo mínimo
+resolvido por MPC não linear com Hessiana exata; Liniger, Domahidi e Morari
+\cite{Liniger2015Optimization} aplicam MPC de contorno a veículos 1:43 em
+competição autônoma. O custo dessa família é sempre o mesmo: exige um modelo
+identificado, um estimador de estado e um solucionador que feche dentro do
+período de controle.
+
+Três linhas atacam esse custo por caminhos diferentes, e todas são pertinentes
+ao desenho deste trabalho.
+
+A primeira é o MPC iterativo de aprendizado (LMPC), em que o conjunto seguro e a
+função valor terminal são construídos a partir das voltas já executadas, de modo
+que o desempenho melhora a cada iteração \cite{Rosolia2020LMPC}. Wang, Zeng e
+Mangharam \cite{Wang2020LMPC} aplicam essa formulação à plataforma F1TENTH,
+implementando o controlador em C++ sobre o solucionador OSQP e reportando
+redução do tempo de volta ao longo das iterações; a validação foi conduzida
+primariamente em simulação, e os próprios autores registram a ausência de
+validação no veículo real como limitação.
+
+A segunda é a correção do modelo por aprendizado. Kabzan e colaboradores
+\cite{Kabzan2019LearningMPC} usam processos gaussianos para corrigir o modelo
+nominal do veículo dentro do laço de MPC. Jain e colaboradores, no BayesRace
+\cite{Jain2020Bayesrace}, levam a ideia a um extremo instrutivo: partem de um
+modelo cinemático estendido com apenas três parâmetros facilmente mensuráveis,
+coletam dados com um controlador simples de \textit{pure pursuit}, treinam
+processos gaussianos para corrigir a discrepância entre esse modelo e a dinâmica
+real, e alimentam com o resultado um MPC não linear. O desempenho se aproxima do
+de controladores que usam modelos dinâmicos completos e precisamente
+identificados, com esforço de identificação drasticamente menor. A limitação
+declarada é o tempo de execução do controlador, da ordem de 0,26~s por passo.
+
+O BayesRace merece destaque especial neste capítulo porque ele é o vizinho mais
+próximo da ideia central deste trabalho, e a diferença entre os dois é exatamente
+o que dá conteúdo à proposta. Nos dois casos há uma \textbf{correção aprendida
+somada a uma base projetada à mão}. No BayesRace o resíduo vive no
+\textbf{espaço do modelo}: o processo gaussiano corrige a predição de dinâmica, e
+quem decide a ação continua sendo o otimizador. Neste trabalho o resíduo vive no
+\textbf{espaço da ação}: não há modelo a corrigir nem otimizador no laço, e a
+correção incide diretamente sobre o comando enviado ao atuador. A consequência
+prática é de custo computacional e de dependência: o BayesRace precisa de estado
+estimado e de solucionador em tempo real; a política composta aqui é uma
+avaliação direta de duas redes sobre a varredura LiDAR.
+
+A terceira linha é a substituição do otimizador por uma política aprendida, e é
+o assunto das duas seções seguintes.
+
+\subsection{Métodos reativos: seguimento de parede e de vão}
+
+No extremo oposto do MPC estão os controladores reativos, que mapeiam a
+varredura do sensor diretamente em comando sem construir mapa, estimar pose ou
+planejar trajetória. O seguimento de parede regula a distância lateral a uma
+parede de referência por realimentação proporcional-integral-derivativa; o
+seguimento de vão, formalizado por Sezer e Gokasan
+\cite{Sezer2012FollowGap}, identifica a maior abertura livre no campo de visão e
+dirige para o seu centro, ponderando o alvo pela direção do objetivo.
+
+Os dois são parte do repertório canônico da plataforma
+\cite{Agnihotri2020Teaching, Babu2020Simulator} e estão implementados neste
+trabalho, conforme descrito no Capítulo~\ref{cap:proposta}. Eles não competem em
+tempo de volta com uma linha de corrida otimizada --- não têm informação para
+isso, já que enxergam apenas o horizonte do sensor. O que eles têm, e que
+nenhum método baseado em trajetória global tem, é a independência de pose: um
+seguidor de vão funciona num circuito desconhecido, sem mapa e sem localização.
+
+Essa propriedade é o fio que liga esta seção às seguintes. A pergunta que
+organiza a segunda metade do capítulo é se é possível obter o desempenho de uma
+trajetória globalmente otimizada mantendo a independência de pose de um
+controlador reativo. O aprendizado por imitação é a resposta que a literatura dá
+a essa pergunta, e é a etapa E2 deste trabalho.
+
+\section{Aprendizado por imitação e o desvio de distribuição}\label{sec:arte-il}
+
+\subsection{Clonagem de comportamento fim a fim}
+
+A ideia de treinar uma rede para reproduzir os comandos de um condutor a partir
+da leitura bruta de um sensor é antiga: o ALVINN \cite{Pomerleau1989ALVINN}
+dirigia um veículo a partir de imagens de baixa resolução com uma rede de uma
+camada oculta. A retomada moderna \cite{Bojarski2016EndToEnd} demonstrou que uma
+rede convolucional treinada com pares imagem-esterço coletados de um condutor
+humano aprende a manter faixa sem que nenhum módulo de percepção intermediário
+seja especificado.
+
+Transposta para a corrida em escala, a formulação troca a câmera pelo LiDAR
+bidimensional, e o condutor humano por um controlador de referência. O
+especialista pode ser um \textit{pure pursuit} sobre uma linha otimizada --- como
+neste trabalho --- ou um MPC, e o rótulo é o comando limpo que ele emitiria. O
+ganho estrutural é o que a subseção anterior antecipou: o especialista precisa de
+pose global, a rede treinada não --- ela recebe apenas a varredura e a
+proprioceptiva, e produz o comando. A competência que dependia da localização é
+\textbf{destilada} numa política que não depende dela.
+
+\subsection{Redes compactas sobre LiDAR bidimensional}
+
+A arquitetura adotada na etapa E2 deste trabalho é a do TinyLidarNet
+\cite{Zarrar2024TinyLidarNet}, uma rede convolucional unidimensional que consome
+a varredura LiDAR bruta e produz esterço e velocidade. O trabalho original
+demonstra que uma rede dessa classe, treinada com um conjunto pequeno de
+demonstrações, obteve o terceiro lugar em um Grande Prêmio F1TENTH real, e
+enfatiza a viabilidade de inferência em microcontroladores --- que é a
+propriedade que interessa a qualquer trabalho com ambição de embarcar a política.
+
+A instância usada aqui é a variante média, com aproximadamente 221 mil
+parâmetros, consumindo os 1080 feixes brutos em dois quadros empilhados mais três
+grandezas proprioceptivas. Uma decisão de implementação merece registro por sua
+relação com a literatura de transferência: o pré-processamento --- tratamento de
+leituras não finitas, saturação e normalização --- vive \textbf{dentro} do grafo
+da rede, e não numa rotina externa. A consequência é que o artefato exportado
+carrega o contrato de observação junto consigo, e o nó que o executa não precisa
+manter uma segunda implementação do pré-processamento. É uma resposta direta a
+uma classe de defeito que este projeto mediu na própria pele, documentada no
+Capítulo~\ref{cap:metodologia}: duas cópias da mesma transformação divergem.
+
+Vale contrastar com \cite{Ivanov2020Verifying}, que treina controladores neurais
+sobre 21 a 61 raios com o objetivo explícito de manter o sistema dentro do
+alcance da verificação formal. As duas escolhas são coerentes com seus
+objetivos e mutuamente exclusivas: reduzir a entrada compra verificabilidade e
+custa resolução espacial; consumir a varredura inteira compra desempenho e
+custa verificabilidade.
+
+\subsection{O desvio de distribuição e as duas famílias de resposta}
+
+A clonagem de comportamento tem um defeito estrutural conhecido, e é dele que
+depende quase todo o desenho da etapa E2. A rede é treinada sobre a distribuição
+de estados \textbf{induzida pelo especialista}, mas é executada sobre a
+distribuição induzida por ela mesma. Um erro pequeno desloca o veículo para um
+estado ligeiramente fora da distribuição de treino, onde o erro seguinte é maior,
+e assim por diante. Ross, Gordon e Bagnell \cite{Ross2011DAgger} formalizaram
+esse acúmulo mostrando que, no pior caso, o custo cresce quadraticamente com o
+horizonte de execução, contra crescimento linear se o problema fosse de
+aprendizado supervisionado convencional.
+
+A literatura oferece duas famílias de resposta.
+
+A primeira é \textbf{interativa}: o DAgger \cite{Ross2011DAgger} executa a
+política aprendida, coleta os estados que ela de fato visita, e consulta o
+especialista para rotular esses estados, agregando o resultado ao conjunto de
+treino. A garantia é forte, mas o preço é a exigência de manter o especialista
+disponível \textbf{durante} o treino, em cada iteração. Quando o especialista é
+humano, isso é caro; quando é um controlador que exige pose global, é uma
+dependência que se quer justamente eliminar.
+
+A segunda é \textbf{por injeção de ruído na coleta}: o DART
+\cite{Laskey2017DART} perturba a ação \textbf{executada} pelo especialista com
+ruído, mas rotula o estado visitado com a ação \textbf{limpa} que o especialista
+teria emitido. O veículo passa a visitar estados fora da trajetória ideal ---
+que é a distribuição em que a política aprendida vai operar --- e aprende a
+retornar dela. A coleta permanece em uma única passada, sem especialista no laço
+de treino. É essa a formulação adotada aqui.
+
+Vale registrar, ao lado, o diagnóstico de Codevilla e colaboradores
+\cite{Codevilla2019Limitations} sobre os limites da clonagem de comportamento em
+condução autônoma: viés do conjunto de dados, confusão causal e alta variância
+entre execuções de treino com a mesma configuração. As três aparecem neste
+trabalho de forma reconhecível, e o Capítulo~\ref{cap:metodologia} descreve a
+instrumentação construída para não confundir nenhuma delas com um resultado.
+
+\subsection{O que a literatura não fixa: a magnitude do ruído}
+
+O DART \cite{Laskey2017DART} formula a escolha da magnitude do ruído como
+otimização de um substituto da perda esperada, mas na prática dos trabalhos
+aplicados o parâmetro aparece como um escalar único, escolhido por tentativa e
+mantido fixo ao longo de toda a coleta. Este trabalho mediu que esse escalar
+único é errado por construção quando a coleta atravessa pistas de dificuldade
+diferente.
+
+Com o mesmo desvio-padrão de 0,02~rad aplicado às três pistas de coleta, o
+especialista percorreu 43~km em Catalunya \textbf{sem uma única colisão},
+enquanto colidia a cada 7~km em Spielberg e em Silverstone. O efeito é composto e
+perverso: a pista em que o veículo mais colide durante a coleta é a que produz
+menos amostras e mais episódios truncados, e é justamente a pista em que a rede
+depois falha. Não se trata de incompetência do especialista --- avaliado sem
+ruído, ele completa todas as voltas em Silverstone.
+
+A resposta adotada foi calibrar o ruído \textbf{por pista}, contra um alvo de
+colisões por quilômetro fixado antes de qualquer medição, percorrendo a grade em
+ordem decrescente e escolhendo o maior nível cujo risco medido cabe no alvo ---
+porque menos ruído é menos cobertura fora da trajetória, que é o próprio ponto do
+DART. A calibração resultante separa Silverstone das demais com metade do ruído.
+A métrica é colisões por quilômetro, e não fração de episódios abortados, porque
+nesta escala de episódio qualquer risco por passo produz ``metade abortou'', o
+que diz mais sobre o comprimento do episódio do que sobre o ruído. O
+procedimento completo, com a discussão da incerteza de Poisson associada a
+poucos eventos por medição, está no Capítulo~\ref{cap:metodologia}.
+
+Esta é a primeira das quatro diferenças que a Seção~\ref{sec:arte-lacuna} vai
+consolidar: \textbf{a calibração por pista, contra um alvo pré-declarado, é uma
+operacionalização do DART que a literatura consultada não descreve}.
+
+\subsection{Generalização entre pistas}
+
+Medir uma política de corrida apenas no circuito em que ela foi treinada mede
+memorização tanto quanto competência. A literatura da plataforma reconhece o
+problema: Bosello, Tse e Pau \cite{Bosello2022CrossTrack} tratam explicitamente
+de treinar num circuito e correr em outro com política baseada em LiDAR, e
+Brunnbauer e colaboradores \cite{Brunnbauer2022Latent} usam aprendizado por
+reforço baseado em modelo com imaginação latente para obter transferência sem
+ajuste adicional.
+
+Este trabalho avalia a rede de imitação em circuitos distintos do circuito de
+avaliação dos critérios, com um cuidado metodológico que vale explicitar: o
+critério é \textbf{relativo ao controle}. Para cada circuito calcula-se a razão
+entre a taxa de conclusão da rede e a do próprio especialista, saturada em 1,0, e
+excluem-se os circuitos em que o especialista não completa volta alguma. A
+justificativa é medida e está no Capítulo~\ref{cap:metodologia}: um limiar
+absoluto seria uma trave impossível, já que o especialista completa 0\% das
+voltas em Monza e 17\% em Oschersleben; e sem a saturação em 1,0 uma média
+poderia ser aprovada com um circuito zerado, compensado por outro em que a rede
+supera o especialista.
+
+Nos três circuitos que entram no critério --- Catalunya, Silverstone e
+Oschersleben --- a razão medida foi 1,00, tanto na média quanto no pior caso, com
+15 de 15 voltas em cada um. Uma ressalva de leitura é obrigatória e não está
+implícita no número: dois desses três circuitos, Catalunya e Silverstone,
+integravam o conjunto de coleta; apenas Oschersleben está inteiramente fora dele.
+O critério mede generalização em relação à \textbf{pista de avaliação dos
+portões}, que é uma só, e não deve ser lido como generalização para circuitos
+integralmente inéditos exceto no caso de Oschersleben --- que é, aliás, o
+circuito de paredes mais finas e o que o especialista de referência menos
+completa.
+
+\section{Aprendizado por reforço para corrida}\label{sec:arte-rl}
+
+\subsection{Agentes treinados do zero e o custo da exploração}
+
+A formulação mais direta do problema por aprendizado por reforço trata a corrida
+como um processo de decisão de Markov cuja recompensa premia progresso e pune
+colisão, e treina uma política do zero. Os resultados mais impressionantes dessa
+linha vêm de domínios com orçamento computacional muito superior ao acadêmico
+típico: Wurman e colaboradores \cite{Wurman2022GranTurismo} treinaram um agente
+capaz de superar campeões humanos num simulador de corrida comercial, e Kaufmann
+e colaboradores \cite{Kaufmann2023DroneRacing} obtiveram desempenho de nível de
+campeão em corrida de drones com política treinada em simulação e executada em
+voo real.
+
+Na plataforma F1TENTH, a experiência reportada é mais sóbria. Evans, Jordaan e
+Engelbrecht \cite{Evans2023Comparing} comparam arquiteturas de aprendizado por
+reforço profundo para corrida em escala e documentam a dificuldade de políticas
+fim a fim treinadas do zero em obter, simultaneamente, tempo de volta competitivo
+e confiabilidade; em trabalho subsequente \cite{Evans2023Trajectory} os mesmos
+autores propõem exatamente uma correção desse problema, incorporando uma
+trajetória de referência ao sinal de recompensa. O padrão que emerge é
+consistente e é a justificativa central da arquitetura adotada aqui: o agente
+tabula rasa gasta a maior parte do seu orçamento de amostras aprendendo a não
+bater, que é competência que já existe pronta em um controlador clássico.
+
+O FastRLAP \cite{Stachowicz2023FastRLAP} ataca o mesmo problema por outra via, e
+é o contraponto mais forte a este trabalho na literatura consultada. O sistema
+aprende a dirigir agressivamente em menos de 20 minutos de treino \textbf{online
+no mundo real}, sem simulador e sem demonstrações de alto desempenho. Ele
+consegue isso combinando três ingredientes: inicialização das representações a
+partir de um grande conjunto de dados prévio de navegação, uma única demonstração
+de baixa velocidade, e um sistema de prática autônoma com máquina de estados
+finitos que seleciona objetivos e se recupera de colisões sem intervenção humana.
+As limitações declaradas pelos próprios autores são igualmente relevantes: o
+sistema exige um estimador de estado que forneça o vetor para o próximo ponto de
+controle, e não trata explicitamente de segurança.
+
+\subsection{Aprendizado por reforço residual}
+
+A formulação residual parte de uma observação simples: se já existe um
+controlador que resolve o grosso da tarefa, o aprendizado não precisa
+reaprendê-lo. Silver e colaboradores \cite{Silver2018ResidualPolicy} e Johannink
+e colaboradores \cite{Johannink2019Residual} propõem, de forma independente e
+quase simultânea, decompor a política final em uma base fixa e um resíduo
+aprendido, cuja ação se soma à da base:
+\[
+    a_{\text{final}} = \pi_{\text{base}}(o) + \pi_{\text{res}}(o).
+\]
+
+As vantagens são três e todas se aplicam aqui. A exploração parte de uma região
+viável do espaço de estados, e não de comportamento aleatório --- desde o
+primeiro passo o veículo dá voltas, e a coleta produz transições informativas. A
+base absorve a parte da tarefa que a engenharia clássica resolve bem, deixando ao
+aprendizado a parte que ela resolve mal --- tipicamente os efeitos difíceis de
+modelar. E a decomposição é uma forma de regularização: o resíduo é uma correção,
+não uma política completa, e limitar a sua amplitude limita o quanto a política
+final pode se afastar do comportamento conhecido da base.
+
+A literatura de controle residual em robótica \cite{Johannink2019Residual}
+tipicamente ancora o resíduo num controlador projetado à mão que \textbf{depende
+de estado estimado} --- realimentação de posição, controle de impedância,
+seguimento de trajetória. É aqui que este trabalho diverge.
+
+\subsection{A escolha deste trabalho: o resíduo sobre a rede de imitação}
+
+Na etapa E3, a ação do agente se soma à saída da \textbf{rede de imitação} da
+etapa E2, e não à do especialista de \textit{pure pursuit} da etapa E1:
+\[
+    a_{\text{final}} = \operatorname{clip}\left(a_{\text{IL}} + k \cdot a_{\text{RL}},\ -1,\ 1\right).
+\]
+
+A alternativa --- ancorar o resíduo no \textit{pure pursuit} --- é tentadora e
+foi rejeitada deliberadamente. Ela daria uma base mais rápida, já que o
+especialista completa a volta em 59,000~s contra 60,050~s da rede que o imita.
+Dois argumentos a derrubam.
+
+O primeiro é de \textbf{embarcabilidade}, e é o argumento decisivo. O
+\textit{pure pursuit} exige pose global, portanto exige localização. Se a base
+for ele, a política final herda essa dependência inteira: mapa, filtro de
+localização, orçamento computacional e modos de falha associados
+\cite{fox2003adapting}. A rede de imitação, ao contrário, enxerga apenas LiDAR e
+proprioceptiva. Ancorando o resíduo nela, a política final \textbf{não depende de
+pose global} e continua embarcável --- que é exatamente a propriedade que
+justifica a etapa E2 existir, e que seria desperdiçada ao voltar a depender do
+especialista na etapa seguinte. A decisão subordina o desempenho da linha de base
+à viabilidade da transferência, e o faz explicitamente.
+
+O segundo é de \textbf{falha graciosa}. Se o resíduo não aprender nada útil e a
+sua saída convergir para zero, a política composta degrada exatamente para a rede
+da etapa E2 --- que já passou os seus próprios critérios de aceite. O pior caso
+da etapa E3 é o resultado da etapa E2, e não um comportamento indefinido. A
+saturação em $[-1, 1]$ mantém a composição dentro do envelope do atuador, e os
+ganhos $k$ funcionam como \textbf{limite de autoridade} do resíduo: com
+$k_{\text{steer}} = 0{,}15$, a correção de esterço não pode dominar o comando da
+base. Reduzir esse ganho pela metade foi, empiricamente, a intervenção que mais
+comprou confiabilidade no desenvolvimento da etapa.
+
+O algoritmo é o Soft Actor-Critic \cite{Haarnoja2018SAC}, escolhido por ser fora
+de política --- portanto capaz de reaproveitar transições --- e por regularizar a
+exploração por entropia, o que é adequado a um espaço de ação contínuo e de baixa
+dimensão como o de uma correção. A implementação é a do Stable-Baselines3
+\cite{Raffin2021SB3}.
+
+O resultado é o produto final do trabalho: tempo de volta de \textbf{52,525~s},
+com intervalo de confiança de 95\% de $[52{,}51;\ 52{,}72]$, o que representa
+cerca de \textbf{11\% mais rápido que o especialista} que originou os rótulos, e
+7,5~s mais rápido que a rede de imitação que o resíduo corrige. A taxa de
+conclusão de voltas medida foi 0,9891, com 91 de 92 voltas completadas, e a
+degradação sob randomização do coeficiente de atrito, medida de forma pareada,
+foi de 0,0000 em taxa de conclusão e 0,0019 em tempo de volta. A ressalva
+estatística que acompanha os três resultados aprovados --- o limiar cai dentro do
+intervalo de confiança, por decisão pré-registrada e com motivo escrito antes da
+medição --- está no Capítulo~\ref{cap:metodologia} e vale integralmente para este
+número.
+
+\subsection{Um custo da formulação residual que a literatura não reporta}
+
+Há um achado deste trabalho que qualifica a formulação residual e que não foi
+encontrado na literatura consultada sobre políticas residuais. A política
+composta é \textbf{sensível a perturbação numérica irrelevante} num grau que a
+política de imitação isolada não é.
+
+Perturbando o vetor de ganhos por valores de $\varepsilon$ que varrem nove ordens
+de grandeza e reavaliando o mesmo ponto de controle com as mesmas sementes, a
+taxa de conclusão da política composta variou com amplitude de 0,0381, enquanto a
+da rede de imitação variou \textbf{zero}. Uma perturbação de $10^{-12}$ desloca a
+taxa de conclusão da política composta em quase quatro pontos percentuais. A
+perturbação não desloca o resultado numa direção: ela reembaralha \textbf{qual}
+episódio termina em colisão.
+
+A explicação é coerente com o que se espera de uma política mais rápida: o
+resíduo dirige mais perto do limite, e ali uma diferença mínima decide quem bate.
+A consequência para a leitura de qualquer resultado dessa família é que, quando a
+amplitude sob perturbação irrelevante é comparável à distância até o limiar, o
+número reproduzível é a \textbf{distribuição}, e não a realização --- quem
+reimplementar a composição com outra ordem de operações ou outro tipo de ponto
+flutuante medirá outro valor dessa faixa. O tratamento completo está no
+Capítulo~\ref{cap:metodologia}; o que interessa ao estado da arte é que trabalhos
+que reportam um valor pontual de taxa de conclusão para políticas residuais de
+alta velocidade podem estar reportando uma realização, e não uma estimativa.
+
+\section{Transferência simulação-realidade}\label{sec:arte-s2r}
+
+\subsection{As duas estratégias dominantes}
+
+A diferença entre o comportamento de uma política em simulação e no hardware é o
+obstáculo permanente da área, e a literatura consolidou duas estratégias
+principais \cite{Zhao2020Sim2Real}.
+
+A primeira é a \textbf{randomização}. Tobin e colaboradores
+\cite{Tobin2017DomainRand} randomizam a aparência visual do ambiente simulado de
+modo que o mundo real seja apenas mais uma amostra da distribuição de treino;
+Peng e colaboradores \cite{Peng2018DynamicsRand} aplicam a mesma lógica aos
+parâmetros de \textbf{dinâmica}, treinando sob uma distribuição de massas,
+atritos e atrasos. É a estratégia adotada por este trabalho na medida em que o
+coeficiente de atrito é sorteado a cada episódio e a robustez a essa variação é
+um critério de aceite explícito, medido de forma pareada. Ela não é, contudo,
+suficiente: a randomização de atrito não cobre discrepância de sensor, atraso de
+comunicação nem geometria de pista real.
+
+A segunda é a \textbf{identificação de sistema} --- ajustar o simulador ao
+veículo medido, em vez de alargar a distribuição de treino. É a estratégia
+central do trabalho original da plataforma \cite{OKelly2020F1TENTH}, e é o que
+sustenta a discrepância de 0,61\% em tempo de volta ali reportada. O BayesRace
+\cite{Jain2020Bayesrace} pode ser lido como uma terceira via entre as duas:
+aprende a discrepância em vez de eliminá-la ou de diluí-la.
+
+\subsection{O que a literatura mede ao atravessar a fronteira}
+
+Vale registrar o que os trabalhos que efetivamente atravessam a fronteira medem,
+porque é isso que define o que falta a este.
+
+Chisari e colaboradores \cite{Chisari2021LearningSim} treinam em simulação e
+correm com o veículo real, reportando desempenho de volta no hardware. Brunnbauer
+e colaboradores \cite{Brunnbauer2022Latent} demonstram transferência sem ajuste
+adicional para o veículo em escala. Zarrar e colaboradores
+\cite{Zarrar2024TinyLidarNet} medem a rede embarcada em competição real,
+reportando latência de inferência e colocação. Ivanov e colaboradores
+\cite{Ivanov2020Verifying} caracterizam padrões de falha do LiDAR real e os
+reproduzem em simulação --- que é a forma mais informativa de reportar a
+diferença, porque transforma a discrepância em algo simulável. E o FastRLAP
+\cite{Stachowicz2023FastRLAP} dispensa a fronteira ao treinar diretamente no
+mundo real.
+
+\subsection{A fronteira neste trabalho}
+
+O ponto mais avançado alcançado por este trabalho na direção do hardware é a
+execução da política exportada como \textbf{nó ROS2 dentro de um contêiner},
+sobre a ponte que reproduz os tópicos, o relógio e a fila de mensagens do veículo
+\cite{f1tenthgymros, f1tenthgymufabc}. Nessa configuração, a política da etapa E3
+percorreu 381~m numa janela de 60~s, publicando comandos a 20,00~Hz e sem
+nenhuma parada de emergência.
+
+Isso é o último ponto \textbf{antes} do hardware, e não o hardware. Não há dado
+coletado no veículo físico, não há mapa de pista real construído por SLAM, e
+nenhuma política deste trabalho foi executada no carro. As tarefas que compõem a
+fase seguinte estão identificadas e são consequência direta do que este capítulo
+descreve: caracterizar o sensor real --- taxa de publicação, número de feixes,
+abertura angular, fração de leituras inválidas ---; reparametrizar o simulador
+com o perfil medido; levantar a pista real por SLAM e derivar dela a linha
+central e a linha de corrida; reexecutar as três etapas sob o contrato de
+observação real; validar os controladores reativos no veículo \textbf{antes} de
+colocar uma rede neural no comando; e só então medir a política embarcada e
+comparar com a simulação.
+
+A ordem não é arbitrária. Validar o controlador reativo antes da política
+aprendida é requisito de segurança, e reparametrizar o simulador antes de
+retreinar evita gastar o orçamento de treino sobre um contrato de observação que
+o hardware não fornece --- que é precisamente o modo de falha que
+\cite{Ivanov2020Verifying} documenta ao caracterizar o LiDAR real.
+
+\section{Posicionamento: a lacuna e os seus limites}\label{sec:arte-lacuna}
+
+\subsection{O que este trabalho faz que os trabalhos citados não fazem}
+
+Quatro diferenças sustentam a contribuição, e nenhuma delas é ``um algoritmo
+novo''. Todas são decisões de composição e de método.
+
+\textbf{Primeira: o resíduo é ancorado numa política que só enxerga LiDAR.} A
+literatura de aprendizado por reforço residual ancora o resíduo em controladores
+que dependem de estado estimado \cite{Silver2018ResidualPolicy,
+Johannink2019Residual}. O BayesRace \cite{Jain2020Bayesrace}, que é o vizinho
+conceitual mais próximo, coloca o resíduo no espaço do \textbf{modelo}, corrigido
+por processos gaussianos e consumido por um MPC que exige pose e solucionador.
+Aqui a base é uma rede de imitação sem pose global, o resíduo vive no espaço da
+\textbf{ação}, e a composição inteira permanece embarcável. A escolha custa
+desempenho de linha de base --- 60,050~s contra 59,000~s do especialista --- e
+compra independência de localização. É um compromisso explícito, e a justificativa
+dele é a etapa seguinte do trabalho, não uma preferência estética.
+
+\textbf{Segunda: falha graciosa por construção.} Com a saturação e o limite de
+autoridade do resíduo, o pior caso da política composta é o comportamento da
+política de imitação, que já satisfaz critérios próprios. Essa propriedade é
+mencionada qualitativamente na literatura residual; aqui ela é uma consequência
+verificável da forma da composição, e a política de imitação que serve de piso
+tem os seus próprios números medidos.
+
+\textbf{Terceira: o ruído de coleta é calibrado por pista contra um alvo
+pré-declarado.} O DART \cite{Laskey2017DART} fixa o arcabouço; a prática aplicada
+usa um escalar único. Este trabalho mediu que um escalar único produz risco de
+colisão que varia por um fator de ordem dez entre circuitos, e que o circuito mais
+arriscado é o que produz menos dado e é o que a rede depois falha. A calibração
+resultante é reportada com o alvo, a grade percorrida e o risco medido em cada
+nível.
+
+\textbf{Quarta: os critérios de aceite são congelados antes da medição e viajam
+com o experimento.} A prática corrente na área reporta métrica agregada mais
+descrição de treino \cite{Betz2022Survey}. Este trabalho trata o momento em que o
+critério foi fixado como parte do resultado: um resultado obtido com critérios
+que não coincidem com os congelados no nascimento do experimento é declarado
+inválido, e não aprovado nem reprovado. O aparato completo é o assunto do
+Capítulo~\ref{cap:metodologia}, e é ele que dá sentido à quinta observação, que
+não é uma contribuição mas uma ressalva: a medição da sensibilidade numérica da
+política composta, reportada como limitação em vez de omitida.
+
+A Tabela~\ref{tab:arte_posicionamento} resume o posicionamento em relação aos
+trabalhos mais próximos.
+
+\begin{table}[htb]
+    \centering
+    \small
+    \begin{tabular}{|p{3.1cm}|p{2.3cm}|p{2.6cm}|p{2.2cm}|p{2.4cm}|}
+        \hline
+        \textbf{Trabalho} & \textbf{Paradigma} & \textbf{Política final exige pose global?} &
+        \textbf{Validação} & \textbf{Critério congelado antes?} \\
+        \hline
+        \cite{Wang2020LMPC} & LMPC & Sim & Simulação & Não declarado \\
+        \hline
+        \cite{Jain2020Bayesrace} & MPC + resíduo no modelo & Sim & Simulação (duas escalas) & Não declarado \\
+        \hline
+        \cite{Stachowicz2023FastRLAP} & RL online no mundo real & Sim (vetor ao próximo alvo) & Hardware & Não declarado \\
+        \hline
+        \cite{Zarrar2024TinyLidarNet} & Imitação fim a fim & Não & Hardware (competição) & Não declarado \\
+        \hline
+        \cite{Ivanov2020Verifying} & RL + verificação formal & Não & Hardware + prova & Propriedade formal \\
+        \hline
+        \cite{Evans2023Trajectory} & RL com recompensa guiada por trajetória & Trajetória de referência exigida no treino & Simulação & Não declarado \\
+        \hline
+        Este trabalho & Imitação + resíduo de RL & \textbf{Não} & \textbf{Simulação} & \textbf{Sim} \\
+        \hline
+    \end{tabular}
+    \caption{Posicionamento em relação aos trabalhos mais próximos. A coluna de
+    critério congelado registra se o texto declara que os limiares de aceite
+    foram fixados antes da medição.}
+    \label{tab:arte_posicionamento}
+\end{table}
+
+\subsection{O que os trabalhos citados fazem e este não faz}
+
+Um estado da arte que só elogia a literatura não posiciona nada. As lacunas deste
+trabalho em relação aos citados são as seguintes, e são declaradas sem atenuação.
+
+\begin{itemize}
+    \item \textbf{Nenhum experimento no veículo físico.} O FastRLAP
+          \cite{Stachowicz2023FastRLAP}, o TinyLidarNet
+          \cite{Zarrar2024TinyLidarNet}, o trabalho de verificação
+          \cite{Ivanov2020Verifying}, a transferência de
+          \cite{Chisari2021LearningSim} e \cite{Brunnbauer2022Latent} e a
+          própria plataforma \cite{OKelly2020F1TENTH} medem no hardware. Este
+          trabalho mede em simulação e, no máximo, num nó ROS2 dentro de um
+          contêiner. \textbf{Toda} comparação numérica deste texto com resultados
+          de campo é, portanto, assimétrica.
+    \item \textbf{Nenhuma corrida direta nem ultrapassagem.} O regulamento da
+          categoria \cite{F1TENTHRules2023} prevê corrida com dois veículos, e a
+          literatura trata do assunto tanto do lado do planejamento quanto do
+          lado do teste adversarial \cite{Bak2021Stress, Betz2022Survey}. Este
+          trabalho ataca exclusivamente o cenário de veículo único.
+    \item \textbf{Nenhuma garantia formal.} A abordagem de
+          \cite{Ivanov2020Verifying} produz uma prova sobre a política; aqui há
+          um critério estatístico sobre uma amostra finita, e a própria escolha
+          de arquitetura --- rede convolucional sobre 1080 feixes --- coloca a
+          política fora do alcance das ferramentas de verificação descritas.
+    \item \textbf{Nenhuma adaptação de modelo em linha.} LMPC
+          \cite{Rosolia2020LMPC, Wang2020LMPC}, MPC com processos gaussianos
+          \cite{Kabzan2019LearningMPC} e BayesRace \cite{Jain2020Bayesrace}
+          melhoram a cada volta executada. A política aqui é fixa após o treino.
+    \item \textbf{Nenhuma percepção por câmera nem fusão sensorial.} A política
+          consome exclusivamente LiDAR bidimensional e proprioceptiva. Isso é uma
+          escolha coerente com a embarcabilidade, mas exclui o trabalho da
+          discussão de percepção em alta velocidade que a revisão da área
+          identifica como desafio central \cite{Betz2022Survey}.
+    \item \textbf{Um simulador, um modelo de veículo, um circuito de portão.} A
+          fidelidade do modelo de faixa única e a representatividade do circuito
+          de avaliação são premissas herdadas, não resultados verificados. O
+          Capítulo~\ref{cap:metodologia} lista as limitações do detector de
+          colisão do simulador que precisaram ser corrigidas antes que qualquer
+          número fosse reportável --- o que é, por si, evidência de que a premissa
+          de fidelidade merece a desconfiança que este parágrafo lhe dá.
+\end{itemize}
+
+\subsection{Síntese}
+
+A literatura de corrida autônoma em escala oferece, de um lado, controle clássico
+que alcança desempenho próximo ao ótimo ao preço de um modelo, um estimador de
+estado e um solucionador \cite{Heilmeier2020MinCurv, Wang2020LMPC,
+Jain2020Bayesrace}; e, de outro, políticas aprendidas fim a fim que dispensam
+tudo isso ao preço de amostras, de garantias e de previsibilidade
+\cite{Evans2023Comparing, Stachowicz2023FastRLAP}. O aprendizado por imitação
+ocupa o meio-termo, destilando a competência do primeiro grupo numa política com
+as dependências do segundo, e paga por isso com o desvio de distribuição que o
+DART \cite{Laskey2017DART} e o DAgger \cite{Ross2011DAgger} atacam por caminhos
+distintos.
+
+A cascata proposta neste trabalho percorre esse arranjo em três passos, e cada
+passo preserva a propriedade conquistada no anterior: o especialista geométrico
+fornece competência; a imitação a transfere para uma política sem pose global; e
+o resíduo de aprendizado por reforço recupera --- e supera --- o desempenho
+perdido na destilação, sem devolver a dependência de localização e sem que o pior
+caso seja pior que a política que ele corrige. O resultado, 52,525~s contra
+59,000~s do especialista, é a medida dessa recuperação.
+
+O que falta é a travessia da fronteira. Ela é o objeto declarado da fase seguinte
+e é onde este capítulo termina: com uma política desenhada para ser embarcada, um
+artefato que já roda no formato em que será embarcado, e nenhuma medição no
+veículo.
