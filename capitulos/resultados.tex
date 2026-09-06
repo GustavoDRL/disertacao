@@ -1,11 +1,829 @@
 \chapter{Resultados e Discussão}\label{cap:resultados}
 
-\lipsum[73]
+Este capítulo reporta o que as três etapas da cascata mediram, e discute o que
+esses números sustentam e o que não sustentam. O aparato que produziu cada valor
+--- protocolo de avaliação, critérios de aceite, momento em que foram fixados,
+camadas de verificação --- está descrito no Capítulo~\ref{cap:metodologia}, e o
+posicionamento das etapas diante da literatura, no
+Capítulo~\ref{cap:estArte}. Aqui trata-se dos resultados; as remissões evitam
+repetir o que já foi estabelecido nesses dois capítulos.
 
-\section{Base de Dados}
+\textbf{Todos os resultados deste capítulo são de simulação.} As etapas foram
+medidas no ambiente \texttt{f110\_gym} \cite{OKelly2020F1TENTH} executado
+\textit{headless}, e o ponto mais avançado na direção do hardware é a política
+exportada rodando como nó ROS2 dentro de um contêiner, sobre a ponte derivada do
+mesmo simulador \cite{f1tenthgymros, f1tenthgymufabc}. \textbf{Nenhuma política
+deste trabalho foi executada no veículo físico.} A transferência para o carro é
+trabalho em curso, descrita como fase seguinte na
+Seção~\ref{sec:arte-s2r} do Capítulo~\ref{cap:estArte}, e nada neste capítulo
+deve ser lido como medição de campo.
 
-\lipsum[72]
+O capítulo apresenta, em ordem, a linha de base geométrica
+(Seção~\ref{sec:res-e1}), a rede de imitação (Seção~\ref{sec:res-e2}), o resíduo
+de aprendizado por reforço (Seção~\ref{sec:res-e3}) e a execução da política no
+contêiner (Seção~\ref{sec:res-deploy}). A Seção~\ref{sec:res-discussao} discute
+o conjunto, com atenção às três ressalvas que o trabalho declarou antes de medir.
 
-\section{Considerações Finais}
+\section{Procedência dos resultados}\label{sec:res-proveniencia}
 
-\lipsum[74]
+Três execuções sustentam o capítulo inteiro, uma por etapa. A
+Tabela~\ref{tab:res_proveniencia} registra a procedência de cada uma, porque,
+pelas regras descritas na Seção~\ref{sec:val-congelado}, esses campos são parte
+do veredito e não metadado: um resultado obtido com a árvore de trabalho suja é
+rebaixado a \texttt{PASS-NAO-REPRODUZIVEL}, e um resultado avaliado sob limiares
+que não coincidem com os congelados no nascimento da execução é declarado
+inválido.
+
+\begin{table}[h]
+    \centering
+    \footnotesize
+    \begin{tabular}{|c|c|c|c|c|c|c|}
+        \hline
+        \textbf{Etapa} & \textbf{Execução} & \textbf{Commit} &
+        \textbf{Árvore limpa} & \textbf{Dispositivo} & \textbf{Assinatura} &
+        \textbf{Veredito} \\
+        \hline
+        E1 & \texttt{696cdc} & \texttt{1e154ec} & sim & --- & \texttt{966705} &
+        \texttt{PASS} \\
+        \hline
+        E2 & \texttt{690375} & \texttt{6fbedb5} & sim & CUDA & \texttt{966705} &
+        \texttt{PASS} \\
+        \hline
+        E3 & \texttt{0311b9} & \texttt{a46cc0a} & sim & CUDA & \texttt{966705} &
+        \texttt{PASS} \\
+        \hline
+    \end{tabular}
+    \caption{Procedência das três execuções reportadas. A coluna de assinatura é
+    o \textit{hash} do conjunto de limiares congelado na criação de cada
+    execução; as três coincidem, portanto as três foram julgadas pelos mesmos
+    critérios}
+    \label{tab:res_proveniencia}
+\end{table}
+
+Os identificadores completos são
+\texttt{e1\_pp\_Spielberg\_20260823-001606\_1e154ec\_696cdc},
+\texttt{e2\_il\_Spielberg\_20260823-140231\_6fbedb5\_690375} e
+\texttt{e3\_rl\_Spielberg\_20260823-211722\_a46cc0a\_0311b9}; ao longo do
+capítulo eles são abreviados pelo sufixo de seis dígitos, que é o \textit{hash}
+da configuração. Todo valor citado aqui foi lido dos relatórios de portão e de
+avaliação gravados em disco por essas execuções, e não transcrito de documentos
+intermediários. A etapa E1 não tem dispositivo de treino porque não treina nada:
+é um controlador geométrico.
+
+Uma ressalva de durabilidade acompanha essa afirmação e é declarada na
+Seção~\ref{sec:val-limitacoes}: os diretórios de execução não são versionados, de
+modo que os relatórios que hoje sustentam cada número não sobrevivem a um clone
+do repositório. Os valores deste capítulo são auditáveis nesta máquina; a
+auditoria por terceiros dependeria de promover esses relatórios para um caminho
+versionado, o que não foi feito.
+
+\section{E1: o especialista geométrico e a linha de base}\label{sec:res-e1}
+
+A primeira etapa não aprende: é um seguidor geométrico de trajetória do tipo
+\textit{pure pursuit} \cite{Coulter1992PurePursuit} sobre a linha de corrida
+distribuída com o conjunto de pistas \cite{F1TENTHRaceTracks}. A sua função no
+trabalho é dupla --- gerar as demonstrações que a etapa E2 imita e estabelecer
+$T_{pp}$, a mediana de tempo de volta que é o denominador de todos os critérios
+de aceite das duas etapas seguintes.
+
+\subsection{A varredura que escolheu a configuração}
+
+A configuração do controlador não foi ajustada à mão. Ela saiu de uma varredura
+exaustiva de uma grade fixa, com critério de escolha declarado antes de executar:
+\textbf{a configuração mais rápida que completa uma volta sem colisão}. A
+configuração da execução registra o tamanho da varredura --- 16 combinações --- e
+a Tabela~\ref{tab:res_e1_grade} abre a grade e a escolha.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|c|c|}
+        \hline
+        \textbf{Parâmetro} & \textbf{Valores varridos} & \textbf{Escolhido} \\
+        \hline
+        Aceleração lateral máxima (m/s$^2$)      & 2,5 \quad 3,0   & 3,0  \\
+        \hline
+        Antecipação de curvatura (m)             & 3,0 \quad 4,0   & 3,0  \\
+        \hline
+        Distância de perseguição, termo fixo (m) & 0,5 \quad 0,8   & 0,5  \\
+        \hline
+        Distância de perseguição, ganho          & 0,15 \quad 0,25 & 0,25 \\
+        \hline
+        Fator de escala de velocidade            & 0,85            & 0,85 \\
+        \hline
+        Encolhimento da linha de corrida         & 0,6             & 0,6  \\
+        \hline
+    \end{tabular}
+    \caption{Grade da varredura da etapa E1 e a configuração escolhida.
+    $2 \times 2 \times 2 \times 2 = 16$ combinações; os dois últimos parâmetros
+    são fixos e entram na grade como valor único}
+    \label{tab:res_e1_grade}
+\end{table}
+
+Os dois eixos que de fato governam o compromisso entre velocidade e segurança são
+a aceleração lateral máxima --- quanto o veículo aceita curvar --- e a
+antecipação de curvatura --- com quanta antecedência ele desacelera. A escolha
+recaiu no valor mais alto de aceleração lateral da grade combinado com a
+antecipação mais curta, o que é coerente com o critério: entre as combinações que
+completam a volta sem colidir, essa é a mais agressiva.
+
+\subsection{O portão da etapa E1 e o tempo de referência}
+
+O portão da etapa E1 tem dois critérios, ambos sem randomização do ambiente:
+taxa de conclusão igual a 100\% em 5 sementes e zero colisões. A execução
+\texttt{696cdc} completou \textbf{50 de 50 voltas com zero colisões}, com
+intervalo de Wilson $[0{,}9287;\ 1{,}0000]$ ao lado do valor pontual 1,0000, e a
+mediana de tempo de volta ficou em
+\[
+    T_{pp} = 58{,}99999999994634~\text{s} \approx 59{,}000~\text{s},
+\]
+com intervalo de confiança \textit{degenerado} --- as cinco sementes produzem a
+mesma sequência de tempos de volta até o último dígito. Isso não é um intervalo
+estreito: é a ausência de variabilidade. Sem randomização, o especialista é
+determinístico e as sementes não têm sobre o que agir, de modo que o intervalo
+reportado para $T_{pp}$ não mede incerteza amostral alguma. O que ele atesta é
+determinismo, e é essa propriedade --- não uma estimativa de precisão --- que
+autoriza usar $T_{pp}$ como denominador fixo.
+
+Dois pontos herdados do Capítulo~\ref{cap:metodologia} valem a remissão e não a
+repetição. O primeiro é que esse valor reproduziu dígito a dígito uma medição
+anterior feita em arquitetura diferente, com a árvore de trabalho limpa, o que é
+o que autoriza comparar as tabelas deste capítulo com o registro histórico do
+projeto. O segundo é que o relatório de portão desta execução marca o critério de
+taxa de conclusão como limítrofe e \textbf{não} dispara a re-execução com mais
+sementes, porque a regra de escalonamento não está ligada nesta etapa: a
+consequência disso para a leitura dos resultados está na
+Seção~\ref{sec:val-limitacoes} e é retomada na Seção~\ref{sec:res-discussao}.
+
+\subsection{O controle nas pistas de generalização}
+
+A mesma execução mede o especialista nas quatro pistas que a etapa E2 usa como
+conjunto de generalização. Esta medição não é um resultado do especialista: é o
+\textbf{denominador} do critério relativo descrito na
+Seção~\ref{sec:val-estatistica}, e por isso é feita sob o mesmo protocolo que a
+rede enfrentará --- com randomização, 5 sementes e 3 voltas por semente.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|c|c|c|}
+        \hline
+        \textbf{Pista} & \textbf{Voltas completas} & \textbf{Taxa} &
+        \textbf{Mediana da volta (s)} \\
+        \hline
+        Monza        & 0 / 5   & 0\%     & ---   \\
+        \hline
+        Catalunya    & 15 / 15 & 100\%   & 76,30 \\
+        \hline
+        Silverstone  & 15 / 15 & 100\%   & 81,10 \\
+        \hline
+        Oschersleben & 1 / 6   & 16,7\%  & 51,65 \\
+        \hline
+    \end{tabular}
+    \caption{O especialista da etapa E1 nas quatro pistas de generalização, sob
+    randomização. Estes valores são o controle contra o qual a rede da etapa E2 é
+    pontuada}
+    \label{tab:res_e1_controle}
+\end{table}
+
+A Tabela~\ref{tab:res_e1_controle} explica, sozinha, por que o critério de
+generalização precisa ser relativo. O especialista, que percorre Spielberg em
+59,000~s sem uma colisão em 50 voltas, \textbf{não completa uma única volta em
+Monza} e completa uma de seis em Oschersleben. Um limiar absoluto sobre pistas não
+vistas mediria a dificuldade da pista, não a qualidade da destilação. Note-se
+ainda que o número de voltas \textit{tentadas} varia entre pistas: uma colisão
+encerra o episódio da semente, de modo que 5 tentativas em Monza significam cinco
+sementes que colidiram na primeira volta, e 6 em Oschersleben significam que uma
+única semente sobreviveu para tentar a segunda.
+
+\section{E2: destilação do especialista numa política sem pose global}\label{sec:res-e2}
+
+A segunda etapa treina uma rede convolucional unidimensional da família
+TinyLidarNet \cite{Zarrar2024TinyLidarNet}, descrita na
+Seção~\ref{sec:arte-il}, para reproduzir a ação do especialista a partir de
+LiDAR e proprioceptiva apenas. As demonstrações são coletadas com ruído de
+injeção na ação executada, no estilo DART \cite{Laskey2017DART}, calibrado por
+pista.
+
+\subsection{A trajetória do laço automático}
+
+O laço automático percorreu cinco tentativas em 63,9 minutos e encerrou marcando
+estado de esgotamento: a quinta tentativa não deixou critério reprovado sobre o
+qual agir e, ainda assim, não produziu veredito reportável. A
+Tabela~\ref{tab:res_e2_laco} registra a trajetória, com o ajuste aplicado em cada
+passo vindo da lista pré-declarada do critério que reprovou.
+
+\begin{table}[h]
+    \centering
+    \footnotesize
+    \begin{tabular}{|c|c|p{3.4cm}|c|c|c|c|}
+        \hline
+        \textbf{Tent.} & \textbf{Exec.} & \textbf{Ajuste acumulado} &
+        \textbf{Concl.} & \textbf{Gen. média} & \textbf{Pior} &
+        \textbf{Veredito} \\
+        \hline
+        1 & \texttt{1d7f75} & (padrões; coleta só em Spielberg) & 0,6429 &
+        0,0000 & 0,0000 & \texttt{FAIL} \\
+        \hline
+        2 & \texttt{355235} & voltas por semente na coleta: 12 $\to$ 24 &
+        1,0000 & 0,0000 & 0,0000 & \texttt{FAIL} \\
+        \hline
+        3 & \texttt{7cd2b4} & + Catalunya na coleta & 0,8654 & 0,8333 & 0,5000 &
+        \texttt{FAIL} \\
+        \hline
+        4 & \texttt{31b39b} & + alvo de ruído 0,10 $\to$ 0,20 col./km & 1,0000 &
+        0,3333 & 0,0000 & \texttt{FAIL} \\
+        \hline
+        5 & \texttt{a5e6aa} & + Silverstone na coleta & 1,0000 & 1,0000 &
+        1,0000 & \texttt{PASS-NAO-REPRODUZIVEL} \\
+        \hline
+    \end{tabular}
+    \caption{As cinco tentativas do laço automático da etapa E2. As colunas de
+    generalização são a média e o pior caso das razões contra o controle da
+    Tabela~\ref{tab:res_e1_controle}}
+    \label{tab:res_e2_laco}
+\end{table}
+
+Duas leituras saem da Tabela~\ref{tab:res_e2_laco}. A primeira é que a
+generalização só se moveu na direção certa quando a coleta se ampliou: as duas
+primeiras tentativas, com demonstrações apenas de Spielberg, deram \textbf{zero
+volta completa nas quatro pistas de generalização}, e a única ação que não tocava
+a coleta --- a recalibração do alvo de ruído, na tentativa 4 --- \textit{piorou}
+o critério, de 0,8333 para 0,3333. A segunda é que a quinta tentativa aprovou os
+quatro critérios e mesmo assim não é o resultado reportado: ela saiu
+\texttt{PASS-NAO-REPRODUZIVEL} porque a própria ação de recalibração de ruído
+gravou num arquivo versionado e sujou a árvore de trabalho no meio do laço. O
+caso é analisado na Seção~\ref{sec:val-congelado}; do ponto de vista dos
+resultados, o que importa é que \textbf{a execução reportada não é a do laço}.
+
+\subsection{A execução aprovada}
+
+A execução \texttt{690375} é uma execução avulsa, cerca de treze horas depois da
+última tentativa do laço, com a árvore de trabalho limpa e a configuração que o
+laço havia encontrado: coleta em Spielberg, Catalunya e Silverstone, 24 voltas
+por semente, 8 sementes de coleta e alvo de ruído de 0,20 colisões por
+quilômetro. O laudo de calibração vigente atribui a essas três pistas
+desvios-padrão de ruído de 0,020, 0,030 e 0,010~rad respectivamente --- é o
+resultado quantitativo da calibração por pista discutida na
+Seção~\ref{sec:arte-il}, e Silverstone se separa das outras duas com metade do
+ruído. A coleta produziu \textbf{725.522 amostras}. O treino, com parada
+antecipada e paciência de 8 épocas, rodou 30 épocas e escolheu o ponto de
+verificação da época 21; a execução inteira, da coleta ao veredito, levou
+20,4~minutos.
+
+\begin{table}[h]
+    \centering
+    \small
+    \begin{tabular}{|l|c|c|c|c|}
+        \hline
+        \textbf{Critério} & \textbf{Medido} & \textbf{IC 95\%} &
+        \textbf{Limiar} & \\
+        \hline
+        Taxa de conclusão (5 sementes, 50 voltas) & 1,0000 &
+        [0,9287; 1,0000] & $\geq$ 0,95 & aprovado \\
+        \hline
+        Mediana da volta (s) & 60,0500 & [59,9750; 60,5000] &
+        $\leq$ 64,9000 & aprovado \\
+        \hline
+        Generalização, média das razões & 1,0000 & --- & $\geq$ 0,80 &
+        aprovado \\
+        \hline
+        Generalização, pior pista & 1,0000 & --- & $\geq$ 0,60 & aprovado \\
+        \hline
+    \end{tabular}
+    \caption{Os quatro critérios da etapa E2 na execução \texttt{690375}. O
+    intervalo da taxa de conclusão é de Wilson; o da mediana da volta é
+    \textit{bootstrap} BCa sobre as medianas por semente. O limiar de tempo de
+    volta é $1{,}10 \cdot T_{pp}$}
+    \label{tab:res_e2_criterios}
+\end{table}
+
+A Tabela~\ref{tab:res_e2_criterios} mostra os quatro critérios aprovados sem
+notas de escalonamento: o relatório de portão registra 5 sementes e nenhuma
+re-execução, porque a distância ao limiar (0,05) excede a meia largura do
+intervalo (0,0357) e a condição de escalonamento não disparou --- o que é o
+comportamento correto da regra, e não a sua omissão.
+
+O custo da destilação aparece na segunda linha. A rede completa a volta em
+\textbf{60,050~s contra 59,000~s do especialista que a treinou}, ou seja, é
+1,8\% mais lenta. Esse é o preço, medido, de trocar uma política que exige pose
+global por uma que enxerga apenas LiDAR e proprioceptiva --- e é exatamente o
+desempenho que a etapa E3 se propõe a recuperar, pelo argumento de
+embarcabilidade exposto na Seção~\ref{sec:arte-rl}.
+
+\subsection{Generalização: o que este número mede e o que ele não mede}
+
+O par 1,0000 / 1,0000 pontuado pelo portão exige uma leitura cuidadosa, e ela é
+o assunto da Seção~\ref{sec:val-heldout}, que abre pista a pista o número
+agregado na Tabela~\ref{tab:val_heldout}. Não se repete aqui a abertura; o que
+cabe a este capítulo é separar \textbf{duas afirmações verdadeiras} que a
+literatura de generalização entre pistas \cite{Bosello2022CrossTrack} tende a
+colapsar numa só.
+
+A primeira afirmação é sobre o \textbf{valor medido}: a sobreposição entre o
+conjunto de coleta e o conjunto de generalização \textbf{dilui} esse valor, não o
+infla. Duas das quatro pistas de generalização --- Catalunya e Silverstone ---
+entraram na coleta por ação pré-declarada do laço, e a razão 1,00 que elas
+contribuem é empate com o especialista em pista que a rede viu no treino, sem
+conteúdo de generalização. As duas pistas genuinamente inéditas são justamente
+onde a rede mais supera o professor, e o critério não converte em nota a margem
+de nenhuma das duas: em Oschersleben a rede completa 15 de 15 voltas contra 1 de
+6 do especialista, razão de aproximadamente seis vezes que a saturação em 1,0
+corta; em Monza completa 12 de 13 contra 0 de 5, e a pista é excluída do cálculo
+porque a razão dividiria por zero. O valor pontuado é, portanto, um \textbf{piso}
+do que foi medido.
+
+A segunda afirmação é sobre a \textbf{rede que produziu esse valor}, e ela vai na
+direção oposta: a coleta nas três pistas foi \textbf{causalmente necessária} para
+que existisse rede capaz de generalizar. A Tabela~\ref{tab:res_e2_laco} é a
+evidência: com demonstrações apenas de Spielberg, a rede não completou volta
+alguma em nenhuma das quatro pistas de generalização, em duas execuções
+independentes; ao acrescentar Catalunya, Oschersleben passou a 12 de 13 e
+Silverstone a 4 de 8; ao acrescentar Silverstone, as quatro pistas subiram ao que
+a Tabela~\ref{tab:val_heldout} registra. Nenhum ajuste que não tocasse a coleta
+moveu o critério na direção certa.
+
+As duas afirmações respondem a perguntas diferentes --- ``o número medido está
+inflado?'' e ``o que produziu a política que gerou esse número?'' --- e reduzi-las
+a uma frase só produziria erro em qualquer das duas direções. A afirmação
+defensável e mais forte que este trabalho sustenta não é ``generalização 1,00 em
+três pistas não vistas''; é que uma rede destilada de um especialista geométrico
+completa \textbf{100\% das voltas em Oschersleben e 92\% em Monza}, as duas
+pistas que nunca entraram na coleta, onde o especialista que a treinou completa
+16,7\% e 0\%.
+
+\section{E3: resíduo de aprendizado por reforço}\label{sec:res-e3}
+
+A terceira etapa soma à saída da rede da etapa E2 uma correção aprendida por Soft
+Actor-Critic \cite{Haarnoja2018SAC}, implementado sobre a biblioteca
+Stable-Baselines3 \cite{Raffin2021SB3}, na formulação residual discutida na
+Seção~\ref{sec:arte-rl} \cite{Johannink2019Residual, Silver2018ResidualPolicy}.
+A rede base da execução \texttt{0311b9} é a execução aprovada da etapa E2,
+registrada na configuração como referência explícita.
+
+\subsection{A trajetória do laço até o veredito parcial}
+
+O laço percorreu quatro tentativas em 75,3 minutos, aplicando em ordem as ações
+pré-declaradas do critério de taxa de conclusão, e parou no veredito
+\texttt{PASS-PARCIAL}, que é terminal.
+
+\begin{table}[h]
+    \centering
+    \footnotesize
+    \begin{tabular}{|c|c|p{3.6cm}|c|c|c|c|}
+        \hline
+        \textbf{Tent.} & \textbf{Exec.} & \textbf{Ajuste acumulado} &
+        \textbf{Concl.} & \textbf{Voltas} & \textbf{Volta (s)} &
+        \textbf{Veredito} \\
+        \hline
+        1 & \texttt{a79af6} & (padrões) & 0,1667 & 1 / 6 & 55,5000 &
+        \texttt{FAIL} \\
+        \hline
+        2 & \texttt{9ea8bb} & ganho de esterço 0,30 $\to$ 0,15 & 0,7368 &
+        14 / 19 & 53,4000 & \texttt{FAIL} \\
+        \hline
+        3 & \texttt{57618b} & + penalidade de colisão 5 $\to$ 10 & 0,9206 &
+        58 / 63 & 52,2250 & \texttt{FAIL} \\
+        \hline
+        4 & \texttt{1a4ddb} & + início de aprendizado 5k $\to$ 10k passos &
+        1,0000 & 100 / 100 & 56,2375 & \texttt{PASS-PARCIAL} \\
+        \hline
+    \end{tabular}
+    \caption{As quatro tentativas do laço automático da etapa E3. As tentativas
+    3 e 4 já são medições com 10 sementes, escaladas automaticamente pela regra
+    de meia largura de intervalo}
+    \label{tab:res_e3_laco}
+\end{table}
+
+A Tabela~\ref{tab:res_e3_laco} exibe o compromisso característico da etapa: as
+três primeiras tentativas produzem políticas rápidas que não completam a volta ---
+a primeira delas completa \textit{uma} volta em seis tentativas ---, e a quarta
+abre mão de quatro segundos para comprar a confiabilidade inteira de uma vez.
+Reduzir o ganho de esterço pela metade, na segunda tentativa, foi a intervenção
+isolada de maior efeito: 57 pontos percentuais de taxa de conclusão. A coluna de
+tempo de volta das duas primeiras linhas não deve ser lida como ganho, e sim
+descartada: com 1 e 14 voltas completas, essas medianas descrevem as poucas
+sementes que sobreviveram, e não a política. A comparação de tempo de volta só
+passa a ter sentido a partir da terceira linha.
+
+Um detalhe do relatório merece registro porque afeta a leitura da primeira linha:
+o critério de piora do tempo de volta sob randomização de atrito saiu
+indefinido na primeira tentativa. Com uma única volta completa, a comparação
+pareada com e sem randomização não tem par em pelo menos um dos braços. O portão
+trata valor indefinido como reprovação, o que é o comportamento desejado --- mas
+a linha não deve ser lida como ``a política piorou sob atrito''; ela deve ser
+lida como ``não houve volta suficiente para medir''.
+
+\subsection{A troca entre velocidade e confiabilidade, e como ela foi desfeita}
+
+O veredito parcial da quarta tentativa reprovava por tempo de volta, e as ações
+pré-declaradas restantes para esse critério foram executadas manualmente, na
+ordem em que estavam escritas. A Tabela~\ref{tab:res_e3_pontos} abre os quatro
+pontos resultantes pelos números brutos que o relatório de avaliação registra ---
+voltas completas e colisões ---, que é o que torna o compromisso legível como
+fenômeno físico. A leitura metodológica dos mesmos quatro pontos, como evidência
+de que a busca foi pré-declarada e não livre, está na
+Tabela~\ref{tab:val_acoes_e3}.
+
+\begin{table}[h]
+    \centering
+    \footnotesize
+    \begin{tabular}{|l|c|c|c|c|c|c|}
+        \hline
+        \textbf{Configuração} & \textbf{Voltas} & \textbf{Colis.} &
+        \textbf{Concl.} & \textbf{Volta (s)} & \textbf{$\mu$-concl.} &
+        \textbf{Veredito} \\
+        \hline
+        150k passos, \texttt{wall\_w} 0 & 100 / 100 & 0 & 1,0000 & 56,2375 &
+        0,0000 & \texttt{PASS-PARCIAL} \\
+        \hline
+        300k passos, \texttt{wall\_w} 0 & 51 / 58 & 7 & 0,8793 & 52,4750 &
+        0,0909 & \texttt{FAIL} \\
+        \hline
+        300k, \texttt{wall\_w} 0,2 & 74 / 77 & 3 & 0,9610 & 51,3750 & 0,0667 &
+        \texttt{FAIL} \\
+        \hline
+        \textbf{300k, \texttt{wall\_w} 1,0} & \textbf{91 / 92} & \textbf{1} &
+        \textbf{0,9891} & \textbf{52,5250} & \textbf{0,0000} &
+        \textbf{\texttt{PASS}} \\
+        \hline
+    \end{tabular}
+    \caption{Os quatro pontos da etapa E3, uma variável mudando por vez, todos
+    com 10 sementes. As execuções são, em ordem, \texttt{1a4ddb},
+    \texttt{d3fd07}, \texttt{9b38dc} e \texttt{0311b9}}
+    \label{tab:res_e3_pontos}
+\end{table}
+
+Os dois primeiros pontos da Tabela~\ref{tab:res_e3_pontos} isolam a troca. As
+duas configurações diferem \textbf{exclusivamente} no número de passos de treino;
+todo o resto, inclusive a penalidade de proximidade de muro desligada, é
+idêntico. Dobrar o treino comprou 3,8~s de volta e custou 12 pontos de taxa de
+conclusão. A contagem bruta é mais eloquente que a razão: de \textbf{zero
+colisões em 100 voltas} para \textbf{sete colisões em 58 voltas tentadas}. O
+próprio número de tentativas é sinal --- uma colisão encerra o episódio da
+semente, de modo que 58 tentativas em 10 sementes já indicam que a maioria das
+sementes não chegou ao fim.
+
+Os dois últimos pontos mostram que a troca \textbf{não era fundamental}. Ela era
+consequência de a recompensa não cobrar o rasante de muro: a penalidade de
+colisão só cobra depois de bater, e bater é um evento esparso demais para dar
+sinal de gradiente; a penalidade de proximidade cobra em todo passo em que o
+rasante acontece. Ligá-la a 0,2 levou as colisões de sete para três e a taxa de
+conclusão de 0,8793 para 0,9610, \textbf{melhorando ainda a volta} para 51,375~s.
+Elevá-la a 1,0 fechou o portão: uma colisão em 92 voltas tentadas, taxa de
+conclusão 0,9891 e degradação sob atrito nula, ao custo de 1,15~s em relação ao
+ponto anterior.
+
+Ganhar confiabilidade \textit{e} velocidade na mesma intervenção é a assinatura
+de ter mexido no objetivo, e não de ter caminhado sobre uma curva de compromisso
+--- um ponto sobre a curva não pode melhorar as duas coordenadas ao mesmo tempo.
+O ganho de 1,15~s devolvido no último passo é o preço de comprar os 2,8 pontos
+percentuais que faltavam, e é a única parte do percurso que se comporta como
+troca genuína.
+
+\subsection{Os quatro critérios da execução aprovada}
+
+\begin{table}[h]
+    \centering
+    \small
+    \begin{tabular}{|l|c|c|c|c|}
+        \hline
+        \textbf{Critério} & \textbf{Medido} & \textbf{IC 95\%} &
+        \textbf{Limiar} & \\
+        \hline
+        Taxa de conclusão (10 sementes, 92 voltas) & 0,9891 &
+        [0,9410; 0,9981] & $\geq$ 0,98 & aprovado \\
+        \hline
+        Mediana da volta (s) & 52,5250 & [52,5125; 52,7250] &
+        $\leq$ 56,0500 & aprovado \\
+        \hline
+        Queda de conclusão sob $\mu$ aleatório & 0,0000 & --- &
+        $\leq$ 0,03 & aprovado \\
+        \hline
+        Piora da volta sob $\mu$ aleatório & 0,0019 & --- & $\leq$ 0,05 &
+        aprovado \\
+        \hline
+    \end{tabular}
+    \caption{Os quatro critérios da etapa E3 na execução \texttt{0311b9}. O
+    limiar de tempo de volta é $0{,}95 \cdot T_{pp}$; os dois critérios de
+    atrito são medidos de forma pareada, mesmas sementes com e sem randomização}
+    \label{tab:res_e3_criterios}
+\end{table}
+
+A Tabela~\ref{tab:res_e3_criterios} registra o resultado final do trabalho em
+simulação. Três observações a qualificam.
+
+O valor de taxa de conclusão \textbf{já é uma medição escalonada}: o relatório de
+portão registra a nota de re-execução com 10 sementes, disparada pela regra de
+meia largura de intervalo porque a primeira medição ficou próxima demais do
+limiar. Os 0,9891 são 91 voltas completas em 92 tentadas, com uma colisão.
+
+A mediana de volta de \textbf{52,525~s} é \textbf{11,0\% mais rápida que o
+especialista} ($T_{pp} = 59{,}000$~s) e 7,525~s mais rápida que a rede da etapa
+E2 que o resíduo corrige. O resíduo, portanto, não apenas recupera o 1,8\%
+perdido na destilação: ele supera a política ensinante sem devolver a dependência
+de pose global.
+
+Os dois critérios de atrito são os únicos do trabalho que ficam longe do limiar
+por margem confortável. A comparação pareada com 3 sementes e 5 voltas mediu 15
+de 15 voltas completas nos dois braços, com mediana de 52,600~s sob randomização
+contra 52,500~s sem ela --- uma piora relativa de 0,0019 contra um limiar de
+0,05. Não há ambiguidade estatística nesses dois números, e vale dizê-lo
+explicitamente porque a há nos outros dois.
+
+\section{A política dirigindo no contêiner ROS2}\label{sec:res-deploy}
+
+O último ponto medido antes do hardware é a política composta, exportada para
+ONNX num grafo único, executando como nó ROS2 dentro do contêiner, contra o
+simulador em tempo real. Os critérios de aceite são três, exigidos em conjunto,
+porque isoladamente cada um mente --- um carro parado contra a parede publica
+comandos a 20~Hz com latência perfeita.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|c|c|c|}
+        \hline
+        \textbf{Grandeza} & \textbf{Medido} & \textbf{Limiar} & \\
+        \hline
+        Distância na janela de 60~s      & 381~m   & $\geq$ 150~m & aprovado \\
+        \hline
+        Frequência de controle           & 20,00~Hz & $\geq$ 19~Hz & aprovado \\
+        \hline
+        Latência de inferência ($p99$)   & 0,53~ms & $\leq$ 5~ms  & aprovado \\
+        \hline
+        Paradas de emergência            & 0       & (não é critério) & --- \\
+        \hline
+    \end{tabular}
+    \caption{A política da etapa E3 executando como nó ROS2 no contêiner,
+    medida contra os limiares do portão de deploy. As três primeiras linhas são
+    lidas do relatório de verificação em disco; a contagem de paradas de
+    emergência é a da medição registrada na Tabela~\ref{tab:val_deploy}}
+    \label{tab:res_deploy}
+\end{table}
+
+A leitura da primeira linha da Tabela~\ref{tab:res_deploy} depende de um detalhe
+do ambiente: a volta de Spielberg tem 343~m, e a ponte congela o veículo ao
+detectar colisão. Percorrer 381~m em 60~s significa, portanto, \textbf{mais de
+uma volta completa}, o que a ponte só permite se não tiver havido colisão ao
+longo do percurso --- antes da correção do detector, um veículo que atravessasse
+a parede continuaria integrando distância do lado de fora do circuito, e o número
+não teria esse significado. Zero paradas de emergência significa que a menor
+leitura do setor frontal do LiDAR nunca desceu abaixo de 0,25~m, que é o limiar
+da camada de segurança independente da rede.
+A comparação com o artefato da etapa E2 e com a versão de contrato incorreto,
+que é o caso que justifica a existência dessa camada de verificação, está na
+Tabela~\ref{tab:val_deploy}.
+
+\subsection{Uma discrepância que não se resolve}
+
+O valor de 331~m atribuído ao artefato da etapa E2 na Tabela~\ref{tab:val_deploy}
+carrega uma ressalva que este capítulo tem obrigação de declarar. \textbf{A mesma
+medição aparece no repositório do projeto com dois valores: 331~m e 329~m}, em
+seis lugares distintos entre documentação, contrato numérico e testes. Não são
+duas medições: é a mesma execução, citada com dois valores.
+
+A discrepância é \textbf{indecidível com a evidência disponível}. O artefato que
+a arbitraria --- o relatório de verificação da execução correspondente --- não
+sobrevive: ele é escrito na raiz do ambiente de pesquisa, uma execução por cima
+da outra, e não é versionado, porque reflete o estado da máquina no momento em
+que rodou. O relatório em disco hoje descreve a medição mais recente, da política
+da etapa E3, e não a da etapa E2 que estaria em disputa. Escolher entre 331 e 329
+seria escolher por gosto, e escolher por gosto é exatamente o modo de falha que a
+Seção~\ref{sec:val-problema} documenta e que a camada de documentação existe para
+não repetir --- limitada, como declarado na Seção~\ref{sec:val-limitacoes}, por
+não julgar número medido em prosa.
+
+A ressalva não alcança o resultado desta seção: os 381~m da política da etapa E3
+estão registrados no relatório de verificação vigente, com a frequência e a
+latência da Tabela~\ref{tab:res_deploy}. Alcança, porém, a \textit{durabilidade}
+dessa evidência, que é do mesmo tipo: o relatório que sustenta os 381~m será
+sobrescrito pela próxima execução da verificação. Nenhuma das seis camadas
+escreve num caminho versionado, e isso é o estado real do repositório, não uma
+política de retenção que falte redigir.
+
+\subsection{O que esta medição não é}
+
+Ela não é uma medição no veículo. O nó ROS2 é real, o relógio é real, a fila de
+mensagens é real e o contrato de entradas e saídas do grafo é o mesmo que o carro
+usaria --- mas o simulador do outro lado da ponte continua sendo o simulador. Não
+há atrito real, latência de atuador real, ruído de LiDAR real, nem nenhum dos
+efeitos que caracterizam a transferência. \textbf{Nenhuma política deste trabalho
+foi executada no carro}, e a Seção~\ref{sec:arte-s2r} enumera as tarefas que a
+travessia dessa fronteira exige.
+
+\section{Discussão}\label{sec:res-discussao}
+
+\subsection{O que os números sustentam}
+
+A Tabela~\ref{tab:res_sintese} reúne as três etapas na única comparação que
+interessa ao argumento do trabalho: desempenho contra dependência de
+infraestrutura de percepção.
+
+\begin{table}[h]
+    \centering
+    \footnotesize
+    \begin{tabular}{|c|l|c|c|c|c|}
+        \hline
+        \textbf{Etapa} & \textbf{Política} & \textbf{Volta (s)} &
+        \textbf{Razão a $T_{pp}$} & \textbf{Conclusão} &
+        \textbf{Exige pose global?} \\
+        \hline
+        E1 & \textit{pure pursuit} & 59,000 & 1,000 & 1,0000 (50/50) & sim \\
+        \hline
+        E2 & TinyLidarNet & 60,050 & 1,018 & 1,0000 (50/50) & não \\
+        \hline
+        E3 & E2 + resíduo SAC & 52,525 & 0,890 & 0,9891 (91/92) & não \\
+        \hline
+    \end{tabular}
+    \caption{Síntese das três etapas em Spielberg. A etapa E1 é avaliada sem
+    randomização do ambiente; as etapas E2 e E3, com randomização}
+    \label{tab:res_sintese}
+\end{table}
+
+A cascata faz o que se propôs a fazer. A destilação transfere a competência do
+especialista para uma política que enxerga apenas LiDAR e proprioceptiva, ao
+custo medido de 1,8\% de tempo de volta; o resíduo recupera esse custo e
+\textbf{ultrapassa a política ensinante em 11,0\%}, sem devolver a dependência de
+localização, e mantendo a taxa de conclusão acima de 0,98 e a degradação sob
+randomização de atrito em zero. Fora do circuito de coleta, a rede destilada
+supera o especialista de forma mais dramática ainda, completando voltas em duas
+pistas onde o professor completa 16,7\% e 0\%.
+
+Uma assimetria de protocolo favorece a leitura conservadora e vale declará-la. O
+denominador $T_{pp}$ é medido \textbf{sem} randomização, enquanto os numeradores
+das etapas E2 e E3 são medidos \textbf{com} randomização de atrito, de posição de
+largada e de ruído de sensor. A vantagem de 11,0\% do resíduo é, portanto, obtida
+por uma política avaliada em condições mais duras que a referência que ela supera.
+O braço sem randomização da comparação pareada da etapa E3 permite estimar o
+tamanho desse efeito: 52,500~s contra 52,600~s, isto é, cerca de um décimo de
+segundo. A assimetria existe, é declarada, e é pequena --- mas ela existe, e um
+leitor que compare 52,525~s com 59,000~s deve saber que os dois números não foram
+medidos sob o mesmo protocolo.
+
+\subsection{Primeira ressalva: o limiar cai dentro do intervalo de confiança}
+
+Nos três portões aprovados, o intervalo de Wilson reportado ao lado da taxa de
+conclusão \textbf{contém o limiar}. A Tabela~\ref{tab:val_ic} registra os três
+casos e a Seção~\ref{sec:val-limitacoes} discute a decisão. O que cabe aqui é a
+consequência para a leitura dos resultados, e ela é direta: \textbf{os dados são
+compatíveis com a hipótese de que a taxa verdadeira esteja abaixo do limiar}, nos
+três casos.
+
+Convém quantificar o alcance da ressalva em vez de apenas enunciá-la. Se o
+critério fosse o limite inferior do intervalo, e não o valor pontual, as três
+etapas reprovariam: a etapa E1 com 0,9287 contra limiar 1,00, a etapa E2 com
+0,9287 contra 0,95 e a etapa E3 com 0,9410 contra 0,98. Nenhum dos três
+resultados sobreviveria --- inclusive os que não cometeram uma única falha em 50
+voltas.
+
+Isso não é um defeito descoberto depois do resultado. É consequência de uma
+decisão pré-registrada, com o motivo quantificado e escrito antes de qualquer
+medição: com 50 voltas e desempenho perfeito o limite inferior de Wilson é
+\textbf{0,929}, de modo que passar em 95\% por esse critério exigiria cerca de
+\textbf{73} voltas perfeitas e passar em 98\%, cerca de \textbf{190}. O orçamento
+de simulação do trabalho não comporta esse número de voltas por configuração
+avaliada, e um critério que nenhum resultado bom consegue atingir não separa bom
+de ruim: reprova tudo.
+
+A defesa do resultado não é, portanto, estatística --- é procedimental, e é essa
+a diferença que o trabalho reivindica. O limiar foi congelado no nascimento de
+cada execução, viaja com ela na sua configuração, e é conferido no momento de
+avaliar sob pena de veredito inválido. Trocar o critério depois de ver o número
+seria pior do que reportá-lo com a ressalva; omitir o intervalo seria o erro
+mais barato de cometer e o mais difícil de detectar.
+
+Três elementos limitam o alcance da ressalva, e todos vêm dos artefatos
+reportados neste capítulo. O resultado da etapa E3 já é uma medição escalonada
+para 10 sementes, e não a primeira leitura. As reprovações da etapa E3 anteriores
+à penalidade de proximidade não dependiam desta questão: 0,8793 e 0,9610, ambas
+com 10 sementes, não chegam perto do limiar de 0,98, e as suas contagens brutas
+--- sete e três colisões --- não são ambíguas em nenhuma leitura. E os dois
+critérios de robustez a atrito da etapa E3 deram 0,0000 e 0,0019 contra limiares
+de 0,03 e 0,05.
+
+\subsection{Segunda ressalva: a realização não é a distribuição}
+
+A segunda ressalva é mais severa que a primeira, e atinge especificamente a etapa
+E3. Perturbando o vetor de ganhos da composição por valores irrelevantes e
+reavaliando o mesmo ponto de verificação com as mesmas sementes, a taxa de
+conclusão da política composta varia com amplitude de \textbf{0,0381}, enquanto a
+da rede de imitação varia \textbf{zero} sob perturbações cobrindo nove ordens de
+grandeza --- uma perturbação de $10^{-12}$ desloca a taxa da política composta em
+quase quatro pontos percentuais. A Tabela~\ref{tab:val_sensibilidade} traz a
+medição e a Seção~\ref{sec:val-limitacoes} a análise.
+
+O que este capítulo acrescenta é a confrontação dessa amplitude com as margens
+que ele acabou de reportar. A margem da etapa E3 sobre o seu limiar é
+$0{,}9891 - 0{,}98 = 0{,}0091$; a amplitude sob perturbação irrelevante é
+0,0381, \textbf{mais de quatro vezes maior}. A margem da etapa E2 sobre o seu
+limiar é 0,05, contra amplitude nula. Em outras palavras: a aprovação da etapa E2
+é robusta à realização numérica da política, e a da etapa E3 não é.
+
+A consequência precisa ser dita sem atenuação. \textbf{Para a etapa E3, o número
+reproduzível é a distribuição, não a realização.} Quem reimplementar a
+composição com outra ordem de operações, outro tipo de ponto flutuante ou outra
+versão da biblioteca de álgebra medirá outro valor dessa faixa, e esse valor
+pode ficar abaixo do limiar. O 0,9891 da Tabela~\ref{tab:res_e3_criterios} é uma
+realização legítima, medida com a composição única que o contrato numérico
+determina, num artefato com proveniência íntegra --- e não é um valor que se deva
+esperar reproduzir dígito a dígito noutra implementação.
+
+Duas qualificações fecham o ponto. A primeira é que a ressalva atinge o critério
+de taxa de conclusão, e não os de tempo de volta e de robustez a atrito: a
+perturbação reembaralha \textit{qual} episódio termina em colisão, sem deslocar o
+resultado numa direção, e as medianas de tempo de volta da etapa E3 têm intervalo
+BCa de 0,21~s de largura. A segunda é que o estudo de sensibilidade foi feito na
+máquina anterior do projeto, cujas execuções não sobreviveram à migração --- fato
+declarado na Seção~\ref{sec:val-limitacoes}. A confrontação entre margem e
+amplitude que esta subseção faz combina, portanto, um número auditável nesta
+máquina com uma amplitude medida em execução que já não é reconferível.
+Reproduzir o estudo neste host é a forma de fechar a lacuna, e não foi feito.
+
+\subsection{Terceira ressalva: a sobreposição do conjunto de generalização}
+
+A terceira ressalva foi tratada na Seção~\ref{sec:res-e2} e é retomada aqui
+apenas para o que ela implica sobre execuções futuras, que é a parte mais séria
+e a que menos aparece no valor medido.
+
+A diluição do valor pontuado é benigna: ela torna o par 1,0000 / 1,0000 um piso.
+O problema é de desenho, e está na relação entre as duas listas. O conjunto de
+generalização é fixo no código, e a lista de ações pré-declaradas para quando o
+critério de generalização reprova \textbf{amplia o conjunto de coleta pista a
+pista, com pistas desse mesmo conjunto}. A execução aprovada parou na segunda
+ação; a terceira absorveria três das quatro pistas de generalização, deixando
+como única inédita justamente a pista que o critério exclui porque o especialista
+não completa volta nela. O portão continuaria produzindo um número, esse número
+continuaria podendo passar com folga, e nenhuma pista que o compusesse seria
+inédita --- sem que nada acusasse.
+
+A execução reportada não chegou lá, e isso é sorte de ordem de execução, não
+propriedade do aparato. A correção não foi aplicada retroativamente, e a razão é
+metodológica em vez de técnica: as duas listas são artefatos congelados antes da
+medição, e reescrevê-las depois de ver o número é precisamente o que a regra de
+proveniência existe para impedir. O que cabe é declarar o que a execução vigente
+mede, congelar a correção antes da próxima execução da etapa E2, e não converter
+o valor agregado numa afirmação de generalização que ele não sustenta.
+
+\subsection{O que os números não sustentam}
+
+Além das três ressalvas acima, seis limites delimitam o alcance dos resultados
+deste capítulo. Nenhum deles é atenuado.
+
+\begin{itemize}
+    \item \textbf{Uma execução por configuração.} Os quatro pontos da
+          Tabela~\ref{tab:res_e3_pontos} diferem por uma variável cada, mas cada
+          ponto é \textit{um} treino. A variabilidade entre sementes de
+          \textbf{treino} não foi medida em nenhuma etapa --- as 5 ou 10
+          sementes dos portões são de \textbf{avaliação}, sobre um ponto de
+          verificação fixo. A diferença entre 0,9610 e 0,9891 nas duas últimas
+          linhas é atribuída à penalidade de proximidade porque foi a única
+          variável alterada, mas o trabalho não mediu quanto dessa diferença
+          caberia dentro da dispersão de dois treinos com a mesma configuração e
+          sementes distintas. Essa é a lacuna mais direta a fechar.
+    \item \textbf{Um circuito de portão.} Todos os critérios de aceite das três
+          etapas são medidos em Spielberg. As outras quatro pistas entram apenas
+          no critério de generalização da etapa E2, e nenhuma delas pontua a
+          etapa E3: o resíduo não foi avaliado fora do circuito em que treinou.
+    \item \textbf{Um simulador e um modelo de veículo.} A fidelidade do modelo de
+          faixa única e a representatividade do circuito são premissas herdadas.
+          O Capítulo~\ref{cap:metodologia} documenta que o detector de colisão do
+          simulador precisou ser corrigido antes que qualquer número fosse
+          reportável, o que é evidência a favor da desconfiança, não contra ela.
+    \item \textbf{Veículo único, sem corrida direta.} Não há ultrapassagem, nem
+          oponente, nem obstáculo dinâmico. O regulamento da categoria
+          \cite{F1TENTHRules2023} prevê corrida com dois veículos, e a
+          literatura trata do assunto \cite{Betz2022Survey}; este trabalho ataca
+          exclusivamente o cenário de veículo único.
+    \item \textbf{Nenhum resultado no hardware.} A camada mais avançada mede o
+          artefato ONNX como nó ROS2 dentro do contêiner. Toda comparação
+          numérica deste capítulo com resultados de campo da literatura é
+          assimétrica, e assim deve ser lida.
+    \item \textbf{A evidência não é durável.} Os relatórios que sustentam cada
+          número deste capítulo não são versionados, e o relatório de
+          verificação é sobrescrito a cada execução. A discrepância de 331~m
+          contra 329~m da Seção~\ref{sec:res-deploy} é o caso em que essa
+          propriedade já produziu uma pergunta sem resposta.
+\end{itemize}
+
+\subsection{Síntese}
+
+O resultado quantitativo do trabalho é uma política que enxerga apenas LiDAR e
+proprioceptiva, completa 91 de 92 voltas sob randomização de atrito, posição de
+largada e ruído de sensor, e percorre o circuito em 52,525~s --- 11,0\% mais
+rápido que o especialista geométrico que originou os seus rótulos e que depende
+de pose global para funcionar. A cascata de três etapas preserva, em cada passo,
+a propriedade conquistada no anterior: o especialista fornece competência, a
+imitação a transfere para uma política embarcável, e o resíduo recupera e supera
+o desempenho perdido na destilação sem devolver a dependência de localização, com
+o pior caso da terceira etapa sendo o resultado da segunda.
+
+O resultado metodológico é de outra natureza e, no julgamento deste trabalho, é o
+mais transferível dos dois. As três ressalvas discutidas acima --- o limiar dentro
+do intervalo, a sensibilidade da política composta a perturbação irrelevante, e a
+sobreposição entre o conjunto de generalização e as ações de correção --- não
+foram descobertas por um revisor depois do resultado. Duas delas estavam
+declaradas, com o motivo quantificado, \textbf{antes} de qualquer medição, e a
+terceira foi encontrada conferindo o artefato contra o texto que o descrevia, e
+declarada em vez de corrigida retroativamente, porque corrigi-la depois de ver o
+número seria o defeito maior. Um capítulo de resultados que apresentasse apenas os
+valores da Tabela~\ref{tab:res_sintese} teria omitido o que este trabalho de fato
+tem de incomum: não os números, mas a possibilidade de dizer com precisão o que
+eles não sustentam.
