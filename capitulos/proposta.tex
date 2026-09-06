@@ -179,7 +179,7 @@ O sistema é composto por quatro componentes principais:
 
 \subsubsection{Inicialização e Configuração do Nó}
 
-\begin{verbatim}
+\begin{lstlisting}
 def __init__(self):
     super().__init__('wall_follow')
 
@@ -205,7 +205,7 @@ def __init__(self):
         '/drive',
         10
     )
-\end{verbatim}
+\end{lstlisting}
 
 O construtor da classe \texttt{WallFollow} estabelece a infraestrutura
 necessária para o funcionamento do nó:
@@ -233,7 +233,7 @@ o processo de desenvolvimento e ajuste de parâmetros.
 
 \subsubsection{Configuração de Parâmetros do Sistema}
 
-\begin{verbatim}
+\begin{lstlisting}
 # PID parameters
 self.kp = 14.0
 self.ki = 0.007
@@ -249,7 +249,7 @@ self.time_list = []
 self.angleA = 75
 self.angleB = 85 
 self.dist = 0.7
-\end{verbatim}
+\end{lstlisting}
 
 Os parâmetros do sistema são organizados em três categorias principais:
 
@@ -286,7 +286,7 @@ processo de desenvolvimento.
 
 \subsubsection{Processamento de Dados do LiDAR}
 
-\begin{verbatim}
+\begin{lstlisting}
 def get_range(self, range_data, angle):
     if not range_data:
         return 0.0
@@ -305,7 +305,7 @@ def get_range_by_angle(self, scan: LaserScan, angle: float):
     if desired_range_index < 0 or desired_range_index >= len(scan.ranges):
         return 0.0
     return scan.ranges[desired_range_index]
-\end{verbatim}
+\end{lstlisting}
 
 O subsistema de processamento de dados do LiDAR é responsável por extrair
 informações relevantes das varreduras brutas do sensor. Este módulo implementa
@@ -340,7 +340,7 @@ sistemas robóticos que interpretam dados de sensores.
 
 \subsubsection{Modelo Geométrico para Cálculo do Erro}
 
-\begin{verbatim}
+\begin{lstlisting}
 def get_error(self, msg):
     a = self.get_range_by_angle(msg, math.radians(self.angleA))
     b = self.get_range_by_angle(msg, math.radians(self.angleB))
@@ -352,7 +352,7 @@ def get_error(self, msg):
     D = b * math.cos(alpha)
     error = self.dist - D
     return error
-\end{verbatim}
+\end{lstlisting}
 
 O modelo geométrico implementado na função \texttt{get\_error} constitui o
 núcleo do algoritmo de seguimento de parede, transformando dados brutos do
@@ -413,14 +413,14 @@ abstratos em um algoritmo prático para navegação autônoma.
 
 \subsubsection{Estratégia de Controle de Velocidade}
 
-\begin{verbatim}
+\begin{lstlisting}
 def calculate_velocity(self, error):
     if error < 0.5:
         velocity = 1.0 
     else:
         velocity = 0.5
     return velocity
-\end{verbatim}
+\end{lstlisting}
 
 O sistema implementa uma estratégia adaptativa de controle de velocidade que
 ajusta dinamicamente a velocidade do veículo com base na precisão do seguimento
@@ -453,7 +453,7 @@ F1TENTH.
 
 \subsubsection{Implementação do Controlador PID}
 
-\begin{verbatim}
+\begin{lstlisting}
 def pid_control(self, error, velocity):
     self.integral += error
     angle = self.kp * error + self.ki * self.integral + self.kd * (error - self.prev_error)
@@ -465,7 +465,7 @@ def pid_control(self, error, velocity):
     ackermann_cmd.drive.steering_angle = math.radians(-angle)
     print(angle)
     self.publisher.publish(ackermann_cmd)
-\end{verbatim}
+\end{lstlisting}
 
 O controlador PID implementa a lei de controle clássica proporcionamento
 inteligente para aplicações de seguimento de trajetória em robótica móvel:
@@ -510,7 +510,7 @@ implementação computacional.
 
 \subsubsection{Sistema de Visualização em Tempo Real}
 
-\begin{verbatim}
+\begin{lstlisting}
 def plot_error_vs_time(self):
     self.line.set_xdata(self.time_list)
     self.line.set_ydata(self.error_list)
@@ -518,7 +518,7 @@ def plot_error_vs_time(self):
     self.ax.autoscale_view()
     self.fig.canvas.draw()
     self.fig.canvas.flush_events()
-\end{verbatim}
+\end{lstlisting}
 
 O sistema inclui capacidades avançadas de visualização em tempo real,
 permitindo o monitoramento dinâmico do desempenho do controlador:
@@ -550,7 +550,7 @@ continuamente monitorado e analisado para otimização.
 
 \subsubsection{Fluxo Principal de Processamento}
 
-\begin{verbatim}
+\begin{lstlisting}
 def scan_callback(self, msg):
     error = self.get_error(msg)
     self.error_list.append(error)
@@ -564,7 +564,7 @@ def scan_callback(self, msg):
 
     # Plot the error vs. time
     #self.plot_error_vs_time()
-\end{verbatim}
+\end{lstlisting}
 
 A função \texttt{scan\_callback} representa o núcleo operacional do sistema,
 sendo invocada a cada nova mensagem do LiDAR e orquestrando todo o fluxo de
@@ -928,7 +928,7 @@ O sistema é composto por seis componentes principais:
 O sistema utiliza estruturas de dados bem definidas para organizar informações,
 aumentar a legibilidade do código e facilitar manutenção:
 
-\begin{verbatim}
+\begin{lstlisting}
 @dataclass(frozen=True)
 class PIDParameters:
     """PID controller configuration parameters."""
@@ -958,7 +958,7 @@ class ScanData:
     target_angle: float
     ranges: np.ndarray
     is_valid: bool = True
-\end{verbatim}
+\end{lstlisting}
 
 A utilização de dataclasses (\texttt{@dataclass}) representa uma abordagem
 moderna em Python para definição de classes centradas em dados. Destaca-se:
@@ -984,7 +984,7 @@ clean code, tipagem estática opcional e redução de código boilerplate.
 
 O sistema implementa um controlador PID robusto com recursos avançados:
 
-\begin{verbatim}
+\begin{lstlisting}
 def compute(self, error: float, current_time: Time) -> float:
     """Compute PID output with time-based differentiation."""
     try:
@@ -1021,7 +1021,7 @@ def compute(self, error: float, current_time: Time) -> float:
     except Exception as e:
         print(f"PID computation error: {str(e)}")
         return 0.0
-\end{verbatim}
+\end{lstlisting}
 
 A implementação do controlador PID apresenta características técnicas
 sofisticadas:
@@ -1040,7 +1040,7 @@ sofisticadas:
           derivativos, um problema clássico em controladores PID.
 
     \item \textbf{Limitação com Anti-Windup}: Implementado na função auxiliar \texttt{\_clamp\_output}:
-          \begin{verbatim}
+          \begin{lstlisting}
     def _clamp_output(self, output: float) -> float:
         """Apply output limits with anti-windup compensation."""
         clipped = np.clip(output, self.params.min_output, self.params.max_output)
@@ -1049,7 +1049,7 @@ sofisticadas:
             self.integral -= (output - clipped) / self.params.ki
             
         return clipped
-    \end{verbatim}
+    \end{lstlisting}
 
           O mecanismo de anti-windup ajusta o termo integral quando ocorre saturação do
           atuador, prevenindo acúmulo excessivo de erro integral e consequentes problemas
@@ -1068,7 +1068,7 @@ recursos tipicamente encontrados em sistemas de controle profissionais.
 O sistema implementa um mecanismo abrangente de carregamento e validação de
 parâmetros:
 
-\begin{verbatim}
+\begin{lstlisting}
 def _load_parameters(self):
     """Load and validate node parameters for autonomous navigation."""
     param_definitions = [
@@ -1103,7 +1103,7 @@ def _load_parameters(self):
     except Exception as e:
         self.get_logger().error(f"Parameter loading error: {str(e)}")
         raise
-\end{verbatim}
+\end{lstlisting}
 
 Este componente demonstra uma abordagem robusta para gerenciamento de
 configuração:
@@ -1126,7 +1126,7 @@ clareza, facilitando a configuração e manutenção do sistema.
 O núcleo algorítmico do sistema é implementado nas funções de detecção e
 seleção de gaps:
 
-\begin{verbatim}
+\begin{lstlisting}
 def _detect_gaps(self, points: np.ndarray, angle_inc: float) -> List[Dict]:
     """Identify navigable gaps in the environment."""
     print("[DEBUG] Starting gap detection")
@@ -1178,7 +1178,7 @@ def _is_valid_gap(self, gap: Dict) -> bool:
 def _select_optimal_gap(self, gaps: List[Dict]) -> Dict:
     """Select the best navigable gap from detected options."""
     return gaps[0]
-\end{verbatim}
+\end{lstlisting}
 
 A implementação do algoritmo de detecção e seleção de gaps utiliza conceitos de
 processamento vetorizado e álgebra linear:
@@ -1231,7 +1231,7 @@ características desejáveis.
 Uma característica distintiva do sistema é sua arquitetura multithreading para
 processamento paralelo:
 
-\begin{verbatim}
+\begin{lstlisting}
 def __init__(self):
     super().__init__('gap_follower')
     
@@ -1256,7 +1256,7 @@ def __init__(self):
     self.control_thread = threading.Thread(target=self._control_loop)
     self.scan_thread.start()
     self.control_thread.start()
-\end{verbatim}
+\end{lstlisting}
 
 A implementação multithreading utiliza conceitos avançados de programação
 concorrente:
@@ -1300,7 +1300,7 @@ valiosa no contexto de corridas autônomas onde o tempo de resposta é crítico.
 O sistema implementa um loop dedicado para cálculo e aplicação de comandos de
 controle:
 
-\begin{verbatim}
+\begin{lstlisting}
 def _control_loop(self):
     """Dedicated thread for control computation."""
     print("[DEBUG] Control loop started")
@@ -1322,7 +1322,7 @@ def _control_loop(self):
         except Exception as e:
             self.get_logger().error(f"Control loop error: {str(e)}")
             self._execute_emergency_stop()
-\end{verbatim}
+\end{lstlisting}
 
 O loop de controle implementa conceitos avançados de teoria de controle e
 robustez:
@@ -1347,7 +1347,7 @@ robustez:
 Um aspecto notável é a estratégia adaptativa de velocidade, que modula
 automaticamente a velocidade em função do ângulo de direção:
 
-\begin{verbatim}
+\begin{lstlisting}
 def _compute_speed_command(self, steering: float) -> float:
     """Calculate speed command based on steering angle."""
     target_speed = self.params['max_speed'] * (
@@ -1357,7 +1357,7 @@ def _compute_speed_command(self, steering: float) -> float:
         target_speed - self.current_speed,
         self.get_clock().now()
     )
-\end{verbatim}
+\end{lstlisting}
 
 Esta abordagem implementa um modelo de velocidade que:
 \begin{itemize}

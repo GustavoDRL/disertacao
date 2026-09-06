@@ -46,6 +46,26 @@
 \usepackage{amsmath,amssymb,mathrsfs}	% Comandos matemáticos avançados 
 \usepackage{setspace}  					% Para permitir espaçamento simples, 1 1/2 e duplo
 \usepackage{verbatim}					% Para poder usar o ambiente "comment"
+\usepackage{listings}					% Para listagens de código com quebra de linha automática
+\lstset{
+	basicstyle=\ttfamily,
+	breaklines=true,				% "verbatim" nao quebra linha e estourava a margem
+	breakatwhitespace=true,			% so quebrar em espaco - nunca partir um identificador ao meio
+	breakindent=1em,
+	columns=fullflexible,
+	keepspaces=true,
+	showstringspaces=false,
+	xleftmargin=0pt,
+	xrightmargin=0pt,
+	inputencoding=utf8,				% comentários dos blocos de código usam acentos
+	extendedchars=true,
+	literate=%
+		{á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1%
+		{Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1%
+		{à}{{\`a}}1 {ã}{{\~a}}1 {õ}{{\~o}}1 {ê}{{\^e}}1 {â}{{\^a}}1 {ô}{{\^o}}1%
+		{Ã}{{\~A}}1 {Õ}{{\~O}}1 {Ê}{{\^E}}1 {Â}{{\^A}}1 {Ô}{{\^O}}1%
+		{ç}{{\c c}}1 {Ç}{{\c C}}1,
+}
 \usepackage{tabularx} 					% Para poder ter tabelas com colunas de largura auto-ajustável
 \usepackage{afterpage} 					% Para executar um comando depois do fim da página corrente
 \usepackage{url} 						% Para formatar URLs (endereços da Web)
