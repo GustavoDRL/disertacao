@@ -460,17 +460,35 @@ sementes não chegou ao fim.
 Os dois últimos pontos mostram que a troca \textbf{não era fundamental}, e a
 razão --- a recompensa não cobrava o rasante de muro --- está exposta na
 Seção~\ref{sec:val-congelado}. Nas contagens brutas o efeito é este: ligar a
-penalidade de proximidade a 0,2 levou as colisões de sete para três e elevou o
-limite superior do intervalo de Wilson de 0,9403 para 0,9867, ainda assim
-inteiramente abaixo do limiar; elevá-la a 1,0 deixou \textbf{uma} colisão em 92
-voltas tentadas, ao custo de 1,15~s em relação ao ponto anterior.
+penalidade de proximidade a 0,2 levou as colisões de sete para três; elevá-la a
+1,0 deixou \textbf{uma} colisão em 92 voltas tentadas, ao custo de 1,15~s em
+relação ao ponto anterior.
 
-Vale registrar o que os intervalos da Tabela~\ref{tab:res_e3_pontos} dizem sobre
-as duas reprovações, porque isso não decorre das taxas sozinhas: nos dois pontos
-reprovados o intervalo de Wilson fica \textbf{inteiramente abaixo} do limiar de
-0,98 --- $[0{,}7712;\ 0{,}9403]$ e $[0{,}8916;\ 0{,}9867]$. Elas são, portanto,
-reprovações que nenhuma escolha de critério estatístico reverteria, o que não é
-o caso da aprovação, como a Seção~\ref{sec:res-discussao} discute.
+Os intervalos da Tabela~\ref{tab:res_e3_pontos} dizem sobre esses quatro pontos
+algo que as taxas sozinhas não dizem, e que corrige a leitura intuitiva de que
+uma reprovação seja mais firme que uma aprovação. \textbf{Apenas um dos quatro
+intervalos exclui o limiar de 0,98}: o do ponto de 300 mil passos sem penalidade
+de proximidade, $[0{,}7712;\ 0{,}9403]$. Essa é a única das quatro decisões que
+nenhuma escolha de critério estatístico reverteria. Nos outros três
+--- $[0{,}9630;\ 1{,}0000]$, $[0{,}8916;\ 0{,}9867]$ e
+$[0{,}9410;\ 0{,}9981]$ --- o limiar cai \textbf{dentro} do intervalo, e isso
+vale igualmente para os dois pontos que passam neste critério --- o de 150 mil
+passos, cujo veredito global é \texttt{PASS-PARCIAL} por tempo de volta, e o
+aprovado --- e para o reprovado com penalidade de proximidade 0,2.
+
+A consequência é desconfortável e precisa ser dita. Entre o ponto reprovado com
+penalidade 0,2 e o ponto aprovado com penalidade 1,0, os intervalos se
+\textbf{sobrepõem} em $[0{,}9410;\ 0{,}9867]$, e o intervalo do aprovado contém
+o valor pontual do reprovado (0,9610) --- só a recíproca não vale, porque 0,9891
+fica acima do limite superior do reprovado. O que separa reprovar de aprovar
+nesse par é o \textbf{valor pontual}, que é o critério pré-registrado, e não uma
+separação que os intervalos sustentem. Convém não exagerar na direção oposta:
+comparar dois intervalos não é o mesmo que testar a diferença entre as duas
+proporções, e o que se afirma aqui é apenas o que os intervalos mostram. Mas o
+que eles mostram basta para o ponto: a ressalva estatística que a
+Seção~\ref{sec:res-discussao} discute para os três portões reaparece
+\textbf{dentro de um único experimento}, separando a configuração final da
+anterior por uma margem que o intervalo não resolve.
 
 Ganhar confiabilidade \textit{e} velocidade na mesma intervenção é a assinatura
 de ter mexido no objetivo, e não de ter caminhado sobre uma curva de compromisso
@@ -717,11 +735,23 @@ Convém delimitar o que ela alcança, com os artefatos deste capítulo. Ela alca
 o critério de taxa de conclusão e nenhum outro: os dois critérios de robustez a
 atrito da etapa E3 estão a mais de uma ordem de grandeza dos seus limiares, e os
 intervalos BCa de tempo de volta ficam inteiramente abaixo dos limiares em E2 e
-E3. E ela alcança as \textit{aprovações}, não as reprovações --- os dois pontos
-reprovados da Tabela~\ref{tab:res_e3_pontos} têm intervalo de Wilson
-inteiramente abaixo de 0,98, como registrado na Seção~\ref{sec:res-e3}, de modo
-que a assimetria entre passar e reprovar neste trabalho é real: as reprovações
-do E3 são robustas à escolha de critério estatístico e a aprovação não é.
+E3.
+
+O que ela \textit{não} respeita é a fronteira entre aprovar e reprovar, e seria
+cômodo supor o contrário --- que uma reprovação, por ser negativa, esteja a salvo
+da ressalva que atinge a aprovação. Os artefatos dizem o oposto. Dos quatro
+pontos medidos do E3, \textbf{três têm o limiar de 0,98 dentro do intervalo de
+Wilson}: os dois que passam no critério de taxa de conclusão e um dos dois que
+reprovam nele, como a Seção~\ref{sec:res-e3} abre. Só a reprovação do ponto de 300 mil passos sem
+penalidade de proximidade é robusta à escolha de critério, e é a única. Nos
+outros três, inclusive na aprovação que é o resultado final do trabalho, a
+decisão repousa inteiramente sobre o valor pontual.
+
+Não há como transformar isso numa boa notícia, e a conduta que a
+Seção~\ref{sec:val-limitacoes} adota permanece a única defensável. É também a
+razão de este capítulo imprimir os quatro intervalos do E3 em vez de só as
+quatro taxas: sem eles, o fato de a configuração aprovada e a anterior não se
+separarem por intervalo não apareceria em lugar nenhum do trabalho.
 
 \subsection{Segunda ressalva: a realização não é a distribuição}
 
