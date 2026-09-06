@@ -1,46 +1,39 @@
-# Dissertação [Placeholder: Seu Título Aqui]
+# Desenvolvimento de um Veículo Autônomo de Corrida Conforme as Regulamentações da Categoria "F1TENTH"
 
 ## Descrição
 
-[Placeholder: Adicione uma breve descrição do seu projeto de dissertação aqui.]
+Trabalho de Graduação do Programa de Graduação em Engenharia da
+Instrumentação Automação e Robótica (UFABC), sobre o desenvolvimento de um
+veículo autônomo de corrida na categoria F1TENTH, incluindo a construção do
+veículo e a avaliação, em simulação, de controladores clássicos e de
+aprendizado (imitação e reforço residual) para pilotagem autônoma.
 
 ## Estrutura do Projeto
 
-- `main.tex`: Arquivo principal para compilação.
-- `dissertacao.tex`: Arquivo raiz da dissertação (provavelmente incluído pelo `main.tex`).
-- `bibliografia.bib`: Arquivo BibTeX com as referências bibliográficas.
-- `capitulos/`: Diretório contendo os arquivos `.tex` de cada capítulo.
-- `pretextual/`: Diretório contendo os arquivos dos elementos pré-textuais (capa, folha de rosto, resumo, etc.).
-- `postextual/`: Diretório contendo os arquivos dos elementos pós-textuais (apêndices, anexos, etc.).
-- `figs/`: Diretório para armazenar as figuras e imagens.
-- `manuais/`: [Placeholder: Descreva o conteúdo deste diretório, se aplicável].
-- `extras/`: [Placeholder: Descreva o conteúdo deste diretório, se aplicável].
+- `dissertacao.tex`: arquivo raiz do documento (compila diretamente, não há
+  `main.tex`).
+- `bibliografia.bib`: arquivo BibTeX com as referências bibliográficas.
+- `capitulos/`: capítulos do texto (introdução, ferramentas, construção do
+  veículo, regulamentação, considerações, proposta, resultados, conclusão).
+- `pretextual/`: elementos pré-textuais (capa, folha de rosto, ficha
+  catalográfica, folha de assinaturas, agradecimentos, epígrafe, resumo e
+  abstract).
+- `postextual/`: elementos pós-textuais (apêndices, anexos).
+- `extras/`: dados de identificação do trabalho e configurações do abnTeX2
+  (citações, aparência do PDF).
+- `figs/`: figuras e imagens usadas no documento.
 
 ## Como Compilar
 
-[Placeholder: Descreva os passos para compilar o documento LaTeX. Exemplo:]
+Requer uma distribuição LaTeX (TeX Live ou MiKTeX) com o pacote `abntex2` e
+`latexmk`. A partir da raiz do repositório:
 
-1.  Certifique-se de ter uma distribuição LaTeX instalada (como TeX Live, MiKTeX).
-2.  Use um editor LaTeX ou a linha de comando para compilar o arquivo `main.tex`. Geralmente, a sequência de compilação pode exigir múltiplas passagens e o uso do BibTeX/Biber:
-    ```bash
-    pdflatex main.tex
-    bibtex dissertacao # Ou o nome base do seu arquivo .aux se for diferente
-    pdflatex main.tex
-    pdflatex main.tex
-    ```
-    Alternativamente, ferramentas como `latexmk` podem simplificar o processo:
-    ```bash
-    latexmk -pdf main.tex
-    ```
+```bash
+latexmk -pdf dissertacao.tex
+```
 
-## Dependências
+Para limpar os arquivos auxiliares gerados pela compilação:
 
-[Placeholder: Liste quaisquer pacotes LaTeX especiais ou fontes externas necessárias.]
-
-## Contribuição
-
-[Placeholder: Se aplicável, descreva como outros podem contribuir.]
-
-## Licença
-
-[Placeholder: Especifique a licença do seu trabalho, se houver.]
+```bash
+latexmk -c
+```

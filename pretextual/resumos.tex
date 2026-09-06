@@ -5,26 +5,74 @@
 % RESUMO em português
 \setlength{\absparsep}{18pt} % ajusta o espaçamento dos parágrafos do resumo
 \begin{resumo}
- Segundo a ABNT, o resumo deve ressaltar o
- objetivo, o método, os resultados e as conclusões do documento. A ordem e a extensão
- destes itens dependem do tipo de resumo (informativo ou indicativo) e do
- tratamento que cada item recebe no documento original. O resumo deve ser
- precedido da referência do documento, com exceção do resumo inserido no
- próprio documento. Umas 10 linhas (\ldots) As palavras-chave devem figurar logo abaixo do
- resumo, antecedidas da expressão Palavras-chave:, separadas entre si por
- ponto e finalizadas também por ponto.
+ Este trabalho tem como objetivo avaliar, em simulação, o uso de aprendizado
+ por imitação e de aprendizado por reforço residual para o controle de um
+ veículo autônomo de corrida na categoria F1TENTH, comparando essas
+ abordagens a um controlador clássico de referência (pure pursuit). A
+ metodologia consistiu em implementar um piloto especialista baseado em
+ pure pursuit, usado como referência de desempenho e como fonte de
+ demonstrações; treinar, a partir dessas demonstrações, uma rede de
+ imitação convolucional unidimensional (TinyLidarNet, com 221 mil
+ parâmetros); e refinar essa política por meio de aprendizado por reforço
+ residual (SAC) aplicado sobre a rede de imitação, avaliando os três
+ controladores segundo um conjunto pré-registrado de critérios de
+ conclusão de volta, tempo de volta e generalização a pistas não vistas.
+ Os resultados mostram que o especialista completa 50 de 50 voltas sem
+ colisões, com tempo de volta de 59,00 s; a rede de imitação atinge os
+ quatro critérios de avaliação, com completude de 1,0000 e tempo de volta
+ de 60,050 s, generalizando com completude 1,00 em três pistas inéditas; e
+ a política refinada por reforço residual também atinge os quatro
+ critérios, com completude de 0,9891 e tempo de volta de 52,525 s -- 11\%
+ mais rápida que o especialista --, sem degradação de desempenho sob
+ atrito randomizado. Ressalva-se que o critério de completude é avaliado
+ pelo valor pontual, por decisão pré-registrada, e que o intervalo de
+ confiança de 95\% dessa métrica contém o limiar de aceitação nos três
+ controladores. Conclui-se que, em simulação, o aprendizado por reforço
+ residual aplicado sobre uma política de imitação supera o controlador
+ clássico de referência em velocidade sem perda de robustez a variações de
+ atrito; a transferência dessas políticas para o veículo físico é trabalho
+ em andamento e não é tratada como resultado deste trabalho.
 
- \textbf{Palavras-chaves}: latex. abntex. editoração de texto.
+ \textbf{Palavras-chaves}: F1TENTH. Veículos autônomos. Aprendizado por
+ imitação. Aprendizado por reforço. Transferência simulação-realidade.
 \end{resumo}
 
 % ABSTRACT in english
 \begin{resumo}[Abstract]
  \begin{otherlanguage*}{english}
-   This is the english abstract.
+   This work aims to evaluate, in simulation, the use of imitation
+   learning and residual reinforcement learning for controlling an
+   autonomous racing vehicle in the F1TENTH category, comparing these
+   approaches against a classical reference controller (pure pursuit). The
+   methodology consisted of implementing an expert pilot based on pure
+   pursuit, used both as a performance reference and as a source of
+   demonstrations; training, from these demonstrations, a one-dimensional
+   convolutional imitation network (TinyLidarNet, with 221 thousand
+   parameters); and refining this policy through residual reinforcement
+   learning (SAC) applied on top of the imitation network, evaluating the
+   three controllers against a pre-registered set of criteria for lap
+   completion, lap time, and generalization to unseen tracks. The results
+   show that the expert completes 50 of 50 laps with zero collisions, with
+   a lap time of 59.00 s; the imitation network meets all four evaluation
+   criteria, with a completion of 1.0000 and a lap time of 60.050 s,
+   generalizing with a completion of 1.00 on three unseen tracks; and the
+   residual reinforcement learning policy also meets all four criteria,
+   with a completion of 0.9891 and a lap time of 52.525 s -- 11\% faster
+   than the expert --, with zero performance degradation under randomized
+   friction. It should be noted that the completion criterion is evaluated
+   as a point estimate, by pre-registered decision, and that the 95\%
+   confidence interval of this metric contains the acceptance threshold
+   for all three controllers. It is concluded that, in simulation,
+   residual reinforcement learning applied on top of an imitation policy
+   outperforms the classical reference controller in speed without loss
+   of robustness to friction variation; transferring these policies to
+   the physical vehicle is ongoing work and is not addressed as a result
+   of this work.
 
    \vspace{\onelineskip}
- 
-   \noindent 
-   \textbf{Keywords}: latex. abntex. text editoration.
+
+   \noindent
+   \textbf{Keywords}: F1TENTH. Autonomous vehicles. Imitation learning.
+   Reinforcement learning. Simulation-to-reality transfer.
  \end{otherlanguage*}
 \end{resumo}
