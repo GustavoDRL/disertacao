@@ -38,7 +38,9 @@ deixar de exigir pose global. E o resíduo de aprendizado por reforço da etapa 
 aprovou os seus quatro critérios completando 91 de 92 voltas sob randomização e
 percorrendo o circuito em 52,525~s, \textbf{11,0\% mais rápido que o especialista
 que originou os seus rótulos}, sem devolver a dependência de localização e com
-degradação nula sob randomização do coeficiente de atrito.
+degradação desprezível sob randomização do coeficiente de atrito --- queda de
+taxa de conclusão nula, e piora de tempo de volta de 0,0019 contra um limiar de
+0,05.
 
 O ponto mais avançado na direção do hardware é a política composta exportada para
 ONNX num grafo único e executada como nó ROS2 dentro do contêiner, contra o
@@ -49,8 +51,9 @@ entradas e saídas do grafo e o comportamento da política sob a malha de contro
 real. Não valida atrito real, latência de atuador real nem ruído de LiDAR real,
 porque do outro lado da ponte continua havendo um simulador.
 
-Três ressalvas acompanham esses números e não são atenuadas em lugar nenhum do
-texto: o limiar de taxa de conclusão cai dentro do intervalo de confiança nos três
+As três ressalvas que o Capítulo~\ref{cap:resultados} discute nominalmente
+acompanham esses números e não são atenuadas em lugar nenhum do texto: o limiar
+de taxa de conclusão cai dentro do intervalo de confiança nos três
 portões aprovados (Tabela~\ref{tab:val_ic}); a política composta da etapa E3 é
 sensível a perturbação numérica irrelevante numa amplitude quatro vezes maior que
 a sua margem sobre o limiar, de modo que o número reproduzível ali é a
@@ -61,6 +64,25 @@ de coleta, o que dilui aquele critério em vez de inflá-lo
 quantificado, antes de qualquer medição; a terceira foi encontrada conferindo o
 artefato contra o texto que o descrevia, e foi declarada em vez de corrigida
 retroativamente.
+
+Duas outras ressalvas, declaradas nos mesmos capítulos sem receber número,
+prendem-se diretamente a cifras que esta conclusão acabou de imprimir, e por isso
+viajam com elas. A primeira é de \textbf{proveniência}: o relatório de
+verificação que registra os 381~m traz veredito global \textit{reprovado}, e uma
+das camadas que reprovam é a de proveniência, por árvore de trabalho suja. É, nos
+termos da Seção~\ref{sec:res-deploy}, a única cifra daquele capítulo cuja
+proveniência não satisfaz o padrão que o próprio trabalho exige das demais ---
+diferente, portanto, das três execuções de E1, E2 e E3, que foram medidas com a
+árvore limpa. Refazer a medição nessa condição, e promover o relatório para um
+caminho versionado, fecha a ressalva. A segunda é de \textbf{protocolo}: o
+denominador $T_{pp}$ é medido \textbf{sem} randomização, enquanto as etapas E2 e
+E3 são medidas \textbf{com} randomização de atrito, de posição de largada e de
+ruído de sensor. A comparação entre 52,525~s e 59,000~s não é, portanto, entre
+medições feitas sob o mesmo protocolo. A direção do efeito favorece a leitura
+conservadora --- a política que supera a referência é a que corre em condições
+mais duras, e o braço sem randomização da comparação pareada da etapa E3 estima o
+tamanho disso em cerca de um décimo de segundo ---, mas o padrão deste trabalho é
+declarar a assimetria, não confiar na direção dela.
 
 \subsection*{A contribuição metodológica}
 
@@ -99,7 +121,7 @@ linha.
 \begin{table}[h]
     \centering
     \small
-    \begin{tabularx}{\textwidth}{|c|>{\raggedright\arraybackslash}X|l|}
+    \begin{tabularx}{\textwidth}{|c|>{\raggedright\arraybackslash}X|>{\raggedright\arraybackslash}p{3.3cm}|}
         \hline
         \textbf{\#} & \textbf{Objetivo específico declarado} & \textbf{Situação} \\
         \hline
@@ -107,10 +129,10 @@ linha.
         implementados e testados em ambiente simulado & \textbf{Atingido} \\
         \hline
         2 & Construir e parametrizar o modelo físico do veículo, hardware e
-        chassi & \textbf{Parcial} \\
+        chassi & \textbf{Parcial} --- duas grandezas pendentes de medição \\
         \hline
         3 & Software embarcado capaz de executar os algoritmos em tempo real no
-        veículo físico & \textbf{Parcial} \\
+        veículo físico & \textbf{Parcial} --- só o controle manual \\
         \hline
         4 & Conduzir experimentos no modelo físico e coletar dados de desempenho
         & \textbf{Não atingido} \\
@@ -176,9 +198,10 @@ Seção~\ref{sec:arte-lacuna} a declara como tal caso a caso.
 
 \subsection*{O que fica dito com precisão}
 
-Dois terços dos objetivos foram alcançados, um terço não, e o trabalho ganha ao
-dizê-lo nesses termos. A alternativa --- descrever a fronteira do hardware em
-linguagem vaga --- contradiria o capítulo que precede esta conclusão, cujo
+Um dos cinco objetivos foi plenamente atingido, dois o foram em parte, e dois
+não foram atingidos --- e o trabalho ganha ao dizê-lo nesses termos. A
+alternativa --- descrever a fronteira do hardware em linguagem vaga ---
+contradiria o capítulo que precede esta conclusão, cujo
 argumento central é que um número medido não é um resultado enquanto o aparato
 que o produziu não estiver declarado. Um trabalho que aplica esse padrão aos
 próprios portões e o abandona ao enunciar os próprios objetivos teria a
@@ -186,8 +209,9 @@ metodologia como ornamento, não como contribuição.
 
 O que se afirma, então, é isto: uma política que enxerga apenas LiDAR e
 proprioceptiva completa 91 de 92 voltas sob randomização e percorre Spielberg
-11,0\% mais rápido que o especialista geométrico que a ensinou; ela roda como nó
-ROS2 em tempo real contra o simulador; e ela nunca dirigiu o carro.
+11,0\% mais rápido que o especialista geométrico que a ensinou --- que é avaliado
+sem a randomização a que ela é submetida; ela roda como nó ROS2 em tempo real
+contra o simulador; e ela nunca dirigiu o carro.
 
 \section*{Trabalhos Futuros}
 \addcontentsline{toc}{section}{Trabalhos Futuros}
