@@ -16,11 +16,14 @@
  parâmetros); e refinar essa política por meio de aprendizado por reforço
  residual (SAC) aplicado sobre a rede de imitação, avaliando os três
  controladores segundo um conjunto pré-registrado de critérios de
- conclusão de volta, tempo de volta e generalização a pistas não vistas.
+ conclusão de volta, tempo de volta e generalização a circuitos distintos
+ do circuito de avaliação.
  Os resultados mostram que o especialista completa 50 de 50 voltas sem
  colisões, com tempo de volta de 59,00 s; a rede de imitação atinge os
  quatro critérios de avaliação, com completude de 1,0000 e tempo de volta
- de 60,050 s, generalizando com completude 1,00 em três pistas inéditas; e
+ de 60,050 s, e completa 100\% das voltas em Oschersleben e 92\% em Monza
+ -- os dois circuitos que nunca entraram na coleta de demonstrações --,
+ onde o especialista que a treinou completa 17\% e 0\%; e
  a política refinada por reforço residual também atinge os quatro
  critérios, com completude de 0,9891 e tempo de volta de 52,525 s -- 11\%
  mais rápida que o especialista --, sem degradação de desempenho sob
@@ -51,11 +54,14 @@
    parameters); and refining this policy through residual reinforcement
    learning (SAC) applied on top of the imitation network, evaluating the
    three controllers against a pre-registered set of criteria for lap
-   completion, lap time, and generalization to unseen tracks. The results
+   completion, lap time, and generalization to circuits other than the
+   evaluation circuit. The results
    show that the expert completes 50 of 50 laps with zero collisions, with
    a lap time of 59.00 s; the imitation network meets all four evaluation
-   criteria, with a completion of 1.0000 and a lap time of 60.050 s,
-   generalizing with a completion of 1.00 on three unseen tracks; and the
+   criteria, with a completion of 1.0000 and a lap time of 60.050 s, and
+   completes 100\% of the laps at Oschersleben and 92\% at Monza
+   -- the two circuits that never entered the demonstration collection --,
+   where the expert that trained it completes 17\% and 0\%; and the
    residual reinforcement learning policy also meets all four criteria,
    with a completion of 0.9891 and a lap time of 52.525 s -- 11\% faster
    than the expert --, with zero performance degradation under randomized

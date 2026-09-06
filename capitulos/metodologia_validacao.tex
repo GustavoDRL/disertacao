@@ -399,16 +399,115 @@ completa nenhuma volta.
 
 Duas salvaguardas foram acrescentadas depois de defeitos medidos. A razão é
 \textbf{limitada superiormente em 1,0}, porque sem teto a média mascara: numa
-execução real, as razões deram Catalunya 100\%, Oschersleben 300\% e Silverstone
-0\%, média 1,333 --- aprovada com uma pista completamente zerada. Superar o
-controle numa pista fácil não compra o direito de não andar em outra. E existe um
-\textbf{segundo critério, sobre a pior pista}, porque mesmo com teto a média
-tolera um zero quando há pistas suficientes.
+execução anterior à salvaguarda, as razões deram Catalunya 100\%, Oschersleben
+300\% e Silverstone 0\%, média 1,333 --- aprovada com uma pista completamente
+zerada. Superar o controle numa pista fácil não compra o direito de não andar em
+outra. E existe um \textbf{segundo critério, sobre a pior pista}, porque mesmo
+com teto a média tolera um zero quando há pistas suficientes.
 
 Há ainda um caso de borda que o portão trata explicitamente: quando o controle
 não completa volta em \textit{nenhuma} pista de generalização, o critério devolve
 \texttt{INDETERMINADO} e \textbf{não passa}. A versão anterior devolvia aprovação
 com limiar zero, o que fazia a ausência de dado virar aprovação automática.
+
+\subsection{O conjunto de generalização se sobrepõe às ações de correção}
+\label{sec:val-heldout}
+
+As duas salvaguardas acima tratam de \textit{como} as razões são agregadas.
+Nenhuma delas trata de \textit{quais} pistas entram na conta, e é aí que está o
+defeito. Ele apareceu ao conferir os artefatos da execução aprovada do E2 contra
+o texto que a descrevia, e é da mesma classe da assimetria do escalonamento
+discutida na subseção seguinte: um arranjo que \textbf{parece conservador} e não
+é. A diferença é que aquela assimetria virou regra corrigida, e esta fica
+declarada e não corrigida, pelo motivo exposto ao final da subseção.
+
+O conjunto de pistas de generalização é fixo no código --- Monza, Catalunya,
+Silverstone e Oschersleben --- e não depende de onde as demonstrações foram
+coletadas. A tabela de ações pré-declaradas da Seção~\ref{sec:val-congelado},
+acionada quando o critério de generalização reprova, faz exatamente o oposto:
+ela aumenta o conjunto de coleta pista a pista. A primeira ação coleta em
+Spielberg e Catalunya; a segunda acrescenta Silverstone; a terceira acrescenta
+Oschersleben. \textbf{As duas listas se sobrepõem}, e nem o contrato numérico nem
+o documento de estado registram a sobreposição.
+
+A execução aprovada do E2 é a segunda ação: coletou em Spielberg, Catalunya e
+Silverstone. Duas das quatro pistas de generalização estavam, portanto, dentro do
+conjunto de coleta. A Tabela~\ref{tab:val_heldout} abre por pista o número que o
+portão agregou.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|c|c|c|p{3.5cm}|}
+        \hline
+        \textbf{Pista} & \textbf{Na coleta?} & \textbf{Rede} &
+        \textbf{Especialista} & \textbf{Razão pontuada} \\
+        \hline
+        Catalunya    & \textbf{sim} & 15/15 (100\%)  & 15/15 (100\%) &
+        1,00 --- empate \\
+        \hline
+        Silverstone  & \textbf{sim} & 15/15 (100\%)  & 15/15 (100\%) &
+        1,00 --- empate \\
+        \hline
+        Oschersleben & não          & 15/15 (100\%)  & 1/6 (16,7\%)  &
+        1,00 --- teto; a razão medida é $\approx 6\times$ \\
+        \hline
+        Monza        & não          & 12/13 (92,3\%) & 0/5 (0\%)     &
+        excluída --- o controle não completa volta \\
+        \hline
+    \end{tabular}
+    \caption{As quatro pistas do critério de generalização do E2 na execução
+    aprovada. O portão pontuou média das razões 1,0000 (limiar 0,80) e pior
+    pista 1,0000 (limiar 0,60)}
+    \label{tab:val_heldout}
+\end{table}
+
+A leitura da Tabela~\ref{tab:val_heldout} é contraintuitiva, e é por isso que ela
+está aqui em vez de numa nota de rodapé: \textbf{a sobreposição dilui o critério,
+não o infla}. As duas pistas contaminadas contribuem 1,00 cada, mas 1,00 ali é o
+empate com o especialista em pista que a rede \textit{viu no treino} --- não mede
+generalização nenhuma. As duas pistas genuinamente inéditas são exatamente onde a
+rede mais supera o professor, e o critério não dá crédito por nenhuma das duas:
+em Oschersleben a razão medida é de aproximadamente seis vezes, e o teto de 1,0 a
+corta para 1,00; em Monza a rede completa 12 de 13 voltas contra 0 de 5 do
+especialista, e a pista é excluída porque a razão dividiria por zero. O par
+1,0000~/~1,0000 que o portão pontuou é, portanto, um \textit{piso} do resultado
+medido, não um valor inflado.
+
+A afirmação defensável não é ``generalização 1,00 em três pistas não vistas''. É
+esta: a rede completa \textbf{100\% das voltas em Oschersleben e 92\% em Monza},
+as duas pistas que nunca entraram na coleta, enquanto o especialista que a
+treinou completa 16,7\% e 0\% nessas mesmas pistas. Catalunya e Silverstone, onde
+a rede também completa 100\%, entraram na coleta por ação pré-declarada do laço,
+e por isso não medem generalização.
+
+Que a coleta é o que move esse número está registrado na sequência das três
+execuções, com o conjunto de generalização fixo o tempo todo: com uma única pista
+de coleta (Spielberg), a rede não completa volta em nenhuma das quatro; com duas
+(mais Catalunya), Oschersleben já sai 12/13 e Silverstone sai 4/8; com três (mais
+Silverstone), Oschersleben sai 15/15 e Monza sai 12/13 --- e nem Oschersleben nem
+Monza entraram em coleta alguma.
+
+O defeito de desenho, porém, é sobre execuções futuras, e é mais sério que a
+diluição. O remédio pré-declarado para reprovar em generalização é
+\textbf{coletar nas próprias pistas de generalização}. A terceira ação da lista
+absorveria três das quatro --- Catalunya, Silverstone e Oschersleben ---,
+deixando Monza como única pista genuinamente inédita; e Monza é justamente a
+pista que o critério exclui, porque o especialista não completa volta nela. O
+portão continuaria a produzir um número, e esse número continuaria podendo passar
+com folga, mas nenhuma das pistas que o compõem seria inédita: o critério ficaria
+vazio de conteúdo de generalização \textbf{sem que nada acusasse}. A execução
+aprovada parou na segunda ação e não chegou lá --- o que é sorte de ordem de
+execução, não propriedade do aparato.
+
+Diferente das outras falhas deste capítulo, esta não gerou regra, e a razão é
+metodológica em vez de técnica: as duas listas são artefatos congelados antes da
+medição, e reescrevê-las agora seria mexer no critério depois de ver o número, que
+é exatamente o que \texttt{SPEC-PROV-01} existe para impedir. O que cabe fazer é
+o que esta subseção faz --- declarar o que a execução vigente de fato mede --- e
+congelar a correção antes da próxima execução do E2: ou tornar as duas listas
+disjuntas por construção, ou derivar o conjunto de generalização do conjunto de
+coleta de cada execução, de modo que uma pista coletada deixe de ser contada como
+não vista.
 
 \subsection{Escalonamento por meia largura de intervalo}
 
