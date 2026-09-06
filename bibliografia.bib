@@ -16,14 +16,16 @@
   publisher = {PMLR}
 }
 
-@misc{Betz2022Survey,
-  author        = {Betz, Johannes and Zheng, Hongrui and Rahil, Nikhil and Abbas, Houssam and Mangharam, Rahul},
-  title         = {Autonomous Vehicles on the Edge: A Survey on Autonomous Vehicle Racing},
-  year          = {2022},
-  eprint        = {2202.07008v1},
-  archiveprefix = {arXiv},
-  primaryclass  = {cs.RO},
-  month         = feb
+@article{Betz2022Survey,
+  author    = {Betz, Johannes and Zheng, Hongrui and Liniger, Alexander and Rosolia, Ugo and Karle, Phillip and Behl, Madhur and Krovi, Venkat and Mangharam, Rahul},
+  title     = {Autonomous Vehicles on the Edge: A Survey on Autonomous Vehicle Racing},
+  journal   = {IEEE Open Journal of Intelligent Transportation Systems},
+  volume    = {3},
+  pages     = {458--488},
+  year      = {2022},
+  publisher = {IEEE},
+  doi       = {10.1109/OJITS.2022.3181510},
+  note      = {Preprint disponível em arXiv:2202.07008}
 }
 
 @inproceedings{Jain2020Bayesrace,
@@ -264,62 +266,10 @@
 
 @misc{F1TENTHRules2023,
   author       = {{F1TENTH Foundation}},
-  title        = {F1TENTH Autonomous Racing Competition Official Rulebook},
+  title        = {{F1TENTH}/{RoboRacer} Autonomous Racing Competition Official Rules},
   year         = {2023},
-  howpublished = {Disponível em: \url{https://f1tenth.org/rules.html}}
-}
-
-@article{OBrienF1TENTH2020,
-  author  = {O'Brien, M. and Alonso-Mora, J.},
-  title   = {F1TENTH: An Open-Source Platform for Scaled Autonomous Racing},
-  journal = {arXiv preprint arXiv:2020.12345},
-  year    = {2020}
-}
-
-@article{GopalarathnamF1TENTH2022,
-  author  = {Gopalarathnam, G. and Mohanty, P. and Prasad, V. and Zhang, H.},
-  title   = {Challenges in Bringing Autonomy to Scale: The F1TENTH Autonomous Racing Competition},
-  journal = {IEEE Robotics \& Automation Magazine},
-  volume  = {29},
-  number  = {1},
-  pages   = {15--25},
-  year    = {2022}
-}
-
-@inproceedings{MoralesF1TENTH2021,
-  author    = {Morales, J. and Russell, G. and Schumann-Olsen, I. and Yadav, N.},
-  title     = {Learning-based planning and control for autonomous racing},
-  booktitle = {IEEE International Conference on Robotics and Automation (ICRA)},
-  pages     = {6245--6251},
-  year      = {2021}
-}
-
-@inproceedings{BalachandranF1TENTH2020,
-  author    = {Balachandran, R. and Kolathaya, S. and Powale, K. and Goel, P.},
-  title     = {Adaptive MPC for Autonomous Racing Using F1TENTH Platform},
-  booktitle = {IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)},
-  pages     = {2147--2153},
-  year      = {2020}
-}
-
-@article{ShinF1TENTH2020,
-  author  = {Shin, K. and Lee, S. and Lim, Y. and Choi, J.},
-  title   = {A Probabilistic Framework for Racing Strategies in Head-to-Head Autonomous Racing},
-  journal = {IEEE Robotics and Automation Letters},
-  volume  = {5},
-  number  = {4},
-  pages   = {5247--5254},
-  year    = {2020}
-}
-
-@article{YangF1TENTH2022,
-  author  = {Yang, S. and Zhang, K. and Kumar, K. and Chen, T.},
-  title   = {Multi-sensor fusion for robust autonomous racing in resource-constrained environments},
-  journal = {IEEE Transactions on Intelligent Vehicles},
-  volume  = {7},
-  number  = {3},
-  pages   = {580--589},
-  year    = {2022}
+  howpublished = {Disponível em: \url{https://github.com/f1tenth/roboracer_rules}},
+  note         = {Regulamento oficial, versionado a cada competição. Acesso em: 2026-09-06}
 }
 
 @misc{f1tenthgymufabc,
@@ -367,7 +317,8 @@
   number      = {CMU-RI-TR-92-01},
   address     = {Pittsburgh, PA},
   month       = jan,
-  type        = {Technical Report}
+  type        = {Technical Report},
+  url         = {https://www.ri.cmu.edu/pub_files/pub3/coulter_r_craig_1992_1/coulter_r_craig_1992_1.pdf}
 }
 
 @article{Heilmeier2020MinCurv,
@@ -402,7 +353,8 @@
   volume    = {15},
   pages     = {627--635},
   year      = {2011},
-  publisher = {PMLR}
+  publisher = {PMLR},
+  url       = {https://proceedings.mlr.press/v15/ross11a.html}
 }
 
 @inproceedings{Laskey2017DART,
@@ -413,7 +365,8 @@
   volume    = {78},
   pages     = {143--156},
   year      = {2017},
-  publisher = {PMLR}
+  publisher = {PMLR},
+  url       = {https://proceedings.mlr.press/v78/laskey17a.html}
 }
 
 @inproceedings{Pomerleau1989ALVINN,
@@ -422,7 +375,8 @@
   booktitle = {Advances in Neural Information Processing Systems 1},
   pages     = {305--313},
   year      = {1989},
-  publisher = {Morgan Kaufmann}
+  publisher = {Morgan Kaufmann},
+  url       = {https://papers.nips.cc/paper/95-alvinn-an-autonomous-land-vehicle-in-a-neural-network}
 }
 
 @misc{Bojarski2016EndToEnd,
@@ -439,9 +393,10 @@
   author    = {Codevilla, Felipe and Santana, Eder and L{\'{o}}pez, Antonio M. and Gaidon, Adrien},
   title     = {Exploring the Limitations of Behavior Cloning for Autonomous Driving},
   booktitle = {IEEE/CVF International Conference on Computer Vision (ICCV)},
-  pages     = {9329--9338},
+  pages     = {9328--9337},
   year      = {2019},
-  publisher = {IEEE}
+  publisher = {IEEE},
+  doi       = {10.1109/ICCV.2019.00942}
 }
 
 @inproceedings{Haarnoja2018SAC,
@@ -452,7 +407,8 @@
   volume    = {80},
   pages     = {1861--1870},
   year      = {2018},
-  publisher = {PMLR}
+  publisher = {PMLR},
+  url       = {https://proceedings.mlr.press/v80/haarnoja18b.html}
 }
 
 @inproceedings{Johannink2019Residual,
@@ -461,7 +417,8 @@
   booktitle = {IEEE International Conference on Robotics and Automation (ICRA)},
   pages     = {6023--6029},
   year      = {2019},
-  publisher = {IEEE}
+  publisher = {IEEE},
+  doi       = {10.1109/ICRA.2019.8794127}
 }
 
 @misc{Silver2018ResidualPolicy,
@@ -480,7 +437,8 @@
   booktitle = {IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)},
   pages     = {23--30},
   year      = {2017},
-  publisher = {IEEE}
+  publisher = {IEEE},
+  doi       = {10.1109/IROS.2017.8202133}
 }
 
 @inproceedings{Peng2018DynamicsRand,
@@ -489,7 +447,8 @@
   booktitle = {IEEE International Conference on Robotics and Automation (ICRA)},
   pages     = {3803--3810},
   year      = {2018},
-  publisher = {IEEE}
+  publisher = {IEEE},
+  doi       = {10.1109/ICRA.2018.8460528}
 }
 
 @inproceedings{Zhao2020Sim2Real,
@@ -498,7 +457,8 @@
   booktitle = {IEEE Symposium Series on Computational Intelligence (SSCI)},
   pages     = {737--744},
   year      = {2020},
-  publisher = {IEEE}
+  publisher = {IEEE},
+  doi       = {10.1109/SSCI47803.2020.9308468}
 }
 
 @article{Raffin2021SB3,
@@ -508,28 +468,31 @@
   volume  = {22},
   number  = {268},
   pages   = {1--8},
-  year    = {2021}
+  year    = {2021},
+  url     = {https://www.jmlr.org/papers/v22/20-1364.html}
 }
 
-@misc{Zarrar2024TinyLidarNet,
+@inproceedings{Zarrar2024TinyLidarNet,
   author        = {Zarrar, Mohammed Misbah and Weng, Qitao and Yerjan, Bakhbyergyen and Soyyigit, Ahmet and Yun, Heechul},
   title         = {{TinyLidarNet}: 2{D} {LiDAR}-based End-to-End Deep Learning Model for {F1TENTH} Autonomous Racing},
+  booktitle     = {IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)},
+  pages         = {2878--2884},
   year          = {2024},
-  eprint        = {2410.07447},
-  archiveprefix = {arXiv},
-  primaryclass  = {cs.RO},
-  month         = oct
+  publisher     = {IEEE},
+  doi           = {10.1109/IROS58592.2024.10801430},
+  note          = {Preprint disponível em arXiv:2410.07447}
 }
 
 @article{Evans2023Trajectory,
-  author    = {Evans, Benjamin David and Jordaan, Hendrik Willem and Engelbrecht, Herman Arnold},
+  author    = {Evans, Benjamin David and Engelbrecht, Herman Arnold and Jordaan, Hendrik Willem},
   title     = {High-Speed Autonomous Racing Using Trajectory-Aided Deep Reinforcement Learning},
   journal   = {IEEE Robotics and Automation Letters},
   volume    = {8},
   number    = {9},
-  pages     = {5353--5360},
+  pages     = {5353--5359},
   year      = {2023},
-  publisher = {IEEE}
+  publisher = {IEEE},
+  doi       = {10.1109/LRA.2023.3295252}
 }
 
 @article{Evans2023Comparing,
@@ -537,9 +500,10 @@
   title     = {Comparing deep reinforcement learning architectures for autonomous racing},
   journal   = {Machine Learning with Applications},
   volume    = {14},
-  pages     = {100545},
+  pages     = {100496},
   year      = {2023},
-  publisher = {Elsevier}
+  publisher = {Elsevier},
+  doi       = {10.1016/j.mlwa.2023.100496}
 }
 
 @article{Wurman2022GranTurismo,
@@ -550,7 +514,8 @@
   number    = {7896},
   pages     = {223--228},
   year      = {2022},
-  publisher = {Nature Publishing Group}
+  publisher = {Nature Publishing Group},
+  doi       = {10.1038/s41586-021-04357-7}
 }
 
 @article{Kabzan2019LearningMPC,
@@ -561,7 +526,8 @@
   number    = {4},
   pages     = {3363--3370},
   year      = {2019},
-  publisher = {IEEE}
+  publisher = {IEEE},
+  doi       = {10.1109/LRA.2019.2926677}
 }
 
 @article{Rosolia2020LMPC,
@@ -572,7 +538,8 @@
   number    = {6},
   pages     = {2713--2719},
   year      = {2020},
-  publisher = {IEEE}
+  publisher = {IEEE},
+  doi       = {10.1109/TCST.2019.2948135}
 }
 
 @article{Liniger2015Optimization,
@@ -583,7 +550,8 @@
   number    = {5},
   pages     = {628--647},
   year      = {2015},
-  publisher = {Wiley}
+  publisher = {Wiley},
+  doi       = {10.1002/oca.2123}
 }
 
 @article{Kaufmann2023DroneRacing,
@@ -594,7 +562,8 @@
   number    = {7976},
   pages     = {982--987},
   year      = {2023},
-  publisher = {Nature Publishing Group}
+  publisher = {Nature Publishing Group},
+  doi       = {10.1038/s41586-023-06419-4}
 }
 
 @inproceedings{Chisari2021LearningSim,
@@ -603,7 +572,8 @@
   booktitle = {IEEE International Conference on Robotics and Automation (ICRA)},
   pages     = {8046--8052},
   year      = {2021},
-  publisher = {IEEE}
+  publisher = {IEEE},
+  doi       = {10.1109/ICRA48506.2021.9562079}
 }
 
 @inproceedings{Brunnbauer2022Latent,
@@ -612,7 +582,8 @@
   booktitle = {IEEE International Conference on Robotics and Automation (ICRA)},
   pages     = {7513--7520},
   year      = {2022},
-  publisher = {IEEE}
+  publisher = {IEEE},
+  doi       = {10.1109/ICRA46639.2022.9811650}
 }
 
 @inproceedings{Bosello2022CrossTrack,
@@ -621,18 +592,20 @@
   booktitle = {IEEE 19th Annual Consumer Communications and Networking Conference (CCNC)},
   pages     = {290--298},
   year      = {2022},
-  publisher = {IEEE}
+  publisher = {IEEE},
+  doi       = {10.1109/CCNC49033.2022.9700730}
 }
 
 @article{Betz2023TUM,
-  author    = {Betz, Johannes and Wischnewski, Alexander and Heilmeier, Alexander and others},
+  author    = {Betz, Johannes and Betz, Tobias and Fent, Felix and Geisslinger, Maximilian and Heilmeier, Alexander and others},
   title     = {{TUM} autonomous motorsport: An autonomous racing software for the {Indy} Autonomous Challenge},
   journal   = {Journal of Field Robotics},
   volume    = {40},
   number    = {4},
   pages     = {783--809},
   year      = {2023},
-  publisher = {Wiley}
+  publisher = {Wiley},
+  doi       = {10.1002/rob.22153}
 }
 
 @misc{TUMFTMRaceTrajectory,

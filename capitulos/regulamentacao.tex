@@ -4,9 +4,11 @@ A categoria F1TENTH estabelece um framework competitivo rigoroso através de
 regulamentações técnicas específicas que moldam diretamente o desenvolvimento
 dos veículos e as estratégias de corrida~\cite{F1TENTHRules2023}.
 Diferentemente de outras competições de robótica, a F1TENTH enfatiza o
-desenvolvimento algorítmico em detrimento de vantagens puramente mecânicas,
-criando um ambiente que aproxima os desafios enfrentados por veículos autônomos
-em escala real~\cite{OBrienF1TENTH2020}.
+desenvolvimento algorítmico em detrimento de vantagens puramente mecânicas --
+o regulamento declara explicitamente que a competição é uma \emph{batalha de
+algoritmos} e proíbe hardware cujo único propósito seja obter vantagem
+competitiva~\cite{F1TENTHRules2023} --, criando um ambiente que aproxima os
+desafios enfrentados por veículos autônomos em escala real~\cite{OKelly2020F1TENTH}.
 
 \section{Especificações Técnicas Obrigatórias e suas Implicações}
 
@@ -40,9 +42,9 @@ desempenho que:
 
 O sistema de sensoriamento incorpora limitações estratégicas que simulam
 restrições de orçamento e espaço em veículos reais. O LiDAR principal deve ser
-equivalente ou inferior ao Hokuyo UTM-30LX, com alcance máximo de 30 metros,
-frequência de varredura de 40 Hz e resolução angular de 0,25 graus
-~\cite{GopalarathnamF1TENTH2022}. O LiDAR YDLIDAR X4PRO selecionado para o
+equivalente ou inferior ao Hokuyo UST-30LX, sendo as características observadas
+o alcance de detecção de 30 metros, a frequência de varredura de 40 Hz e a
+resolução angular de 0,25 graus~\cite{F1TENTHRules2023}. O LiDAR YDLIDAR X4PRO selecionado para o
 projeto atende adequadamente aos requisitos regulamentares, apresentando
 especificações compatíveis com os limites estabelecidos: alcance de 0,12--10m
 (inferior ao limite de 30m), frequência de varredura ajustável de 6--12Hz e
@@ -100,13 +102,14 @@ aos requisitos de segurança da competição, permitindo implementar um sistema
 eficaz de parada de emergência. Sua capacidade de resposta rápida (com
 limitação de corrente e proteções integradas) permite implementar algoritmos
 confiáveis de detecção e prevenção de colisões, conforme exigido pelo
-regulamento~\cite{MoralesF1TENTH2021}.
+regulamento~\cite{F1TENTHRules2023}.
 
-Estes requisitos são testados rigorosamente antes da competição, e falhas em
-qualquer um deles resultam em desqualificação~\cite{MoralesF1TENTH2021}.
-Particularmente para as corridas head-to-head, os veículos devem passar por
-testes de evitação de obstáculos estáticos e dinâmicos, simulando situações
-reais de tráfego.
+Estes requisitos são verificados na inspeção técnica que antecede a competição,
+e o veículo que não atende aos critérios não pode
+participar~\cite{F1TENTHRules2023}. Particularmente para as corridas
+head-to-head, os veículos devem demonstrar previamente, em uma volta avaliada
+pelos árbitros, a capacidade de evitar obstáculos estáticos e dinâmicos; é desse
+teste que depende a liberação para a fase~\cite{F1TENTHRules2023}.
 
 \section{Ambientes de Competição e suas Características Técnicas}
 
@@ -153,12 +156,12 @@ da pista. O motor fornece torque suficiente para aceleração rápida nas retas,
 enquanto o controle preciso oferecido pelo VESC permite ajustes finos nas
 curvas e manobras de ultrapassagem. A capacidade de programação avançada do
 VESC possibilita a implementação de diferentes perfis de controle otimizados
-para cada seção do circuito~\cite{BalachandranF1TENTH2020}.
+para cada seção do circuito.
 
-Esta diversidade de elementos não é aleatória, mas cuidadosamente planejada
-para testar a versatilidade dos algoritmos implementados sob diferentes
-condições, simulando os variados cenários que veículos autônomos reais
-enfrentam~\cite{BalachandranF1TENTH2020}.
+Esta diversidade de elementos exercita a versatilidade dos algoritmos
+implementados sob diferentes condições, alinhando-se ao papel que a corrida
+autônoma em escala reduzida cumpre como banco de provas para os cenários que
+veículos autônomos reais enfrentam~\cite{OKelly2020F1TENTH,Betz2022Survey}.
 
 \section{Estrutura e Funcionamento da Competição}
 
@@ -199,8 +202,9 @@ individualmente na pista, buscando:
 \end{itemize}
 
 O sistema de pontuação é deliberadamente projetado para equilibrar velocidade e
-consistência, combinando o tempo da volta mais rápida com o número de voltas
-consecutivas completadas sem intervenção humana~\cite{ShinF1TENTH2020}. Esta
+consistência: a pontuação final soma os pontos obtidos no \emph{ranking} dos
+tempos de volta mais rápidos aos pontos obtidos no \emph{ranking} do número de
+voltas consecutivas ininterruptas~\cite{F1TENTHRules2023}. Esta
 abordagem força as equipes a desenvolverem soluções que balanceiem:
 
 \begin{itemize}
@@ -214,8 +218,8 @@ projeto proporciona um sistema de controle preciso e adaptável, crucial para o
 desempenho consistente na fase de Time Trial. A capacidade de ajustar
 parâmetros de controle PID e perfis de velocidade permite otimizar o veículo
 tanto para voltas rápidas quanto para desempenho consistente ao longo de
-múltiplas voltas, alinhando-se perfeitamente com os critérios de pontuação
-desta fase~\cite{ShinF1TENTH2020}.
+múltiplas voltas, alinhando-se aos dois critérios de pontuação desta
+fase~\cite{F1TENTHRules2023}.
 
 \subsection{Corridas Head-to-Head: o desafio máximo da autonomia}
 
@@ -238,12 +242,12 @@ outros veículos durante as corridas head-to-head. A resolução angular permite
 identificar com precisão a posição do oponente, enquanto a Raspberry Pi 4B
 oferece o poder de processamento necessário para executar algoritmos complexos
 de planejamento de trajetória e tomada de decisões em tempo real, fundamentais
-para implementar estratégias eficazes de ultrapassagem
-~\cite{GopalarathnamF1TENTH2022}.
+para implementar estratégias eficazes de ultrapassagem.
 
-As corridas são organizadas em formato de eliminatórias, com os veículos mais
-rápidos das fases de Time Trial recebendo posições favoráveis no grid
-~\cite{GopalarathnamF1TENTH2022}. Uma característica crucial desta fase é a
+As corridas são organizadas como um torneio eliminatório cujas chaves são
+semeadas pelos resultados da qualificação, de modo que os veículos mais rápidos
+no Time Trial enfrentam os mais lentos na primeira
+rodada~\cite{F1TENTHRules2023}. Uma característica crucial desta fase é a
 necessidade de combinar velocidade máxima com tomada de decisão defensiva e
 ofensiva, similar aos desafios enfrentados por veículos autônomos em ambientes
 urbanos densos.
@@ -263,7 +267,9 @@ versão personalizada que atenda às regulações, é necessário:
 
       \item Desenvolver estratégias de fusão sensorial que compensem as limitações do LiDAR
             principal, potencialmente incorporando dados de IMUs, encoders e câmeras dentro
-            dos limites regulatórios~\cite{YangF1TENTH2022}. A integração entre o LiDAR
+            dos limites regulatórios -- o regulamento não restringe IMUs, encoders e
+            controladores eletrônicos de velocidade customizados, vedando apenas sensores
+            de GPS interno~\cite{F1TENTHRules2023}. A integração entre o LiDAR
             YDLIDAR X4PRO e os encoders disponíveis através do VESC MINI 6.7 possibilita
             implementar fusão sensorial eficaz para melhorar a percepção e navegação.
 
@@ -275,7 +281,7 @@ versão personalizada que atenda às regulações, é necessário:
 
       \item Criar algoritmos de planejamento que incorporem tanto conhecimento a priori do
             circuito quanto capacidade de adaptação a condições dinâmicas durante as
-            corridas head-to-head~\cite{MoralesF1TENTH2021}
+            corridas head-to-head~\cite{Betz2022Survey}
 
       \item Projetar sistemas de segurança que não apenas atendam aos requisitos mínimos,
             mas que também sejam suficientemente robustos para permitir operação agressiva
