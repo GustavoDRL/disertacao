@@ -1,5 +1,12 @@
 \chapter{Sistema Proposto}\label{cap:proposta}
 
+\noindent\textbf{Escopo de verificação.} Os dois algoritmos descritos neste
+capítulo --- seguimento de parede e seguimento de gap --- foram implementados
+e exercitados no simulador F1TENTH, apresentado no capítulo seguinte. No
+veículo físico, a validação realizada até o momento cobre apenas o controle
+manual (motor, direção, odometria e comando por \textit{joystick}); nenhum dos
+dois algoritmos autônomos aqui descritos chegou a rodar em hardware.
+
 \section{Visão Geral dos Sistemas de Software para o Veículo Autônomo F1TENTH}
 
 O desenvolvimento do software para o veículo autônomo F1TENTH foi estruturado
@@ -120,7 +127,9 @@ Este capítulo apresenta uma análise detalhada do sistema de seguimento de
 parede implementado para veículos autônomos da categoria F1TENTH. O sistema
 proposto utiliza sensores LiDAR para determinar a posição relativa do veículo
 em relação às paredes da pista e implementa um controlador PID para manter o
-veículo a uma distância constante predefinida dos limites do percurso.
+veículo a uma distância constante predefinida dos limites do percurso. A
+implementação foi exercitada e ajustada no simulador; no veículo físico, este
+sistema não foi executado.
 
 \subsection{Visão Geral da Arquitetura}
 
@@ -848,7 +857,9 @@ implementado para veículos autônomos da categoria F1TENTH. O sistema proposto
 utiliza dados de sensor LiDAR para detectar espaços navegáveis (gaps) no
 ambiente, classifica-os segundo critérios de qualidade, e implementa
 controladores PID para guiar o veículo através do gap selecionado de maneira
-eficiente e segura.
+eficiente e segura. Assim como o sistema de seguimento de parede, esta
+implementação foi exercitada apenas no simulador e não rodou no veículo
+físico.
 
 \subsection{Visão Geral da Arquitetura}
 
