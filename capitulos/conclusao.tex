@@ -1,12 +1,359 @@
-\chapter*{Conclusões e Trabalhos Futuros}\label{cap:conclusao}
+% ----------------------------------------------------------
+% Conclusão e Trabalhos Futuros
+% Capítulo sem numeração, mas presente no Sumário
+% ----------------------------------------------------------
+
+\chapter*[Conclusão e Trabalhos Futuros]{Conclusões e Trabalhos Futuros}\label{cap:conclusao}
 \addcontentsline{toc}{chapter}{Conclusão e Trabalhos Futuros}
 
-\lipsum[81]
+Este trabalho se propôs a desenvolver e validar um veículo autônomo de corrida na
+plataforma F1TENTH, percorrendo o caminho que vai do algoritmo em ambiente
+simulado até o software embarcado no modelo físico. O que ele entrega e o que ele
+não entrega separam-se por uma fronteira nítida, e é ela que organiza esta
+conclusão: a fronteira do hardware. A cascata de controle foi projetada,
+treinada, avaliada sob critérios congelados antes da medição e exportada para o
+formato em que seria embarcada. \textbf{Nenhuma política deste trabalho foi
+executada no veículo físico.}
+
+Esta conclusão não repete os números do Capítulo~\ref{cap:resultados} nem
+reconstrói o argumento do Capítulo~\ref{cap:metodologia}. Ela faz três coisas:
+enuncia o que o trabalho sustenta, responde um a um aos cinco objetivos
+específicos declarados na seção \textit{Objetivos} da Introdução, e descreve o
+que existe hoje que torna alcançável o que ficou de fora.
 
 \section*{Conclusões}
+\addcontentsline{toc}{section}{Conclusões}
 
-\lipsum[82-84]
+\subsection*{O que o trabalho mediu}
+
+A cascata de três etapas cumpriu, em simulação, o que se propôs a fazer, e a
+Tabela~\ref{tab:res_sintese} do Capítulo~\ref{cap:resultados} a resume numa linha
+por etapa. O especialista geométrico da etapa E1 fixou o tempo de referência
+$T_{pp} = 59{,}000$~s, com 50 de 50 voltas sem colisão e com determinismo
+verificado --- o valor reproduziu dígito a dígito uma medição anterior feita em
+outra arquitetura, o que é o que autoriza usá-lo como denominador de todos os
+critérios seguintes. A rede de imitação da etapa E2 aprovou os quatro critérios
+do seu portão e pagou 1,8\% de tempo de volta pela troca que define o trabalho:
+deixar de exigir pose global. E o resíduo de aprendizado por reforço da etapa E3
+aprovou os seus quatro critérios completando 91 de 92 voltas sob randomização e
+percorrendo o circuito em 52,525~s, \textbf{11,0\% mais rápido que o especialista
+que originou os seus rótulos}, sem devolver a dependência de localização e com
+degradação nula sob randomização do coeficiente de atrito.
+
+O ponto mais avançado na direção do hardware é a política composta exportada para
+ONNX num grafo único e executada como nó ROS2 dentro do contêiner, contra o
+simulador em tempo real: 381~m numa janela de 60~s, comandos a 20,00~Hz, latência
+de inferência $p99$ de 0,53~ms e nenhuma parada de emergência
+(Seção~\ref{sec:res-deploy}). Isso valida a cadeia de exportação, o contrato de
+entradas e saídas do grafo e o comportamento da política sob a malha de controle
+real. Não valida atrito real, latência de atuador real nem ruído de LiDAR real,
+porque do outro lado da ponte continua havendo um simulador.
+
+Três ressalvas acompanham esses números e não são atenuadas em lugar nenhum do
+texto: o limiar de taxa de conclusão cai dentro do intervalo de confiança nos três
+portões aprovados (Tabela~\ref{tab:val_ic}); a política composta da etapa E3 é
+sensível a perturbação numérica irrelevante numa amplitude quatro vezes maior que
+a sua margem sobre o limiar, de modo que o número reproduzível ali é a
+distribuição e não a realização (Tabela~\ref{tab:val_sensibilidade}); e duas das
+quatro pistas do critério de generalização da etapa E2 haviam entrado no conjunto
+de coleta, o que dilui aquele critério em vez de inflá-lo
+(Seção~\ref{sec:val-heldout}). Duas dessas três estavam declaradas, com o motivo
+quantificado, antes de qualquer medição; a terceira foi encontrada conferindo o
+artefato contra o texto que o descrevia, e foi declarada em vez de corrigida
+retroativamente.
+
+\subsection*{A contribuição metodológica}
+
+O resultado que este trabalho considera mais transferível não é o tempo de volta.
+É o aparato descrito no Capítulo~\ref{cap:metodologia}: um contrato numérico de
+93 asserções com identificador estável, cada uma registrando a falha medida que a
+originou; seis camadas de verificação que vão da cobertura do contrato até a
+execução do artefato de \textit{deploy} no ambiente de destino; critérios de
+aceite congelados no nascimento de cada execução, com a proveniência tratada como
+parte do veredito e não como metadado; e uma tabela de ações de correção
+pré-declaradas por critério, que é o que separa um experimento de uma busca
+livre.
+
+Nada disso é caro em si, e é essa a razão de o capítulo ser escrito como
+argumento e não como manual. O que custa é a disciplina de aplicar cada regra
+antes de a falha aparecer --- e a evidência oferecida é que, neste projeto, cada
+uma delas foi escrita \textit{depois} de uma falha medida, cujo custo variou
+entre uma tentativa de uma hora e oito execuções reprovadas em silêncio. Três
+episódios sustentam o argumento inteiro: um vazamento de estado entre episódios
+que se disfarçava de má generalização, duas cópias da mesma composição de política
+divergindo por um tipo numérico, e três valores distintos para a mesma medição
+convivendo no repositório. Nos três, reexecutar o comando devolvia o mesmo número;
+nos três, o número estava errado; e nos três a distância até o valor correto era
+da mesma ordem das diferenças que o trabalho pretendia demonstrar.
+
+\subsection*{Os cinco objetivos, um a um}
+
+A Introdução declarou cinco objetivos específicos. Dizer com precisão quais foram
+atingidos, quais o foram em parte e quais não o foram é mais forte do que
+dissolvê-los numa afirmação geral de êxito --- e é a única conduta compatível
+com o Capítulo~\ref{cap:metodologia}, que argumenta o capítulo inteiro que
+declarar o que não se cobre é parte do resultado. A
+Tabela~\ref{tab:conc_objetivos} resume, e os parágrafos seguintes qualificam cada
+linha.
+
+\begin{table}[h]
+    \centering
+    \small
+    \begin{tabularx}{\textwidth}{|c|>{\raggedright\arraybackslash}X|l|}
+        \hline
+        \textbf{\#} & \textbf{Objetivo específico declarado} & \textbf{Situação} \\
+        \hline
+        1 & Algoritmos de percepção, planejamento de trajetória e controle,
+        implementados e testados em ambiente simulado & \textbf{Atingido} \\
+        \hline
+        2 & Construir e parametrizar o modelo físico do veículo, hardware e
+        chassi & \textbf{Parcial} \\
+        \hline
+        3 & Software embarcado capaz de executar os algoritmos em tempo real no
+        veículo físico & \textbf{Parcial} \\
+        \hline
+        4 & Conduzir experimentos no modelo físico e coletar dados de desempenho
+        & \textbf{Não atingido} \\
+        \hline
+        5 & Comparar os resultados nos ambientes simulado e real, avaliando a
+        fidelidade do modelo & \textbf{Não atingido} \\
+        \hline
+    \end{tabularx}
+    \caption{Os cinco objetivos específicos declarados na Introdução diante do
+    que o trabalho de fato mediu}
+    \label{tab:conc_objetivos}
+\end{table}
+
+\textbf{Objetivo 1 --- atingido.} Os algoritmos foram projetados, implementados e
+testados em simulação. O Capítulo~\ref{cap:proposta} descreve os controladores
+reativos, o capítulo seguinte descreve o simulador, e o
+Capítulo~\ref{cap:resultados} reporta a cascata E1--E2--E3 avaliada sob portões
+cujos limiares foram congelados antes do treino. A percepção consumida pela
+política é exclusivamente LiDAR bidimensional e proprioceptiva: não há fusão
+sensorial nem câmera, o que é escolha coerente com a embarcabilidade e está
+declarado como limite na Seção~\ref{sec:arte-lacuna}.
+
+\textbf{Objetivo 2 --- parcialmente atingido.} O veículo foi construído e opera:
+chassi, propulsão com controlador VESC, servo de direção, LiDAR YDLIDAR X4PRO,
+unidade de processamento e sistema de alimentação estão descritos no capítulo de
+construção do veículo, junto das peças customizadas e da integração com o ROS2.
+A \textit{parametrização}, porém, só está completa para as grandezas que se
+resolvem lendo o próprio repositório. O ganho velocidade--ERPM e a distância
+entre eixos tinham valores divergentes em arquivos distintos do carro e
+hoje têm um valor cada, com teste que falha se voltarem a divergir
+(\texttt{SPEC-CAR-01} e \texttt{SPEC-CAR-02}, este último fixando 0,3302~m, o
+valor medido, idêntico ao do modelo do simulador). As duas grandezas que exigem
+medir o carro em movimento --- a relação entre comando e velocidade real
+(\texttt{SPEC-CAR-04}) e o zero angular do LiDAR contra o eixo longitudinal
+(\texttt{SPEC-CAR-05}) --- seguem \textbf{pendentes de medição}, e estão
+declaradas como pendentes em vez de estimadas.
+
+\textbf{Objetivo 3 --- parcialmente atingido.} Existe software embarcado, ele roda
+no veículo e há uma parte dele validada em hardware: o \textbf{controle manual}
+--- motor, servo de direção, odometria e comando por \textit{joystick}. Essa é a
+extensão do que o carro comprovadamente faz. \textbf{Todo o restante da pilha
+autônoma, inclusive o seguidor de parede reativo presente no repositório, segue
+sem validação no veículo real.} Do lado da política aprendida, o requisito de
+tempo real foi demonstrado --- 20,00~Hz de frequência de controle e $p99$ de
+0,53~ms de latência de inferência ---, mas dentro do contêiner sobre o
+computador de desenvolvimento, e não sobre a unidade de processamento embarcada,
+onde o tempo de execução do grafo ainda não foi medido. O objetivo, tal como
+enunciado, pede a execução em tempo real \textit{no veículo físico}, e essa metade
+não foi demonstrada.
+
+\textbf{Objetivo 4 --- não atingido.} Nenhum experimento foi conduzido no modelo
+físico e nenhum dado de desempenho foi coletado nele. Não há registro de sensor
+real, não há mapa de pista real levantado por SLAM e não há campanha de voltas
+com o carro. O procedimento de bancada que produziria os primeiros desses dados
+está escrito, comando a comando, mas não foi executado.
+
+\textbf{Objetivo 5 --- não atingido.} A comparação entre os ambientes simulado e
+real depende inteiramente do objetivo 4 e não pôde ser sequer iniciada. Não há,
+portanto, nenhuma avaliação empírica da fidelidade do modelo de veículo nem da
+robustez das soluções propostas fora da simulação. Toda comparação numérica deste
+texto com resultados de campo da literatura é assimétrica, e a
+Seção~\ref{sec:arte-lacuna} a declara como tal caso a caso.
+
+\subsection*{O que fica dito com precisão}
+
+Dois terços dos objetivos foram alcançados, um terço não, e o trabalho ganha ao
+dizê-lo nesses termos. A alternativa --- descrever a fronteira do hardware em
+linguagem vaga --- contradiria o capítulo que precede esta conclusão, cujo
+argumento central é que um número medido não é um resultado enquanto o aparato
+que o produziu não estiver declarado. Um trabalho que aplica esse padrão aos
+próprios portões e o abandona ao enunciar os próprios objetivos teria a
+metodologia como ornamento, não como contribuição.
+
+O que se afirma, então, é isto: uma política que enxerga apenas LiDAR e
+proprioceptiva completa 91 de 92 voltas sob randomização e percorre Spielberg
+11,0\% mais rápido que o especialista geométrico que a ensinou; ela roda como nó
+ROS2 em tempo real contra o simulador; e ela nunca dirigiu o carro.
 
 \section*{Trabalhos Futuros}
+\addcontentsline{toc}{section}{Trabalhos Futuros}
 
-\lipsum[85] 
+Os objetivos 4 e 5 não são trabalho futuro genérico: são a fase seguinte já
+especificada, e o que a torna alcançável é o que este trabalho deixa pronto. A
+plataforma está construída e com as suas grandezas físicas unificadas. A política
+é embarcável \textbf{por desenho}, e não por acaso --- a rede base não consome
+pose global, o pré-processamento vive dentro do grafo exportado em vez de numa
+cópia em Python do lado do contêiner, e o custo dessa escolha está medido em
+1,8\% de tempo de volta na destilação. O procedimento de bancada que produz os
+primeiros dados reais está escrito. E o principal obstáculo técnico --- a
+diferença entre o contrato de observação simulado e o do sensor real --- já está
+quantificado, o que é o que permite descrevê-lo aqui com números em vez de com
+adjetivos.
+
+\subsection*{O contrato de observação real, e por que ele é o primeiro passo}
+
+A rede de imitação foi treinada sobre um contrato de observação que o sensor do
+carro não fornece. A Tabela~\ref{tab:conc_gap} confronta o contrato do simulador
+com a configuração \textit{efetiva} do LiDAR do veículo --- os parâmetros que o
+arquivo de inicialização de fato aplica em tempo de execução.
+
+\begin{table}[h]
+    \centering
+    \small
+    \begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|c|c|>{\raggedright\arraybackslash}X|}
+        \hline
+        \textbf{Grandeza} & \textbf{Simulador} & \textbf{X4PRO} &
+        \textbf{Consequência} \\
+        \hline
+        Feixes no campo de visão frontal de 270$^\circ$ & 1080 ($0{,}25^\circ$) &
+        $\approx$ 375 ($0{,}72^\circ$) & déficit de $2{,}9\times$ na resolução
+        angular \\
+        \hline
+        Abertura total & 4,7~rad ($269{,}3^\circ$) & $360^\circ$ & o excedente
+        precisa ser recortado, e o recorte depende do zero angular \\
+        \hline
+        Alcance máximo & 30~m & \textbf{12~m} & a normalização
+        $\mathrm{clip}(r,0,30)/30$ do contrato deixa de valer \\
+        \hline
+        Taxa de publicação & 20~Hz síncrono & 10~Hz nominal & a pilha de dois
+        quadros da observação não se sustenta \\
+        \hline
+        Leituras inválidas & inexistentes & mapeadas para $0{,}0$ & distribuição
+        que a rede nunca viu no treino \\
+        \hline
+        Erro de medida & ruído gaussiano, $\sigma = 1$~cm & 3,5\% relativo
+        (1--6~m) & o erro cresce com a distância \\
+        \hline
+    \end{tabularx}
+    \caption{O contrato de observação do simulador confrontado com a configuração
+    efetiva do LiDAR do veículo. A coluna do X4PRO é a configuração aplicada e o
+    datasheet do sensor, não medição}
+    \label{tab:conc_gap}
+\end{table}
+
+Duas ressalvas de leitura acompanham a Tabela~\ref{tab:conc_gap}, e ambas são o
+motivo de a caracterização do sensor ser o \textit{primeiro} passo e não uma
+formalidade. A primeira é que a coluna do X4PRO não é medição: os 375 feixes saem
+de uma conta de régua sobre a taxa de varredura nominal, e a taxa de 10~Hz é um
+pedido feito ao driver, não uma garantia --- a própria tabela de compatibilidade
+do driver \cite{YDLIDARDriver} lista a família X4 como dependente de controle
+externo da velocidade de giro. A segunda é que duas restrições caem direto do
+contrato numérico já existente: a redução do scan exige divisão exata em janelas
+(1080/60 = 18 fecha; 375/60 = 6,25 não), de modo que o número de feixes do
+contrato novo precisa ser múltiplo de 60 --- 360 ou 420 são os candidatos mais
+próximos dessa estimativa ---, e a arquitetura convolucional não monta com
+poucos feixes, o que obriga a verificar a pilha antes de retreinar.
+
+\subsection*{A sequência da transferência}
+
+A fase seguinte é uma sequência, e a ordem dela é requisito, não preferência:
+
+\begin{enumerate}
+    \item \textbf{Caracterizar o sensor real}, executando o procedimento de
+          bancada: taxa efetiva de publicação, número de pontos por volta,
+          incremento angular publicado, fração de leituras inválidas, zero
+          angular contra parede perpendicular e ruído contra alvo de distância
+          conhecida. O produto é um perfil de sensor versionado, e ele fecha
+          \texttt{SPEC-CAR-05}.
+    \item \textbf{Reparametrizar o simulador} com o perfil medido, escolhendo um
+          número de feixes múltiplo de 60 e verificando que a rede convolucional
+          ainda monta.
+    \item \textbf{Levantar a pista real} por SLAM, e derivar dela a linha central
+          e a linha de corrida de curvatura mínima.
+    \item \textbf{Reexecutar E1, E2 e E3} sob o contrato de observação e o
+          envelope de velocidade reais. A etapa E1 fixa um novo $T_{pp}$, e todos
+          os limiares relativos são recalculados a partir dele.
+    \item \textbf{Validar os controladores reativos no carro} antes de qualquer
+          política aprendida. Isso é requisito de segurança e não etapa de
+          conveniência: não se põe uma rede neural no comando de um veículo que
+          anda antes de provar que o laço percepção--controle fecha com um
+          controlador cuja falha é previsível. É também o que mede a relação entre
+          comando e velocidade real e fecha \texttt{SPEC-CAR-04}, que é a unidade
+          da comparação sim-real --- errada, ela faz a odometria concordar com o
+          comando enquanto as duas discordam do carro.
+    \item \textbf{Medir a política embarcada} na unidade de processamento do
+          veículo, com o mesmo grafo, aferindo frequência de controle, latência
+          $p99$ e uso de processador --- que é a camada de \textit{deploy} do
+          Capítulo~\ref{cap:metodologia} aplicada sobre hardware, e depende de
+          disponibilizar o motor de inferência para a arquitetura embarcada.
+    \item \textbf{Conduzir a campanha real e comparar com a simulação}, que é o
+          objetivo 5.
+\end{enumerate}
+
+Um ponto de infraestrutura precede tudo isso e está declarado como pendente:
+o driver do LiDAR não sobrevive a um clone do repositório --- o diretório está
+vazio e ignorado pelo controle de versão, e o conteúdo real existe apenas no
+disco da unidade embarcada. Vendorizá-lo com procedência registrada é o que
+\texttt{SPEC-CAR-03} exige, e capturá-lo é a primeira parte do procedimento de
+bancada. Enquanto isso não for feito, a configuração que produz o scan não é
+auditável por terceiros.
+
+\subsection*{As lacunas do próprio resultado em simulação}
+
+A travessia da fronteira não é a única continuação, e a Seção~\ref{sec:res-discussao}
+lista sem atenuação o que os números não sustentam. Cinco itens dali são
+acionáveis sem tocar no hardware, e valem como trabalho futuro imediato:
+
+\begin{itemize}
+    \item \textbf{Medir a variabilidade entre sementes de treino.} Cada
+          configuração da etapa E3 corresponde a \textit{um} treino, e as
+          sementes dos portões são de avaliação. Sem isso, não se sabe quanto da
+          diferença entre a configuração aprovada e a anterior cabe dentro da
+          dispersão de dois treinos idênticos. É a lacuna mais direta a fechar.
+    \item \textbf{Avaliar o resíduo fora do circuito em que treinou.} Todos os
+          critérios de aceite das três etapas são medidos em Spielberg, e a etapa
+          E3 nunca foi pontuada em nenhuma outra pista: o valor de generalização
+          do resíduo simplesmente não existe.
+    \item \textbf{Congelar, antes da próxima execução da etapa E2, a correção da
+          sobreposição} entre o conjunto de coleta e o de generalização --- ou
+          tornando as duas listas disjuntas por construção, ou derivando o
+          conjunto de generalização do conjunto de coleta de cada execução. A
+          Seção~\ref{sec:val-heldout} explica por que a correção não podia ser
+          aplicada retroativamente, e por que ela é mais grave para as execuções
+          futuras do que para a reportada.
+    \item \textbf{Refazer o estudo de sensibilidade numérica nesta máquina.} As
+          execuções que o sustentam são da máquina anterior do projeto e não
+          sobreviveram à migração, de modo que a confrontação entre a margem da
+          etapa E3 e a amplitude sob perturbação combina um número auditável com
+          outro que já não é reconferível.
+    \item \textbf{Tornar a evidência durável e completar o aparato.} Os
+          relatórios que sustentam cada número não são versionados e o relatório
+          de verificação é sobrescrito a cada execução; promovê-los para um
+          caminho versionado fecha, de uma vez, a discrepância indecidível
+          discutida na Seção~\ref{sec:res-deploy} e a ressalva de proveniência da
+          medição de \textit{deploy}. No mesmo movimento cabe ligar a regra de
+          escalonamento por meia largura de intervalo na etapa E1, hoje a única
+          etapa em que a condição avalia verdadeiro e nada acontece.
+\end{itemize}
+
+Além dessas, permanecem em aberto as direções que a Seção~\ref{sec:arte-lacuna}
+identifica como ausentes deste trabalho e presentes na literatura: corrida com
+dois veículos e ultrapassagem, adaptação de modelo em linha, garantias formais
+sobre a política e percepção além do LiDAR bidimensional. Nenhuma delas é
+pré-requisito da transferência para o hardware, e por isso nenhuma delas precede
+a sequência acima.
+
+\subsection*{Consideração final}
+
+O trabalho termina com uma política desenhada para ser embarcada, um artefato que
+já roda no formato em que será embarcado, um veículo construído e funcionando sob
+controle manual, um procedimento escrito para produzir os primeiros dados reais,
+e nenhuma medição no carro. Essa lista, dita nessa ordem, é o estado real do
+projeto --- e enunciá-la assim é a mesma prática que o
+Capítulo~\ref{cap:metodologia} defende como contribuição: declarar o que se cobre,
+declarar o que não se cobre, e quantificar a distância entre os dois sempre que
+houver medição que permita.
