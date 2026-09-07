@@ -11,10 +11,11 @@ distância percorrida --- acompanhada de uma descrição do treino
 \cite{Betz2022Survey}. O leitor recebe o valor e a receita, e a reprodutibilidade
 é tratada como consequência de ambos. O que se argumenta aqui, com base em
 falhas medidas e não em princípio geral, é que valor e receita são insuficientes:
-entre o experimento e o número existe um conjunto de decisões --- protocolo de
-avaliação, composição da política avaliada, critério de aceite, momento em que o
-critério foi fixado --- que não aparece na receita e que altera o número em
-magnitude comparável à das diferenças que o trabalho pretende demonstrar.
+entre o experimento e o número existe um conjunto de decisões --- definição do
+evento que a métrica conta, protocolo de avaliação, composição da política
+avaliada, critério de aceite, momento em que o critério foi fixado --- que não
+aparece na receita e que altera o número em magnitude comparável à das diferenças
+que o trabalho pretende demonstrar.
 
 Todos os resultados discutidos neste capítulo foram obtidos \textbf{em
 simulação}, no ambiente \texttt{f110\_gym} \cite{OKelly2020F1TENTH} e na ponte
@@ -25,8 +26,8 @@ de pesquisa até o nó ROS2 rodando dentro de um contêiner --- que é o último
 ponto antes do hardware, não o hardware.
 
 O capítulo está organizado em torno de um argumento único, exposto em seis
-partes. A Seção~\ref{sec:val-problema} apresenta três falhas reais do projeto que
-motivam tudo o que vem depois. A Seção~\ref{sec:val-contrato} descreve o contrato
+partes. A Seção~\ref{sec:val-problema} apresenta quatro falhas reais do projeto
+que motivam tudo o que vem depois. A Seção~\ref{sec:val-contrato} descreve o contrato
 numérico com identificador, que é a forma escolhida para impedir que uma decisão
 de projeto vire folclore. A Seção~\ref{sec:val-congelado} trata de congelar
 critérios antes da medição, e de tornar a proveniência do resultado parte do
@@ -37,10 +38,66 @@ Seção~\ref{sec:val-limitacoes} declara o que este aparato não cobre.
 
 \section{O problema: um número medido não é um resultado}\label{sec:val-problema}
 
-Três episódios do desenvolvimento ilustram o problema melhor do que uma
-formulação abstrata. Os três produziram números plausíveis, internamente
+Quatro episódios do desenvolvimento ilustram o problema melhor do que uma
+formulação abstrata. Os quatro produziram números plausíveis, internamente
 consistentes e reprodutíveis --- no sentido de que reexecutar o mesmo comando
-devolvia o mesmo valor --- e os três estavam errados por motivos distintos.
+devolvia o mesmo valor --- e os quatro estavam errados por motivos distintos.
+
+\subsection{O detector de colisão do simulador não detecta
+colisão}\label{sec:val-colisao}
+
+O primeiro caso é o mais básico dos quatro, porque não corrompe um número: corrompe
+a definição do evento que todos os números contam. Taxa de conclusão de voltas,
+tempo de volta e distância percorrida são todos condicionados a ``o veículo não
+bateu''. Quem decide isso, no \texttt{f110\_gym}, é uma rotina
+(\texttt{check\_ttc\_jit}) que estima tempo até a colisão a partir do próprio scan
+do LiDAR. Auditada contra verdade de campo --- o retângulo do veículo amostrado
+sobre o mesmo grid de ocupação que o simulador carregou ---, ela apresentou seis
+defeitos, todos reproduzidos em simulação e registrados em \texttt{SPEC-COL}.
+
+Três deles bastam para a leitura. O primeiro é geométrico: a rotina dispara dentro
+de uma \textbf{faixa} de folga, e não num semiplano; quem atravessa a faixa inteira
+num único passo de física não é detectado nem naquele passo nem em nenhum outro
+depois, porque a partir dali a folga é negativa e a condição reprova. O segundo é
+uma guarda de velocidade (\texttt{if vel != 0.0}) no topo da rotina: veículo parado
+encostado no muro não colide. O terceiro é o mais destrutivo, porque atinge o estado
+\textbf{físico} e não apenas o que se reporta: a rotina zera as componentes de
+estado a partir da quarta, e a quinta é o \textit{yaw}. Toda batida teleporta a
+orientação do veículo para 0~rad. Medido: 3,763~rad $\rightarrow$ 0,000.
+
+O que transforma isso de curiosidade em erro de medição é a geometria destes mapas.
+As paredes são uma fita de \textbf{9 a 38~cm} com espaço livre atrás, em 40 de 40
+seções amostradas nas cinco pistas, enquanto a 8~m/s o veículo percorre 8~cm por
+passo de física. Espessura de parede e passo de integração são da mesma ordem: a
+travessia num único passo não é o caso patológico, é o caso comum.
+
+O efeito composto foi medido na ponte ROS2, que agravava o quadro por não ler a
+chave \texttt{collisions} da observação devolvida pelo simulador --- a marca de
+colisão nascia falsa e morria falsa, e não havia tópico que a publicasse. Largando o
+veículo a 1,1~m do muro, a 2~m/s, contra ele: o carro atravessou a parede em
+$(-44{,}24;\ 3{,}32)$, teve o \textit{heading} zerado no impacto e seguiu dirigindo
+sozinho na área externa, parando em
+$(-30{,}14;\ 3{,}31)$ --- 14~m adiante do ponto de impacto, fora do circuito. Nada
+nessa execução acusou colisão. Uma volta assim é contada como completa, e a
+distância percorrida segue sendo integrada do lado de fora da pista.
+
+A correção está em \texttt{SPEC-COL-01} a \texttt{SPEC-COL-06} e redefine o evento
+em vez de ajustar o detector: colidiu passa a ser existir ponto do retângulo do
+veículo sobre célula ocupada \textbf{ou} a marca do simulador ter acendido; a
+checagem é do \textbf{segmento} entre a pose anterior e a atual, e não dos extremos,
+que é o que impede atravessar uma parede de 9~cm com as duas poses em espaço livre;
+sair dos limites do mapa conta como colisão; o grid consultado é o \textbf{mesmo}
+que o simulador usou para gerar o scan, de modo que a geometria da colisão não possa
+discordar da geometria que o LiDAR enxerga; e a pose reportada no passo da colisão
+preserva o último \textit{heading} válido.
+
+Uma restrição de engenharia acompanha a correção e é parte dela. Ela vive num
+invólucro, e o \texttt{f110\_gym} incorporado ao repositório permanece no commit
+fixado (\texttt{SPEC-COL-07}), com teste que falha se alguém o alterar. O que o
+contêiner executa continua sendo o código original, e a paridade de scan entre o
+ambiente de pesquisa e o contêiner --- verificada na Seção~\ref{sec:val-camadas}
+--- segue exata. Corrigir o critério de colisão sem tocar no simulador é o que
+permite as duas coisas ao mesmo tempo.
 
 \subsection{Vazamento de estado entre episódios}
 
@@ -130,7 +187,7 @@ composição, usada pelo treino e pela reavaliação.
 
 \subsection{Três valores para a mesma medição}
 
-A terceira falha não é de código: é de documentação. Três valores diferentes para
+A quarta falha não é de código: é de documentação. Três valores diferentes para
 a \textit{mesma} medição de distância percorrida no portão de deploy ---
 337~m, 428~m e 552,7~m --- conviveram simultaneamente no repositório, em
 documentos distintos, cada um apresentado como o resultado vigente. Pior: um
@@ -143,19 +200,21 @@ deploy não encerrava os nós ROS2 de execuções anteriores, e a leitura de 552
 saiu com um nó de 1~h~18~min publicando comandos ao lado do nó novo --- duas
 políticas comandando o mesmo carro.
 
-\subsection{O que os três casos têm em comum}
+\subsection{O que os quatro casos têm em comum}
 
-Nos três, reexecutar o comando devolvia o mesmo número. Nos três, o número estava
-errado. E nos três a distância entre o valor errado e o valor correto é da mesma
-ordem de grandeza das diferenças que o trabalho pretende demonstrar --- 6 pontos
-de \textit{completion}, uma pista inteira zerada, 200~m de distância percorrida.
+Nos quatro, reexecutar o comando devolvia o mesmo número. Nos quatro, o número
+estava errado. E nos quatro a distância entre o valor errado e o valor correto é da
+mesma ordem de grandeza das diferenças que o trabalho pretende demonstrar --- uma
+volta contada como completa depois de o veículo sair do circuito, 6 pontos de
+\textit{completion}, uma pista inteira zerada, 200~m de distância percorrida.
 
 Isso delimita o que a validação precisa cobrir. Não basta verificar que o
-programa roda, nem que ele é determinístico: é preciso verificar que o protocolo
-de avaliação não vaza estado, que existe uma única definição executável do objeto
-avaliado, que o critério de aceite foi fixado antes da medição, que o número
-citado no texto corresponde a um artefato em disco, e que o artefato que vai a
-deploy é o mesmo que foi pontuado. Cada uma dessas verificações é uma camada, e é
+programa roda, nem que ele é determinístico: é preciso verificar que o evento
+contado pela métrica corresponde ao que de fato acontece no mundo simulado, que o
+protocolo de avaliação não vaza estado, que existe uma única definição executável
+do objeto avaliado, que o critério de aceite foi fixado antes da medição, que o
+número citado no texto corresponde a um artefato em disco, e que o artefato que vai
+a deploy é o mesmo que foi pontuado. Cada uma dessas verificações é uma camada, e é
 delas que trata o restante do capítulo. A verificação formal de propriedades de
 segurança de controladores neurais \cite{Ivanov2020Verifying} e a busca ativa por
 cenários de falha \cite{Bak2021Stress} atacam um problema adjacente e
@@ -356,8 +415,8 @@ encontrada por busca livre, os quatro pontos não sustentariam essa leitura.
 
 Os critérios de aceite na pista de treino são avaliados com 5 sementes
 $\times$ 10 voltas e intervalo de confiança de 95\%; as pistas de generalização
-usam 5 sementes $\times$ 3 voltas. Duas escolhas de método e uma regra de
-escalonamento merecem justificativa explícita, porque as três afetam diretamente
+usam 5 sementes $\times$ 3 voltas. Três escolhas de método e uma regra de
+escalonamento merecem justificativa explícita, porque as quatro afetam diretamente
 quais resultados o trabalho pode reportar.
 
 \subsection{Proporção pelo valor pontual, com intervalo ao lado}
@@ -560,6 +619,45 @@ traz o critério de \textit{completion} marcado como limítrofe, com 5 sementes 
 aconteceu. É justamente o portão cujo valor pontual encosta no limiar, e a
 consequência para a leitura dos resultados está na
 Seção~\ref{sec:val-limitacoes}.
+
+\subsection{Uma taxa estimada com poucos eventos, e o que torna a escolha
+robusta}\label{sec:val-poisson}
+
+A escolha de método que falta não está num critério de aceite: está na calibração do
+ruído de coleta do E2, e é discutida por último porque é o ponto do trabalho em que
+uma decisão se apoia na estimativa estatisticamente mais fraca de todas. O
+procedimento, descrito no Capítulo~\ref{cap:estArte}, percorre uma grade de
+níveis de ruído em ordem decrescente e escolhe, por pista, o maior nível cujo risco
+medido cabe num alvo de colisões por quilômetro fixado antes de qualquer medição
+(\texttt{SPEC-DART-02}). Se nenhum nível couber, usa-se o menor da grade e o laudo
+registra a escolha como não atingida --- calibração que não alcançou o alvo não é
+calibração silenciosamente bem-sucedida.
+
+O ponto fraco é o tamanho da amostra. Cada nível é medido sobre aproximadamente
+14~km de condução, o que produz \textbf{pouquíssimos eventos}: no nível escolhido
+para Spielberg, exatamente uma colisão em 13,5~km. Contagens dessa ordem carregam
+incerteza de Poisson larga --- um único evento sustenta um intervalo de 95\% para a
+taxa que vai de cerca de 0,002 a cerca de 0,4 colisões por quilômetro, duas ordens
+de grandeza. Tomada isoladamente, a taxa estimada em cada nível não é um número
+publicável.
+
+O que torna a \textbf{escolha} robusta apesar disso é a granularidade da grade
+perto do joelho da curva, e isso está medido. Em Spielberg, o nível 0,02~rad dá
+0,074 colisões/km e o nível vizinho 0,03~rad dá 1,091 --- um fator de quinze entre
+níveis adjacentes, muito maior que a largura do intervalo que separa cada um deles
+de zero. A decisão que o procedimento toma não é ``qual é o risco'', e sim ``este
+nível cabe no alvo ou não cabe''; a distância entre níveis é grande o bastante para
+que o ruído amostral não altere essa classificação. O alvo classifica níveis; ele
+não é uma estimativa publicável do risco absoluto, e nenhum resultado do trabalho o
+usa como tal.
+
+Declarar isso importa por simetria com o resto do capítulo: o mesmo trabalho que
+recusa decidir um portão de \textit{completion} dentro do ruído amostral --- o
+escalonamento por meia largura de intervalo da subseção anterior --- decide a
+calibração de ruído com uma colisão por medição. As duas condutas são
+compatíveis porque as perguntas são diferentes --- uma estima um valor contra um
+limiar próximo, a outra ordena níveis separados por um fator de quinze ---, mas a
+diferença precisa estar escrita, e não deduzida pelo leitor.
 
 \section{As seis camadas de validação}\label{sec:val-camadas}
 

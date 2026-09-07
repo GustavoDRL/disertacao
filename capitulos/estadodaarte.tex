@@ -423,9 +423,10 @@ porque menos ruído é menos cobertura fora da trajetória, que é o próprio po
 DART. A calibração resultante separa Silverstone das demais com metade do ruído.
 A métrica é colisões por quilômetro, e não fração de episódios abortados, porque
 nesta escala de episódio qualquer risco por passo produz ``metade abortou'', o
-que diz mais sobre o comprimento do episódio do que sobre o ruído. O
-procedimento completo, com a discussão da incerteza de Poisson associada a
-poucos eventos por medição, está no Capítulo~\ref{cap:metodologia}.
+que diz mais sobre o comprimento do episódio do que sobre o ruído. A
+discussão da incerteza de Poisson associada a poucos eventos por medição --- e do
+que torna a escolha do nível robusta apesar dela --- está na
+Seção~\ref{sec:val-poisson}.
 
 Esta é a primeira das quatro diferenças que a Seção~\ref{sec:arte-lacuna} vai
 consolidar: \textbf{a calibração por pista, contra um alvo pré-declarado, é uma
@@ -800,8 +801,8 @@ trabalho em relação aos citados são as seguintes, e são declaradas sem atenu
           identifica como desafio central \cite{Betz2022Survey}.
     \item \textbf{Um simulador, um modelo de veículo, um circuito de portão.} A
           fidelidade do modelo de faixa única e a representatividade do circuito
-          de avaliação são premissas herdadas, não resultados verificados. O
-          Capítulo~\ref{cap:metodologia} lista as limitações do detector de
+          de avaliação são premissas herdadas, não resultados verificados. A
+          Seção~\ref{sec:val-colisao} lista as limitações do detector de
           colisão do simulador que precisaram ser corrigidas antes que qualquer
           número fosse reportável --- o que é, por si, evidência de que a premissa
           de fidelidade merece a desconfiança que este parágrafo lhe dá.
