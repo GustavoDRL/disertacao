@@ -127,7 +127,7 @@ A correção é uma linha de protocolo, hoje registrada como
 a função de fábrica é chamada uma vez por semente, nunca uma vez por avaliação.
 Nenhum estado atravessa a fronteira de episódio.
 
-\subsection{Duas cópias da mesma composição de política}
+\subsection{Duas cópias da mesma composição de política}\label{sec:val-duascopias}
 
 A terceira etapa (E3) é um resíduo de aprendizado por reforço somado à saída da
 rede do E2. Compor as duas exige montar um vetor de ganhos, aplicar a saída de
@@ -884,6 +884,196 @@ $10^{-12}$ move a \textit{completion} do E3 em quase quatro pontos. Logo o ONNX 
 É precisamente por isso que a Camada~F mede o \textbf{artefato exportado}: o que
 se afirma sobre o deploy tem de ser medido no que se deploya.
 
+\subsection{Ponte sim-to-real: adaptador de observação, guarda de comando e
+sensor emulado}\label{sec:val-ponte}
+
+A Camada~F valida a política no contêiner, contra o simulador. Entre esse ponto e
+o veículo físico há uma diferença de contrato que não é ruído de medida: o
+simulador entrega 1080 feixes num campo de 269,3$^\circ$, alcance de 30~m e 20~Hz
+síncronos, enquanto o LiDAR YDLIDAR X4PRO do veículo entrega cerca de 500 pontos
+em 360$^\circ$, alcance de 12~m e 10~Hz nominais, com leituras inválidas
+publicadas como $0{,}0$. A rede foi treinada sobre o primeiro contrato e o carro
+só oferece o segundo. Esta seção descreve os três artefatos construídos para
+atravessar essa diferença de forma mensurável --- um adaptador de observação, uma
+guarda de comando e um sensor emulado --- e o critério que decide, antes da
+medição, o que cada resultado autoriza.
+
+O arranjo se apoia em duas linhas da literatura de transferência. A primeira é a
+randomização de domínio, que trata a diferença simulação--realidade como uma
+distribuição a ser coberta durante o treino, seja no domínio visual
+\cite{Tobin2017DomainRand}, seja no da dinâmica \cite{Peng2018DynamicsRand}; a
+revisão de Zhao, Queralta e Westerlund \cite{Zhao2020Sim2Real} organiza as
+famílias de técnicas e registra que a adaptação da observação e a randomização são
+complementares, não substitutas. A segunda é a evidência específica de plataformas
+em escala: Zarrar e colaboradores \cite{Zarrar2024TinyLidarNet} embarcam uma rede
+convolucional unidimensional sobre LiDAR bidimensional e reportam que a redução
+angular do \textit{scan} é viável, mas com custo de robustez proporcional à taxa
+de redução; Evans, Jordaan e Engelbrecht \cite{Evans2023Comparing} relatam
+oscilação de esterço como modo de falha característico da passagem para o
+hardware; e Ghignone e colaboradores \cite{Ghignone2025RLPP} transferem sem
+retreino um resíduo de aprendizado por reforço sobre um controlador base --- a
+mesma arquitetura da etapa E3 deste trabalho --- num veículo em escala real. O que
+segue não é uma técnica nova: é a instrumentação dessa diferença sob o mesmo
+padrão de critério congelado que o restante do capítulo aplica.
+
+\subsubsection*{O adaptador de observação}
+
+O adaptador é uma função pura, sem dependência de ROS2, que recebe o vetor de
+distâncias publicado pelo sensor --- com o seu próprio ângulo inicial e o seu
+próprio incremento --- e devolve \textit{sempre} 1080 valores finitos em
+$[0; 30]$, nos ângulos exatos do contrato do simulador. Ele descarta as leituras
+inválidas ($0{,}0$, não numéricas, infinitas ou fora da faixa do sensor), corrige
+o zero angular, recorta os 90,7$^\circ$ traseiros que o contrato não prevê e
+reamostra o que sobra nos ângulos alvo.
+
+A reamostragem é por \textbf{vizinho mais próximo}, e a escolha é deliberada. Numa
+descontinuidade de profundidade --- a quina de um muro, a borda de um obstáculo
+--- a interpolação linear produziria um valor intermediário entre a parede
+próxima e o fundo distante, isto é, uma superfície que não existe no ambiente. O
+vizinho mais próximo reproduz o que um feixe estreito de fato faria: cai de um
+lado ou do outro da quina. A propriedade que isso garante, e que o contrato
+numérico verifica, é que todo valor da saída pertence ao conjunto das leituras
+válidas de entrada, com uma única exceção declarada: quando os dois pontos válidos
+que cercam um ângulo alvo estão separados por mais que um limite angular, o feixe
+é tratado como uma lacuna real do sensor e recebe o valor de preenchimento, que é
+o alcance máximo do sensor e não o do simulador --- um feixe sem retorno significa
+``nada até onde este sensor enxerga'', não ``nada em 30~m''. A alternativa foi
+medida, não arbitrada, e a seção de resultados reporta o custo de escolher a
+errada.
+
+Se menos da metade dos pontos da janela frontal for válida, o adaptador não
+devolve observação alguma. O nó então não publica, a política não infere, e o
+carro é parado pela guarda por ausência de comando: uma observação
+majoritariamente inventada é pior do que nenhuma.
+
+Um único arquivo implementa o adaptador, e tanto o veículo quanto o experimento em
+simulação o importam. A razão é a falha documentada na
+Seção~\ref{sec:val-duascopias}: duas cópias da mesma composição de política já
+divergiram neste projeto, e a divergência só apareceu na camada de \textit{deploy}.
+O contrato numérico exige a identidade do arquivo, não a semelhança do
+comportamento.
+
+\subsubsection*{A guarda de comando como única porta}
+
+Em modo autônomo, nenhum controlador publica no tópico de comando do veículo. O
+seguidor de parede e a política publicam num tópico intermediário, e um nó de
+guarda é o \textbf{único} publicador do comando efetivo. Ele aplica, nesta ordem:
+um botão de homem-morto no controle manual, sem o qual não há passagem; um tempo
+limite de entrada, findo o qual publica parada explícita; e um envelope que satura
+velocidade e esterço.
+
+A concentração num publicador único é o que torna a propriedade de segurança
+verificável. Com $n$ publicadores, a afirmação ``o carro nunca recebe comando fora
+do envelope'' exigiria auditar $n$ caminhos de código e a ordem de chegada entre
+eles; com um, ela é uma propriedade de uma função sobre a qual se pode escrever
+teste. As duas reações a falha também são distintas de propósito: ao soltar o
+homem-morto a guarda emite uma rajada curta de parada e depois \textbf{silencia},
+entregando o veículo ao cão de guarda de silêncio do nó de servo, que é a última
+linha de defesa e já existia; à falta de comando de entrada ela \textbf{publica}
+parada, porque o seu tempo limite é metade do daquele cão de guarda e ela existe
+justamente para agir antes dele. Nenhuma dessas paradas é o freio primário: o
+freio primário é cortar fisicamente a alimentação do controlador de motor, e o
+procedimento de operação diz isso em cada estágio.
+
+\subsubsection*{O sensor emulado e as dez condições}
+
+O terceiro artefato é um \textit{shim} de sensor no simulador: uma camada que
+degrada o \textit{scan} do \texttt{f110\_gym} para o que o X4PRO produziria, antes
+de a observação chegar à política. Ele reamostra o \textit{scan} nos ângulos que o
+sensor real amostraria, invalida leituras além de 12~m, aplica perda aleatória de
+pontos, soma ruído relativo, repete o mesmo quadro para reproduzir a taxa mais
+baixa e, opcionalmente, gira o \textit{scan} para simular erro de zero angular. A
+saída do \textit{shim} passa então pelo mesmo adaptador que o carro executa, e o
+resultado é o que a política enxerga. É a randomização de domínio do
+parágrafo inicial aplicada ao domínio do alcance, e não ao visual.
+
+Nenhum parâmetro do \textit{shim} é medição do sensor físico. Todos vêm ou da
+configuração efetivamente aplicada ao \textit{driver} pelo arquivo de
+inicialização do veículo --- que é a autoridade sobre o \textit{datasheet} --- ou
+do \textit{datasheet}, e os dois que não vêm de nenhum dos dois, a perda de pontos
+e a taxa efetiva, estão marcados como assumidos no perfil versionado do sensor,
+cujo campo ``medido'' permanece falso e faz o nó emitir aviso periódico enquanto
+assim for. A caracterização de bancada substitui esses valores.
+
+As dez condições de avaliação foram declaradas antes da primeira execução:
+
+\begin{table}[h]
+    \centering
+    \small
+    \begin{tabularx}{\textwidth}{|l|>{\raggedright\arraybackslash}X|}
+        \hline
+        \textbf{Condição} & \textbf{O que muda em relação ao nominal} \\
+        \hline
+        \texttt{nominal} & sem \textit{shim}; é o controle, e reproduz o número já
+        conhecido \\
+        \hline
+        \texttt{x4pro} & \textit{shim} completo, preenchimento de lacuna em 12~m \\
+        \hline
+        \texttt{x4pro\_fill30} & preenchimento de lacuna em 30~m \\
+        \hline
+        \texttt{x4pro\_off+3}, \texttt{x4pro\_off-3} & zero angular deslocado de
+        $\pm 3^\circ$, desconhecido pelo adaptador \\
+        \hline
+        \texttt{x4pro\_drop10} & perda de pontos de 10\% em vez de 2\% \\
+        \hline
+        \texttt{x4pro\_hold3} & taxa efetiva de 6,7~Hz em vez de 10~Hz \\
+        \hline
+        \texttt{x4pro\_cap1}, \texttt{x4pro\_cap2}, \texttt{x4pro\_cap3} &
+        \textit{shim} completo mais a guarda saturando a velocidade em 1, 2 e
+        3~m/s \\
+        \hline
+    \end{tabularx}
+    \caption{As dez condições da campanha de sensibilidade ao sensor emulado.
+    Cada condição foi avaliada com as mesmas sementes que todas as outras, para
+    que a comparação entre elas seja pareada}
+    \label{tab:val_s2r_condicoes}
+\end{table}
+
+Duas políticas já aprovadas --- a rede de imitação da etapa E2 e o resíduo da
+etapa E3 --- foram avaliadas sem retreino, em duas pistas, com cinco sementes e
+três voltas por célula, resultando em quarenta células. O deslocamento de zero
+angular é \textit{desconhecido} pelo adaptador: o perfil entregue a ele declara
+sempre deslocamento nulo, mesmo nas condições em que o \textit{shim} o aplica. É
+exatamente essa ignorância que uma das condições mede, porque é a situação real de
+quem monta o sensor sem tê-lo calibrado.
+
+\subsubsection*{Os três portões, congelados antes}
+
+Três portões foram escritos no arquivo de configuração da execução \textbf{antes}
+da primeira avaliação, conforme \texttt{SPEC-PROV-01}, cada um com a sua
+consequência já declarada por extenso:
+
+\begin{enumerate}
+    \item \textbf{Sobrevivência ao sensor} --- taxa de conclusão da política da
+          etapa E3, na pista de treino, sob o \textit{shim} completo, com limiar
+          de 0,80, o mesmo piso que o trabalho já usa para generalização.
+          Reprovado, o adaptador sozinho não basta: retreinar sob o contrato de
+          observação real deixa de ser opcional e a política não vai ao veículo
+          antes disso --- o seguidor de parede vai.
+    \item \textbf{Sensibilidade ao zero angular} --- a queda de taxa de conclusão
+          sob $\pm 3^\circ$ não pode exceder 0,10 em valor absoluto. Reprovado, a
+          calibração do zero angular (\texttt{SPEC-CAR-05}) passa a ser
+          bloqueante antes de qualquer estágio com o veículo no chão.
+    \item \textbf{Envelope de velocidade} --- taxa de conclusão sob a guarda
+          saturando a velocidade em 1~m/s, com limiar de 0,80. Reprovado, o
+          estágio de operação no chão roda apenas com o seguidor de parede.
+\end{enumerate}
+
+A escolha de congelar as consequências, e não apenas os limiares, é o que impede
+a leitura que a Seção~\ref{sec:val-congelado} chama de busca livre: com quarenta
+células medidas, sempre haverá um recorte favorável, e o único modo de a tabela
+significar alguma coisa é o veredito já estar escrito quando o número aparece. O
+Capítulo~\ref{cap:resultados} reporta os três vereditos e as consequências que
+eles acionaram.
+
+Por fim, o que esta ponte \textbf{não} é. Ela não valida o veículo: o
+\textit{shim} é um modelo do sensor construído com valores assumidos, e um sensor
+real pior que o emulado produziria resultados piores que os medidos. Ela mede o
+custo do contrato de observação, não o de atrito, latência de atuador ou
+dinâmica de pneu. E o adaptador e a guarda, embora testados, nunca foram
+executados no veículo --- a limitação declarada na
+Seção~\ref{sec:val-escopo-simulacao} continua valendo sem atenuação.
+
 \section{Limitações declaradas}\label{sec:val-limitacoes}
 
 Um aparato de validação que não declara o que não cobre pede ao leitor a mesma
@@ -1048,7 +1238,7 @@ dígito a dígito com os relatórios de portão e de avaliação em disco, e o t
 especialista da máquina anterior é confirmável pelo histórico de versão de um
 arquivo de ativo.
 
-\subsection{O escopo é a simulação, e a Camada F é o contêiner}
+\subsection{O escopo é a simulação, e a Camada F é o contêiner}\label{sec:val-escopo-simulacao}
 
 Nenhum dos resultados deste capítulo foi obtido no veículo físico. A Camada~F
 mede o artefato ONNX executando como nó ROS2 dentro do contêiner, contra o

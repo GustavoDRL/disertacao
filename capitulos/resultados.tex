@@ -664,6 +664,166 @@ efeitos que caracterizam a transferência. \textbf{Nenhuma política deste traba
 foi executada no carro}, e a Seção~\ref{sec:arte-s2r} enumera as tarefas que a
 travessia dessa fronteira exige.
 
+\section{Sensibilidade ao contrato de observação do sensor real}\label{sec:res-s2r}
+
+As três seções anteriores mediram políticas sob o contrato de observação do
+simulador. Esta seção mede o que acontece com as mesmas políticas, \textbf{sem
+retreino}, quando a observação passa pelo sensor emulado e pelo adaptador
+descritos na Seção~\ref{sec:val-ponte}. É a única medição deste trabalho que
+atravessa, ainda que em simulação, a fronteira até o veículo.
+
+A campanha avaliou as políticas aprovadas das etapas E2 e E3 em duas pistas ---
+Spielberg, a de treino, e Oschersleben, a mais curta do conjunto de generalização
+--- sob dez condições, com cinco sementes e três voltas por célula, as mesmas
+sementes em todas as condições. São quarenta células. Nenhuma célula teve
+\textit{scan} descartado pelo adaptador por fração de leituras válidas
+insuficiente. A execução, o arquivo de configuração com os limiares e o relatório
+de portão estão registrados sob o identificador
+\texttt{s2r\_Spielberg\_20260907-030702\_589c911\_fb4325}.
+
+\subsection{Taxa de conclusão por condição}
+
+\begin{table}[h]
+    \centering
+    \footnotesize
+    \begin{tabularx}{\textwidth}{|l|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|}
+        \hline
+        & \multicolumn{2}{c|}{\textbf{E3 (resíduo)}} &
+        \multicolumn{2}{c|}{\textbf{E2 (imitação)}} \\
+        \cline{2-5}
+        \textbf{Condição} & Spielberg & Oschersleben & Spielberg &
+        Oschersleben \\
+        \hline
+        \texttt{nominal} & 1,000 [0,80; 1,00] & 0,857 [0,60; 0,96] & 1,000 [0,80; 1,00] & 1,000 [0,80; 1,00] \\
+        \hline
+        \texttt{x4pro} & 0,636 [0,35; 0,85] & 0,818 [0,52; 0,95] & 0,667 [0,35; 0,88] & 0,667 [0,39; 0,86] \\
+        \hline
+        \texttt{x4pro\_fill30} & 0,000 [0,00; 0,43] & 0,000 [0,00; 0,43] & 0,000 [0,00; 0,43] & 0,000 [0,00; 0,43] \\
+        \hline
+        \texttt{x4pro\_off+3} & 0,000 [0,00; 0,43] & 0,000 [0,00; 0,43] & 0,167 [0,03; 0,56] & 0,667 [0,39; 0,86] \\
+        \hline
+        \texttt{x4pro\_off-3} & 0,000 [0,00; 0,43] & 0,000 [0,00; 0,43] & 0,167 [0,03; 0,56] & 0,286 [0,08; 0,64] \\
+        \hline
+        \texttt{x4pro\_drop10} & 0,000 [0,00; 0,43] & 0,000 [0,00; 0,43] & 0,000 [0,00; 0,43] & 0,000 [0,00; 0,43] \\
+        \hline
+        \texttt{x4pro\_hold3} & 0,667 [0,39; 0,86] & 0,429 [0,16; 0,75] & 0,556 [0,27; 0,81] & 0,286 [0,08; 0,64] \\
+        \hline
+        \texttt{x4pro\_cap1} & 1,000 [0,80; 1,00] & 1,000 [0,80; 1,00] & 1,000 [0,80; 1,00] & 1,000 [0,80; 1,00] \\
+        \hline
+        \texttt{x4pro\_cap2} & 1,000 [0,80; 1,00] & 1,000 [0,80; 1,00] & 1,000 [0,80; 1,00] & 1,000 [0,80; 1,00] \\
+        \hline
+        \texttt{x4pro\_cap3} & 1,000 [0,80; 1,00] & 0,923 [0,67; 0,99] & 1,000 [0,80; 1,00] & 0,923 [0,67; 0,99] \\
+        \hline
+    \end{tabularx}
+    \caption{Taxa de conclusão e intervalo de Wilson de 95\% por célula, sob o
+    sensor emulado. Cada célula é cinco sementes de três voltas; voltas
+    interrompidas por colisão contam como não concluídas, de modo que o
+    denominador varia entre células. A condição \texttt{nominal} é o controle,
+    sem emulação de sensor}
+    \label{tab:res_s2r}
+\end{table}
+
+A leitura da Tabela~\ref{tab:res_s2r} que interessa ao veredito é a linha
+\texttt{x4pro} da coluna E3/Spielberg: \textbf{0,636}, contra 1,000 sob o contrato
+do simulador. O sensor emulado, sozinho e sem nenhuma perturbação adicional,
+custa mais de um terço das voltas de uma política que tinha sido aprovada com
+taxa de conclusão de 0,9891. Os intervalos são largos --- cinco sementes ---, e a
+ressalva de largura de intervalo da Seção~\ref{sec:res-ic} se aplica aqui com
+força ainda maior do que nos portões das etapas.
+
+\subsection{Os três portões e as suas consequências}
+
+Os limiares e as consequências foram gravados no arquivo de configuração da
+execução antes da primeira avaliação, conforme \texttt{SPEC-PROV-01}. A
+Tabela~\ref{tab:res_s2r_gates} reporta o veredito de cada um; a coluna de
+consequência não é interpretação escrita depois, é o texto pré-declarado.
+
+\begin{table}[h]
+    \centering
+    \small
+    \begin{tabularx}{\textwidth}{|l|c|c|c|>{\raggedright\arraybackslash}X|}
+        \hline
+        \textbf{Portão} & \textbf{Medido} & \textbf{Limiar} & &
+        \textbf{Consequência pré-declarada} \\
+        \hline
+        \texttt{SPEC-S2R-30} & 0,636 & $\geq$ 0,80 & \textbf{reprovado} &
+        O adaptador sozinho não basta: retreinar sob o contrato de observação
+        real deixa de ser opcional, e a política não vai ao veículo antes disso.
+        O seguidor de parede vai \\
+        \hline
+        \texttt{SPEC-S2R-31} & 0,636 & $\leq$ 0,10 & \textbf{reprovado} &
+        A calibração do zero angular do LiDAR (\texttt{SPEC-CAR-05}) passa a ser
+        bloqueante antes de qualquer estágio com o veículo no chão \\
+        \hline
+        \texttt{SPEC-S2R-32} & 1,000 & $\geq$ 0,80 & aprovado &
+        O estágio de operação no chão roda a partir do menor envelope de
+        velocidade aprovado, que é 1~m/s \\
+        \hline
+    \end{tabularx}
+    \caption{Os três portões da campanha de sensibilidade. O valor medido do
+    segundo portão é a queda absoluta de taxa de conclusão entre
+    \texttt{x4pro} (0,636) e \texttt{x4pro\_off$\pm$3} (0,000 nos dois sentidos)}
+    \label{tab:res_s2r_gates}
+\end{table}
+
+O portão do zero angular é o mais severo dos três em magnitude. Um erro de
+$\pm 3^\circ$ --- que é a tolerância entre unidades declarada pelo próprio
+\textit{datasheet} do sensor, não um cenário adverso construído --- leva a
+política da etapa E3 de 0,636 a \textbf{zero} nas duas pistas e nos dois
+sentidos. A queda de 0,636 excede em mais de seis vezes o limiar de 0,10. O
+efeito prático é que uma medição de bancada que estava classificada como higiene
+de parametrização passou a ser pré-requisito de segurança para pôr o veículo no
+chão.
+
+O terceiro portão foi o único aprovado, e a consequência que ele libera é
+estreita: com a guarda saturando a velocidade em 1~m/s, a taxa de conclusão volta
+a 1,000. Isso autoriza o envelope, não a política --- a consequência do primeiro
+portão é anterior e continua valendo, de modo que o comandante autorizado a ir ao
+veículo continua sendo o seguidor de parede.
+
+Nenhum limiar foi reescrito depois de ver o número, e nenhuma das duas reprovações
+foi reclassificada. O perfil do sensor também não mudou: o que reprovou não foi o
+perfil, foi a política diante dele.
+
+\subsection{Observações posteriores à medição}
+
+Tudo nesta subseção é leitura da tabela \textbf{depois} de ver os números, e está
+rotulado como tal precisamente porque nada aqui altera limiar ou relaxa
+consequência já declarada. São hipóteses para a fase seguinte, não resultados
+pontuados.
+
+\begin{itemize}
+    \item \textbf{O envelope de velocidade compensa o sensor.} Com a guarda em 1,
+          2 ou 3~m/s, a política da etapa E3 completa 1,000 nas três condições em
+          Spielberg, contra 0,636 sem envelope. O preço aparece na mediana da
+          volta: 340,40~s sob o envelope de 1~m/s contra 55,51~s sem envelope. A
+          compensação é real e é cara.
+    \item \textbf{Duas condições zeram as duas políticas nas duas pistas.}
+          Preencher a lacuna de \textit{scan} com 30~m --- isto é, declarar espaço
+          livre além do alcance do sensor --- e quintuplicar a perda de pontos
+          produzem, cada um isoladamente, taxa de conclusão nula nas quatro
+          combinações. A regra de decisão do preenchimento, declarada antes,
+          confirma portanto o valor de 12~m.
+    \item \textbf{O resíduo é mais frágil ao zero angular do que a rede que ele
+          corrige.} Sob deslocamento angular, a política da etapa E3 zera nas duas
+          pistas, enquanto a da etapa E2 mantém 0,167 em Spielberg e chega a
+          0,667 em Oschersleben num dos sentidos. A assimetria entre $+3^\circ$ e
+          $-3^\circ$ que aparece na etapa E2 não é distinguível com cinco
+          sementes e nenhum portão a previa.
+    \item \textbf{A oscilação de esterço cresce com a degradação do sensor.} A
+          média de $|\Delta\delta|$ por passo de controle da política da etapa E3
+          em Spielberg passa de 0,0209 no controle para 0,0443~rad/passo sob o
+          sensor emulado, e o envelope de velocidade a devolve a
+          0,0162~rad/passo. O modo de falha por oscilação de esterço que Evans,
+          Jordaan e Engelbrecht \cite{Evans2023Comparing} relatam na passagem para
+          o hardware aparece aqui já em simulação, e o envelope o atenua.
+\end{itemize}
+
+Usar qualquer um desses itens para relaxar a consequência do primeiro portão ---
+argumentar, por exemplo, que sob envelope a política passa e portanto pode ir ao
+veículo --- seria escolher o critério depois de ver o número, que é exatamente o
+que a Seção~\ref{sec:val-congelado} existe para impedir.
+
 \section{Discussão}\label{sec:res-discussao}
 
 \subsection{O que os números sustentam}
@@ -713,7 +873,7 @@ segundo. A assimetria existe, é declarada, e é pequena --- mas ela existe, e u
 leitor que compare 52,525~s com 59,000~s deve saber que os dois números não foram
 medidos sob o mesmo protocolo.
 
-\subsection{Primeira ressalva: o limiar cai dentro do intervalo de confiança}
+\subsection{Primeira ressalva: o limiar cai dentro do intervalo de confiança}\label{sec:res-ic}
 
 Nos três portões aprovados, o intervalo de Wilson reportado ao lado da taxa de
 conclusão \textbf{contém o limiar}. A Tabela~\ref{tab:val_ic} registra os três

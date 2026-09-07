@@ -177,7 +177,12 @@ no veículo e há uma parte dele validada em hardware: o \textbf{controle manual
 --- motor, servo de direção, odometria e comando por \textit{joystick}. Essa é a
 extensão do que o carro comprovadamente faz. \textbf{Todo o restante da pilha
 autônoma, inclusive o seguidor de parede reativo presente no repositório, segue
-sem validação no veículo real.} Do lado da política aprendida, o requisito de
+sem validação no veículo real.} Desde então a pilha autônoma passou a existir por
+inteiro no repositório --- adaptador de observação, guarda de comando como
+publicador único, seguidor de parede reescrito por geometria e a política
+parametrizada para o computador embarcado ---, com testes e com um procedimento de
+operação por estágios; nada disso altera a situação do objetivo, porque nenhuma
+dessas linhas foi executada no veículo. Do lado da política aprendida, o requisito de
 tempo real foi demonstrado --- 20,00~Hz de frequência de controle e $p99$ de
 0,53~ms de latência de inferência ---, mas dentro do contêiner sobre o
 computador de desenvolvimento, e não sobre a unidade de processamento embarcada,
@@ -213,7 +218,10 @@ O que se afirma, então, é isto: uma política que enxerga apenas LiDAR e
 proprioceptiva completa 91 de 92 voltas sob randomização e percorre Spielberg
 11,0\% mais rápido que o especialista geométrico que a ensinou --- que é avaliado
 sem a randomização a que ela é submetida; ela roda como nó ROS2 em tempo real
-contra o simulador; e ela nunca dirigiu o carro.
+contra o simulador; e ela nunca dirigiu o carro. E, submetida em simulação ao contrato
+de observação que o sensor do veículo de fato oferece, ela completa 0,636 das
+voltas em vez de 1,000 --- o que é a medida, e não a estimativa, do que ainda
+separa este trabalho do objetivo de hardware.
 
 \section*{Trabalhos Futuros}
 \addcontentsline{toc}{section}{Trabalhos Futuros}
@@ -228,7 +236,13 @@ cópia em Python do lado do contêiner, e o custo dessa escolha está medido em
 primeiros dados reais está escrito. E o principal obstáculo técnico --- a
 diferença entre o contrato de observação simulado e o do sensor real --- já está
 quantificado, o que é o que permite descrevê-lo aqui com números em vez de com
-adjetivos.
+adjetivos. Mais do que descrito, ele está \textbf{medido}: a
+Seção~\ref{sec:res-s2r} reporta a política da etapa E3 caindo de taxa de conclusão
+1,000 para \textbf{0,636} apenas por atravessar o sensor emulado, e para
+\textbf{0,000} sob um erro de zero angular de $\pm 3^\circ$ --- que é a tolerância
+entre unidades do próprio \textit{datasheet}. O caminho até o veículo deixou de ser
+uma lista de tarefas e passou a ser uma sequência com portões, e dois deles já
+reprovaram.
 
 \subsection*{O contrato de observação real, e por que ele é o primeiro passo}
 
@@ -294,7 +308,10 @@ A fase seguinte é uma sequência, e a ordem dela é requisito, não preferênci
           incremento angular publicado, fração de leituras inválidas, zero
           angular contra parede perpendicular e ruído contra alvo de distância
           conhecida. O produto é um perfil de sensor versionado, e ele fecha
-          \texttt{SPEC-CAR-05}.
+          \texttt{SPEC-CAR-05}. A medição do zero angular, em particular, passou
+          de higiene de parametrização a \textbf{bloqueante} pela reprovação do
+          portão \texttt{SPEC-S2R-31}: nenhum estágio com o veículo no chão
+          começa antes dela.
     \item \textbf{Reparametrizar o simulador} com o perfil medido, escolhendo um
           número de feixes múltiplo de 60 e verificando que a rede convolucional
           ainda monta.
@@ -302,7 +319,11 @@ A fase seguinte é uma sequência, e a ordem dela é requisito, não preferênci
           e a linha de corrida de curvatura mínima.
     \item \textbf{Reexecutar E1, E2 e E3} sob o contrato de observação e o
           envelope de velocidade reais. A etapa E1 fixa um novo $T_{pp}$, e todos
-          os limiares relativos são recalculados a partir dele.
+          os limiares relativos são recalculados a partir dele. Este passo deixou de ser
+          uma opção de melhoria: é a consequência pré-declarada do portão
+          \texttt{SPEC-S2R-30}, que reprovou, e enquanto ele não for cumprido a
+          política aprendida não comanda o veículo --- o seguidor de parede
+          comanda.
     \item \textbf{Validar os controladores reativos no carro} antes de qualquer
           política aprendida. Isso é requisito de segurança e não etapa de
           conveniência: não se põe uma rede neural no comando de um veículo que
