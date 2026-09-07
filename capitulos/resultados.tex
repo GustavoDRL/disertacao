@@ -835,6 +835,12 @@ do laço de treino, com os três parâmetros incertos sorteados a cada episódio
 vez de fixados, e a política resultante é medida contra os \textbf{mesmos}
 limiares já congelados. A Tabela~\ref{tab:res_e41} reporta as duas tentativas
 pré-registradas, ao lado da execução de controle sob o contrato do simulador.
+Duas outras execuções precederam essas e não entram na tabela nem em nenhum
+agregado: elas partiram dos parâmetros padrão da etapa em vez da configuração da
+política aprovada, e coletaram dados numa pista só --- um erro de pré-registro,
+identificado por diagnóstico antes de o resultado ser interpretado, e corrigido
+pela fixação explícita do ponto de partida antes de relançar. Ficam registradas
+no relatório de resultados como registro do erro, e não como medição.
 
 \begin{table}[h]
     \centering
@@ -842,7 +848,7 @@ pré-registradas, ao lado da execução de controle sob o contrato do simulador.
     \begin{tabular}{|l|c|c|c|c|c|}
         \hline
         \textbf{Execução} & \textbf{Conclusão [IC95]} & \textbf{Volta (s)} &
-        \textbf{Generaliz.} & \textbf{Pior pista} & \\
+        \textbf{Generaliz.} & \textbf{Pior pista} & \textbf{Portão} \\
         \hline
         Controle (simulador) & 1,0000 [0,929; 1,000] & 60,050 & 1,0000 & 1,0000 &
         aprovado \\
@@ -859,9 +865,12 @@ pré-registradas, ao lado da execução de controle sob o contrato do simulador.
     \end{tabular}
     \caption{Retreino da etapa E2 sob o sensor emulado com randomização de
     domínio, em Spielberg, cinco sementes. As duas tentativas são as permitidas
-    pelo pré-registro e têm configuração idêntica, porque o único ajuste
-    disponível para o critério que reprovou já estava aplicado no ponto de
-    partida. O intervalo é de Wilson}
+    pelo pré-registro e têm configuração idêntica: o laço ofereceu os dois
+    primeiros ajustes da lista pré-declarada do critério que reprovou, e ambos
+    foram sem efeito porque o ponto de partida já os trazia --- os parâmetros de
+    ajuste são cumulativos. O terceiro ajuste da lista, o único que teria mudado
+    alguma coisa, não chegou a ser tentado dentro do orçamento de duas
+    tentativas. O intervalo é de Wilson}
     \label{tab:res_e41}
 \end{table}
 
@@ -869,10 +878,31 @@ O veredito da prévia é \textbf{reprovado}, e ele é interessante pelo lugar on
 falha. A taxa de conclusão na pista de treino cai de 1,000 para \textbf{0,1667} ---
 uma única volta completa em cinco sementes ---, enquanto os dois critérios de
 generalização, que medem pistas que a rede nunca viu, \textbf{passam}: 0,8744 na
-média contra limiar de 0,80, e 0,7000 na pior pista contra 0,60. É a inversão do
-modo de falha habitual: a rede vai melhor fora do circuito de treino do que
-dentro dele. O tempo de volta de 57,650~s cumpre o limiar, mas é o tempo da única
-volta que se completou, e não sustenta leitura de desempenho.
+média contra limiar de 0,80, e 0,7000 na pior pista contra 0,60. O tempo de volta
+de 57,650~s cumpre o limiar, mas é o tempo da única volta que se completou, e não
+sustenta leitura de desempenho.
+
+O contraste entre esses dois lados exige uma ressalva de denominador, sem a qual
+ele diria mais do que os dados sustentam. Os critérios de generalização não são
+taxa de conclusão bruta: eles são a média, entre pistas, da razão entre a taxa da
+rede e a taxa do especialista naquela pista, saturada em 1,0 e excluindo as pistas
+em que o especialista não completa nenhuma volta --- a definição está na
+Seção~\ref{sec:val-relativo} e foi congelada muito antes desta execução. Em
+Oschersleben o especialista completa uma volta de seis, de modo que a rede
+retreinada, que ali completa metade das voltas, entra no agregado valendo 1,000;
+sozinha, essa saturação é a diferença entre 0,708 e o 0,8744 reportado. Comparada
+não com o especialista mas com a rede da etapa E2 treinada no simulador, a rede
+retreinada é \textbf{pior nas quatro} pistas de generalização, e sob esse
+denominador a média seria 0,708 e a pior pista 0,50 --- reprovaria os dois
+critérios.
+
+As duas leituras são verdadeiras, porque medem coisas diferentes: o portão
+pergunta quanto da competência do \textit{especialista} foi destilada, e essa é a
+pergunta pré-registrada. O que \textbf{não} se pode afirmar é que a randomização
+melhorou a generalização. A afirmação que os dados sustentam é a mais fraca: a
+pista de treino colapsou, e as pistas de generalização não colapsaram junto ---
+o que ainda assim é o oposto do modo de falha habitual, em que a rede memoriza o
+traçado de treino e falha fora dele.
 
 A comparação entre a política antiga e a retreinada, sob as mesmas dez condições
 da Tabela~\ref{tab:res_s2r}, mostra que a randomização entregou exatamente aquilo
