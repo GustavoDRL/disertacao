@@ -824,6 +824,122 @@ argumentar, por exemplo, que sob envelope a política passa e portanto pode ir a
 veículo --- seria escolher o critério depois de ver o número, que é exatamente o
 que a Seção~\ref{sec:val-congelado} existe para impedir.
 
+\subsection{Retreino sob o contrato emulado, com randomização de
+domínio}\label{sec:res-e41}
+
+A consequência pré-declarada do primeiro portão é retreinar sob o contrato de
+observação real, e o contrato real só existe depois da caracterização de bancada.
+O que foi executado, então, é a prévia dessa etapa, descrita no fim da
+Seção~\ref{sec:val-ponte}: o sensor emulado passa a operar \textbf{dentro}
+do laço de treino, com os três parâmetros incertos sorteados a cada episódio em
+vez de fixados, e a política resultante é medida contra os \textbf{mesmos}
+limiares já congelados. A Tabela~\ref{tab:res_e41} reporta as duas tentativas
+pré-registradas, ao lado da execução de controle sob o contrato do simulador.
+
+\begin{table}[h]
+    \centering
+    \small
+    \begin{tabular}{|l|c|c|c|c|c|}
+        \hline
+        \textbf{Execução} & \textbf{Conclusão [IC95]} & \textbf{Volta (s)} &
+        \textbf{Generaliz.} & \textbf{Pior pista} & \\
+        \hline
+        Controle (simulador) & 1,0000 [0,929; 1,000] & 60,050 & 1,0000 & 1,0000 &
+        aprovado \\
+        \hline
+        Tentativa 1 (sensor) & 0,1667 [0,030; 0,564] & 57,650 & 0,8744 & 0,7000 &
+        \textbf{reprovado} \\
+        \hline
+        Tentativa 2 (sensor) & 0,1667 [0,030; 0,564] & 57,650 & 0,8744 & 0,7000 &
+        \textbf{reprovado} \\
+        \hline
+        \multicolumn{6}{|l|}{\footnotesize Limiares: conclusão $\geq$ 0,95;
+        volta $\leq$ 64,900~s; generalização $\geq$ 0,80; pior pista $\geq$ 0,60} \\
+        \hline
+    \end{tabular}
+    \caption{Retreino da etapa E2 sob o sensor emulado com randomização de
+    domínio, em Spielberg, cinco sementes. As duas tentativas são as permitidas
+    pelo pré-registro e têm configuração idêntica, porque o único ajuste
+    disponível para o critério que reprovou já estava aplicado no ponto de
+    partida. O intervalo é de Wilson}
+    \label{tab:res_e41}
+\end{table}
+
+O veredito da prévia é \textbf{reprovado}, e ele é interessante pelo lugar onde
+falha. A taxa de conclusão na pista de treino cai de 1,000 para \textbf{0,1667} ---
+uma única volta completa em cinco sementes ---, enquanto os dois critérios de
+generalização, que medem pistas que a rede nunca viu, \textbf{passam}: 0,8744 na
+média contra limiar de 0,80, e 0,7000 na pior pista contra 0,60. É a inversão do
+modo de falha habitual: a rede vai melhor fora do circuito de treino do que
+dentro dele. O tempo de volta de 57,650~s cumpre o limiar, mas é o tempo da única
+volta que se completou, e não sustenta leitura de desempenho.
+
+A comparação entre a política antiga e a retreinada, sob as mesmas dez condições
+da Tabela~\ref{tab:res_s2r}, mostra que a randomização entregou exatamente aquilo
+que ela cobriu, e nada além. A Tabela~\ref{tab:res_e41_cond} é uma
+\textbf{leitura exploratória}: a coluna da direita vem de uma campanha reduzida
+--- uma pista, três sementes de duas voltas, contra as cinco sementes de três
+voltas em duas pistas da campanha completa ---, com os mesmos limiares e
+denominadores menores. Ela não substitui nem revisa os vereditos da
+Tabela~\ref{tab:res_s2r_gates}.
+
+\begin{table}[h]
+    \centering
+    \small
+    \begin{tabular}{|l|c|c|c|}
+        \hline
+        \textbf{Condição} & \textbf{E2 simulador} & \textbf{E2 randomizado} &
+        \textbf{Diferença} \\
+        \hline
+        \texttt{nominal} & 1,000 [0,80; 1,00] & 0,000 [0,00; 0,56] & $-1,000$ \\
+        \hline
+        \texttt{x4pro} & 0,667 [0,35; 0,88] & 0,800 [0,38; 0,96] & $+0,133$ \\
+        \hline
+        \texttt{x4pro\_fill30} & 0,000 [0,00; 0,43] & 0,000 [0,00; 0,56] & 0,000 \\
+        \hline
+        \texttt{x4pro\_off+3} & 0,167 [0,03; 0,56] & 1,000 [0,61; 1,00] & $+0,833$ \\
+        \hline
+        \texttt{x4pro\_off-3} & 0,167 [0,03; 0,56] & 1,000 [0,61; 1,00] & $+0,833$ \\
+        \hline
+        \texttt{x4pro\_drop10} & 0,000 [0,00; 0,43] & 0,600 [0,23; 0,88] & $+0,600$ \\
+        \hline
+        \texttt{x4pro\_hold3} & 0,556 [0,27; 0,81] & 0,500 [0,15; 0,85] & $-0,056$ \\
+        \hline
+        \texttt{x4pro\_cap1} & 1,000 [0,80; 1,00] & 1,000 [0,61; 1,00] & 0,000 \\
+        \hline
+        \texttt{x4pro\_cap2} & 1,000 [0,80; 1,00] & 1,000 [0,61; 1,00] & 0,000 \\
+        \hline
+        \texttt{x4pro\_cap3} & 1,000 [0,80; 1,00] & 1,000 [0,61; 1,00] & 0,000 \\
+        \hline
+    \end{tabular}
+    \caption{Leitura exploratória: a rede da etapa E2 treinada no simulador
+    contra a mesma rede retreinada com randomização de domínio, em Spielberg, sob
+    as dez condições. A coluna da esquerda é da campanha completa (cinco
+    sementes, três voltas); a da direita, de uma campanha reduzida (três
+    sementes, duas voltas). Os denominadores diferem e os intervalos da direita
+    são mais largos --- nenhuma diferença menor que o intervalo deve ser lida
+    como efeito}
+    \label{tab:res_e41_cond}
+\end{table}
+
+A troca é literal. A rede retreinada ganha onde a randomização cobriu --- zero
+angular de 0,167 para 1,000 nos dois sentidos, perda de pontos de 0,000 para
+0,600, o sensor emulado nominal de 0,667 para 0,800 --- e perde por completo onde
+não há cobertura: na condição de controle, o simulador limpo, ela cai de 1,000
+para \textbf{0,000}, porque nenhum feixe acima de 12~m aparece no seu conjunto de
+treino. O único parâmetro randomizado em que o ganho não se manifesta é a taxa
+efetiva, e com quatro voltas tentadas isso não distingue ausência de efeito de
+ausência de amostra.
+
+O que este resultado autoriza a dizer é estreito, e vale enunciá-lo com a mesma
+disciplina dos portões: retreinar sob a \textbf{incerteza declarada} do sensor
+--- e não sob o sensor medido, que ainda não existe --- não recuperou o critério
+de conclusão na pista de treino, com a arquitetura e o orçamento de tentativas
+pré-registrados. Não se mediu a técnica de randomização de domínio, mediu-se uma
+configuração dela. A consequência pré-declarada permanece: o caminho é o retreino
+sob o contrato \textbf{real}, depois da caracterização de bancada, e nenhuma
+política aprendida vai ao veículo antes disso.
+
 \section{Discussão}\label{sec:res-discussao}
 
 \subsection{O que os números sustentam}

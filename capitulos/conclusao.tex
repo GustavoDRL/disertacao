@@ -242,7 +242,12 @@ Seção~\ref{sec:res-s2r} reporta a política da etapa E3 caindo de taxa de conc
 \textbf{0,000} sob um erro de zero angular de $\pm 3^\circ$ --- que é a tolerância
 entre unidades do próprio \textit{datasheet}. O caminho até o veículo deixou de ser
 uma lista de tarefas e passou a ser uma sequência com portões, e dois deles já
-reprovaram.
+reprovaram. Uma prévia do primeiro passo dessa sequência também já foi executada e
+também reprovou: retreinar a rede de imitação com o sensor emulado dentro do laço,
+sob a faixa de incerteza \textit{assumida} do perfil, não recuperou o critério de
+taxa de conclusão na pista de treino (Seção~\ref{sec:res-e41}), o que confirma ---
+em vez de contornar --- que o passo seguinte é o retreino sob o sensor
+\textbf{real}, depois da caracterização de bancada.
 
 \subsection*{O contrato de observação real, e por que ele é o primeiro passo}
 
