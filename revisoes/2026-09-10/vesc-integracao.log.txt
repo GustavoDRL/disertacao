@@ -1,0 +1,40 @@
+debconf: delaying package configuration, since apt-utils is not installed
+Selecting previously unselected package libasio-dev.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 120212 files and directories currently installed.)
+Preparing to unpack .../libasio-dev_1%3a1.18.1-1_all.deb ...
+Unpacking libasio-dev (1:1.18.1-1) ...
+Selecting previously unselected package ros-humble-asio-cmake-module.
+Preparing to unpack .../ros-humble-asio-cmake-module_1.2.0-2jammy.20260304.201853_amd64.deb ...
+Unpacking ros-humble-asio-cmake-module (1.2.0-2jammy.20260304.201853) ...
+Selecting previously unselected package ros-humble-udp-msgs.
+Preparing to unpack .../ros-humble-udp-msgs_0.0.5-1jammy.20260718.013602_amd64.deb ...
+Unpacking ros-humble-udp-msgs (0.0.5-1jammy.20260718.013602) ...
+Selecting previously unselected package ros-humble-io-context.
+Preparing to unpack .../ros-humble-io-context_1.2.0-2jammy.20260726.110947_amd64.deb ...
+Unpacking ros-humble-io-context (1.2.0-2jammy.20260726.110947) ...
+Selecting previously unselected package ros-humble-serial-driver.
+Preparing to unpack .../ros-humble-serial-driver_1.2.0-2jammy.20260726.113518_amd64.deb ...
+Unpacking ros-humble-serial-driver (1.2.0-2jammy.20260726.113518) ...
+Setting up ros-humble-asio-cmake-module (1.2.0-2jammy.20260304.201853) ...
+Setting up libasio-dev (1:1.18.1-1) ...
+Setting up ros-humble-udp-msgs (0.0.5-1jammy.20260718.013602) ...
+Setting up ros-humble-io-context (1.2.0-2jammy.20260726.110947) ...
+Setting up ros-humble-serial-driver (1.2.0-2jammy.20260726.113518) ...
+Processing triggers for libc-bin (2.35-0ubuntu3.14) ...
+Starting >>> vesc_msgs
+Finished <<< vesc_msgs [2.69s]
+Starting >>> vesc_driver
+Finished <<< vesc_driver [7.51s]
+--- stderr: vesc_driver
+In this package, headers install destination is set to `include` by ament_auto_package. It is recommended to install `include/vesc_driver` instead and will be the default behavior of ament_auto_package from ROS 2 Kilted Kaiju. On distributions before Kilted, ament_auto_package behaves the same way when you use USE_SCOPED_HEADER_INSTALL_DIR option.
+---
+
+Summary: 2 packages finished [10.3s]
+  1 package had stderr output: vesc_driver
+[INFO] [1789039447.793243340] [IoContext::IoContext]: Thread(s) Created: 2
+[INFO] [1789039447.817427016] [vesc_driver]: -=SIM=- hardware paired 0
+[INFO] [1789039447.836831922] [vesc_driver]: Connected to VESC with firmware version 5.3
+[INFO] [1789039447.837105065] [vesc_driver]: -=SIM=- hardware paired 0
+[INFO] [1789039453.563226959] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[INFO] [1789039453.564326360] [vesc_driver]: -=SIM=- hardware paired 0
+PASS: real VESC driver blocks continuous RPM requests after disable and heartbeat loss

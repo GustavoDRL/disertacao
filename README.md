@@ -37,3 +37,11 @@ Para limpar os arquivos auxiliares gerados pela compilação:
 ```bash
 latexmk -c
 ```
+
+## Estado editorial
+
+A versão de trabalho omite ficha catalográfica, folha de aprovação e agradecimentos
+até que seus conteúdos reais estejam disponíveis. Não representa uma versão
+aprovada pela banca. O capítulo de proposta descreve a organização atual do
+workspace `f1tenth_code`, revisada em 10/09/2026; os resultados experimentais
+continuam vinculados às execuções e versões indicadas no capítulo de resultados.

@@ -1,0 +1,1116 @@
+[INFO] [1789039107.899839739] [gap_follower]: Node initialized with parameters: {'max_range': 10.0, 'odom_topic': '/ego_racecar/odom', 'sensor_timeout_s': 0.5, 'min_gap_width': 0.8, 'max_gap_depth': 5.0, 'max_speed': 0.5, 'min_speed': 0.1, 'max_steering_angle': 0.7, 'distance_weight': 0.5, 'steering_pid.p': 2.2, 'steering_pid.i': 0.01, 'steering_pid.d': 0.3, 'speed_pid.p': 0.8, 'speed_pid.i': 0.05, 'speed_pid.d': 0.1, 'median_filter_size': 5, 'log_level': 0, 'safety_margin': 0.5}
+/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/node.py:440: UserWarning: when declaring parameter named 'ego_namespace', declaring a parameter only providing its name is deprecated. You have to either:
+	- Pass a name and a default value different to "PARAMETER NOT SET" (and optionally a descriptor).
+	- Pass a name and a parameter type.
+	- Pass a name and a descriptor with `dynamic_typing=True
+  warnings.warn(
+/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/node.py:440: UserWarning: when declaring parameter named 'ego_odom_topic', declaring a parameter only providing its name is deprecated. You have to either:
+	- Pass a name and a default value different to "PARAMETER NOT SET" (and optionally a descriptor).
+	- Pass a name and a parameter type.
+	- Pass a name and a descriptor with `dynamic_typing=True
+  warnings.warn(
+/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/node.py:440: UserWarning: when declaring parameter named 'ego_opp_odom_topic', declaring a parameter only providing its name is deprecated. You have to either:
+	- Pass a name and a default value different to "PARAMETER NOT SET" (and optionally a descriptor).
+	- Pass a name and a parameter type.
+	- Pass a name and a descriptor with `dynamic_typing=True
+  warnings.warn(
+/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/node.py:440: UserWarning: when declaring parameter named 'ego_scan_topic', declaring a parameter only providing its name is deprecated. You have to either:
+	- Pass a name and a default value different to "PARAMETER NOT SET" (and optionally a descriptor).
+	- Pass a name and a parameter type.
+	- Pass a name and a descriptor with `dynamic_typing=True
+  warnings.warn(
+/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/node.py:440: UserWarning: when declaring parameter named 'ego_drive_topic', declaring a parameter only providing its name is deprecated. You have to either:
+	- Pass a name and a default value different to "PARAMETER NOT SET" (and optionally a descriptor).
+	- Pass a name and a parameter type.
+	- Pass a name and a descriptor with `dynamic_typing=True
+  warnings.warn(
+/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/node.py:440: UserWarning: when declaring parameter named 'opp_namespace', declaring a parameter only providing its name is deprecated. You have to either:
+	- Pass a name and a default value different to "PARAMETER NOT SET" (and optionally a descriptor).
+	- Pass a name and a parameter type.
+	- Pass a name and a descriptor with `dynamic_typing=True
+  warnings.warn(
+/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/node.py:440: UserWarning: when declaring parameter named 'opp_odom_topic', declaring a parameter only providing its name is deprecated. You have to either:
+	- Pass a name and a default value different to "PARAMETER NOT SET" (and optionally a descriptor).
+	- Pass a name and a parameter type.
+	- Pass a name and a descriptor with `dynamic_typing=True
+  warnings.warn(
+/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/node.py:440: UserWarning: when declaring parameter named 'opp_ego_odom_topic', declaring a parameter only providing its name is deprecated. You have to either:
+	- Pass a name and a default value different to "PARAMETER NOT SET" (and optionally a descriptor).
+	- Pass a name and a parameter type.
+	- Pass a name and a descriptor with `dynamic_typing=True
+  warnings.warn(
+/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/node.py:440: UserWarning: when declaring parameter named 'opp_scan_topic', declaring a parameter only providing its name is deprecated. You have to either:
+	- Pass a name and a default value different to "PARAMETER NOT SET" (and optionally a descriptor).
+	- Pass a name and a parameter type.
+	- Pass a name and a descriptor with `dynamic_typing=True
+  warnings.warn(
+/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/node.py:440: UserWarning: when declaring parameter named 'opp_drive_topic', declaring a parameter only providing its name is deprecated. You have to either:
+	- Pass a name and a default value different to "PARAMETER NOT SET" (and optionally a descriptor).
+	- Pass a name and a parameter type.
+	- Pass a name and a descriptor with `dynamic_typing=True
+  warnings.warn(
+/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/node.py:440: UserWarning: when declaring parameter named 'scan_distance_to_base_link', declaring a parameter only providing its name is deprecated. You have to either:
+	- Pass a name and a default value different to "PARAMETER NOT SET" (and optionally a descriptor).
+	- Pass a name and a parameter type.
+	- Pass a name and a descriptor with `dynamic_typing=True
+  warnings.warn(
+/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/node.py:440: UserWarning: when declaring parameter named 'scan_fov', declaring a parameter only providing its name is deprecated. You have to either:
+	- Pass a name and a default value different to "PARAMETER NOT SET" (and optionally a descriptor).
+	- Pass a name and a parameter type.
+	- Pass a name and a descriptor with `dynamic_typing=True
+  warnings.warn(
+/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/node.py:440: UserWarning: when declaring parameter named 'scan_beams', declaring a parameter only providing its name is deprecated. You have to either:
+	- Pass a name and a default value different to "PARAMETER NOT SET" (and optionally a descriptor).
+	- Pass a name and a parameter type.
+	- Pass a name and a descriptor with `dynamic_typing=True
+  warnings.warn(
+/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/node.py:440: UserWarning: when declaring parameter named 'map_path', declaring a parameter only providing its name is deprecated. You have to either:
+	- Pass a name and a default value different to "PARAMETER NOT SET" (and optionally a descriptor).
+	- Pass a name and a parameter type.
+	- Pass a name and a descriptor with `dynamic_typing=True
+  warnings.warn(
+/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/node.py:440: UserWarning: when declaring parameter named 'map_img_ext', declaring a parameter only providing its name is deprecated. You have to either:
+	- Pass a name and a default value different to "PARAMETER NOT SET" (and optionally a descriptor).
+	- Pass a name and a parameter type.
+	- Pass a name and a descriptor with `dynamic_typing=True
+  warnings.warn(
+/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/node.py:440: UserWarning: when declaring parameter named 'num_agent', declaring a parameter only providing its name is deprecated. You have to either:
+	- Pass a name and a default value different to "PARAMETER NOT SET" (and optionally a descriptor).
+	- Pass a name and a parameter type.
+	- Pass a name and a descriptor with `dynamic_typing=True
+  warnings.warn(
+/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/node.py:440: UserWarning: when declaring parameter named 'sx', declaring a parameter only providing its name is deprecated. You have to either:
+	- Pass a name and a default value different to "PARAMETER NOT SET" (and optionally a descriptor).
+	- Pass a name and a parameter type.
+	- Pass a name and a descriptor with `dynamic_typing=True
+  warnings.warn(
+/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/node.py:440: UserWarning: when declaring parameter named 'sy', declaring a parameter only providing its name is deprecated. You have to either:
+	- Pass a name and a default value different to "PARAMETER NOT SET" (and optionally a descriptor).
+	- Pass a name and a parameter type.
+	- Pass a name and a descriptor with `dynamic_typing=True
+  warnings.warn(
+/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/node.py:440: UserWarning: when declaring parameter named 'stheta', declaring a parameter only providing its name is deprecated. You have to either:
+	- Pass a name and a default value different to "PARAMETER NOT SET" (and optionally a descriptor).
+	- Pass a name and a parameter type.
+	- Pass a name and a descriptor with `dynamic_typing=True
+  warnings.warn(
+/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/node.py:440: UserWarning: when declaring parameter named 'sx1', declaring a parameter only providing its name is deprecated. You have to either:
+	- Pass a name and a default value different to "PARAMETER NOT SET" (and optionally a descriptor).
+	- Pass a name and a parameter type.
+	- Pass a name and a descriptor with `dynamic_typing=True
+  warnings.warn(
+/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/node.py:440: UserWarning: when declaring parameter named 'sy1', declaring a parameter only providing its name is deprecated. You have to either:
+	- Pass a name and a default value different to "PARAMETER NOT SET" (and optionally a descriptor).
+	- Pass a name and a parameter type.
+	- Pass a name and a descriptor with `dynamic_typing=True
+  warnings.warn(
+/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/node.py:440: UserWarning: when declaring parameter named 'stheta1', declaring a parameter only providing its name is deprecated. You have to either:
+	- Pass a name and a default value different to "PARAMETER NOT SET" (and optionally a descriptor).
+	- Pass a name and a parameter type.
+	- Pass a name and a descriptor with `dynamic_typing=True
+  warnings.warn(
+/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/node.py:440: UserWarning: when declaring parameter named 'kb_teleop', declaring a parameter only providing its name is deprecated. You have to either:
+	- Pass a name and a default value different to "PARAMETER NOT SET" (and optionally a descriptor).
+	- Pass a name and a parameter type.
+	- Pass a name and a descriptor with `dynamic_typing=True
+  warnings.warn(
+/f1tenth_gym/gym/f110_gym/envs/base_classes.py:95: UserWarning: Chosen integrator is RK4. This is different from previous versions of the gym.
+  warnings.warn(f"Chosen integrator is RK4. This is different from previous versions of the gym.")
+[DEBUG] Initializing PID controllers with steering params: PIDParameters(kp=2.2, ki=0.01, kd=0.3, min_output=-0.7, max_output=0.7, antiwindup_threshold=0.8, d_filter_alpha=0.2)
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=10.09, angle=18.94°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=18.94°, cmd=0.00°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=10.09, angle=18.94°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=18.94°, cmd=40.11°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=10.10, angle=18.94°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=18.94°, cmd=40.11°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=10.10, angle=18.94°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=18.94°, cmd=40.11°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=10.12, angle=18.94°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=18.94°, cmd=40.11°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=10.12, angle=18.94°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=18.94°, cmd=40.11°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=10.11, angle=18.94°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=18.94°, cmd=40.11°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=10.12, angle=18.94°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=18.94°, cmd=40.11°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.81, angle=18.94°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=18.94°, cmd=40.11°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.81, angle=18.94°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=18.94°, cmd=40.11°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.79, angle=18.94°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=18.94°, cmd=40.11°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.79, angle=18.94°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=18.94°, cmd=40.11°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.80, angle=18.69°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=18.69°, cmd=38.06°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.80, angle=18.69°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=18.69°, cmd=38.36°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.71, angle=18.44°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=18.44°, cmd=36.56°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.71, angle=18.44°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=18.44°, cmd=37.05°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.82, angle=18.44°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=18.44°, cmd=37.44°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.77, angle=18.19°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=18.19°, cmd=35.71°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=10.82, angle=17.94°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=17.94°, cmd=34.19°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=10.82, angle=17.94°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=17.94°, cmd=34.94°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.76, angle=17.44°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=17.44°, cmd=31.47°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.76, angle=17.44°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=17.44°, cmd=32.54°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.77, angle=16.94°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=16.94°, cmd=29.31°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.77, angle=16.94°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=16.94°, cmd=30.59°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.83, angle=16.44°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=16.44°, cmd=27.53°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.83, angle=16.44°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=16.44°, cmd=28.95°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.77, angle=15.94°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=15.94°, cmd=26.00°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.77, angle=15.94°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=15.94°, cmd=27.51°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.82, angle=15.69°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=15.69°, cmd=26.67°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.79, angle=15.44°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=15.44°, cmd=25.89°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=10.48, angle=14.94°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=14.94°, cmd=23.09°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=10.48, angle=14.94°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=14.94°, cmd=24.74°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.40, angle=14.20°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=14.20°, cmd=19.96°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.40, angle=14.20°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=14.20°, cmd=21.91°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.79, angle=13.70°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=13.70°, cmd=19.37°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.79, angle=13.70°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=13.70°, cmd=21.22°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.36, angle=13.20°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=13.20°, cmd=18.62°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.36, angle=13.20°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=13.20°, cmd=20.40°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.75, angle=12.95°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=12.95°, cmd=19.77°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.15, angle=12.70°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=12.70°, cmd=19.18°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=12.20°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=12.20°, cmd=16.52°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=12.20°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=12.20°, cmd=18.28°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.79, angle=11.70°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=11.70°, cmd=15.60°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.79, angle=11.70°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=11.70°, cmd=17.32°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.38, angle=11.20°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=11.20°, cmd=14.63°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.38, angle=11.20°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=11.20°, cmd=16.33°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=10.51, angle=11.20°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=11.20°, cmd=17.66°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=10.20, angle=10.95°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=10.95°, cmd=16.72°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.53, angle=10.45°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=10.45°, cmd=13.82°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.53, angle=10.45°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=10.45°, cmd=15.35°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.13, angle=10.21°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=10.21°, cmd=14.55°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.55, angle=9.95°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=9.95°, cmd=13.77°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=10.17, angle=9.70°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=9.70°, cmd=13.03°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=10.17, angle=9.70°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=9.70°, cmd=14.39°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.36, angle=9.46°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=9.46°, cmd=13.46°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.13, angle=9.21°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=9.21°, cmd=12.59°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.16, angle=8.96°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=8.96°, cmd=11.78°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.16, angle=8.96°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=8.96°, cmd=13.07°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.15, angle=8.71°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=8.71°, cmd=12.05°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.02, angle=8.46°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=8.46°, cmd=11.13°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.16, angle=8.21°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=8.21°, cmd=10.28°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.16, angle=8.21°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=8.21°, cmd=11.54°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.19, angle=7.96°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=7.96°, cmd=10.49°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.19, angle=7.96°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=7.96°, cmd=11.60°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.18, angle=7.71°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=7.71°, cmd=10.44°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.18, angle=7.71°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=7.71°, cmd=11.45°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.19, angle=7.46°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=7.46°, cmd=10.20°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=10.19, angle=7.46°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=7.46°, cmd=11.12°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.14, angle=7.21°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=7.21°, cmd=9.86°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=10.29, angle=7.21°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=7.21°, cmd=10.73°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=10.21, angle=6.96°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=6.96°, cmd=9.41°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=10.21, angle=6.96°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=6.96°, cmd=10.30°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.01, angle=6.46°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=6.46°, cmd=6.94°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.01, angle=6.46°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=6.46°, cmd=8.10°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.79, angle=6.46°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=6.46°, cmd=9.01°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.79, angle=6.46°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=6.46°, cmd=9.75°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.81, angle=6.21°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=6.21°, cmd=8.30°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.81, angle=6.21°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=6.21°, cmd=9.08°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=10.16, angle=5.96°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=5.96°, cmd=7.64°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=10.16, angle=5.96°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=5.96°, cmd=8.44°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.12, angle=5.71°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=5.71°, cmd=7.06°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=10.17, angle=5.71°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=5.71°, cmd=7.83°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.15, angle=5.46°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=5.46°, cmd=6.47°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.10, angle=5.46°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=5.46°, cmd=7.29°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.03, angle=5.21°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=5.21°, cmd=5.89°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.03, angle=5.21°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=5.21°, cmd=6.71°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.12, angle=4.96°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=4.96°, cmd=5.32°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.12, angle=4.96°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=4.96°, cmd=6.15°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.88, angle=4.96°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=4.96°, cmd=6.78°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.88, angle=4.96°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=4.96°, cmd=7.31°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.81, angle=4.96°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=4.96°, cmd=7.74°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.81, angle=4.96°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=4.96°, cmd=8.08°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.79, angle=4.71°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=4.71°, cmd=6.31°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.79, angle=4.71°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=4.71°, cmd=6.83°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.81, angle=4.71°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=4.71°, cmd=7.24°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.82, angle=4.46°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=4.46°, cmd=5.52°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.80, angle=4.46°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=4.46°, cmd=6.09°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.05, angle=4.22°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=4.22°, cmd=4.52°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.86, angle=4.21°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=4.21°, cmd=5.15°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.86, angle=4.21°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=4.21°, cmd=5.68°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.98, angle=3.96°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=3.96°, cmd=4.05°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.98, angle=3.96°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=3.96°, cmd=4.69°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.77, angle=3.96°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=3.96°, cmd=5.21°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.77, angle=3.96°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=3.96°, cmd=5.62°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.98, angle=3.71°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=3.71°, cmd=3.89°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.98, angle=3.71°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=3.71°, cmd=4.45°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=10.01, angle=3.71°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=3.71°, cmd=4.90°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=8.95, angle=3.47°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=3.47°, cmd=3.25°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.83, angle=3.46°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=3.46°, cmd=3.80°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.83, angle=3.46°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=3.46°, cmd=4.27°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=10.42, angle=3.46°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=3.46°, cmd=4.63°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=10.42, angle=3.46°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=3.46°, cmd=4.93°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=10.61, angle=3.46°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=3.46°, cmd=5.17°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.82, angle=3.21°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=3.21°, cmd=3.35°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.79, angle=3.21°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=3.21°, cmd=3.80°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.79, angle=3.21°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=3.21°, cmd=4.16°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=8.92, angle=2.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=2.97°, cmd=2.43°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.78, angle=2.96°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=2.96°, cmd=2.93°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.81, angle=2.96°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=2.96°, cmd=3.36°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.84, angle=2.96°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=2.96°, cmd=3.70°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=10.45, angle=2.96°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=2.96°, cmd=3.95°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=10.58, angle=2.96°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=2.96°, cmd=4.17°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.83, angle=2.72°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=2.72°, cmd=2.32°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.79, angle=2.72°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=2.72°, cmd=2.76°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.80, angle=2.72°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=2.72°, cmd=3.11°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.81, angle=2.72°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=2.72°, cmd=3.39°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.70, angle=2.47°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=2.47°, cmd=1.57°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.70, angle=2.47°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=2.47°, cmd=2.05°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.77, angle=2.47°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=2.47°, cmd=2.43°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.80, angle=2.47°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=2.47°, cmd=2.74°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.78, angle=2.47°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=2.47°, cmd=2.98°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.78, angle=2.47°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=2.47°, cmd=3.18°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=10.61, angle=2.46°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=2.46°, cmd=3.31°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=10.61, angle=2.46°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=2.46°, cmd=3.44°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.77, angle=2.22°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=2.22°, cmd=1.52°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.77, angle=2.22°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=2.22°, cmd=1.90°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.77, angle=2.22°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=2.22°, cmd=2.20°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.79, angle=2.22°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=2.22°, cmd=2.45°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=10.42, angle=2.21°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=2.21°, cmd=2.62°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=10.61, angle=2.21°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=2.21°, cmd=2.77°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.71, angle=1.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.97°, cmd=0.88°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.71, angle=1.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.97°, cmd=1.28°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.82, angle=1.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.97°, cmd=1.59°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.82, angle=1.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.97°, cmd=1.85°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.77, angle=1.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.97°, cmd=2.05°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.77, angle=1.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.97°, cmd=2.22°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.79, angle=1.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.97°, cmd=2.35°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=10.44, angle=1.96°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.96°, cmd=2.43°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=10.56, angle=1.96°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.96°, cmd=2.51°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=10.56, angle=1.96°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.96°, cmd=2.58°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.69, angle=1.72°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.72°, cmd=0.62°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.69, angle=1.72°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.72°, cmd=0.96°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.80, angle=1.72°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.72°, cmd=1.23°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.80, angle=1.72°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.72°, cmd=1.45°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.79, angle=1.72°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.72°, cmd=1.62°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.79, angle=1.72°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.72°, cmd=1.76°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=10.41, angle=1.71°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.71°, cmd=1.85°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=10.41, angle=1.71°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.71°, cmd=1.95°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=10.54, angle=1.71°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.71°, cmd=2.02°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=10.54, angle=1.71°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.71°, cmd=2.08°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.75, angle=1.47°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.47°, cmd=0.10°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.75, angle=1.47°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.47°, cmd=0.44°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.77, angle=1.47°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.47°, cmd=0.70°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.77, angle=1.47°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.47°, cmd=0.92°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.82, angle=1.47°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.47°, cmd=1.09°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.82, angle=1.47°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.47°, cmd=1.22°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.76, angle=1.47°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.47°, cmd=1.34°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.76, angle=1.47°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.47°, cmd=1.42°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.37, angle=1.47°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.47°, cmd=1.51°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.79, angle=1.47°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.47°, cmd=1.55°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.79, angle=1.47°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.47°, cmd=1.59°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=10.42, angle=1.46°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.46°, cmd=1.61°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=10.52, angle=1.46°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.46°, cmd=1.64°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=10.52, angle=1.46°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.46°, cmd=1.66°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=10.56, angle=1.46°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.46°, cmd=1.68°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.67, angle=1.22°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.22°, cmd=-0.32°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.76, angle=1.22°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.22°, cmd=-0.01°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.78, angle=1.22°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.22°, cmd=0.23°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.77, angle=1.22°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.22°, cmd=0.43°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.75, angle=1.22°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.22°, cmd=0.59°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.75, angle=1.22°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.22°, cmd=0.72°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.75, angle=1.22°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.22°, cmd=0.82°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.80, angle=1.22°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.22°, cmd=0.90°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.80, angle=1.22°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.22°, cmd=0.97°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.78, angle=1.22°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.22°, cmd=1.02°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.79, angle=1.22°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.22°, cmd=1.06°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.76, angle=1.22°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.22°, cmd=1.09°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.75, angle=1.22°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.22°, cmd=1.12°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.79, angle=1.22°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.22°, cmd=1.14°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.79, angle=1.22°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.22°, cmd=1.16°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=10.44, angle=1.21°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.21°, cmd=1.15°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=10.44, angle=1.21°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.21°, cmd=1.17°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=10.52, angle=1.21°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.21°, cmd=1.17°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=10.52, angle=1.21°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=1.21°, cmd=1.18°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.69, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=-0.83°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.69, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=-0.53°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.79, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=-0.29°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.79, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=-0.10°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.06°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.18°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.28°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.36°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.43°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.48°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.52°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.55°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.58°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.60°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.61°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.63°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.64°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.65°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.65°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.66°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.66°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.67°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.67°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.67°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.67°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.68°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.68°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.68°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.68°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.68°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.68°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.68°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.68°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.68°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.68°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.68°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.68°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.68°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.68°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.68°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.68°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.68°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.68°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.68°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.68°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.68°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.68°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.68°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.68°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.68°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.68°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.68°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.68°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.68°
+[DEBUG] Starting gap detection
+[DEBUG] Found potential gap: width=9.74, angle=0.97°
+[DEBUG] Found 1 valid gaps
+[DEBUG] Steering command: target_angle=0.97°, cmd=0.68°
+PASS: ROS YAML, wall clock, scan/odom delivery, scan geometry, stale-sensor stop

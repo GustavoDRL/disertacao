@@ -1,0 +1,22 @@
+GATE_SEM_MEDICOES e2_il PASS ['E2-completion', 'E2-lap-time']
+GATE_SEM_MEDICOES e3_rl PASS ['E3-completion', 'E3-lap-time']
+COLISAO_NA_CHEGADA [LapResult(seed=0, lap_index=0, completed=True, lap_time_s=1.0, progress_m=10.1, collision=False, mu=1.0, steps=1, sensor_dr=None)]
+LIMITE_NEGATIVO Decisao(publicar=True, speed=-1.0, steer=0.0, motivo='ok')
+SCAN_UM_FEIXE aceito 1080 feixes; todos a 12.0 m
+STUCK_EM_MOVIMENTO [{'t': 1003.1, 'type': 'stuck', 'severity': 'error', 'details': {'duration_sec': 3.1, 'position': [1.24, 0.0]}}]
+POLITICA_SEM_ODOM {'speed': 6.0, 'steering_angle': 0.10000000149011612}
+ESTADO_ANTES_GUARDA 6.0 (permanece 6 mesmo se guarda limitar /drive a 1 ou zero)
+POLITICA_SAIDA_NAN {'speed': nan, 'steering_angle': nan}
+POLITICA_SCAN_VAZIO IndexError index 0 is out of bounds for axis 0 with size 0
+GATE_60S_COM_APENAS_20S SPEC-S2R-21 - pilha autonoma no RPi4
+  janela: 400 inferencias em 20.0 s
+  control_hz_measured (acumulado desde o start): 20.00 Hz
+  [PASS] taxa de controle (janela) = 20.00 Hz (exigido >= 19 Hz)
+  [PASS] latency_ms.p99 = 0.30 ms (exigido <= 20 ms)
+  [PASS] cpu do processo = 10.00 % (exigido <= 80 %)
+
+SPEC-S2R-21: PASS
+Registre o resultado, a data e o operador junto do run do artefato.
+REAVALIACAO_E3 ['policy.onnx', 'sac.zip'] reevaluate() exige best.pt, inexistente
+GAP_SCAN_ANTIGO [(0.0, 0.5)]
+SONDAS_CONCLUIDAS

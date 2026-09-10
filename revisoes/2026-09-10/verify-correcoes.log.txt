@@ -1,0 +1,9 @@
+  [ok   ] A  specs        4 passed in 0.02s
+  [ok   ] B  testes       pesquisa: 431 passed, 11 deselected, 18 warnings in 26.80s | mcp: 160 passed in 0.25s | carro: 547 passed, 2 skipped, 24 deselected, 1 warning in 5.28s | sim: 11 passed, 433 deselected, 3 warnings in 3.09s
+  [ok   ] C  invariantes  6/6
+  [ok   ] D  doc          nenhuma afirmação falsa (25 ruído declarado do SPEC-DOC-09 — veredito sem run_id que o sustente, não bloqueia)
+  [FALHA] E  proveniência worktree suja: um PASS agora sairia como PASS-NAO-REPRODUZIVEL
+
+verify: FAIL  (4/5 camadas)
+
+relatório: /home/disney/Documents/repos/TG/f1tenth_code/research/verify_report.json

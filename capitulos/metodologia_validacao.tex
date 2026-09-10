@@ -833,7 +833,7 @@ colisões em três voltas) contra 98,9\% da composição correta, e no contêine
 
 \begin{table}[h]
     \centering
-    \begin{tabular}{|l|c|c|c|}
+    \begin{tabularx}{\textwidth}{|X|c|c|>{\centering\arraybackslash}p{2.6cm}|}
         \hline
         \textbf{Artefato ONNX medido} & \textbf{Distância} & \textbf{Frequência} &
         \textbf{Paradas de emergência} \\
@@ -844,7 +844,7 @@ colisões em três voltas) contra 98,9\% da composição correta, e no contêine
         \hline
         \textbf{E3, contrato correto} & \textbf{381~m} & \textbf{20,00~Hz} & \textbf{0} \\
         \hline
-    \end{tabular}
+    \end{tabularx}
     \caption{Camada F: o artefato de deploy medido no contêiner ROS2, janela de
     60~s}
     \label{tab:val_deploy}

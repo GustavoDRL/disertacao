@@ -1,0 +1,4990 @@
+Rc files read:
+  NONE
+Latexmk: This is Latexmk, John Collins, 15 June 2025. Version 4.87.
+No existing .aux file, so I'll make a simple one, and require run of *latex.
+Latexmk: applying rule 'pdflatex'...
+Rule 'pdflatex':  Reasons for rerun
+Category 'other':
+  Rerun of 'pdflatex' forced or previously required:
+    Reason or flag: 'Initial setup'
+
+------------
+Run number 1 of rule 'pdflatex'
+------------
+------------
+Running 'pdflatex  -interaction=nonstopmode -halt-on-error -recorder -output-directory="/tmp/tg-review-20260910/latex"  "dissertacao.tex"'
+------------
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Arch Linux) (preloaded format=pdflatex)
+ restricted \write18 enabled.
+entering extended mode
+(./dissertacao.tex
+LaTeX2e <2025-11-01>
+L3 programming layer <2026-01-19>
+(/usr/share/texmf-dist/tex/latex/abntex2/abntex2.cls
+Document Class: abntex2 2018/11/24 v-1.9.7 abnTeX2
+(/usr/share/texmf-dist/tex/latex/base/ifthen.sty)
+(/usr/share/texmf-dist/tex/latex/memoir/memoir.cls
+Document Class: memoir 2025/11/04 v3.8.4b configurable book, report, article do
+cument class
+(/usr/share/texmf-dist/tex/latex/xpatch/xpatch.sty
+(/usr/share/texmf-dist/tex/latex/l3kernel/expl3.sty
+(/usr/share/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def))
+(/usr/share/texmf-dist/tex/latex/l3packages/xparse/xparse.sty)
+(/usr/share/texmf-dist/tex/latex/etoolbox/etoolbox.sty))
+(/usr/share/texmf-dist/tex/generic/iftex/iftex.sty)
+(/usr/share/texmf-dist/tex/latex/memoir/mem12.clo)
+(/usr/share/texmf-dist/tex/latex/tools/array.sty)
+(/usr/share/texmf-dist/tex/latex/tools/dcolumn.sty)
+(/usr/share/texmf-dist/tex/latex/tools/delarray.sty)
+(/usr/share/texmf-dist/tex/latex/tools/tabularx.sty)
+(/usr/share/texmf-dist/tex/latex/booktabs/booktabs.sty)
+(/usr/share/texmf-dist/tex/latex/hyperref/nameref.sty
+(/usr/share/texmf-dist/tex/latex/refcount/refcount.sty
+(/usr/share/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty)
+(/usr/share/texmf-dist/tex/generic/infwarerr/infwarerr.sty))
+(/usr/share/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
+(/usr/share/texmf-dist/tex/latex/kvoptions/kvoptions.sty
+(/usr/share/texmf-dist/tex/latex/graphics/keyval.sty)
+(/usr/share/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty))))
+(/usr/share/texmf-dist/tex/latex/tools/verbatim.sty)
+(/usr/share/texmf-dist/tex/latex/base/shortvrb.sty))
+(/usr/share/texmf-dist/tex/latex/textcase/textcase.sty)
+(/usr/share/texmf-dist/tex/latex/hyperref/hyperref.sty
+(/usr/share/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty)
+(/usr/share/texmf-dist/tex/generic/pdfescape/pdfescape.sty
+(/usr/share/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty))
+(/usr/share/texmf-dist/tex/latex/hycolor/hycolor.sty)
+(/usr/share/texmf-dist/tex/generic/stringenc/stringenc.sty)
+(/usr/share/texmf-dist/tex/latex/hyperref/pd1enc.def)
+(/usr/share/texmf-dist/tex/generic/intcalc/intcalc.sty)
+(/usr/share/texmf-dist/tex/latex/hyperref/puenc.def)
+(/usr/share/texmf-dist/tex/latex/url/url.sty)
+(/usr/share/texmf-dist/tex/generic/bitset/bitset.sty
+(/usr/share/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty)))
+(/usr/share/texmf-dist/tex/latex/hyperref/hpdftex.def
+(/usr/share/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+(/usr/share/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty)))
+(/usr/share/texmf-dist/tex/latex/memoir/memhfixc.sty)
+(/usr/share/texmf-dist/tex/latex/bookmark/bookmark.sty
+(/usr/share/texmf-dist/tex/latex/bookmark/bkm-pdftex.def))
+(/usr/share/texmf-dist/tex/generic/babel/babel.sty
+(/usr/share/texmf-dist/tex/generic/babel/txtbabel.def)
+(/usr/share/texmf-dist/tex/generic/babel/locale/en/babel-english.tex)
+(/usr/share/texmf-dist/tex/generic/babel/locale/invalid/babel-brazil.tex)
+(/usr/share/texmf-dist/tex/generic/babel-english/english.ldf)
+
+Package babel Warning: Name 'brazil' is deprecated.
+(babel)                Use 'brazilian' instead.
+(babel)                Reported on input line 4330.
+
+(/usr/share/texmf-dist/tex/generic/babel-portuges/brazilian.ldf
+
+Package babel Warning: No hyphenation patterns were preloaded for
+(babel)                the language 'Portuguese' into the format.
+(babel)                Please, configure your TeX system to add them and
+(babel)                rebuild the format. Now I will use the patterns
+(babel)                preloaded for \language=0 instead on input line 42.
+
+)) (/usr/share/texmf-dist/tex/latex/enumitem/enumitem.sty)
+(/usr/share/texmf-dist/tex/latex/tools/calc.sty)
+
+******************************************************
+Stock height and width: 845.04684pt by 597.50787pt
+Top and edge trims: 0pt and 0pt
+Page height and width: 845.04684pt by 597.50787pt
+Text height and width: 708pt by 455pt
+Spine and edge margins: 85.35826pt and 56.9055pt
+Upper and lower margins: 85.35826pt and 51.68858pt
+Headheight and headsep: 14.5pt and 19.8738pt
+Footskip: 30pt
+Columnsep and columnseprule: 10pt and 0pt
+Marginparsep and marginparwidth: 7pt and 42.9055pt
+Sidecapsep and sidecapwidth: 7pt and 92pt
+Sidebarhsep and sidebarwidth: 7pt and 92pt
+Sidebarvsep and sidebartopsep: 14.5pt and 0pt
+Sidebarheight: 590.14995pt
+Sidefoothsep and sidefootwidth: 7pt and 92pt
+Sidefootvsep and sidefootheight: 14.5pt and 590.14995pt
+******************************************************
+
+
+Class memoir Warning: \settocpreprocessor is marked deprecated and will be
+(memoir)              removed in 2026, the problem it tried to solve 
+(memoir)              (see manual, section 9.2.3),
+(memoir)              has been fixed in the kernel, and the feature is
+(memoir)              no longer needed. on input line 483.
+
+) (/usr/share/texmf-dist/tex/latex/lm/lmodern.sty)
+(/usr/share/texmf-dist/tex/latex/base/fontenc.sty
+(/usr/share/texmf-dist/tex/latex/lm/t1lmr.fd))
+(/usr/share/texmf-dist/tex/latex/base/inputenc.sty)
+(/usr/share/texmf-dist/tex/latex/lastpage/lastpage.sty
+(/usr/share/texmf-dist/tex/latex/lastpage/lastpage2e.sty
+(/usr/share/texmf-dist/tex/latex/lastpage/lastpagemodern.sty) 
+)) (/usr/share/texmf-dist/tex/latex/tools/indentfirst.sty)
+(/usr/share/texmf-dist/tex/latex/graphics/color.sty
+(/usr/share/texmf-dist/tex/latex/graphics-cfg/color.cfg)
+(/usr/share/texmf-dist/tex/latex/graphics-def/pdftex.def)
+(/usr/share/texmf-dist/tex/latex/graphics/mathcolor.ltx))
+(/usr/share/texmf-dist/tex/latex/graphics/graphicx.sty
+(/usr/share/texmf-dist/tex/latex/graphics/graphics.sty
+(/usr/share/texmf-dist/tex/latex/graphics/trig.sty)
+(/usr/share/texmf-dist/tex/latex/graphics-cfg/graphics.cfg)))
+(/usr/share/texmf-dist/tex/latex/graphics/epsfig.sty)
+
+Class memoir Warning: The subfig package hasn't been updated since 2005.
+(memoir)              Consider using the subcaption package instead.  on input 
+line 39.
+
+(/usr/share/texmf-dist/tex/latex/subfig/subfig.sty
+(/usr/share/texmf-dist/tex/latex/caption/caption.sty
+(/usr/share/texmf-dist/tex/latex/caption/caption3.sty
+(/usr/share/texmf-dist/tex/latex/caption/caption-memoir.sto))))
+(/usr/share/texmf-dist/tex/latex/microtype/microtype.sty
+(/usr/share/texmf-dist/tex/latex/microtype/microtype-pdftex.def)
+(/usr/share/texmf-dist/tex/latex/microtype/microtype.cfg))
+(/usr/share/texmf-dist/tex/latex/lipsum/lipsum.sty
+(/usr/share/texmf-dist/tex/latex/l3packages/l3keys2e/l3keys2e.sty)
+(/usr/share/texmf-dist/tex/latex/lipsum/lipsum.ltd.tex))
+(/usr/share/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/usr/share/texmf-dist/tex/latex/amsmath/amstext.sty
+(/usr/share/texmf-dist/tex/latex/amsmath/amsgen.sty))
+(/usr/share/texmf-dist/tex/latex/amsmath/amsbsy.sty)
+(/usr/share/texmf-dist/tex/latex/amsmath/amsopn.sty))
+(/usr/share/texmf-dist/tex/latex/amsfonts/amssymb.sty
+(/usr/share/texmf-dist/tex/latex/amsfonts/amsfonts.sty))
+(/usr/share/texmf-dist/tex/latex/jknapltx/mathrsfs.sty)
+(/usr/share/texmf-dist/tex/latex/listings/listings.sty
+(/usr/share/texmf-dist/tex/latex/listings/lstpatch.sty)
+(/usr/share/texmf-dist/tex/latex/listings/lstmisc.sty)
+(/usr/share/texmf-dist/tex/latex/listings/listings.cfg))
+==> First Aid for listings.sty no longer applied!
+    Expected:
+        2024/09/23 1.10c (Carsten Heinz)
+    but found:
+        2025/11/14 1.11b (Carsten Heinz)
+    so I'm assuming it got fixed.
+(/usr/share/texmf-dist/tex/latex/tools/afterpage.sty)
+(/usr/share/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty
+(/usr/share/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty
+(/usr/share/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty
+(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def)
+(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgfrcs.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/pgf.revision.tex)))
+(/usr/share/texmf-dist/tex/latex/pgf/basiclayer/pgfcore.sty
+(/usr/share/texmf-dist/tex/latex/pgf/systemlayer/pgfsys.sty
+(/usr/share/texmf-dist/tex/generic/pgf/systemlayer/pgfsys.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgfkeyslibraryfiltered.code.te
+x)) (/usr/share/texmf-dist/tex/generic/pgf/systemlayer/pgf.cfg)
+(/usr/share/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-pdftex.def
+(/usr/share/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-common-pdf.def)))
+(/usr/share/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.code.tex))
+(/usr/share/texmf-dist/tex/latex/xcolor/xcolor.sty
+(/usr/share/texmf-dist/tex/latex/graphics-cfg/color.cfg)
+(/usr/share/texmf-dist/tex/latex/graphics/mathcolor.ltx))
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcore.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.basic.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.trigonometric.code
+.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.random.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.comparison.code.te
+x) (/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.base.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.round.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.misc.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.integerarithmetics
+.code.tex) (/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathcalc.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfloat.code.tex))
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfint.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepoints.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathconstruct.code.tex
+) (/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathusage.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorescopes.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoregraphicstate.code.tex)
+
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransformations.code.t
+ex) (/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorequick.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreobjects.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathprocessing.code.te
+x) (/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorearrows.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreshade.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreimage.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreexternal.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorelayers.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransparency.code.tex)
+ (/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepatterns.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorerdf.code.tex)))
+(/usr/share/texmf-dist/tex/generic/pgf/modules/pgfmoduleshapes.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/modules/pgfmoduleplot.code.tex)
+(/usr/share/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-0-65.sty)
+(/usr/share/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-1-18.sty))
+(/usr/share/texmf-dist/tex/latex/pgf/utilities/pgffor.sty
+(/usr/share/texmf-dist/tex/latex/pgf/utilities/pgfkeys.sty
+(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex))
+(/usr/share/texmf-dist/tex/latex/pgf/math/pgfmath.sty
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex))
+(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgffor.code.tex))
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/tikz.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/libraries/pgflibraryplothandlers.code.te
+x) (/usr/share/texmf-dist/tex/generic/pgf/modules/pgfmodulematrix.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+topaths.code.tex)))
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+positioning.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+arrows.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/libraries/pgflibraryarrows.code.tex))
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+shapes.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+shapes.geometric.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.geomet
+ric.code.tex))
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+shapes.misc.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.misc.c
+ode.tex))
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+shapes.symbols.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.symbol
+s.code.tex))
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+shapes.arrows.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.arrows
+.code.tex))
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+shapes.callouts.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.callou
+ts.code.tex))
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+shapes.multipart.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.multip
+art.code.tex))) (/usr/share/texmf-dist/tex/latex/hyperref/backref.sty)
+(/usr/share/texmf-dist/tex/latex/abntex2/abntex2cite.sty
+(/usr/share/texmf-dist/tex/latex/abntex2/abntex2abrev.sty)
+(/usr/share/texmf-dist/tex/generic/iftex/ifpdf.sty)
+(/usr/share/texmf-dist/tex/generic/iftex/ifxetex.sty)
+(/usr/share/texmf-dist/tex/latex/relsize/relsize.sty))
+(./extras/conf_citacoes.tex) (./extras/dados.tex) (./extras/conf_pdf.tex)
+Writing index file dissertacao.idx 
+(/tmp/tg-review-20260910/latex/dissertacao.aux)
+(/usr/share/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+) (/usr/share/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+(/usr/share/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg))
+(/usr/share/texmf-dist/tex/latex/microtype/mt-cmr.cfg)
+! I can't write on file `pretextual/capa.aux'.
+\@include ...mmediate \openout \@partaux "#1.aux" 
+                                                  \immediate \write \@partau...
+l.119 \include{pretextual/capa}
+                               
+(Press Enter to retry, or Control-D to exit; default file extension is `.tex')
+Please type another output file name
+! Emergency stop.
+\@include ...mmediate \openout \@partaux "#1.aux" 
+                                                  \immediate \write \@partau...
+l.119 \include{pretextual/capa}
+                               
+!  ==> Fatal error occurred, no output PDF file produced!
+Transcript written on /tmp/tg-review-20260910/latex/dissertacao.log.
+Latexmk: Getting log file '/tmp/tg-review-20260910/latex/dissertacao.log'
+Latexmk: Examining '/tmp/tg-review-20260910/latex/dissertacao.fls'
+Latexmk: Examining '/tmp/tg-review-20260910/latex/dissertacao.log'
+Use of uninitialized value $title in concatenation (.) or string at /usr/bin/latexmk line 11937.
+Latexmk: making  directory '/tmp/tg-review-20260910/latex/pretextual'
+Latexmk: Couldn't create directory '/tmp/tg-review-20260910/latex/pretextual'.
+    System error: 'No such file or directory'
+Latexmk: Index file '/tmp/tg-review-20260910/latex/dissertacao.idx' was written
+Latexmk: Using bibtex to make bibliography file(s).
+Error in *LaTeX, but needed subdirectories in output directory
+   were missing and successfully created, so try again.
+Latexmk: applying rule 'makeindex /tmp/tg-review-20260910/latex/dissertacao.idx'...
+Rule 'makeindex /tmp/tg-review-20260910/latex/dissertacao.idx':  Reasons for rerun
+Category 'other':
+  Rerun of 'makeindex /tmp/tg-review-20260910/latex/dissertacao.idx' forced or previously required:
+    Reason or flag: 'Initial set up of rule'
+
+------------
+Run number 1 of rule 'makeindex /tmp/tg-review-20260910/latex/dissertacao.idx'
+------------
+Latexmk: Change directory to '/tmp/tg-review-20260910/latex/'.
+------------
+Running 'makeindex  -o "dissertacao.ind" "dissertacao.idx"'
+------------
+This is makeindex, version 2.18 [TeX Live 2026] (kpathsea + Thai support).
+Scanning input file dissertacao.idx...done (0 entries accepted, 0 rejected).
+Nothing written in dissertacao.ind.
+Transcript written in dissertacao.ilg.
+Latexmk: Change directory back to '/home/disney/Documents/repos/TG/disertacao'
+Latexmk: applying rule 'pdflatex'...
+Rule 'pdflatex':  Reasons for rerun
+Changed files or newly in use/created:
+  /tmp/tg-review-20260910/latex/dissertacao.aux
+  /tmp/tg-review-20260910/latex/dissertacao.ind
+
+------------
+Run number 2 of rule 'pdflatex'
+------------
+------------
+Running 'pdflatex  -interaction=nonstopmode -halt-on-error -recorder -output-directory="/tmp/tg-review-20260910/latex"  "dissertacao.tex"'
+------------
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Arch Linux) (preloaded format=pdflatex)
+ restricted \write18 enabled.
+entering extended mode
+(./dissertacao.tex
+LaTeX2e <2025-11-01>
+L3 programming layer <2026-01-19>
+(/usr/share/texmf-dist/tex/latex/abntex2/abntex2.cls
+Document Class: abntex2 2018/11/24 v-1.9.7 abnTeX2
+(/usr/share/texmf-dist/tex/latex/base/ifthen.sty)
+(/usr/share/texmf-dist/tex/latex/memoir/memoir.cls
+Document Class: memoir 2025/11/04 v3.8.4b configurable book, report, article do
+cument class
+(/usr/share/texmf-dist/tex/latex/xpatch/xpatch.sty
+(/usr/share/texmf-dist/tex/latex/l3kernel/expl3.sty
+(/usr/share/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def))
+(/usr/share/texmf-dist/tex/latex/l3packages/xparse/xparse.sty)
+(/usr/share/texmf-dist/tex/latex/etoolbox/etoolbox.sty))
+(/usr/share/texmf-dist/tex/generic/iftex/iftex.sty)
+(/usr/share/texmf-dist/tex/latex/memoir/mem12.clo)
+(/usr/share/texmf-dist/tex/latex/tools/array.sty)
+(/usr/share/texmf-dist/tex/latex/tools/dcolumn.sty)
+(/usr/share/texmf-dist/tex/latex/tools/delarray.sty)
+(/usr/share/texmf-dist/tex/latex/tools/tabularx.sty)
+(/usr/share/texmf-dist/tex/latex/booktabs/booktabs.sty)
+(/usr/share/texmf-dist/tex/latex/hyperref/nameref.sty
+(/usr/share/texmf-dist/tex/latex/refcount/refcount.sty
+(/usr/share/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty)
+(/usr/share/texmf-dist/tex/generic/infwarerr/infwarerr.sty))
+(/usr/share/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
+(/usr/share/texmf-dist/tex/latex/kvoptions/kvoptions.sty
+(/usr/share/texmf-dist/tex/latex/graphics/keyval.sty)
+(/usr/share/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty))))
+(/usr/share/texmf-dist/tex/latex/tools/verbatim.sty)
+(/usr/share/texmf-dist/tex/latex/base/shortvrb.sty))
+(/usr/share/texmf-dist/tex/latex/textcase/textcase.sty)
+(/usr/share/texmf-dist/tex/latex/hyperref/hyperref.sty
+(/usr/share/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty)
+(/usr/share/texmf-dist/tex/generic/pdfescape/pdfescape.sty
+(/usr/share/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty))
+(/usr/share/texmf-dist/tex/latex/hycolor/hycolor.sty)
+(/usr/share/texmf-dist/tex/generic/stringenc/stringenc.sty)
+(/usr/share/texmf-dist/tex/latex/hyperref/pd1enc.def)
+(/usr/share/texmf-dist/tex/generic/intcalc/intcalc.sty)
+(/usr/share/texmf-dist/tex/latex/hyperref/puenc.def)
+(/usr/share/texmf-dist/tex/latex/url/url.sty)
+(/usr/share/texmf-dist/tex/generic/bitset/bitset.sty
+(/usr/share/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty)))
+(/usr/share/texmf-dist/tex/latex/hyperref/hpdftex.def
+(/usr/share/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+(/usr/share/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty)))
+(/usr/share/texmf-dist/tex/latex/memoir/memhfixc.sty)
+(/usr/share/texmf-dist/tex/latex/bookmark/bookmark.sty
+(/usr/share/texmf-dist/tex/latex/bookmark/bkm-pdftex.def))
+(/usr/share/texmf-dist/tex/generic/babel/babel.sty
+(/usr/share/texmf-dist/tex/generic/babel/txtbabel.def)
+(/usr/share/texmf-dist/tex/generic/babel/locale/en/babel-english.tex)
+(/usr/share/texmf-dist/tex/generic/babel/locale/invalid/babel-brazil.tex)
+(/usr/share/texmf-dist/tex/generic/babel-english/english.ldf)
+
+Package babel Warning: Name 'brazil' is deprecated.
+(babel)                Use 'brazilian' instead.
+(babel)                Reported on input line 4330.
+
+(/usr/share/texmf-dist/tex/generic/babel-portuges/brazilian.ldf
+
+Package babel Warning: No hyphenation patterns were preloaded for
+(babel)                the language 'Portuguese' into the format.
+(babel)                Please, configure your TeX system to add them and
+(babel)                rebuild the format. Now I will use the patterns
+(babel)                preloaded for \language=0 instead on input line 42.
+
+)) (/usr/share/texmf-dist/tex/latex/enumitem/enumitem.sty)
+(/usr/share/texmf-dist/tex/latex/tools/calc.sty)
+
+******************************************************
+Stock height and width: 845.04684pt by 597.50787pt
+Top and edge trims: 0pt and 0pt
+Page height and width: 845.04684pt by 597.50787pt
+Text height and width: 708pt by 455pt
+Spine and edge margins: 85.35826pt and 56.9055pt
+Upper and lower margins: 85.35826pt and 51.68858pt
+Headheight and headsep: 14.5pt and 19.8738pt
+Footskip: 30pt
+Columnsep and columnseprule: 10pt and 0pt
+Marginparsep and marginparwidth: 7pt and 42.9055pt
+Sidecapsep and sidecapwidth: 7pt and 92pt
+Sidebarhsep and sidebarwidth: 7pt and 92pt
+Sidebarvsep and sidebartopsep: 14.5pt and 0pt
+Sidebarheight: 590.14995pt
+Sidefoothsep and sidefootwidth: 7pt and 92pt
+Sidefootvsep and sidefootheight: 14.5pt and 590.14995pt
+******************************************************
+
+
+Class memoir Warning: \settocpreprocessor is marked deprecated and will be
+(memoir)              removed in 2026, the problem it tried to solve 
+(memoir)              (see manual, section 9.2.3),
+(memoir)              has been fixed in the kernel, and the feature is
+(memoir)              no longer needed. on input line 483.
+
+) (/usr/share/texmf-dist/tex/latex/lm/lmodern.sty)
+(/usr/share/texmf-dist/tex/latex/base/fontenc.sty
+(/usr/share/texmf-dist/tex/latex/lm/t1lmr.fd))
+(/usr/share/texmf-dist/tex/latex/base/inputenc.sty)
+(/usr/share/texmf-dist/tex/latex/lastpage/lastpage.sty
+(/usr/share/texmf-dist/tex/latex/lastpage/lastpage2e.sty
+(/usr/share/texmf-dist/tex/latex/lastpage/lastpagemodern.sty) 
+)) (/usr/share/texmf-dist/tex/latex/tools/indentfirst.sty)
+(/usr/share/texmf-dist/tex/latex/graphics/color.sty
+(/usr/share/texmf-dist/tex/latex/graphics-cfg/color.cfg)
+(/usr/share/texmf-dist/tex/latex/graphics-def/pdftex.def)
+(/usr/share/texmf-dist/tex/latex/graphics/mathcolor.ltx))
+(/usr/share/texmf-dist/tex/latex/graphics/graphicx.sty
+(/usr/share/texmf-dist/tex/latex/graphics/graphics.sty
+(/usr/share/texmf-dist/tex/latex/graphics/trig.sty)
+(/usr/share/texmf-dist/tex/latex/graphics-cfg/graphics.cfg)))
+(/usr/share/texmf-dist/tex/latex/graphics/epsfig.sty)
+
+Class memoir Warning: The subfig package hasn't been updated since 2005.
+(memoir)              Consider using the subcaption package instead.  on input 
+line 39.
+
+(/usr/share/texmf-dist/tex/latex/subfig/subfig.sty
+(/usr/share/texmf-dist/tex/latex/caption/caption.sty
+(/usr/share/texmf-dist/tex/latex/caption/caption3.sty
+(/usr/share/texmf-dist/tex/latex/caption/caption-memoir.sto))))
+(/usr/share/texmf-dist/tex/latex/microtype/microtype.sty
+(/usr/share/texmf-dist/tex/latex/microtype/microtype-pdftex.def)
+(/usr/share/texmf-dist/tex/latex/microtype/microtype.cfg))
+(/usr/share/texmf-dist/tex/latex/lipsum/lipsum.sty
+(/usr/share/texmf-dist/tex/latex/l3packages/l3keys2e/l3keys2e.sty)
+(/usr/share/texmf-dist/tex/latex/lipsum/lipsum.ltd.tex))
+(/usr/share/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/usr/share/texmf-dist/tex/latex/amsmath/amstext.sty
+(/usr/share/texmf-dist/tex/latex/amsmath/amsgen.sty))
+(/usr/share/texmf-dist/tex/latex/amsmath/amsbsy.sty)
+(/usr/share/texmf-dist/tex/latex/amsmath/amsopn.sty))
+(/usr/share/texmf-dist/tex/latex/amsfonts/amssymb.sty
+(/usr/share/texmf-dist/tex/latex/amsfonts/amsfonts.sty))
+(/usr/share/texmf-dist/tex/latex/jknapltx/mathrsfs.sty)
+(/usr/share/texmf-dist/tex/latex/listings/listings.sty
+(/usr/share/texmf-dist/tex/latex/listings/lstpatch.sty)
+(/usr/share/texmf-dist/tex/latex/listings/lstmisc.sty)
+(/usr/share/texmf-dist/tex/latex/listings/listings.cfg))
+==> First Aid for listings.sty no longer applied!
+    Expected:
+        2024/09/23 1.10c (Carsten Heinz)
+    but found:
+        2025/11/14 1.11b (Carsten Heinz)
+    so I'm assuming it got fixed.
+(/usr/share/texmf-dist/tex/latex/tools/afterpage.sty)
+(/usr/share/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty
+(/usr/share/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty
+(/usr/share/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty
+(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def)
+(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgfrcs.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/pgf.revision.tex)))
+(/usr/share/texmf-dist/tex/latex/pgf/basiclayer/pgfcore.sty
+(/usr/share/texmf-dist/tex/latex/pgf/systemlayer/pgfsys.sty
+(/usr/share/texmf-dist/tex/generic/pgf/systemlayer/pgfsys.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgfkeyslibraryfiltered.code.te
+x)) (/usr/share/texmf-dist/tex/generic/pgf/systemlayer/pgf.cfg)
+(/usr/share/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-pdftex.def
+(/usr/share/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-common-pdf.def)))
+(/usr/share/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.code.tex))
+(/usr/share/texmf-dist/tex/latex/xcolor/xcolor.sty
+(/usr/share/texmf-dist/tex/latex/graphics-cfg/color.cfg)
+(/usr/share/texmf-dist/tex/latex/graphics/mathcolor.ltx))
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcore.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.basic.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.trigonometric.code
+.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.random.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.comparison.code.te
+x) (/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.base.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.round.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.misc.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.integerarithmetics
+.code.tex) (/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathcalc.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfloat.code.tex))
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfint.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepoints.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathconstruct.code.tex
+) (/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathusage.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorescopes.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoregraphicstate.code.tex)
+
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransformations.code.t
+ex) (/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorequick.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreobjects.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathprocessing.code.te
+x) (/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorearrows.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreshade.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreimage.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreexternal.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorelayers.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransparency.code.tex)
+ (/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepatterns.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorerdf.code.tex)))
+(/usr/share/texmf-dist/tex/generic/pgf/modules/pgfmoduleshapes.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/modules/pgfmoduleplot.code.tex)
+(/usr/share/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-0-65.sty)
+(/usr/share/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-1-18.sty))
+(/usr/share/texmf-dist/tex/latex/pgf/utilities/pgffor.sty
+(/usr/share/texmf-dist/tex/latex/pgf/utilities/pgfkeys.sty
+(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex))
+(/usr/share/texmf-dist/tex/latex/pgf/math/pgfmath.sty
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex))
+(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgffor.code.tex))
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/tikz.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/libraries/pgflibraryplothandlers.code.te
+x) (/usr/share/texmf-dist/tex/generic/pgf/modules/pgfmodulematrix.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+topaths.code.tex)))
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+positioning.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+arrows.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/libraries/pgflibraryarrows.code.tex))
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+shapes.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+shapes.geometric.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.geomet
+ric.code.tex))
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+shapes.misc.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.misc.c
+ode.tex))
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+shapes.symbols.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.symbol
+s.code.tex))
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+shapes.arrows.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.arrows
+.code.tex))
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+shapes.callouts.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.callou
+ts.code.tex))
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+shapes.multipart.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.multip
+art.code.tex))) (/usr/share/texmf-dist/tex/latex/hyperref/backref.sty)
+(/usr/share/texmf-dist/tex/latex/abntex2/abntex2cite.sty
+(/usr/share/texmf-dist/tex/latex/abntex2/abntex2abrev.sty)
+(/usr/share/texmf-dist/tex/generic/iftex/ifpdf.sty)
+(/usr/share/texmf-dist/tex/generic/iftex/ifxetex.sty)
+(/usr/share/texmf-dist/tex/latex/relsize/relsize.sty))
+(./extras/conf_citacoes.tex) (./extras/dados.tex) (./extras/conf_pdf.tex)
+Writing index file dissertacao.idx 
+(/tmp/tg-review-20260910/latex/dissertacao.aux (./pretextual/capa.aux))
+(/usr/share/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+) (/usr/share/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+(/usr/share/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg))
+(/usr/share/texmf-dist/tex/latex/microtype/mt-cmr.cfg) (./pretextual/capa.tex
+(/usr/share/texmf-dist/tex/latex/lm/t1lmss.fd) [1{/var/lib/texmf/fonts/map/pdft
+ex/updmap/pdftex.map}{/usr/share/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc} <./fi
+gs/logo.png>] [2])
+Underfull \hbox (badness 1019) in paragraph at lines 123--123
+\T1/lmr/m/n/12 (+20) Pro-grama de Grad-u-ação em En-gen-haria
+(/usr/share/texmf-dist/tex/latex/lm/ot1lmr.fd)
+(/usr/share/texmf-dist/tex/latex/lm/omllmm.fd)
+(/usr/share/texmf-dist/tex/latex/lm/omslmsy.fd)
+(/usr/share/texmf-dist/tex/latex/lm/omxlmex.fd)
+(/usr/share/texmf-dist/tex/latex/amsfonts/umsa.fd)
+(/usr/share/texmf-dist/tex/latex/microtype/mt-msa.cfg)
+(/usr/share/texmf-dist/tex/latex/amsfonts/umsb.fd)
+(/usr/share/texmf-dist/tex/latex/microtype/mt-msb.cfg)
+(/usr/share/texmf-dist/tex/latex/jknapltx/ursfs.fd)
+pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.123 
+       [1] (./pretextual/catalografica.tex
+
+LaTeX Warning: Reference `LastPage' on page 2 undefined on input line 25.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 25--26
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 27--28
+
+
+Overfull \hbox (16.44858pt too wide) in paragraph at lines 29--32
+[]  [] 
+
+Underfull \hbox (badness 10000) in paragraph at lines 29--32
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 33--40
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 41--42
+
+)
+pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.125 \include{pretextual/catalografica}
+                                         [2] (./pretextual/assinaturas.tex
+Underfull \hbox (badness 1019) in paragraph at lines 24--25
+\T1/lmr/m/n/12 (+20) Pro-grama de Grad-u-ação em En-gen-haria
+[3] [4]) (./pretextual/agradecimentos.tex [5] [6]) (./pretextual/epigrafe.tex
+[7] [8]) (./pretextual/resumos.tex [9] [10] [11] [12]) (./dissertacao.lof)
+[13] [14] (./dissertacao.lot (/usr/share/texmf-dist/tex/latex/lm/t1lmtt.fd)
+
+LaTeX Warning: Reference `tab:res_e1_controle' on page 15 undefined on input li
+ne 14.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active [15{/usr/s
+hare/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/texmf-dist/fonts/enc/d
+vips/lm/lm-mathsy.enc}{/usr/share/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}]
+
+
+LaTeX Warning: Reference `tab:val_deploy' on page 16 undefined on input line 19
+.
+
+)
+Underfull \vbox (badness 10000) has occurred while \output is active [16]
+[17] [18] [19] [20] [21] [22] (./dissertacao.toc [23] [24] [25] [26]
+Overfull \hbox (1.5877pt too wide) detected at line 184
+ \T1/lmss/bx/n/12 103
+
+Overfull \hbox (1.5877pt too wide) detected at line 190
+ \T1/lmss/bx/n/12 107
+
+Overfull \hbox (1.5877pt too wide) detected at line 191
+ \T1/lmss/bx/n/12 107
+
+Overfull \hbox (1.5877pt too wide) detected at line 192
+ \T1/lmss/bx/n/12 107
+
+Overfull \hbox (1.5877pt too wide) detected at line 193
+ \T1/lmss/bx/n/12 108
+
+Overfull \hbox (1.5877pt too wide) detected at line 194
+ \T1/lmss/bx/n/12 109
+
+Overfull \hbox (1.5877pt too wide) detected at line 199
+ \T1/lmss/bx/n/12 111
+
+Overfull \hbox (1.5877pt too wide) detected at line 200
+ \T1/lmss/bx/n/12 111
+[27]
+Overfull \hbox (1.5877pt too wide) detected at line 206
+ \T1/lmss/bx/n/12 115
+
+Overfull \hbox (1.5877pt too wide) detected at line 209
+ \T1/lmss/bx/n/12 116
+
+Overfull \hbox (1.5877pt too wide) detected at line 212
+ \T1/lmss/bx/n/12 119
+
+Overfull \hbox (1.5877pt too wide) detected at line 218
+ \T1/lmss/bx/n/12 124
+
+Overfull \hbox (1.5877pt too wide) detected at line 225
+ \T1/lmss/bx/n/12 132
+
+Overfull \hbox (1.5877pt too wide) detected at line 235
+ \T1/lmss/bx/n/12 139
+
+Overfull \hbox (1.5877pt too wide) detected at line 236
+ \T1/lmss/bx/n/12 139
+
+Overfull \hbox (1.5877pt too wide) detected at line 237
+ \T1/lmss/bx/n/12 140
+[28]
+Overfull \hbox (1.5877pt too wide) detected at line 241
+ \T1/lmss/bx/n/12 142
+
+Overfull \hbox (1.5877pt too wide) detected at line 245
+ \T1/lmss/bx/n/12 144
+
+Overfull \hbox (1.5877pt too wide) detected at line 249
+ \T1/lmss/bx/n/12 147
+
+Overfull \hbox (1.5877pt too wide) detected at line 253
+ \T1/lmss/bx/n/12 150
+
+Overfull \hbox (1.5877pt too wide) detected at line 258
+ \T1/lmss/bx/n/12 155
+
+Overfull \hbox (1.5877pt too wide) detected at line 266
+ \T1/lmss/bx/n/12 159
+
+Overfull \hbox (1.5877pt too wide) detected at line 267
+ \T1/lmss/bx/n/12 159
+
+Overfull \hbox (1.5877pt too wide) detected at line 268
+ \T1/lmss/bx/n/12 163
+
+Overfull \hbox (1.5877pt too wide) detected at line 271
+ \T1/lmss/bx/n/12 169
+) [29] [30]
+! I can't write on file `capitulos/introducao.aux'.
+\@include ...mmediate \openout \@partaux "#1.aux" 
+                                                  \immediate \write \@partau...
+l.181 \include{capitulos/introducao}
+                                    
+(Press Enter to retry, or Control-D to exit; default file extension is `.tex')
+Please type another output file name
+! Emergency stop.
+\@include ...mmediate \openout \@partaux "#1.aux" 
+                                                  \immediate \write \@partau...
+l.181 \include{capitulos/introducao}
+                                    
+!  ==> Fatal error occurred, no output PDF file produced!
+Transcript written on /tmp/tg-review-20260910/latex/dissertacao.log.
+Latexmk: Getting log file '/tmp/tg-review-20260910/latex/dissertacao.log'
+Latexmk: Examining '/tmp/tg-review-20260910/latex/dissertacao.fls'
+Latexmk: Examining '/tmp/tg-review-20260910/latex/dissertacao.log'
+Use of uninitialized value $title in concatenation (.) or string at /usr/bin/latexmk line 11937.
+Latexmk: making  directory '/tmp/tg-review-20260910/latex/capitulos'
+Latexmk: Couldn't create directory '/tmp/tg-review-20260910/latex/capitulos'.
+    System error: 'No such file or directory'
+Latexmk: Index file '/tmp/tg-review-20260910/latex/dissertacao.idx' was written
+Latexmk: Using bibtex to make bibliography file(s).
+Error in *LaTeX, but needed subdirectories in output directory
+   were missing and successfully created, so try again.
+Latexmk: applying rule 'pdflatex'...
+Rule 'pdflatex':  Reasons for rerun
+Changed files or newly in use/created:
+  /tmp/tg-review-20260910/latex/dissertacao.aux
+
+------------
+Run number 3 of rule 'pdflatex'
+------------
+------------
+Running 'pdflatex  -interaction=nonstopmode -halt-on-error -recorder -output-directory="/tmp/tg-review-20260910/latex"  "dissertacao.tex"'
+------------
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Arch Linux) (preloaded format=pdflatex)
+ restricted \write18 enabled.
+entering extended mode
+(./dissertacao.tex
+LaTeX2e <2025-11-01>
+L3 programming layer <2026-01-19>
+(/usr/share/texmf-dist/tex/latex/abntex2/abntex2.cls
+Document Class: abntex2 2018/11/24 v-1.9.7 abnTeX2
+(/usr/share/texmf-dist/tex/latex/base/ifthen.sty)
+(/usr/share/texmf-dist/tex/latex/memoir/memoir.cls
+Document Class: memoir 2025/11/04 v3.8.4b configurable book, report, article do
+cument class
+(/usr/share/texmf-dist/tex/latex/xpatch/xpatch.sty
+(/usr/share/texmf-dist/tex/latex/l3kernel/expl3.sty
+(/usr/share/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def))
+(/usr/share/texmf-dist/tex/latex/l3packages/xparse/xparse.sty)
+(/usr/share/texmf-dist/tex/latex/etoolbox/etoolbox.sty))
+(/usr/share/texmf-dist/tex/generic/iftex/iftex.sty)
+(/usr/share/texmf-dist/tex/latex/memoir/mem12.clo)
+(/usr/share/texmf-dist/tex/latex/tools/array.sty)
+(/usr/share/texmf-dist/tex/latex/tools/dcolumn.sty)
+(/usr/share/texmf-dist/tex/latex/tools/delarray.sty)
+(/usr/share/texmf-dist/tex/latex/tools/tabularx.sty)
+(/usr/share/texmf-dist/tex/latex/booktabs/booktabs.sty)
+(/usr/share/texmf-dist/tex/latex/hyperref/nameref.sty
+(/usr/share/texmf-dist/tex/latex/refcount/refcount.sty
+(/usr/share/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty)
+(/usr/share/texmf-dist/tex/generic/infwarerr/infwarerr.sty))
+(/usr/share/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
+(/usr/share/texmf-dist/tex/latex/kvoptions/kvoptions.sty
+(/usr/share/texmf-dist/tex/latex/graphics/keyval.sty)
+(/usr/share/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty))))
+(/usr/share/texmf-dist/tex/latex/tools/verbatim.sty)
+(/usr/share/texmf-dist/tex/latex/base/shortvrb.sty))
+(/usr/share/texmf-dist/tex/latex/textcase/textcase.sty)
+(/usr/share/texmf-dist/tex/latex/hyperref/hyperref.sty
+(/usr/share/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty)
+(/usr/share/texmf-dist/tex/generic/pdfescape/pdfescape.sty
+(/usr/share/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty))
+(/usr/share/texmf-dist/tex/latex/hycolor/hycolor.sty)
+(/usr/share/texmf-dist/tex/generic/stringenc/stringenc.sty)
+(/usr/share/texmf-dist/tex/latex/hyperref/pd1enc.def)
+(/usr/share/texmf-dist/tex/generic/intcalc/intcalc.sty)
+(/usr/share/texmf-dist/tex/latex/hyperref/puenc.def)
+(/usr/share/texmf-dist/tex/latex/url/url.sty)
+(/usr/share/texmf-dist/tex/generic/bitset/bitset.sty
+(/usr/share/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty)))
+(/usr/share/texmf-dist/tex/latex/hyperref/hpdftex.def
+(/usr/share/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+(/usr/share/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty)))
+(/usr/share/texmf-dist/tex/latex/memoir/memhfixc.sty)
+(/usr/share/texmf-dist/tex/latex/bookmark/bookmark.sty
+(/usr/share/texmf-dist/tex/latex/bookmark/bkm-pdftex.def))
+(/usr/share/texmf-dist/tex/generic/babel/babel.sty
+(/usr/share/texmf-dist/tex/generic/babel/txtbabel.def)
+(/usr/share/texmf-dist/tex/generic/babel/locale/en/babel-english.tex)
+(/usr/share/texmf-dist/tex/generic/babel/locale/invalid/babel-brazil.tex)
+(/usr/share/texmf-dist/tex/generic/babel-english/english.ldf)
+
+Package babel Warning: Name 'brazil' is deprecated.
+(babel)                Use 'brazilian' instead.
+(babel)                Reported on input line 4330.
+
+(/usr/share/texmf-dist/tex/generic/babel-portuges/brazilian.ldf
+
+Package babel Warning: No hyphenation patterns were preloaded for
+(babel)                the language 'Portuguese' into the format.
+(babel)                Please, configure your TeX system to add them and
+(babel)                rebuild the format. Now I will use the patterns
+(babel)                preloaded for \language=0 instead on input line 42.
+
+)) (/usr/share/texmf-dist/tex/latex/enumitem/enumitem.sty)
+(/usr/share/texmf-dist/tex/latex/tools/calc.sty)
+
+******************************************************
+Stock height and width: 845.04684pt by 597.50787pt
+Top and edge trims: 0pt and 0pt
+Page height and width: 845.04684pt by 597.50787pt
+Text height and width: 708pt by 455pt
+Spine and edge margins: 85.35826pt and 56.9055pt
+Upper and lower margins: 85.35826pt and 51.68858pt
+Headheight and headsep: 14.5pt and 19.8738pt
+Footskip: 30pt
+Columnsep and columnseprule: 10pt and 0pt
+Marginparsep and marginparwidth: 7pt and 42.9055pt
+Sidecapsep and sidecapwidth: 7pt and 92pt
+Sidebarhsep and sidebarwidth: 7pt and 92pt
+Sidebarvsep and sidebartopsep: 14.5pt and 0pt
+Sidebarheight: 590.14995pt
+Sidefoothsep and sidefootwidth: 7pt and 92pt
+Sidefootvsep and sidefootheight: 14.5pt and 590.14995pt
+******************************************************
+
+
+Class memoir Warning: \settocpreprocessor is marked deprecated and will be
+(memoir)              removed in 2026, the problem it tried to solve 
+(memoir)              (see manual, section 9.2.3),
+(memoir)              has been fixed in the kernel, and the feature is
+(memoir)              no longer needed. on input line 483.
+
+) (/usr/share/texmf-dist/tex/latex/lm/lmodern.sty)
+(/usr/share/texmf-dist/tex/latex/base/fontenc.sty
+(/usr/share/texmf-dist/tex/latex/lm/t1lmr.fd))
+(/usr/share/texmf-dist/tex/latex/base/inputenc.sty)
+(/usr/share/texmf-dist/tex/latex/lastpage/lastpage.sty
+(/usr/share/texmf-dist/tex/latex/lastpage/lastpage2e.sty
+(/usr/share/texmf-dist/tex/latex/lastpage/lastpagemodern.sty) 
+)) (/usr/share/texmf-dist/tex/latex/tools/indentfirst.sty)
+(/usr/share/texmf-dist/tex/latex/graphics/color.sty
+(/usr/share/texmf-dist/tex/latex/graphics-cfg/color.cfg)
+(/usr/share/texmf-dist/tex/latex/graphics-def/pdftex.def)
+(/usr/share/texmf-dist/tex/latex/graphics/mathcolor.ltx))
+(/usr/share/texmf-dist/tex/latex/graphics/graphicx.sty
+(/usr/share/texmf-dist/tex/latex/graphics/graphics.sty
+(/usr/share/texmf-dist/tex/latex/graphics/trig.sty)
+(/usr/share/texmf-dist/tex/latex/graphics-cfg/graphics.cfg)))
+(/usr/share/texmf-dist/tex/latex/graphics/epsfig.sty)
+
+Class memoir Warning: The subfig package hasn't been updated since 2005.
+(memoir)              Consider using the subcaption package instead.  on input 
+line 39.
+
+(/usr/share/texmf-dist/tex/latex/subfig/subfig.sty
+(/usr/share/texmf-dist/tex/latex/caption/caption.sty
+(/usr/share/texmf-dist/tex/latex/caption/caption3.sty
+(/usr/share/texmf-dist/tex/latex/caption/caption-memoir.sto))))
+(/usr/share/texmf-dist/tex/latex/microtype/microtype.sty
+(/usr/share/texmf-dist/tex/latex/microtype/microtype-pdftex.def)
+(/usr/share/texmf-dist/tex/latex/microtype/microtype.cfg))
+(/usr/share/texmf-dist/tex/latex/lipsum/lipsum.sty
+(/usr/share/texmf-dist/tex/latex/l3packages/l3keys2e/l3keys2e.sty)
+(/usr/share/texmf-dist/tex/latex/lipsum/lipsum.ltd.tex))
+(/usr/share/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/usr/share/texmf-dist/tex/latex/amsmath/amstext.sty
+(/usr/share/texmf-dist/tex/latex/amsmath/amsgen.sty))
+(/usr/share/texmf-dist/tex/latex/amsmath/amsbsy.sty)
+(/usr/share/texmf-dist/tex/latex/amsmath/amsopn.sty))
+(/usr/share/texmf-dist/tex/latex/amsfonts/amssymb.sty
+(/usr/share/texmf-dist/tex/latex/amsfonts/amsfonts.sty))
+(/usr/share/texmf-dist/tex/latex/jknapltx/mathrsfs.sty)
+(/usr/share/texmf-dist/tex/latex/listings/listings.sty
+(/usr/share/texmf-dist/tex/latex/listings/lstpatch.sty)
+(/usr/share/texmf-dist/tex/latex/listings/lstmisc.sty)
+(/usr/share/texmf-dist/tex/latex/listings/listings.cfg))
+==> First Aid for listings.sty no longer applied!
+    Expected:
+        2024/09/23 1.10c (Carsten Heinz)
+    but found:
+        2025/11/14 1.11b (Carsten Heinz)
+    so I'm assuming it got fixed.
+(/usr/share/texmf-dist/tex/latex/tools/afterpage.sty)
+(/usr/share/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty
+(/usr/share/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty
+(/usr/share/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty
+(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def)
+(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgfrcs.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/pgf.revision.tex)))
+(/usr/share/texmf-dist/tex/latex/pgf/basiclayer/pgfcore.sty
+(/usr/share/texmf-dist/tex/latex/pgf/systemlayer/pgfsys.sty
+(/usr/share/texmf-dist/tex/generic/pgf/systemlayer/pgfsys.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgfkeyslibraryfiltered.code.te
+x)) (/usr/share/texmf-dist/tex/generic/pgf/systemlayer/pgf.cfg)
+(/usr/share/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-pdftex.def
+(/usr/share/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-common-pdf.def)))
+(/usr/share/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.code.tex))
+(/usr/share/texmf-dist/tex/latex/xcolor/xcolor.sty
+(/usr/share/texmf-dist/tex/latex/graphics-cfg/color.cfg)
+(/usr/share/texmf-dist/tex/latex/graphics/mathcolor.ltx))
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcore.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.basic.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.trigonometric.code
+.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.random.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.comparison.code.te
+x) (/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.base.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.round.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.misc.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.integerarithmetics
+.code.tex) (/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathcalc.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfloat.code.tex))
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfint.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepoints.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathconstruct.code.tex
+) (/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathusage.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorescopes.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoregraphicstate.code.tex)
+
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransformations.code.t
+ex) (/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorequick.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreobjects.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathprocessing.code.te
+x) (/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorearrows.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreshade.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreimage.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreexternal.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorelayers.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransparency.code.tex)
+ (/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepatterns.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorerdf.code.tex)))
+(/usr/share/texmf-dist/tex/generic/pgf/modules/pgfmoduleshapes.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/modules/pgfmoduleplot.code.tex)
+(/usr/share/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-0-65.sty)
+(/usr/share/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-1-18.sty))
+(/usr/share/texmf-dist/tex/latex/pgf/utilities/pgffor.sty
+(/usr/share/texmf-dist/tex/latex/pgf/utilities/pgfkeys.sty
+(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex))
+(/usr/share/texmf-dist/tex/latex/pgf/math/pgfmath.sty
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex))
+(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgffor.code.tex))
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/tikz.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/libraries/pgflibraryplothandlers.code.te
+x) (/usr/share/texmf-dist/tex/generic/pgf/modules/pgfmodulematrix.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+topaths.code.tex)))
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+positioning.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+arrows.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/libraries/pgflibraryarrows.code.tex))
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+shapes.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+shapes.geometric.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.geomet
+ric.code.tex))
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+shapes.misc.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.misc.c
+ode.tex))
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+shapes.symbols.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.symbol
+s.code.tex))
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+shapes.arrows.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.arrows
+.code.tex))
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+shapes.callouts.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.callou
+ts.code.tex))
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+shapes.multipart.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.multip
+art.code.tex))) (/usr/share/texmf-dist/tex/latex/hyperref/backref.sty)
+(/usr/share/texmf-dist/tex/latex/abntex2/abntex2cite.sty
+(/usr/share/texmf-dist/tex/latex/abntex2/abntex2abrev.sty)
+(/usr/share/texmf-dist/tex/generic/iftex/ifpdf.sty)
+(/usr/share/texmf-dist/tex/generic/iftex/ifxetex.sty)
+(/usr/share/texmf-dist/tex/latex/relsize/relsize.sty))
+(./extras/conf_citacoes.tex) (./extras/dados.tex) (./extras/conf_pdf.tex)
+Writing index file dissertacao.idx 
+(/tmp/tg-review-20260910/latex/dissertacao.aux
+(/tmp/tg-review-20260910/latex/pretextual/capa.aux)
+(/tmp/tg-review-20260910/latex/pretextual/catalografica.aux)
+(/tmp/tg-review-20260910/latex/pretextual/assinaturas.aux)
+(/tmp/tg-review-20260910/latex/pretextual/agradecimentos.aux)
+(/tmp/tg-review-20260910/latex/pretextual/epigrafe.aux)
+(/tmp/tg-review-20260910/latex/pretextual/resumos.aux)
+(./capitulos/introducao.aux))
+(/usr/share/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+) (/usr/share/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+(/usr/share/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg))
+(/usr/share/texmf-dist/tex/latex/microtype/mt-cmr.cfg) (./pretextual/capa.tex
+(/usr/share/texmf-dist/tex/latex/lm/t1lmss.fd) [1{/var/lib/texmf/fonts/map/pdft
+ex/updmap/pdftex.map}{/usr/share/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc} <./fi
+gs/logo.png>] [2])
+Underfull \hbox (badness 1019) in paragraph at lines 123--123
+\T1/lmr/m/n/12 (+20) Pro-grama de Grad-u-ação em En-gen-haria
+(/usr/share/texmf-dist/tex/latex/lm/ot1lmr.fd)
+(/usr/share/texmf-dist/tex/latex/lm/omllmm.fd)
+(/usr/share/texmf-dist/tex/latex/lm/omslmsy.fd)
+(/usr/share/texmf-dist/tex/latex/lm/omxlmex.fd)
+(/usr/share/texmf-dist/tex/latex/amsfonts/umsa.fd)
+(/usr/share/texmf-dist/tex/latex/microtype/mt-msa.cfg)
+(/usr/share/texmf-dist/tex/latex/amsfonts/umsb.fd)
+(/usr/share/texmf-dist/tex/latex/microtype/mt-msb.cfg)
+(/usr/share/texmf-dist/tex/latex/jknapltx/ursfs.fd)
+pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.123 
+       [1] (./pretextual/catalografica.tex
+
+LaTeX Warning: Reference `LastPage' on page 2 undefined on input line 25.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 25--26
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 27--28
+
+
+Overfull \hbox (16.44858pt too wide) in paragraph at lines 29--32
+[]  [] 
+
+Underfull \hbox (badness 10000) in paragraph at lines 29--32
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 33--40
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 41--42
+
+)
+pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.125 \include{pretextual/catalografica}
+                                         [2] (./pretextual/assinaturas.tex
+Underfull \hbox (badness 1019) in paragraph at lines 24--25
+\T1/lmr/m/n/12 (+20) Pro-grama de Grad-u-ação em En-gen-haria
+[3] [4]) (./pretextual/agradecimentos.tex [5] [6]) (./pretextual/epigrafe.tex
+[7] [8]) (./pretextual/resumos.tex [9] [10] [11] [12]) (./dissertacao.lof)
+[13] [14] (./dissertacao.lot (/usr/share/texmf-dist/tex/latex/lm/t1lmtt.fd)
+
+LaTeX Warning: Reference `tab:res_e1_controle' on page 15 undefined on input li
+ne 14.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active [15{/usr/s
+hare/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/texmf-dist/fonts/enc/d
+vips/lm/lm-mathsy.enc}{/usr/share/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}]
+
+
+LaTeX Warning: Reference `tab:val_deploy' on page 16 undefined on input line 19
+.
+
+)
+Underfull \vbox (badness 10000) has occurred while \output is active [16]
+[17] [18] [19] [20] [21] [22] (./dissertacao.toc [23] [24] [25] [26]
+Overfull \hbox (1.5877pt too wide) detected at line 184
+ \T1/lmss/bx/n/12 103
+
+Overfull \hbox (1.5877pt too wide) detected at line 190
+ \T1/lmss/bx/n/12 107
+
+Overfull \hbox (1.5877pt too wide) detected at line 191
+ \T1/lmss/bx/n/12 107
+
+Overfull \hbox (1.5877pt too wide) detected at line 192
+ \T1/lmss/bx/n/12 107
+
+Overfull \hbox (1.5877pt too wide) detected at line 193
+ \T1/lmss/bx/n/12 108
+
+Overfull \hbox (1.5877pt too wide) detected at line 194
+ \T1/lmss/bx/n/12 109
+
+Overfull \hbox (1.5877pt too wide) detected at line 199
+ \T1/lmss/bx/n/12 111
+
+Overfull \hbox (1.5877pt too wide) detected at line 200
+ \T1/lmss/bx/n/12 111
+[27]
+Overfull \hbox (1.5877pt too wide) detected at line 206
+ \T1/lmss/bx/n/12 115
+
+Overfull \hbox (1.5877pt too wide) detected at line 209
+ \T1/lmss/bx/n/12 116
+
+Overfull \hbox (1.5877pt too wide) detected at line 212
+ \T1/lmss/bx/n/12 119
+
+Overfull \hbox (1.5877pt too wide) detected at line 218
+ \T1/lmss/bx/n/12 124
+
+Overfull \hbox (1.5877pt too wide) detected at line 225
+ \T1/lmss/bx/n/12 132
+
+Overfull \hbox (1.5877pt too wide) detected at line 235
+ \T1/lmss/bx/n/12 139
+
+Overfull \hbox (1.5877pt too wide) detected at line 236
+ \T1/lmss/bx/n/12 139
+
+Overfull \hbox (1.5877pt too wide) detected at line 237
+ \T1/lmss/bx/n/12 140
+[28]
+Overfull \hbox (1.5877pt too wide) detected at line 241
+ \T1/lmss/bx/n/12 142
+
+Overfull \hbox (1.5877pt too wide) detected at line 245
+ \T1/lmss/bx/n/12 144
+
+Overfull \hbox (1.5877pt too wide) detected at line 249
+ \T1/lmss/bx/n/12 147
+
+Overfull \hbox (1.5877pt too wide) detected at line 253
+ \T1/lmss/bx/n/12 150
+
+Overfull \hbox (1.5877pt too wide) detected at line 258
+ \T1/lmss/bx/n/12 155
+
+Overfull \hbox (1.5877pt too wide) detected at line 266
+ \T1/lmss/bx/n/12 159
+
+Overfull \hbox (1.5877pt too wide) detected at line 267
+ \T1/lmss/bx/n/12 159
+
+Overfull \hbox (1.5877pt too wide) detected at line 268
+ \T1/lmss/bx/n/12 163
+
+Overfull \hbox (1.5877pt too wide) detected at line 271
+ \T1/lmss/bx/n/12 169
+) [29] [30] (./capitulos/introducao.tex
+
+LaTeX Warning: Citation `Karaman2011Optimal' on page 1 undefined on input line 
+12.
+
+
+LaTeX Warning: Citation `OKelly2020F1TENTH' on page 1 undefined on input line 1
+5.
+
+
+LaTeX Warning: Citation `Babu2020Simulator' on page 1 undefined on input line 2
+1.
+
+
+LaTeX Warning: Citation `Agnihotri2020Teaching' on page 1 undefined on input li
+ne 28.
+
+
+LaTeX Warning: Citation `Wang2020LMPC' on page 1 undefined on input line 34.
+
+
+LaTeX Warning: Citation `Stachowicz2023FastRLAP' on page 1 undefined on input l
+ine 41.
+
+
+LaTeX Warning: Citation `Ivanov2020Verifying' on page 1 undefined on input line
+ 51.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active
+pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.64 
+      [1]
+pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.107 
+       [2])
+pdfTeX warning (ext4): destination with the same identifier (name{page.3}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.181 \include{capitulos/introducao}
+                                     [3]
+pdfTeX warning (ext4): destination with the same identifier (name{page.4}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.184 \part
+           {PreparaÃ§Ã£o da pesquisa} [4]
+pdfTeX warning (ext4): destination with the same identifier (name{page.5}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.184 \part{PreparaÃ§Ã£o da pesquisa}
+                                      [5]
+pdfTeX warning (ext4): destination with the same identifier (name{page.6}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.184 \part{PreparaÃ§Ã£o da pesquisa}
+                                      [6] (./capitulos/estadodaarte.tex
+Cap\'{\i }tulo 1.
+
+LaTeX Warning: Citation `Betz2022Survey' on page 7 undefined on input line 7.
+
+(/usr/share/texmf-dist/tex/latex/lm/ts1lmr.fd)
+
+LaTeX Warning: Citation `OKelly2020F1TENTH' on page 7 undefined on input line 3
+2.
+
+
+LaTeX Warning: Citation `f1tenthgymros' on page 7 undefined on input line 33.
+
+
+LaTeX Warning: Citation `f1tenthgymufabc' on page 7 undefined on input line 33.
+
+
+
+LaTeX Warning: Reference `sec:arte-plataformas' on page 7 undefined on input li
+ne 39.
+
+
+LaTeX Warning: Reference `sec:arte-classico' on page 7 undefined on input line 
+42.
+
+
+LaTeX Warning: Reference `sec:arte-il' on page 7 undefined on input line 44.
+
+
+LaTeX Warning: Reference `sec:arte-rl' on page 7 undefined on input line 45.
+
+
+LaTeX Warning: Reference `sec:arte-s2r' on page 7 undefined on input line 47.
+
+
+LaTeX Warning: Reference `sec:arte-lacuna' on page 7 undefined on input line 49
+.
+
+
+pdfTeX warning (ext4): destination with the same identifier (name{page.7}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.52 \section
+             {Plataformas e simuladores para corrida autÃ´noma em escala}\la...
+[7{/usr/share/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}]
+
+LaTeX Warning: Citation `Betz2023TUM' on page 8 undefined on input line 60.
+
+
+LaTeX Warning: Citation `Liniger2015Optimization' on page 8 undefined on input 
+line 63.
+
+
+LaTeX Warning: Citation `Betz2022Survey' on page 8 undefined on input line 67.
+
+
+LaTeX Warning: Citation `Betz2022Survey' on page 8 undefined on input line 69.
+
+
+LaTeX Warning: Citation `OKelly2020F1TENTH' on page 8 undefined on input line 8
+2.
+
+
+LaTeX Warning: Citation `OKelly2020F1TENTH' on page 8 undefined on input line 9
+1.
+
+
+pdfTeX warning (ext4): destination with the same identifier (name{page.8}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.97 
+      [8]
+
+LaTeX Warning: Citation `Agnihotri2020Teaching' on page 9 undefined on input li
+ne 99.
+
+
+LaTeX Warning: Citation `Ueter2020CPS' on page 9 undefined on input line 101.
+
+
+LaTeX Warning: Citation `Babu2020Simulator' on page 9 undefined on input line 1
+15.
+
+
+LaTeX Warning: Citation `OKelly2020F1TENTH' on page 9 undefined on input line 1
+26.
+
+
+LaTeX Warning: Citation `f1tenthgymros' on page 9 undefined on input line 131.
+
+
+LaTeX Warning: Citation `f1tenthgymufabc' on page 9 undefined on input line 131
+.
+
+
+LaTeX Warning: Reference `cap:metodologia' on page 9 undefined on input line 13
+5.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active
+pdfTeX warning (ext4): destination with the same identifier (name{page.9}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.146 I
+       vanov e colaboradores \cite{Ivanov2020Verifying} tomam um controlador...
+[9]
+
+LaTeX Warning: Citation `Ivanov2020Verifying' on page 10 undefined on input lin
+e 146.
+
+
+LaTeX Warning: Citation `Bak2021Stress' on page 10 undefined on input line 158.
+
+
+
+LaTeX Warning: Citation `Karaman2011Optimal' on page 10 undefined on input line
+ 159.
+
+
+LaTeX Warning: Reference `sec:arte-lacuna' on page 10 undefined on input line 1
+68.
+
+
+LaTeX Warning: Citation `Karaman2011Optimal' on page 10 undefined on input line
+ 176.
+
+
+LaTeX Warning: Citation `Heilmeier2020MinCurv' on page 10 undefined on input li
+ne 186.
+
+
+LaTeX Warning: Citation `TUMFTMRaceTrajectory' on page 10 undefined on input li
+ne 190.
+
+
+LaTeX Warning: Citation `F1TENTHRaceTracks' on page 10 undefined on input line 
+191.
+
+
+LaTeX Warning: Citation `Misra2024Report' on page 10 undefined on input line 19
+3.
+
+
+pdfTeX warning (ext4): destination with the same identifier (name{page.10}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.195 
+       [10]
+
+LaTeX Warning: Citation `Coulter1992PurePursuit' on page 11 undefined on input 
+line 214.
+
+
+LaTeX Warning: Citation `fox2003adapting' on page 11 undefined on input line 23
+0.
+
+
+LaTeX Warning: Citation `thrun2005' on page 11 undefined on input line 230.
+
+
+LaTeX Warning: Reference `cap:metodologia' on page 11 undefined on input line 2
+35.
+
+
+pdfTeX warning (ext4): destination with the same identifier (name{page.11}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.240 
+       [11]
+
+LaTeX Warning: Citation `verschueren2016time' on page 12 undefined on input lin
+e 246.
+
+
+LaTeX Warning: Citation `Liniger2015Optimization' on page 12 undefined on input
+ line 248.
+
+
+LaTeX Warning: Citation `Rosolia2020LMPC' on page 12 undefined on input line 25
+8.
+
+
+LaTeX Warning: Citation `Wang2020LMPC' on page 12 undefined on input line 259.
+
+
+LaTeX Warning: Citation `Kabzan2019LearningMPC' on page 12 undefined on input l
+ine 266.
+
+
+LaTeX Warning: Citation `Jain2020Bayesrace' on page 12 undefined on input line 
+268.
+
+
+Underfull \vbox (badness 1286) has occurred while \output is active
+pdfTeX warning (ext4): destination with the same identifier (name{page.12}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.288 
+       [12]
+
+LaTeX Warning: Citation `Sezer2012FollowGap' on page 13 undefined on input line
+ 299.
+
+
+LaTeX Warning: Citation `Agnihotri2020Teaching' on page 13 undefined on input l
+ine 303.
+
+
+LaTeX Warning: Citation `Babu2020Simulator' on page 13 undefined on input line 
+303.
+
+
+LaTeX Warning: Reference `cap:proposta' on page 13 undefined on input line 304.
+
+
+
+LaTeX Warning: Citation `Pomerleau1989ALVINN' on page 13 undefined on input lin
+e 321.
+
+
+LaTeX Warning: Citation `Bojarski2016EndToEnd' on page 13 undefined on input li
+ne 323.
+
+
+pdfTeX warning (ext4): destination with the same identifier (name{page.13}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.336 
+       [13]
+
+LaTeX Warning: Citation `Zarrar2024TinyLidarNet' on page 14 undefined on input 
+line 340.
+
+
+LaTeX Warning: Reference `cap:metodologia' on page 14 undefined on input line 3
+56.
+
+
+LaTeX Warning: Citation `Ivanov2020Verifying' on page 14 undefined on input lin
+e 358.
+
+
+LaTeX Warning: Citation `Ross2011DAgger' on page 14 undefined on input line 372
+.
+
+
+pdfTeX warning (ext4): destination with the same identifier (name{page.14}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.379 A
+        primeira Ã© \textbf{interativa}: o DAgger \cite{Ross2011DAgger} exec...
+[14]
+
+LaTeX Warning: Citation `Ross2011DAgger' on page 15 undefined on input line 379
+.
+
+
+LaTeX Warning: Citation `Laskey2017DART' on page 15 undefined on input line 388
+.
+
+
+LaTeX Warning: Citation `Codevilla2019Limitations' on page 15 undefined on inpu
+t line 396.
+
+
+LaTeX Warning: Reference `cap:metodologia' on page 15 undefined on input line 3
+99.
+
+
+LaTeX Warning: Citation `Laskey2017DART' on page 15 undefined on input line 404
+.
+
+
+LaTeX Warning: Reference `sec:val-poisson' on page 15 undefined on input line 4
+29.
+
+
+pdfTeX warning (ext4): destination with the same identifier (name{page.15}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.430 
+       [15]
+
+LaTeX Warning: Reference `sec:arte-lacuna' on page 16 undefined on input line 4
+31.
+
+
+LaTeX Warning: Citation `Bosello2022CrossTrack' on page 16 undefined on input l
+ine 439.
+
+
+LaTeX Warning: Citation `Brunnbauer2022Latent' on page 16 undefined on input li
+ne 441.
+
+
+LaTeX Warning: Reference `cap:metodologia' on page 16 undefined on input line 4
+50.
+
+
+LaTeX Warning: Reference `cap:metodologia' on page 16 undefined on input line 4
+79.
+
+
+Underfull \vbox (badness 1286) has occurred while \output is active
+pdfTeX warning (ext4): destination with the same identifier (name{page.16}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.480 
+       [16]
+
+LaTeX Warning: Citation `Wurman2022GranTurismo' on page 17 undefined on input l
+ine 489.
+
+
+LaTeX Warning: Citation `Kaufmann2023DroneRacing' on page 17 undefined on input
+ line 491.
+
+
+LaTeX Warning: Citation `Evans2023Comparing' on page 17 undefined on input line
+ 496.
+
+
+LaTeX Warning: Citation `Evans2023Trajectory' on page 17 undefined on input lin
+e 499.
+
+
+LaTeX Warning: Citation `Stachowicz2023FastRLAP' on page 17 undefined on input 
+line 506.
+
+
+LaTeX Warning: Citation `Silver2018ResidualPolicy' on page 17 undefined on inpu
+t line 522.
+
+
+LaTeX Warning: Citation `Johannink2019Residual' on page 17 undefined on input l
+ine 523.
+
+
+Underfull \vbox (badness 2600) has occurred while \output is active
+pdfTeX warning (ext4): destination with the same identifier (name{page.17}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.526 \[
+         [17]
+
+LaTeX Warning: Citation `Johannink2019Residual' on page 18 undefined on input l
+ine 539.
+
+
+LaTeX Warning: Citation `fox2003adapting' on page 18 undefined on input line 56
+1.
+
+
+pdfTeX warning (ext4): destination with the same identifier (name{page.18}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.577 
+       [18]
+
+LaTeX Warning: Citation `Haarnoja2018SAC' on page 19 undefined on input line 57
+8.
+
+
+LaTeX Warning: Citation `Raffin2021SB3' on page 19 undefined on input line 582.
+
+
+
+LaTeX Warning: Reference `cap:metodologia' on page 19 undefined on input line 5
+93.
+
+
+LaTeX Warning: Reference `cap:metodologia' on page 19 undefined on input line 6
+18.
+
+
+Underfull \vbox (badness 1286) has occurred while \output is active
+pdfTeX warning (ext4): destination with the same identifier (name{page.19}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.621 
+       [19]
+
+LaTeX Warning: Citation `Zhao2020Sim2Real' on page 20 undefined on input line 6
+28.
+
+
+LaTeX Warning: Citation `Tobin2017DomainRand' on page 20 undefined on input lin
+e 631.
+
+
+LaTeX Warning: Citation `Peng2018DynamicsRand' on page 20 undefined on input li
+ne 633.
+
+
+LaTeX Warning: Citation `OKelly2020F1TENTH' on page 20 undefined on input line 
+643.
+
+
+LaTeX Warning: Citation `Jain2020Bayesrace' on page 20 undefined on input line 
+645.
+
+
+LaTeX Warning: Citation `Chisari2021LearningSim' on page 20 undefined on input 
+line 653.
+
+
+LaTeX Warning: Citation `Brunnbauer2022Latent' on page 20 undefined on input li
+ne 655.
+
+
+LaTeX Warning: Citation `Zarrar2024TinyLidarNet' on page 20 undefined on input 
+line 657.
+
+
+LaTeX Warning: Citation `Ivanov2020Verifying' on page 20 undefined on input lin
+e 659.
+
+
+LaTeX Warning: Citation `Stachowicz2023FastRLAP' on page 20 undefined on input 
+line 662.
+
+
+LaTeX Warning: Citation `f1tenthgymros' on page 20 undefined on input line 670.
+
+
+
+LaTeX Warning: Citation `f1tenthgymufabc' on page 20 undefined on input line 67
+0.
+
+
+pdfTeX warning (ext4): destination with the same identifier (name{page.20}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.673 
+       [20]
+
+LaTeX Warning: Citation `Ivanov2020Verifying' on page 21 undefined on input lin
+e 690.
+
+
+LaTeX Warning: Citation `Silver2018ResidualPolicy' on page 21 undefined on inpu
+t line 702.
+
+
+LaTeX Warning: Citation `Johannink2019Residual' on page 21 undefined on input l
+ine 702.
+
+
+LaTeX Warning: Citation `Jain2020Bayesrace' on page 21 undefined on input line 
+702.
+
+
+pdfTeX warning (ext4): destination with the same identifier (name{page.21}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.717 
+       [21]
+
+LaTeX Warning: Citation `Laskey2017DART' on page 22 undefined on input line 719
+.
+
+
+LaTeX Warning: Citation `Betz2022Survey' on page 22 undefined on input line 728
+.
+
+
+LaTeX Warning: Reference `cap:metodologia' on page 22 undefined on input line 7
+32.
+
+
+LaTeX Warning: Reference `tab:arte_posicionamento' on page 22 undefined on inpu
+t line 736.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 744--744
+\T1/lmr/bx/n/10.95 (+20) ex-ige pose
+
+Underfull \hbox (badness 10000) in paragraph at lines 745--746
+[]|\T1/lmr/bx/n/10.95 (+20) Critério
+
+Underfull \hbox (badness 10000) in paragraph at lines 745--746
+\T1/lmr/bx/n/10.95 (+20) con-ge-lado
+
+LaTeX Warning: Citation `Wang2020LMPC' on page 22 undefined on input line 747.
+
+
+LaTeX Warning: Citation `Jain2020Bayesrace' on page 22 undefined on input line 
+749.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 749--749
+[]|\T1/lmr/m/n/10.95 (+20) Simulação
+
+Underfull \hbox (badness 10000) in paragraph at lines 749--749
+\T1/lmr/m/n/10.95 (+20) (duas es-
+
+LaTeX Warning: Citation `Stachowicz2023FastRLAP' on page 22 undefined on input 
+line 751.
+
+
+LaTeX Warning: Citation `Zarrar2024TinyLidarNet' on page 22 undefined on input 
+line 753.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 753--753
+[]|\T1/lmr/m/n/10.95 (+20) Hardware
+
+LaTeX Warning: Citation `Ivanov2020Verifying' on page 22 undefined on input lin
+e 755.
+
+
+Underfull \hbox (badness 1102) in paragraph at lines 755--755
+[]|\T1/lmr/m/n/10.95 (+20) RL + ver-i-fi-
+
+Underfull \hbox (badness 2253) in paragraph at lines 755--755
+[]|\T1/lmr/m/n/10.95 (+20) Hardware +
+
+Underfull \hbox (badness 10000) in paragraph at lines 755--756
+[]|\T1/lmr/m/n/10.95 (+20) Propriedade
+
+LaTeX Warning: Citation `Evans2023Trajectory' on page 22 undefined on input lin
+e 757.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 757--757
+[]|\T1/lmr/m/n/10.95 (+20) RL com
+
+Underfull \hbox (badness 10000) in paragraph at lines 757--757
+\T1/lmr/m/n/10.95 (+20) rec-om-pensa
+
+Underfull \hbox (badness 10000) in paragraph at lines 757--757
+\T1/lmr/m/n/10.95 (+20) guiada por
+
+Underfull \hbox (badness 10000) in paragraph at lines 757--757
+[]|\T1/lmr/m/n/10.95 (+20) Trajetória
+
+Underfull \hbox (badness 10000) in paragraph at lines 757--757
+\T1/lmr/m/n/10.95 (+20) de refer-ên-cia
+
+Underfull \hbox (badness 10000) in paragraph at lines 757--757
+\T1/lmr/m/n/10.95 (+20) exigida no
+
+Underfull \hbox (badness 10000) in paragraph at lines 759--759
+[]|\T1/lmr/m/n/10.95 (+20) Imitação +
+
+Underfull \vbox (badness 10000) has occurred while \output is active
+pdfTeX warning (ext4): destination with the same identifier (name{page.22}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.774     \item \textbf
+                       {Nenhum experimento no veÃ­culo fÃ­sico.} O FastRLAP
+[22]
+
+LaTeX Warning: Citation `Stachowicz2023FastRLAP' on page 23 undefined on input 
+line 775.
+
+
+LaTeX Warning: Citation `Zarrar2024TinyLidarNet' on page 23 undefined on input 
+line 776.
+
+
+LaTeX Warning: Citation `Ivanov2020Verifying' on page 23 undefined on input lin
+e 777.
+
+
+LaTeX Warning: Citation `Chisari2021LearningSim' on page 23 undefined on input 
+line 778.
+
+
+LaTeX Warning: Citation `Brunnbauer2022Latent' on page 23 undefined on input li
+ne 778.
+
+
+LaTeX Warning: Citation `OKelly2020F1TENTH' on page 23 undefined on input line 
+779.
+
+
+LaTeX Warning: Citation `F1TENTHRules2023' on page 23 undefined on input line 7
+84.
+
+
+LaTeX Warning: Citation `Bak2021Stress' on page 23 undefined on input line 786.
+
+
+
+LaTeX Warning: Citation `Betz2022Survey' on page 23 undefined on input line 786
+.
+
+
+LaTeX Warning: Citation `Ivanov2020Verifying' on page 23 undefined on input lin
+e 789.
+
+
+LaTeX Warning: Citation `Rosolia2020LMPC' on page 23 undefined on input line 79
+4.
+
+
+LaTeX Warning: Citation `Wang2020LMPC' on page 23 undefined on input line 794.
+
+
+LaTeX Warning: Citation `Kabzan2019LearningMPC' on page 23 undefined on input l
+ine 795.
+
+
+LaTeX Warning: Citation `Jain2020Bayesrace' on page 23 undefined on input line 
+795.
+
+
+LaTeX Warning: Citation `Betz2022Survey' on page 23 undefined on input line 801
+.
+
+
+LaTeX Warning: Reference `sec:val-colisao' on page 23 undefined on input line 8
+05.
+
+
+LaTeX Warning: Citation `Heilmeier2020MinCurv' on page 23 undefined on input li
+ne 816.
+
+
+LaTeX Warning: Citation `Wang2020LMPC' on page 23 undefined on input line 816.
+
+
+LaTeX Warning: Citation `Jain2020Bayesrace' on page 23 undefined on input line 
+816.
+
+
+LaTeX Warning: Citation `Evans2023Comparing' on page 23 undefined on input line
+ 818.
+
+
+LaTeX Warning: Citation `Stachowicz2023FastRLAP' on page 23 undefined on input 
+line 818.
+
+
+LaTeX Warning: Citation `Laskey2017DART' on page 23 undefined on input line 821
+.
+
+
+LaTeX Warning: Citation `Ross2011DAgger' on page 23 undefined on input line 821
+.
+
+
+pdfTeX warning (ext4): destination with the same identifier (name{page.23}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.823 
+       [23])
+pdfTeX warning (ext4): destination with the same identifier (name{page.24}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.185 \include{capitulos/estadodaarte}
+                                       [24] (./capitulos/ferramentas.tex
+Cap\'{\i }tulo 2.
+
+LaTeX Warning: Citation `quigley2009ros' on page 25 undefined on input line 9.
+
+
+LaTeX Warning: Citation `kortenkamp2016robotic' on page 25 undefined on input l
+ine 16.
+
+
+LaTeX Warning: Citation `gerkey2003player' on page 25 undefined on input line 1
+7.
+
+
+LaTeX Warning: Citation `OKelly2020F1TENTH' on page 25 undefined on input line 
+25.
+
+
+LaTeX Warning: Citation `macenski2022robot' on page 25 undefined on input line 
+34.
+
+
+LaTeX Warning: Citation `maruyama2016exploring' on page 25 undefined on input l
+ine 43.
+
+
+pdfTeX warning (ext4): destination with the same identifier (name{page.25}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.47     \item \textbf
+                      {Discovery dinÃ¢mico}: Permite que novos nÃ³s sejam de...
+[25]
+
+LaTeX Warning: Citation `staranowicz2013survey' on page 26 undefined on input l
+ine 57.
+
+
+LaTeX Warning: Citation `gutierrez2019time' on page 26 undefined on input line 
+66.
+
+
+pdfTeX warning (ext4): destination with the same identifier (name{page.26}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.93 \subsection
+                {Middleware e Camadas de AbstraÃ§Ã£o} [26]
+
+LaTeX Warning: Citation `maruyama2016exploring' on page 27 undefined on input l
+ine 97.
+
+
+LaTeX Warning: Citation `kronauer2021latency' on page 27 undefined on input lin
+e 108.
+
+
+LaTeX Warning: Citation `quigley2015programming' on page 27 undefined on input 
+line 120.
+
+
+pdfTeX warning (ext4): destination with the same identifier (name{page.27}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.131     \item \textbf
+                       {Motor BLDC}: Tipicamente controlado via ESC (Electro...
+[27]
+
+LaTeX Warning: Citation `macenski2022robot' on page 28 undefined on input line 
+138.
+
+
+LaTeX Warning: Citation `foote2013tf' on page 28 undefined on input line 143.
+
+
+LaTeX Warning: Citation `macenski2020marathon' on page 28 undefined on input li
+ne 161.
+
+
+pdfTeX warning (ext4): destination with the same identifier (name{page.28}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.173     \item M
+                 onitoramento contÃ­nuo de condiÃ§Ãµes de seguranÃ§a e desem...
+[28]
+
+LaTeX Warning: Citation `colledanchise2018behavior' on page 29 undefined on inp
+ut line 180.
+
+
+LaTeX Warning: Citation `rosmann2017integrated' on page 29 undefined on input l
+ine 189.
+
+
+LaTeX Warning: Citation `verschueren2016time' on page 29 undefined on input lin
+e 190.
+
+
+LaTeX Warning: Citation `fox2003adapting' on page 29 undefined on input line 19
+8.
+
+
+LaTeX Warning: Citation `koide2019portable' on page 29 undefined on input line 
+206.
+
+
+pdfTeX warning (ext4): destination with the same identifier (name{page.29}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.213 
+       [29]
+
+LaTeX Warning: Citation `casini2019response' on page 30 undefined on input line
+ 225.
+
+
+LaTeX Warning: Citation `kronauer2021latency' on page 30 undefined on input lin
+e 239.
+
+
+pdfTeX warning (ext4): destination with the same identifier (name{page.30}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.251     \item \textbf
+                       {rosbag2}: GravaÃ§Ã£o e reproduÃ§Ã£o de dados de sens...
+[30]
+
+LaTeX Warning: Citation `macenski2022robot' on page 31 undefined on input line 
+257.
+
+
+LaTeX Warning: Citation `thrun2005' on page 31 undefined on input line 266.
+
+[31]
+Overfull \hbox (8.8326pt too wide) in paragraph at lines 290--297
+[]\T1/lmr/m/n/12 (-20) No con-texto do ROS2, a odome-tria de-sem-penha um pa-pe
+l fun-da-men-tal na manutenção
+[32]
+
+LaTeX Warning: Citation `Babu2020Simulator' on page 33 undefined on input line 
+356.
+
+[33] [34]
+
+LaTeX Warning: Citation `OKelly2020F1TENTH' on page 35 undefined on input line 
+444.
+
+
+LaTeX Warning: Citation `Babu2020Simulator' on page 35 undefined on input line 
+451.
+
+
+Underfull \vbox (badness 1688) has occurred while \output is active [35]
+
+LaTeX Warning: Citation `Wang2020LMPC' on page 36 undefined on input line 470.
+
+
+LaTeX Warning: Citation `Karaman2011Optimal' on page 36 undefined on input line
+ 482.
+
+[36]
+
+LaTeX Warning: Citation `Stachowicz2023FastRLAP' on page 37 undefined on input 
+line 504.
+
+
+LaTeX Warning: Citation `Ivanov2020Verifying' on page 37 undefined on input lin
+e 515.
+
+[37]
+
+LaTeX Warning: Citation `Wang2020LMPC' on page 38 undefined on input line 541.
+
+
+LaTeX Warning: Citation `Betz2022Survey' on page 38 undefined on input line 544
+.
+
+
+LaTeX Warning: Citation `Babu2020Simulator' on page 38 undefined on input line 
+551.
+
+
+LaTeX Warning: Citation `OKelly2020F1TENTH' on page 38 undefined on input line 
+566.
+
+[38]
+
+LaTeX Warning: Citation `OKelly2020F1TENTH' on page 39 undefined on input line 
+606.
+
+
+LaTeX Warning: Citation `Stachowicz2023FastRLAP' on page 39 undefined on input 
+line 623.
+
+[39]
+
+LaTeX Warning: Citation `Babu2020Simulator' on page 40 undefined on input line 
+659.
+
+
+LaTeX Warning: Citation `Wang2020LMPC' on page 40 undefined on input line 679.
+
+[40{/usr/share/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}]
+
+LaTeX Warning: Citation `Karaman2011Optimal' on page 41 undefined on input line
+ 696.
+
+
+LaTeX Warning: Citation `Ivanov2020Verifying' on page 41 undefined on input lin
+e 717.
+
+[41]
+
+LaTeX Warning: Citation `Karaman2011Optimal' on page 42 undefined on input line
+ 762.
+
+[42]
+
+LaTeX Warning: Citation `Wang2020LMPC' on page 43 undefined on input line 780.
+
+
+Overfull \hbox (11.18776pt too wide) in paragraph at lines 789--790
+[]\T1/lmr/bx/n/12 (-20) Métodos de Otimiza-ção Numérica\T1/lmr/m/n/12 (-20) : U
+ti-lizam téc-ni-cas como pro-gra-mação quadrática
+
+LaTeX Warning: Reference `sec:implementacao_pratica' on page 43 undefined on in
+put line 807.
+
+[43] [44]
+
+LaTeX Warning: Citation `OKelly2020F1TENTH' on page 45 undefined on input line 
+881.
+
+[45]
+
+LaTeX Warning: Citation `Ivanov2020Verifying' on page 46 undefined on input lin
+e 927.
+
+
+LaTeX Warning: Citation `Bak2021Stress' on page 46 undefined on input line 947.
+
+
+) [46] (./capitulos/construcao_veiculo.tex
+Cap\'{\i }tulo 3.
+[47] [48] [49] [50] [51] [52]
+
+LaTeX Warning: Citation `F1TENTHVESC' on page 53 undefined on input line 254.
+
+
+Overfull \hbox (17.67053pt too wide) in paragraph at lines 273--276
+\T1/lmr/m/n/12 (-20) ve-loci-dade e di-reção no tópico \T1/lmtt/m/n/12 /drive \
+T1/lmr/m/n/12 (-20) (tipo \T1/lmtt/m/n/12 ackermann_msgs/AckermannDriveStamped\
+T1/lmr/m/n/12 (-20) ). 
+[53]
+
+LaTeX Warning: Citation `YDLIDARDriver' on page 54 undefined on input line 301.
+
+
+[54]
+Overfull \hbox (51.81638pt too wide) in paragraph at lines 332--338
+[]\T1/lmr/m/n/12 (-20) Essa in-te-gração fornece os da-dos de per-cepção essen-
+ci-ais, no for-mato \T1/lmtt/m/n/12 sensor_msgs/LaserScan\T1/lmr/m/n/12 (-20) ,
+
+) [55] (./capitulos/regulamentacao.tex [56]
+Cap\'{\i }tulo 4.
+
+LaTeX Warning: Citation `F1TENTHRules2023' on page 57 undefined on input line 5
+.
+
+
+LaTeX Warning: Citation `F1TENTHRules2023' on page 57 undefined on input line 1
+0.
+
+
+LaTeX Warning: Citation `OKelly2020F1TENTH' on page 57 undefined on input line 
+11.
+
+
+LaTeX Warning: Citation `F1TENTHRules2023' on page 57 undefined on input line 2
+1.
+
+
+LaTeX Warning: Citation `F1TENTHRules2023' on page 57 undefined on input line 3
+1.
+
+
+LaTeX Warning: Citation `F1TENTHRules2023' on page 57 undefined on input line 4
+7.
+
+
+LaTeX Warning: Citation `F1TENTHRules2023' on page 57 undefined on input line 5
+4.
+
+[57]
+
+LaTeX Warning: Citation `F1TENTHRules2023' on page 58 undefined on input line 6
+6.
+
+
+LaTeX Warning: Citation `F1TENTHRules2023' on page 58 undefined on input line 8
+4.
+
+[58]
+
+LaTeX Warning: Citation `F1TENTHRules2023' on page 59 undefined on input line 1
+05.
+
+
+LaTeX Warning: Citation `F1TENTHRules2023' on page 59 undefined on input line 1
+09.
+
+
+LaTeX Warning: Citation `F1TENTHRules2023' on page 59 undefined on input line 1
+12.
+
+
+LaTeX Warning: Citation `OKelly2020F1TENTH' on page 59 undefined on input line 
+120.
+
+
+LaTeX Warning: Citation `OKelly2020F1TENTH' on page 59 undefined on input line 
+137.
+
+[59]
+
+LaTeX Warning: Citation `OKelly2020F1TENTH' on page 60 undefined on input line 
+164.
+
+
+LaTeX Warning: Citation `Betz2022Survey' on page 60 undefined on input line 164
+.
+
+
+LaTeX Warning: Citation `F1TENTHRules2023' on page 60 undefined on input line 1
+72.
+
+[60]
+
+LaTeX Warning: Citation `F1TENTHRules2023' on page 61 undefined on input line 1
+87.
+
+
+LaTeX Warning: Citation `F1TENTHRules2023' on page 61 undefined on input line 2
+07.
+
+
+LaTeX Warning: Citation `F1TENTHRules2023' on page 61 undefined on input line 2
+22.
+
+[61]
+
+LaTeX Warning: Citation `F1TENTHRules2023' on page 62 undefined on input line 2
+50.
+
+
+LaTeX Warning: Citation `F1TENTHRules2023' on page 62 undefined on input line 2
+72.
+
+[62]
+
+LaTeX Warning: Citation `Betz2022Survey' on page 63 undefined on input line 284
+.
+
+
+LaTeX Warning: Citation `OKelly2020F1TENTH' on page 63 undefined on input line 
+296.
+
+) [63] (./capitulos/consideracoes.tex [64]
+Cap\'{\i }tulo 5.
+) [65] [66] [67] [68] (./capitulos/proposta.tex
+Cap\'{\i }tulo 6.
+[69] [70]
+Overfull \hbox (22.16048pt too wide) in paragraph at lines 99--102
+[]\T1/lmr/m/n/12 (-20) No âm-bito do con-t-role autônomo, foram im-ple-men-ta-d
+os con-tro-ladores PID (Proportional-
+
+Overfull \hbox (52.65863pt too wide) in paragraph at lines 166--167
+ [][] 
+[71] [72] [73] [74] [75] [76] [77] [78]
+Overfull \hbox (26.82928pt too wide) in paragraph at lines 486--487
+[]\T1/lmr/bx/n/12 (-20) Termo Deriva-tivo\T1/lmr/m/n/12 (-20) : Cal-cula a taxa
+ de vari-ação do erro (\T1/lmtt/m/n/12 error - self.prev_error\T1/lmr/m/n/12 (-
+20) ),
+[79]
+Overfull \hbox (22.48645pt too wide) in paragraph at lines 539--541
+[]\T1/lmr/m/n/12 (-20) Recalcula os lim-ites dos eixos para aco-modar novos da-
+dos (\T1/lmtt/m/n/12 relim \T1/lmr/m/n/12 (-20) e \T1/lmtt/m/n/12 autoscale_vie
+w\T1/lmr/m/n/12 (-20) ). 
+
+Overfull \hbox (66.5358pt too wide) in paragraph at lines 546--549
+[]\T1/lmr/m/n/12 (-20) Esta fun-cional-i-dade, em-b-ora de-sati-vada no código 
+prin-ci-pal (\T1/lmtt/m/n/12 #self.plot_error_vs_time()\T1/lmr/m/n/12 (-20) ),
+[80] [81] [82]
+Overfull \hbox (15.89851pt too wide) in paragraph at lines 714--715
+ [][] 
+[83] [84] [85] [86] [87] [88] [89] [90] [91] [92] [93]
+Overfull \hbox (2.67924pt too wide) in paragraph at lines 1201--1203
+[]\T1/lmr/m/n/12 (-20) Determina mag-ni-tude das difer-enças us-ando norma eu-c
+lid-i-ana (\T1/lmtt/m/n/12 np.linalg.norm\T1/lmr/m/n/12 (-20) ) 
+[94] [95] [96] [97] [98] [99]
+Overfull \hbox (39.11172pt too wide) in paragraph at lines 1484--1485
+ [][] 
+[100] [101] [102] [103] [104] [105] [106]
+Cap\'{\i }tulo 7.
+
+LaTeX Warning: Citation `f1tenthgymufabc' on page 107 undefined on input line 1
+720.
+
+
+LaTeX Warning: Citation `f1tenthgymros' on page 107 undefined on input line 172
+6.
+
+[107] [108] [109]) [110] (./capitulos/metodologia_validacao.tex
+Cap\'{\i }tulo 8.
+
+LaTeX Warning: Citation `Betz2022Survey' on page 111 undefined on input line 11
+.
+
+
+LaTeX Warning: Citation `OKelly2020F1TENTH' on page 111 undefined on input line
+ 21.
+
+
+LaTeX Warning: Citation `f1tenthgymros' on page 111 undefined on input line 22.
+
+
+
+LaTeX Warning: Citation `f1tenthgymufabc' on page 111 undefined on input line 2
+2.
+
+
+LaTeX Warning: Reference `sec:val-problema' on page 111 undefined on input line
+ 29.
+
+
+LaTeX Warning: Reference `sec:val-contrato' on page 111 undefined on input line
+ 30.
+
+
+LaTeX Warning: Reference `sec:val-congelado' on page 111 undefined on input lin
+e 32.
+
+
+LaTeX Warning: Reference `sec:val-estatistica' on page 111 undefined on input l
+ine 34.
+
+
+LaTeX Warning: Reference `sec:val-camadas' on page 111 undefined on input line 
+35.
+
+
+LaTeX Warning: Reference `sec:val-limitacoes' on page 111 undefined on input li
+ne 37.
+
+[111]
+
+LaTeX Warning: Reference `sec:val-camadas' on page 112 undefined on input line 
+98.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active [112]
+[113]
+
+LaTeX Warning: Reference `tab:val_sensibilidade' on page 114 undefined on input
+ line 174.
+
+
+LaTeX Warning: Reference `sec:val-limitacoes' on page 114 undefined on input li
+ne 183.
+
+[114]
+
+LaTeX Warning: Citation `Ivanov2020Verifying' on page 115 undefined on input li
+ne 219.
+
+
+LaTeX Warning: Citation `Bak2021Stress' on page 115 undefined on input line 220
+.
+
+[115]
+
+LaTeX Warning: Reference `sec:val-limitacoes' on page 116 undefined on input li
+ne 280.
+
+[116] [117]
+Underfull \hbox (badness 10000) in paragraph at lines 386--387
+[]|\T1/lmr/m/n/12 (+20) reprovado
+
+Underfull \hbox (badness 3525) in paragraph at lines 388--388
+[]|\T1/lmr/m/n/12 (+20) 300k + \T1/lmtt/m/n/12 wall_w
+
+Underfull \hbox (badness 10000) in paragraph at lines 388--389
+[]|\T1/lmr/m/n/12 (+20) reprovado
+
+LaTeX Warning: Reference `tab:val_acoes_e3' on page 118 undefined on input line
+ 398.
+
+[118] [119]
+
+LaTeX Warning: Reference `sec:val-congelado' on page 120 undefined on input lin
+e 485.
+
+
+LaTeX Warning: Reference `tab:val_heldout' on page 120 undefined on input line 
+494.
+
+[120]
+
+LaTeX Warning: Reference `tab:val_heldout' on page 121 undefined on input line 
+523.
+
+[121] [122]
+
+LaTeX Warning: Reference `sec:val-limitacoes' on page 123 undefined on input li
+ne 621.
+
+
+LaTeX Warning: Reference `cap:estArte' on page 123 undefined on input line 629.
+
+
+
+Underfull \vbox (badness 3471) has occurred while \output is active [123]
+
+LaTeX Warning: Reference `tab:val_camadas' on page 124 undefined on input line 
+668.
+
+
+LaTeX Warning: Reference `sec:val-contrato' on page 124 undefined on input line
+ 678.
+
+
+LaTeX Warning: Reference `sec:val-contrato' on page 124 undefined on input line
+ 718.
+
+
+Underfull \vbox (badness 3058) has occurred while \output is active [124]
+
+LaTeX Warning: Reference `sec:val-problema' on page 125 undefined on input line
+ 738.
+
+
+LaTeX Warning: Reference `sec:val-problema' on page 125 undefined on input line
+ 754.
+
+[125]
+
+LaTeX Warning: Reference `sec:val-congelado' on page 126 undefined on input lin
+e 783.
+
+
+Underfull \vbox (badness 1067) has occurred while \output is active [126]
+
+LaTeX Warning: Reference `tab:val_deploy' on page 127 undefined on input line 8
+53.
+
+
+LaTeX Warning: Reference `sec:val-problema' on page 127 undefined on input line
+ 874.
+
+
+LaTeX Warning: Reference `tab:val_sensibilidade' on page 127 undefined on input
+ line 881.
+
+[127]
+
+LaTeX Warning: Citation `Tobin2017DomainRand' on page 128 undefined on input li
+ne 904.
+
+
+LaTeX Warning: Citation `Peng2018DynamicsRand' on page 128 undefined on input l
+ine 904.
+
+
+LaTeX Warning: Citation `Zhao2020Sim2Real' on page 128 undefined on input line 
+905.
+
+
+LaTeX Warning: Citation `Zarrar2024TinyLidarNet' on page 128 undefined on input
+ line 908.
+
+
+LaTeX Warning: Citation `Evans2023Comparing' on page 128 undefined on input lin
+e 911.
+
+
+LaTeX Warning: Citation `Ghignone2025RLPP' on page 128 undefined on input line 
+913.
+
+[128]
+
+LaTeX Warning: Reference `sec:val-duascopias' on page 129 undefined on input li
+ne 951.
+
+[129] [130]
+
+LaTeX Warning: Reference `sec:val-congelado' on page 131 undefined on input lin
+e 1063.
+
+
+LaTeX Warning: Reference `cap:resultados' on page 131 undefined on input line 1
+066.
+
+
+LaTeX Warning: Citation `Tobin2017DomainRand' on page 131 undefined on input li
+ne 1091.
+
+
+LaTeX Warning: Citation `Peng2018DynamicsRand' on page 131 undefined on input l
+ine 1091.
+
+[131]
+
+LaTeX Warning: Reference `cap:resultados' on page 132 undefined on input line 1
+109.
+
+
+LaTeX Warning: Reference `sec:val-escopo-simulacao' on page 132 undefined on in
+put line 1118.
+
+[132]
+
+LaTeX Warning: Reference `sec:val-problema' on page 133 undefined on input line
+ 1148.
+
+
+LaTeX Warning: Reference `sec:val-estatistica' on page 133 undefined on input l
+ine 1162.
+
+
+LaTeX Warning: Reference `sec:val-estatistica' on page 133 undefined on input l
+ine 1173.
+
+
+LaTeX Warning: Reference `tab:val_ic' on page 133 undefined on input line 1195.
+
+
+[133]
+
+LaTeX Warning: Reference `sec:res-e3' on page 134 undefined on input line 1211.
+
+
+
+LaTeX Warning: Reference `sec:val-estatistica' on page 134 undefined on input l
+ine 1229.
+
+
+LaTeX Warning: Reference `tab:val_sensibilidade' on page 134 undefined on input
+ line 1245.
+
+
+Underfull \vbox (badness 1286) has occurred while \output is active [134]
+
+LaTeX Warning: Reference `tab:val_sensibilidade' on page 135 undefined on input
+ line 1269.
+
+
+LaTeX Warning: Reference `sec:val-problema' on page 135 undefined on input line
+ 1271.
+
+
+LaTeX Warning: Reference `tab:val_acoes_e3' on page 135 undefined on input line
+ 1279.
+
+
+LaTeX Warning: Reference `tab:val_deploy' on page 135 undefined on input line 1
+279.
+
+
+LaTeX Warning: Reference `tab:val_ic' on page 135 undefined on input line 1279.
+
+
+[135]) [136] [137] [138] (./capitulos/resultados.tex
+Cap\'{\i }tulo 9.
+
+LaTeX Warning: Reference `cap:metodologia' on page 139 undefined on input line 
+6.
+
+
+LaTeX Warning: Reference `cap:estArte' on page 139 undefined on input line 8.
+
+
+LaTeX Warning: Citation `OKelly2020F1TENTH' on page 139 undefined on input line
+ 12.
+
+
+LaTeX Warning: Citation `f1tenthgymros' on page 139 undefined on input line 15.
+
+
+
+LaTeX Warning: Citation `f1tenthgymufabc' on page 139 undefined on input line 1
+5.
+
+
+LaTeX Warning: Reference `sec:arte-s2r' on page 139 undefined on input line 18.
+
+
+
+LaTeX Warning: Reference `cap:estArte' on page 139 undefined on input line 18.
+
+
+LaTeX Warning: Reference `sec:res-e1' on page 139 undefined on input line 22.
+
+
+LaTeX Warning: Reference `sec:res-e2' on page 139 undefined on input line 22.
+
+
+LaTeX Warning: Reference `sec:res-e3' on page 139 undefined on input line 23.
+
+
+LaTeX Warning: Reference `sec:res-deploy' on page 139 undefined on input line 2
+4.
+
+
+LaTeX Warning: Reference `sec:res-discussao' on page 139 undefined on input lin
+e 24.
+
+
+LaTeX Warning: Reference `tab:res_proveniencia' on page 139 undefined on input 
+line 30.
+
+
+LaTeX Warning: Reference `sec:val-congelado' on page 139 undefined on input lin
+e 31.
+
+[139]
+
+LaTeX Warning: Reference `sec:val-limitacoes' on page 140 undefined on input li
+ne 78.
+
+
+LaTeX Warning: Citation `Coulter1992PurePursuit' on page 140 undefined on input
+ line 87.
+
+
+LaTeX Warning: Citation `F1TENTHRaceTracks' on page 140 undefined on input line
+ 88.
+
+
+LaTeX Warning: Reference `tab:res_e1_grade' on page 140 undefined on input line
+ 99.
+
+[140]
+
+LaTeX Warning: Reference `cap:metodologia' on page 141 undefined on input line 
+151.
+
+
+LaTeX Warning: Reference `sec:val-limitacoes' on page 141 undefined on input li
+ne 159.
+
+
+LaTeX Warning: Reference `sec:res-discussao' on page 141 undefined on input lin
+e 159.
+
+
+LaTeX Warning: Reference `sec:val-estatistica' on page 141 undefined on input l
+ine 166.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+LaTeX Warning: Reference `tab:res_e1_controle' on page 141 undefined on input l
+ine 191.
+
+
+LaTeX Warning: Reference `sec:val-estatistica' on page 141 undefined on input l
+ine 193.
+
+[141]
+
+LaTeX Warning: Citation `Zarrar2024TinyLidarNet' on page 142 undefined on input
+ line 209.
+
+
+LaTeX Warning: Reference `sec:arte-il' on page 142 undefined on input line 210.
+
+
+
+LaTeX Warning: Citation `Laskey2017DART' on page 142 undefined on input line 21
+2.
+
+
+LaTeX Warning: Reference `tab:res_e2_laco' on page 142 undefined on input line 
+220.
+
+
+LaTeX Warning: Reference `tab:res_e1_controle' on page 142 undefined on input l
+ine 251.
+
+
+LaTeX Warning: Reference `tab:res_e1_controle' on page 142 undefined on input l
+ine 251.
+
+
+LaTeX Warning: Reference `tab:res_e2_laco' on page 142 undefined on input line 
+255.
+
+
+LaTeX Warning: Reference `sec:val-congelado' on page 142 undefined on input lin
+e 264.
+
+[142]
+
+LaTeX Warning: Reference `sec:arte-il' on page 143 undefined on input line 276.
+
+
+
+LaTeX Warning: Reference `tab:res_e2_criterios' on page 143 undefined on input 
+line 309.
+
+
+LaTeX Warning: Reference `sec:val-estatistica' on page 143 undefined on input l
+ine 312.
+
+
+LaTeX Warning: Reference `sec:arte-rl' on page 143 undefined on input line 320.
+
+
+
+LaTeX Warning: Reference `sec:val-heldout' on page 143 undefined on input line 
+326.
+
+
+LaTeX Warning: Reference `tab:val_heldout' on page 143 undefined on input line 
+326.
+
+
+Underfull \vbox (badness 1019) has occurred while \output is active [143]
+
+LaTeX Warning: Reference `tab:res_e2_laco' on page 144 undefined on input line 
+334.
+
+
+LaTeX Warning: Reference `tab:val_heldout' on page 144 undefined on input line 
+339.
+
+
+LaTeX Warning: Citation `Bosello2022CrossTrack' on page 144 undefined on input 
+line 349.
+
+
+LaTeX Warning: Citation `Haarnoja2018SAC' on page 144 undefined on input line 3
+56.
+
+
+LaTeX Warning: Citation `Raffin2021SB3' on page 144 undefined on input line 357
+.
+
+
+LaTeX Warning: Reference `sec:arte-rl' on page 144 undefined on input line 358.
+
+
+
+LaTeX Warning: Citation `Johannink2019Residual' on page 144 undefined on input 
+line 358.
+
+
+LaTeX Warning: Citation `Silver2018ResidualPolicy' on page 144 undefined on inp
+ut line 358.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+LaTeX Warning: Reference `tab:res_e3_laco' on page 144 undefined on input line 
+396.
+
+[144]
+
+LaTeX Warning: Reference `tab:val_acoes_e3' on page 145 undefined on input line
+ 420.
+
+
+LaTeX Warning: Reference `tab:res_e3_pontos' on page 145 undefined on input lin
+e 421.
+
+
+LaTeX Warning: Reference `tab:res_e3_pontos' on page 145 undefined on input lin
+e 450.
+
+[145]
+
+LaTeX Warning: Reference `sec:val-congelado' on page 146 undefined on input lin
+e 462.
+
+
+LaTeX Warning: Reference `tab:res_e3_pontos' on page 146 undefined on input lin
+e 467.
+
+
+LaTeX Warning: Reference `sec:res-discussao' on page 146 undefined on input lin
+e 489.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active [146]
+
+LaTeX Warning: Reference `tab:res_e3_criterios' on page 147 undefined on input 
+line 529.
+
+
+LaTeX Warning: Reference `sec:val-camadas' on page 147 undefined on input line 
+555.
+
+
+LaTeX Warning: Reference `sec:res-e3' on page 147 undefined on input line 559.
+
+
+LaTeX Warning: Reference `sec:val-camadas' on page 147 undefined on input line 
+560.
+
+
+LaTeX Warning: Reference `sec:res-discussao' on page 147 undefined on input lin
+e 563.
+
+[147]
+
+LaTeX Warning: Reference `tab:val_deploy' on page 148 undefined on input line 5
+85.
+
+
+LaTeX Warning: Reference `tab:val_deploy' on page 148 undefined on input line 5
+85.
+
+
+LaTeX Warning: Reference `tab:res_deploy' on page 148 undefined on input line 5
+89.
+
+
+LaTeX Warning: Reference `tab:val_deploy' on page 148 undefined on input line 6
+00.
+
+
+LaTeX Warning: Reference `tab:val_deploy' on page 148 undefined on input line 6
+04.
+
+
+LaTeX Warning: Reference `sec:val-problema' on page 148 undefined on input line
+ 617.
+
+
+LaTeX Warning: Reference `sec:val-limitacoes' on page 148 undefined on input li
+ne 618.
+
+
+LaTeX Warning: Reference `tab:res_deploy' on page 148 undefined on input line 6
+23.
+
+[148]
+
+LaTeX Warning: Reference `sec:val-congelado' on page 149 undefined on input lin
+e 638.
+
+
+LaTeX Warning: Reference `tab:res_proveniencia' on page 149 undefined on input 
+line 639.
+
+
+LaTeX Warning: Reference `tab:res_deploy' on page 149 undefined on input line 6
+45.
+
+
+LaTeX Warning: Reference `sec:arte-s2r' on page 149 undefined on input line 664
+.
+
+
+LaTeX Warning: Reference `sec:val-ponte' on page 149 undefined on input line 67
+2.
+
+
+Underfull \vbox (badness 1888) has occurred while \output is active [149]
+
+LaTeX Warning: Reference `tab:res_s2r' on page 150 undefined on input line 726.
+
+
+
+LaTeX Warning: Reference `sec:res-ic' on page 150 undefined on input line 731.
+
+
+LaTeX Warning: Reference `tab:res_s2r_gates' on page 150 undefined on input lin
+e 738.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active [150]
+[151]
+
+LaTeX Warning: Citation `Evans2023Comparing' on page 152 undefined on input lin
+e 818.
+
+
+LaTeX Warning: Reference `sec:val-congelado' on page 152 undefined on input lin
+e 825.
+
+
+LaTeX Warning: Reference `sec:val-ponte' on page 152 undefined on input line 83
+3.
+
+
+LaTeX Warning: Reference `tab:res_e41' on page 152 undefined on input line 836.
+
+
+
+Overfull \hbox (29.43921pt too wide) in paragraph at lines 848--873
+ [][] 
+[152]
+
+LaTeX Warning: Reference `sec:val-relativo' on page 153 undefined on input line
+ 890.
+
+
+LaTeX Warning: Reference `tab:res_s2r' on page 153 undefined on input line 908.
+
+
+
+LaTeX Warning: Reference `tab:res_e41_cond' on page 153 undefined on input line
+ 909.
+
+
+LaTeX Warning: Reference `tab:res_s2r_gates' on page 153 undefined on input lin
+e 914.
+
+[153]
+
+LaTeX Warning: Reference `tab:res_sintese' on page 154 undefined on input line 
+977.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active [154]
+
+LaTeX Warning: Reference `tab:val_ic' on page 155 undefined on input line 1025.
+
+
+
+LaTeX Warning: Reference `sec:val-limitacoes' on page 155 undefined on input li
+ne 1026.
+
+[155]
+
+LaTeX Warning: Reference `sec:res-e3' on page 156 undefined on input line 1051.
+
+
+
+LaTeX Warning: Reference `sec:val-limitacoes' on page 156 undefined on input li
+ne 1057.
+
+
+LaTeX Warning: Reference `tab:val_sensibilidade' on page 156 undefined on input
+ line 1065.
+
+
+LaTeX Warning: Reference `sec:val-limitacoes' on page 156 undefined on input li
+ne 1066.
+
+
+LaTeX Warning: Reference `tab:res_e3_criterios' on page 156 undefined on input 
+line 1081.
+
+[156]
+
+LaTeX Warning: Reference `sec:val-limitacoes' on page 157 undefined on input li
+ne 1092.
+
+
+LaTeX Warning: Reference `sec:val-heldout' on page 157 undefined on input line 
+1101.
+
+
+LaTeX Warning: Reference `sec:res-e2' on page 157 undefined on input line 1104.
+
+
+
+LaTeX Warning: Reference `tab:res_e3_pontos' on page 157 undefined on input lin
+e 1122.
+
+[157]
+
+LaTeX Warning: Reference `sec:val-colisao' on page 158 undefined on input line 
+1137.
+
+
+LaTeX Warning: Reference `sec:arte-lacuna' on page 158 undefined on input line 
+1143.
+
+
+LaTeX Warning: Reference `sec:res-deploy' on page 158 undefined on input line 1
+151.
+
+
+LaTeX Warning: Reference `tab:res_sintese' on page 158 undefined on input line 
+1176.
+
+) [158] (./capitulos/conclusao.tex
+
+LaTeX Warning: Reference `cap:resultados' on page 159 undefined on input line 1
+8.
+
+
+LaTeX Warning: Reference `cap:metodologia' on page 159 undefined on input line 
+19.
+
+
+LaTeX Warning: Reference `tab:res_sintese' on page 159 undefined on input line 
+30.
+
+
+LaTeX Warning: Reference `cap:resultados' on page 159 undefined on input line 3
+0.
+
+
+LaTeX Warning: Reference `sec:res-deploy' on page 159 undefined on input line 4
+9.
+
+[159]
+
+LaTeX Warning: Reference `cap:resultados' on page 160 undefined on input line 5
+4.
+
+
+LaTeX Warning: Reference `tab:val_ic' on page 160 undefined on input line 57.
+
+
+LaTeX Warning: Reference `tab:val_sensibilidade' on page 160 undefined on input
+ line 60.
+
+
+LaTeX Warning: Reference `sec:val-heldout' on page 160 undefined on input line 
+63.
+
+
+LaTeX Warning: Reference `sec:res-deploy' on page 160 undefined on input line 7
+3.
+
+
+LaTeX Warning: Reference `cap:metodologia' on page 160 undefined on input line 
+90.
+
+[160]
+
+LaTeX Warning: Reference `cap:metodologia' on page 161 undefined on input line 
+118.
+
+
+LaTeX Warning: Reference `tab:conc_objetivos' on page 161 undefined on input li
+ne 120.
+
+
+LaTeX Warning: Reference `cap:proposta' on page 161 undefined on input line 152
+.
+
+
+LaTeX Warning: Reference `cap:resultados' on page 161 undefined on input line 1
+54.
+
+
+LaTeX Warning: Reference `sec:arte-lacuna' on page 161 undefined on input line 
+158.
+
+[161]
+
+LaTeX Warning: Reference `sec:arte-lacuna' on page 162 undefined on input line 
+204.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active [162]
+
+LaTeX Warning: Reference `sec:res-s2r' on page 163 undefined on input line 240.
+
+
+
+LaTeX Warning: Reference `sec:res-e41' on page 163 undefined on input line 248.
+
+
+
+LaTeX Warning: Reference `tab:conc_gap' on page 163 undefined on input line 255
+.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active [163]
+
+LaTeX Warning: Reference `tab:conc_gap' on page 164 undefined on input line 293
+.
+
+
+LaTeX Warning: Citation `YDLIDARDriver' on page 164 undefined on input line 298
+.
+
+
+Underfull \vbox (badness 6961) has occurred while \output is active [164]
+
+LaTeX Warning: Reference `cap:metodologia' on page 165 undefined on input line 
+343.
+
+[165]
+
+LaTeX Warning: Reference `sec:res-discussao' on page 166 undefined on input lin
+e 359.
+
+
+LaTeX Warning: Reference `sec:val-heldout' on page 166 undefined on input line 
+377.
+
+
+LaTeX Warning: Reference `sec:res-deploy' on page 166 undefined on input line 3
+89.
+
+
+LaTeX Warning: Reference `sec:arte-lacuna' on page 166 undefined on input line 
+395.
+
+[166]
+
+LaTeX Warning: Reference `cap:metodologia' on page 167 undefined on input line 
+409.
+
+) [167] (./dissertacao.bbl (./dissertacao.brf) [168]
+bibitemlist
+[169] [170] [171] [172] [173]) [174]
+
+enddocument/afterlastpage (AED): lastpage setting LastPage.
+(/tmp/tg-review-20260910/latex/dissertacao.aux
+(/tmp/tg-review-20260910/latex/pretextual/capa.aux)
+(/tmp/tg-review-20260910/latex/pretextual/catalografica.aux)
+(/tmp/tg-review-20260910/latex/pretextual/assinaturas.aux)
+(/tmp/tg-review-20260910/latex/pretextual/agradecimentos.aux)
+(/tmp/tg-review-20260910/latex/pretextual/epigrafe.aux)
+(/tmp/tg-review-20260910/latex/pretextual/resumos.aux)
+(/tmp/tg-review-20260910/latex/capitulos/introducao.aux)
+(/tmp/tg-review-20260910/latex/capitulos/estadodaarte.aux)
+(/tmp/tg-review-20260910/latex/capitulos/ferramentas.aux)
+(/tmp/tg-review-20260910/latex/capitulos/construcao_veiculo.aux)
+(/tmp/tg-review-20260910/latex/capitulos/regulamentacao.aux)
+(/tmp/tg-review-20260910/latex/capitulos/consideracoes.aux)
+(/tmp/tg-review-20260910/latex/capitulos/proposta.aux)
+(/tmp/tg-review-20260910/latex/capitulos/metodologia_validacao.aux)
+(/tmp/tg-review-20260910/latex/capitulos/resultados.aux)
+(/tmp/tg-review-20260910/latex/capitulos/conclusao.aux))
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+
+Package lastpage Warning: Rerun to get the references right on input line 225.
+
+ )
+(see the transcript file for additional information)</usr/share/texmf-dist/font
+s/type1/public/lm/lmbx10.pfb></usr/share/texmf-dist/fonts/type1/public/lm/lmbx1
+2.pfb></usr/share/texmf-dist/fonts/type1/public/lm/lmex10.pfb></usr/share/texmf
+-dist/fonts/type1/public/lm/lmmi10.pfb></usr/share/texmf-dist/fonts/type1/publi
+c/lm/lmmi12.pfb></usr/share/texmf-dist/fonts/type1/public/lm/lmmi6.pfb></usr/sh
+are/texmf-dist/fonts/type1/public/lm/lmmi7.pfb></usr/share/texmf-dist/fonts/typ
+e1/public/lm/lmmi8.pfb></usr/share/texmf-dist/fonts/type1/public/lm/lmr10.pfb><
+/usr/share/texmf-dist/fonts/type1/public/lm/lmr12.pfb></usr/share/texmf-dist/fo
+nts/type1/public/lm/lmr7.pfb></usr/share/texmf-dist/fonts/type1/public/lm/lmr8.
+pfb></usr/share/texmf-dist/fonts/type1/public/lm/lmri10.pfb></usr/share/texmf-d
+ist/fonts/type1/public/lm/lmri12.pfb></usr/share/texmf-dist/fonts/type1/public/
+lm/lmss10.pfb></usr/share/texmf-dist/fonts/type1/public/lm/lmss12.pfb></usr/sha
+re/texmf-dist/fonts/type1/public/lm/lmss17.pfb></usr/share/texmf-dist/fonts/typ
+e1/public/lm/lmssbx10.pfb></usr/share/texmf-dist/fonts/type1/public/lm/lmsy10.p
+fb></usr/share/texmf-dist/fonts/type1/public/lm/lmsy8.pfb></usr/share/texmf-dis
+t/fonts/type1/public/lm/lmtk10.pfb></usr/share/texmf-dist/fonts/type1/public/lm
+/lmtt10.pfb></usr/share/texmf-dist/fonts/type1/public/lm/lmtt12.pfb></usr/share
+/texmf-dist/fonts/type1/public/lm/lmtti10.pfb>
+Output written on /tmp/tg-review-20260910/latex/dissertacao.pdf (206 pages, 130
+8878 bytes).
+Transcript written on /tmp/tg-review-20260910/latex/dissertacao.log.
+Latexmk: Getting log file '/tmp/tg-review-20260910/latex/dissertacao.log'
+Latexmk: Examining '/tmp/tg-review-20260910/latex/dissertacao.fls'
+Latexmk: Examining '/tmp/tg-review-20260910/latex/dissertacao.log'
+Latexmk: Found input bbl file 'dissertacao.bbl'
+Latexmk: References changed.
+Latexmk: References changed.
+Latexmk: Log file says output to '/tmp/tg-review-20260910/latex/dissertacao.pdf'
+Latexmk: Log file says output to '/tmp/tg-review-20260910/latex/dissertacao.pdf'
+Latexmk: Index file '/tmp/tg-review-20260910/latex/dissertacao.idx' was written
+Latexmk: Using bibtex to make bibliography file(s).
+  ===Source file '/tmp/tg-review-20260910/latex/dissertacao.bbl' for 'pdflatex'
+Create bibtex /tmp/tg-review-20260910/latex/dissertacao
+Latexmk: Found bibliography file(s):
+  ./bibliografia.bib
+  /usr/share/texmf-dist/bibtex/bib/abntex2/abntex2-options.bib
+Latexmk: applying rule 'bibtex /tmp/tg-review-20260910/latex/dissertacao'...
+Rule 'bibtex /tmp/tg-review-20260910/latex/dissertacao':  Reasons for rerun
+Category 'other':
+  Rerun of 'bibtex /tmp/tg-review-20260910/latex/dissertacao' forced or previously required:
+    Reason or flag: 'Initial set up of rule'
+
+------------
+Run number 1 of rule 'bibtex /tmp/tg-review-20260910/latex/dissertacao'
+------------
+Latexmk: Change directory to '/tmp/tg-review-20260910/latex/'.
+To assist finding of files in document directory, I set
+  BIBINPUTS='/home/disney/Documents/repos/TG/disertacao:/tmp/tg-review-20260910/latex:'
+  BSTINPUTS='/home/disney/Documents/repos/TG/disertacao:'.
+------------
+Running 'bibtex  "dissertacao.aux"'
+------------
+This is BibTeX, Version 0.99e (TeX Live 2026/Arch Linux)
+The top-level auxiliary file: dissertacao.aux
+The style file: abntex2-num.bst
+Database file #1: abntex2-options.bib
+Database file #2: bibliografia.bib
++---------------------------------------------------------+
+| Estilo bibliogrÃ¡fico abntex2-num.bst versÃ£o v-1.9.7           |
+| Em caso de dÃºvidas ou problemas com este estilo procure |
+| http://www.abntex.net.br/                               |
++---------------------------------------------------------+
+Latexmk: Change directory back to '/home/disney/Documents/repos/TG/disertacao'
+Latexmk: applying rule 'pdflatex'...
+Rule 'pdflatex':  Reasons for rerun
+Changed files or newly in use/created:
+  /tmp/tg-review-20260910/latex/capitulos/conclusao.aux
+  /tmp/tg-review-20260910/latex/capitulos/consideracoes.aux
+  /tmp/tg-review-20260910/latex/capitulos/construcao_veiculo.aux
+  /tmp/tg-review-20260910/latex/capitulos/estadodaarte.aux
+  /tmp/tg-review-20260910/latex/capitulos/ferramentas.aux
+  /tmp/tg-review-20260910/latex/capitulos/introducao.aux
+  /tmp/tg-review-20260910/latex/capitulos/metodologia_validacao.aux
+  /tmp/tg-review-20260910/latex/capitulos/proposta.aux
+  /tmp/tg-review-20260910/latex/capitulos/regulamentacao.aux
+  /tmp/tg-review-20260910/latex/capitulos/resultados.aux
+  /tmp/tg-review-20260910/latex/dissertacao.aux
+  /tmp/tg-review-20260910/latex/dissertacao.bbl
+  /tmp/tg-review-20260910/latex/dissertacao.brf
+  /tmp/tg-review-20260910/latex/pretextual/agradecimentos.aux
+  /tmp/tg-review-20260910/latex/pretextual/assinaturas.aux
+  /tmp/tg-review-20260910/latex/pretextual/capa.aux
+  /tmp/tg-review-20260910/latex/pretextual/catalografica.aux
+  /tmp/tg-review-20260910/latex/pretextual/epigrafe.aux
+  /tmp/tg-review-20260910/latex/pretextual/resumos.aux
+
+------------
+Run number 4 of rule 'pdflatex'
+------------
+------------
+Running 'pdflatex  -interaction=nonstopmode -halt-on-error -recorder -output-directory="/tmp/tg-review-20260910/latex"  "dissertacao.tex"'
+------------
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Arch Linux) (preloaded format=pdflatex)
+ restricted \write18 enabled.
+entering extended mode
+(./dissertacao.tex
+LaTeX2e <2025-11-01>
+L3 programming layer <2026-01-19>
+(/usr/share/texmf-dist/tex/latex/abntex2/abntex2.cls
+Document Class: abntex2 2018/11/24 v-1.9.7 abnTeX2
+(/usr/share/texmf-dist/tex/latex/base/ifthen.sty)
+(/usr/share/texmf-dist/tex/latex/memoir/memoir.cls
+Document Class: memoir 2025/11/04 v3.8.4b configurable book, report, article do
+cument class
+(/usr/share/texmf-dist/tex/latex/xpatch/xpatch.sty
+(/usr/share/texmf-dist/tex/latex/l3kernel/expl3.sty
+(/usr/share/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def))
+(/usr/share/texmf-dist/tex/latex/l3packages/xparse/xparse.sty)
+(/usr/share/texmf-dist/tex/latex/etoolbox/etoolbox.sty))
+(/usr/share/texmf-dist/tex/generic/iftex/iftex.sty)
+(/usr/share/texmf-dist/tex/latex/memoir/mem12.clo)
+(/usr/share/texmf-dist/tex/latex/tools/array.sty)
+(/usr/share/texmf-dist/tex/latex/tools/dcolumn.sty)
+(/usr/share/texmf-dist/tex/latex/tools/delarray.sty)
+(/usr/share/texmf-dist/tex/latex/tools/tabularx.sty)
+(/usr/share/texmf-dist/tex/latex/booktabs/booktabs.sty)
+(/usr/share/texmf-dist/tex/latex/hyperref/nameref.sty
+(/usr/share/texmf-dist/tex/latex/refcount/refcount.sty
+(/usr/share/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty)
+(/usr/share/texmf-dist/tex/generic/infwarerr/infwarerr.sty))
+(/usr/share/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
+(/usr/share/texmf-dist/tex/latex/kvoptions/kvoptions.sty
+(/usr/share/texmf-dist/tex/latex/graphics/keyval.sty)
+(/usr/share/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty))))
+(/usr/share/texmf-dist/tex/latex/tools/verbatim.sty)
+(/usr/share/texmf-dist/tex/latex/base/shortvrb.sty))
+(/usr/share/texmf-dist/tex/latex/textcase/textcase.sty)
+(/usr/share/texmf-dist/tex/latex/hyperref/hyperref.sty
+(/usr/share/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty)
+(/usr/share/texmf-dist/tex/generic/pdfescape/pdfescape.sty
+(/usr/share/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty))
+(/usr/share/texmf-dist/tex/latex/hycolor/hycolor.sty)
+(/usr/share/texmf-dist/tex/generic/stringenc/stringenc.sty)
+(/usr/share/texmf-dist/tex/latex/hyperref/pd1enc.def)
+(/usr/share/texmf-dist/tex/generic/intcalc/intcalc.sty)
+(/usr/share/texmf-dist/tex/latex/hyperref/puenc.def)
+(/usr/share/texmf-dist/tex/latex/url/url.sty)
+(/usr/share/texmf-dist/tex/generic/bitset/bitset.sty
+(/usr/share/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty)))
+(/usr/share/texmf-dist/tex/latex/hyperref/hpdftex.def
+(/usr/share/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+(/usr/share/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty)))
+(/usr/share/texmf-dist/tex/latex/memoir/memhfixc.sty)
+(/usr/share/texmf-dist/tex/latex/bookmark/bookmark.sty
+(/usr/share/texmf-dist/tex/latex/bookmark/bkm-pdftex.def))
+(/usr/share/texmf-dist/tex/generic/babel/babel.sty
+(/usr/share/texmf-dist/tex/generic/babel/txtbabel.def)
+(/usr/share/texmf-dist/tex/generic/babel/locale/en/babel-english.tex)
+(/usr/share/texmf-dist/tex/generic/babel/locale/invalid/babel-brazil.tex)
+(/usr/share/texmf-dist/tex/generic/babel-english/english.ldf)
+
+Package babel Warning: Name 'brazil' is deprecated.
+(babel)                Use 'brazilian' instead.
+(babel)                Reported on input line 4330.
+
+(/usr/share/texmf-dist/tex/generic/babel-portuges/brazilian.ldf
+
+Package babel Warning: No hyphenation patterns were preloaded for
+(babel)                the language 'Portuguese' into the format.
+(babel)                Please, configure your TeX system to add them and
+(babel)                rebuild the format. Now I will use the patterns
+(babel)                preloaded for \language=0 instead on input line 42.
+
+)) (/usr/share/texmf-dist/tex/latex/enumitem/enumitem.sty)
+(/usr/share/texmf-dist/tex/latex/tools/calc.sty)
+
+******************************************************
+Stock height and width: 845.04684pt by 597.50787pt
+Top and edge trims: 0pt and 0pt
+Page height and width: 845.04684pt by 597.50787pt
+Text height and width: 708pt by 455pt
+Spine and edge margins: 85.35826pt and 56.9055pt
+Upper and lower margins: 85.35826pt and 51.68858pt
+Headheight and headsep: 14.5pt and 19.8738pt
+Footskip: 30pt
+Columnsep and columnseprule: 10pt and 0pt
+Marginparsep and marginparwidth: 7pt and 42.9055pt
+Sidecapsep and sidecapwidth: 7pt and 92pt
+Sidebarhsep and sidebarwidth: 7pt and 92pt
+Sidebarvsep and sidebartopsep: 14.5pt and 0pt
+Sidebarheight: 590.14995pt
+Sidefoothsep and sidefootwidth: 7pt and 92pt
+Sidefootvsep and sidefootheight: 14.5pt and 590.14995pt
+******************************************************
+
+
+Class memoir Warning: \settocpreprocessor is marked deprecated and will be
+(memoir)              removed in 2026, the problem it tried to solve 
+(memoir)              (see manual, section 9.2.3),
+(memoir)              has been fixed in the kernel, and the feature is
+(memoir)              no longer needed. on input line 483.
+
+) (/usr/share/texmf-dist/tex/latex/lm/lmodern.sty)
+(/usr/share/texmf-dist/tex/latex/base/fontenc.sty
+(/usr/share/texmf-dist/tex/latex/lm/t1lmr.fd))
+(/usr/share/texmf-dist/tex/latex/base/inputenc.sty)
+(/usr/share/texmf-dist/tex/latex/lastpage/lastpage.sty
+(/usr/share/texmf-dist/tex/latex/lastpage/lastpage2e.sty
+(/usr/share/texmf-dist/tex/latex/lastpage/lastpagemodern.sty) 
+)) (/usr/share/texmf-dist/tex/latex/tools/indentfirst.sty)
+(/usr/share/texmf-dist/tex/latex/graphics/color.sty
+(/usr/share/texmf-dist/tex/latex/graphics-cfg/color.cfg)
+(/usr/share/texmf-dist/tex/latex/graphics-def/pdftex.def)
+(/usr/share/texmf-dist/tex/latex/graphics/mathcolor.ltx))
+(/usr/share/texmf-dist/tex/latex/graphics/graphicx.sty
+(/usr/share/texmf-dist/tex/latex/graphics/graphics.sty
+(/usr/share/texmf-dist/tex/latex/graphics/trig.sty)
+(/usr/share/texmf-dist/tex/latex/graphics-cfg/graphics.cfg)))
+(/usr/share/texmf-dist/tex/latex/graphics/epsfig.sty)
+
+Class memoir Warning: The subfig package hasn't been updated since 2005.
+(memoir)              Consider using the subcaption package instead.  on input 
+line 39.
+
+(/usr/share/texmf-dist/tex/latex/subfig/subfig.sty
+(/usr/share/texmf-dist/tex/latex/caption/caption.sty
+(/usr/share/texmf-dist/tex/latex/caption/caption3.sty
+(/usr/share/texmf-dist/tex/latex/caption/caption-memoir.sto))))
+(/usr/share/texmf-dist/tex/latex/microtype/microtype.sty
+(/usr/share/texmf-dist/tex/latex/microtype/microtype-pdftex.def)
+(/usr/share/texmf-dist/tex/latex/microtype/microtype.cfg))
+(/usr/share/texmf-dist/tex/latex/lipsum/lipsum.sty
+(/usr/share/texmf-dist/tex/latex/l3packages/l3keys2e/l3keys2e.sty)
+(/usr/share/texmf-dist/tex/latex/lipsum/lipsum.ltd.tex))
+(/usr/share/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/usr/share/texmf-dist/tex/latex/amsmath/amstext.sty
+(/usr/share/texmf-dist/tex/latex/amsmath/amsgen.sty))
+(/usr/share/texmf-dist/tex/latex/amsmath/amsbsy.sty)
+(/usr/share/texmf-dist/tex/latex/amsmath/amsopn.sty))
+(/usr/share/texmf-dist/tex/latex/amsfonts/amssymb.sty
+(/usr/share/texmf-dist/tex/latex/amsfonts/amsfonts.sty))
+(/usr/share/texmf-dist/tex/latex/jknapltx/mathrsfs.sty)
+(/usr/share/texmf-dist/tex/latex/listings/listings.sty
+(/usr/share/texmf-dist/tex/latex/listings/lstpatch.sty)
+(/usr/share/texmf-dist/tex/latex/listings/lstmisc.sty)
+(/usr/share/texmf-dist/tex/latex/listings/listings.cfg))
+==> First Aid for listings.sty no longer applied!
+    Expected:
+        2024/09/23 1.10c (Carsten Heinz)
+    but found:
+        2025/11/14 1.11b (Carsten Heinz)
+    so I'm assuming it got fixed.
+(/usr/share/texmf-dist/tex/latex/tools/afterpage.sty)
+(/usr/share/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty
+(/usr/share/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty
+(/usr/share/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty
+(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def)
+(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgfrcs.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/pgf.revision.tex)))
+(/usr/share/texmf-dist/tex/latex/pgf/basiclayer/pgfcore.sty
+(/usr/share/texmf-dist/tex/latex/pgf/systemlayer/pgfsys.sty
+(/usr/share/texmf-dist/tex/generic/pgf/systemlayer/pgfsys.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgfkeyslibraryfiltered.code.te
+x)) (/usr/share/texmf-dist/tex/generic/pgf/systemlayer/pgf.cfg)
+(/usr/share/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-pdftex.def
+(/usr/share/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-common-pdf.def)))
+(/usr/share/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.code.tex))
+(/usr/share/texmf-dist/tex/latex/xcolor/xcolor.sty
+(/usr/share/texmf-dist/tex/latex/graphics-cfg/color.cfg)
+(/usr/share/texmf-dist/tex/latex/graphics/mathcolor.ltx))
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcore.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.basic.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.trigonometric.code
+.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.random.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.comparison.code.te
+x) (/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.base.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.round.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.misc.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.integerarithmetics
+.code.tex) (/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathcalc.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfloat.code.tex))
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfint.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepoints.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathconstruct.code.tex
+) (/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathusage.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorescopes.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoregraphicstate.code.tex)
+
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransformations.code.t
+ex) (/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorequick.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreobjects.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathprocessing.code.te
+x) (/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorearrows.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreshade.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreimage.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreexternal.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorelayers.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransparency.code.tex)
+ (/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepatterns.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorerdf.code.tex)))
+(/usr/share/texmf-dist/tex/generic/pgf/modules/pgfmoduleshapes.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/modules/pgfmoduleplot.code.tex)
+(/usr/share/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-0-65.sty)
+(/usr/share/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-1-18.sty))
+(/usr/share/texmf-dist/tex/latex/pgf/utilities/pgffor.sty
+(/usr/share/texmf-dist/tex/latex/pgf/utilities/pgfkeys.sty
+(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex))
+(/usr/share/texmf-dist/tex/latex/pgf/math/pgfmath.sty
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex))
+(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgffor.code.tex))
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/tikz.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/libraries/pgflibraryplothandlers.code.te
+x) (/usr/share/texmf-dist/tex/generic/pgf/modules/pgfmodulematrix.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+topaths.code.tex)))
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+positioning.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+arrows.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/libraries/pgflibraryarrows.code.tex))
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+shapes.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+shapes.geometric.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.geomet
+ric.code.tex))
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+shapes.misc.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.misc.c
+ode.tex))
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+shapes.symbols.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.symbol
+s.code.tex))
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+shapes.arrows.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.arrows
+.code.tex))
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+shapes.callouts.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.callou
+ts.code.tex))
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+shapes.multipart.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.multip
+art.code.tex))) (/usr/share/texmf-dist/tex/latex/hyperref/backref.sty)
+(/usr/share/texmf-dist/tex/latex/abntex2/abntex2cite.sty
+(/usr/share/texmf-dist/tex/latex/abntex2/abntex2abrev.sty)
+(/usr/share/texmf-dist/tex/generic/iftex/ifpdf.sty)
+(/usr/share/texmf-dist/tex/generic/iftex/ifxetex.sty)
+(/usr/share/texmf-dist/tex/latex/relsize/relsize.sty))
+(./extras/conf_citacoes.tex) (./extras/dados.tex) (./extras/conf_pdf.tex)
+Writing index file dissertacao.idx 
+(/tmp/tg-review-20260910/latex/dissertacao.aux
+(/tmp/tg-review-20260910/latex/pretextual/capa.aux)
+(/tmp/tg-review-20260910/latex/pretextual/catalografica.aux)
+(/tmp/tg-review-20260910/latex/pretextual/assinaturas.aux)
+(/tmp/tg-review-20260910/latex/pretextual/agradecimentos.aux)
+(/tmp/tg-review-20260910/latex/pretextual/epigrafe.aux)
+(/tmp/tg-review-20260910/latex/pretextual/resumos.aux)
+(/tmp/tg-review-20260910/latex/capitulos/introducao.aux)
+(/tmp/tg-review-20260910/latex/capitulos/estadodaarte.aux)
+(/tmp/tg-review-20260910/latex/capitulos/ferramentas.aux)
+(/tmp/tg-review-20260910/latex/capitulos/construcao_veiculo.aux)
+(/tmp/tg-review-20260910/latex/capitulos/regulamentacao.aux)
+(/tmp/tg-review-20260910/latex/capitulos/consideracoes.aux)
+(/tmp/tg-review-20260910/latex/capitulos/proposta.aux)
+(/tmp/tg-review-20260910/latex/capitulos/metodologia_validacao.aux)
+(/tmp/tg-review-20260910/latex/capitulos/resultados.aux)
+(/tmp/tg-review-20260910/latex/capitulos/conclusao.aux))
+(/usr/share/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+) (/usr/share/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+(/usr/share/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg))
+(/usr/share/texmf-dist/tex/latex/microtype/mt-cmr.cfg) (./pretextual/capa.tex
+(/usr/share/texmf-dist/tex/latex/lm/t1lmss.fd) [1{/var/lib/texmf/fonts/map/pdft
+ex/updmap/pdftex.map}{/usr/share/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc} <./fi
+gs/logo.png>] [2])
+Underfull \hbox (badness 1019) in paragraph at lines 123--123
+\T1/lmr/m/n/12 (+20) Pro-grama de Grad-u-ação em En-gen-haria
+(/usr/share/texmf-dist/tex/latex/lm/ot1lmr.fd)
+(/usr/share/texmf-dist/tex/latex/lm/omllmm.fd)
+(/usr/share/texmf-dist/tex/latex/lm/omslmsy.fd)
+(/usr/share/texmf-dist/tex/latex/lm/omxlmex.fd)
+(/usr/share/texmf-dist/tex/latex/amsfonts/umsa.fd)
+(/usr/share/texmf-dist/tex/latex/microtype/mt-msa.cfg)
+(/usr/share/texmf-dist/tex/latex/amsfonts/umsb.fd)
+(/usr/share/texmf-dist/tex/latex/microtype/mt-msb.cfg)
+(/usr/share/texmf-dist/tex/latex/jknapltx/ursfs.fd)
+pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.123 
+       [1] (./pretextual/catalografica.tex
+Underfull \hbox (badness 10000) in paragraph at lines 25--26
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 27--28
+
+
+Overfull \hbox (16.44858pt too wide) in paragraph at lines 29--32
+[]  [] 
+
+Underfull \hbox (badness 10000) in paragraph at lines 29--32
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 33--40
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 41--42
+
+)
+pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.125 \include{pretextual/catalografica}
+                                         [2] (./pretextual/assinaturas.tex
+Underfull \hbox (badness 1019) in paragraph at lines 24--25
+\T1/lmr/m/n/12 (+20) Pro-grama de Grad-u-ação em En-gen-haria
+[3] [4]) (./pretextual/agradecimentos.tex [5] [6]) (./pretextual/epigrafe.tex
+[7] [8]) (./pretextual/resumos.tex [9] [10] [11] [12])
+(/tmp/tg-review-20260910/latex/dissertacao.lof) [13] [14]
+(/tmp/tg-review-20260910/latex/dissertacao.lot
+(/usr/share/texmf-dist/tex/latex/lm/t1lmtt.fd)
+Underfull \vbox (badness 10000) has occurred while \output is active [15{/usr/s
+hare/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/texmf-dist/fonts/enc/d
+vips/lm/lm-mathsy.enc}{/usr/share/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}]
+)
+Underfull \vbox (badness 10000) has occurred while \output is active [16]
+[17] [18] [19] [20] [21] [22] (/tmp/tg-review-20260910/latex/dissertacao.toc
+[23] [24] [25] [26]
+Overfull \hbox (1.5877pt too wide) detected at line 184
+ \T1/lmss/bx/n/12 103
+
+Overfull \hbox (1.5877pt too wide) detected at line 190
+ \T1/lmss/bx/n/12 107
+
+Overfull \hbox (1.5877pt too wide) detected at line 191
+ \T1/lmss/bx/n/12 107
+
+Overfull \hbox (1.5877pt too wide) detected at line 192
+ \T1/lmss/bx/n/12 107
+
+Overfull \hbox (1.5877pt too wide) detected at line 193
+ \T1/lmss/bx/n/12 108
+
+Overfull \hbox (1.5877pt too wide) detected at line 194
+ \T1/lmss/bx/n/12 109
+
+Overfull \hbox (1.5877pt too wide) detected at line 199
+ \T1/lmss/bx/n/12 111
+
+Overfull \hbox (1.5877pt too wide) detected at line 200
+ \T1/lmss/bx/n/12 111
+[27]
+Overfull \hbox (1.5877pt too wide) detected at line 206
+ \T1/lmss/bx/n/12 115
+
+Overfull \hbox (1.5877pt too wide) detected at line 209
+ \T1/lmss/bx/n/12 116
+
+Overfull \hbox (1.5877pt too wide) detected at line 212
+ \T1/lmss/bx/n/12 119
+
+Overfull \hbox (1.5877pt too wide) detected at line 218
+ \T1/lmss/bx/n/12 124
+
+Overfull \hbox (1.5877pt too wide) detected at line 225
+ \T1/lmss/bx/n/12 132
+
+Overfull \hbox (1.5877pt too wide) detected at line 235
+ \T1/lmss/bx/n/12 139
+
+Overfull \hbox (1.5877pt too wide) detected at line 236
+ \T1/lmss/bx/n/12 139
+
+Overfull \hbox (1.5877pt too wide) detected at line 237
+ \T1/lmss/bx/n/12 140
+[28]
+Overfull \hbox (1.5877pt too wide) detected at line 241
+ \T1/lmss/bx/n/12 142
+
+Overfull \hbox (1.5877pt too wide) detected at line 245
+ \T1/lmss/bx/n/12 144
+
+Overfull \hbox (1.5877pt too wide) detected at line 249
+ \T1/lmss/bx/n/12 147
+
+Overfull \hbox (1.5877pt too wide) detected at line 253
+ \T1/lmss/bx/n/12 150
+
+Overfull \hbox (1.5877pt too wide) detected at line 258
+ \T1/lmss/bx/n/12 155
+
+Overfull \hbox (1.5877pt too wide) detected at line 266
+ \T1/lmss/bx/n/12 159
+
+Overfull \hbox (1.5877pt too wide) detected at line 267
+ \T1/lmss/bx/n/12 159
+
+Overfull \hbox (1.5877pt too wide) detected at line 268
+ \T1/lmss/bx/n/12 163
+
+Overfull \hbox (1.5877pt too wide) detected at line 271
+ \T1/lmss/bx/n/12 169
+) [29] [30] (./capitulos/introducao.tex
+Underfull \vbox (badness 10000) has occurred while \output is active
+pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.64 
+      [1]
+pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.107 
+       [2])
+pdfTeX warning (ext4): destination with the same identifier (name{page.3}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.181 \include{capitulos/introducao}
+                                     [3]
+pdfTeX warning (ext4): destination with the same identifier (name{page.4}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.184 \part
+           {PreparaÃ§Ã£o da pesquisa} [4]
+pdfTeX warning (ext4): destination with the same identifier (name{page.5}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.184 \part{PreparaÃ§Ã£o da pesquisa}
+                                      [5]
+pdfTeX warning (ext4): destination with the same identifier (name{page.6}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.184 \part{PreparaÃ§Ã£o da pesquisa}
+                                      [6] (./capitulos/estadodaarte.tex
+Cap\'{\i }tulo 1.
+(/usr/share/texmf-dist/tex/latex/lm/ts1lmr.fd)
+pdfTeX warning (ext4): destination with the same identifier (name{page.7}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.52 \section
+             {Plataformas e simuladores para corrida autÃ´noma em escala}\la...
+[7{/usr/share/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}]
+pdfTeX warning (ext4): destination with the same identifier (name{page.8}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.97 
+      [8]
+Underfull \vbox (badness 10000) has occurred while \output is active
+pdfTeX warning (ext4): destination with the same identifier (name{page.9}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.146 I
+       vanov e colaboradores \cite{Ivanov2020Verifying} tomam um controlador...
+[9]
+pdfTeX warning (ext4): destination with the same identifier (name{page.10}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.195 
+       [10]
+pdfTeX warning (ext4): destination with the same identifier (name{page.11}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.240 
+       [11]
+Underfull \vbox (badness 1286) has occurred while \output is active
+pdfTeX warning (ext4): destination with the same identifier (name{page.12}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.288 
+       [12]
+pdfTeX warning (ext4): destination with the same identifier (name{page.13}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.336 
+       [13]
+pdfTeX warning (ext4): destination with the same identifier (name{page.14}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.379 A
+        primeira Ã© \textbf{interativa}: o DAgger \cite{Ross2011DAgger} exec...
+[14]
+pdfTeX warning (ext4): destination with the same identifier (name{page.15}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.430 
+       [15]
+Underfull \vbox (badness 1286) has occurred while \output is active
+pdfTeX warning (ext4): destination with the same identifier (name{page.16}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.480 
+       [16]
+Underfull \vbox (badness 2600) has occurred while \output is active
+pdfTeX warning (ext4): destination with the same identifier (name{page.17}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.526 \[
+         [17]
+pdfTeX warning (ext4): destination with the same identifier (name{page.18}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.577 
+       [18]
+Underfull \vbox (badness 1286) has occurred while \output is active
+pdfTeX warning (ext4): destination with the same identifier (name{page.19}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.621 
+       [19]
+pdfTeX warning (ext4): destination with the same identifier (name{page.20}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.673 
+       [20]
+pdfTeX warning (ext4): destination with the same identifier (name{page.21}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.717 
+       [21]
+Underfull \hbox (badness 10000) in paragraph at lines 744--744
+\T1/lmr/bx/n/10.95 (+20) ex-ige pose
+
+Underfull \hbox (badness 10000) in paragraph at lines 745--746
+[]|\T1/lmr/bx/n/10.95 (+20) Critério
+
+Underfull \hbox (badness 10000) in paragraph at lines 745--746
+\T1/lmr/bx/n/10.95 (+20) con-ge-lado
+
+Underfull \hbox (badness 10000) in paragraph at lines 749--749
+[]|\T1/lmr/m/n/10.95 (+20) Simulação
+
+Underfull \hbox (badness 10000) in paragraph at lines 749--749
+\T1/lmr/m/n/10.95 (+20) (duas es-
+
+Underfull \hbox (badness 10000) in paragraph at lines 753--753
+[]|\T1/lmr/m/n/10.95 (+20) Hardware
+
+Underfull \hbox (badness 1102) in paragraph at lines 755--755
+[]|\T1/lmr/m/n/10.95 (+20) RL + ver-i-fi-
+
+Underfull \hbox (badness 2253) in paragraph at lines 755--755
+[]|\T1/lmr/m/n/10.95 (+20) Hardware +
+
+Underfull \hbox (badness 10000) in paragraph at lines 755--756
+[]|\T1/lmr/m/n/10.95 (+20) Propriedade
+
+Underfull \hbox (badness 10000) in paragraph at lines 757--757
+[]|\T1/lmr/m/n/10.95 (+20) RL com
+
+Underfull \hbox (badness 10000) in paragraph at lines 757--757
+\T1/lmr/m/n/10.95 (+20) rec-om-pensa
+
+Underfull \hbox (badness 10000) in paragraph at lines 757--757
+\T1/lmr/m/n/10.95 (+20) guiada por
+
+Underfull \hbox (badness 10000) in paragraph at lines 757--757
+[]|\T1/lmr/m/n/10.95 (+20) Trajetória
+
+Underfull \hbox (badness 10000) in paragraph at lines 757--757
+\T1/lmr/m/n/10.95 (+20) de refer-ên-cia
+
+Underfull \hbox (badness 10000) in paragraph at lines 757--757
+\T1/lmr/m/n/10.95 (+20) exigida no
+
+Underfull \hbox (badness 10000) in paragraph at lines 759--759
+[]|\T1/lmr/m/n/10.95 (+20) Imitação +
+
+Underfull \vbox (badness 10000) has occurred while \output is active
+pdfTeX warning (ext4): destination with the same identifier (name{page.22}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.774     \item \textbf
+                       {Nenhum experimento no veÃ­culo fÃ­sico.} O FastRLAP
+[22]
+pdfTeX warning (ext4): destination with the same identifier (name{page.23}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.823 
+       [23])
+pdfTeX warning (ext4): destination with the same identifier (name{page.24}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.185 \include{capitulos/estadodaarte}
+                                       [24] (./capitulos/ferramentas.tex
+Cap\'{\i }tulo 2.
+
+pdfTeX warning (ext4): destination with the same identifier (name{page.25}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.47     \item \textbf
+                      {Discovery dinÃ¢mico}: Permite que novos nÃ³s sejam de...
+[25]
+pdfTeX warning (ext4): destination with the same identifier (name{page.26}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.93 \subsection
+                {Middleware e Camadas de AbstraÃ§Ã£o} [26]
+pdfTeX warning (ext4): destination with the same identifier (name{page.27}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.131     \item \textbf
+                       {Motor BLDC}: Tipicamente controlado via ESC (Electro...
+[27]
+pdfTeX warning (ext4): destination with the same identifier (name{page.28}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.173     \item M
+                 onitoramento contÃ­nuo de condiÃ§Ãµes de seguranÃ§a e desem...
+[28]
+pdfTeX warning (ext4): destination with the same identifier (name{page.29}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.213 
+       [29]
+pdfTeX warning (ext4): destination with the same identifier (name{page.30}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.251     \item \textbf
+                       {rosbag2}: GravaÃ§Ã£o e reproduÃ§Ã£o de dados de sens...
+[30] [31]
+Overfull \hbox (8.8326pt too wide) in paragraph at lines 290--297
+[]\T1/lmr/m/n/12 (-20) No con-texto do ROS2, a odome-tria de-sem-penha um pa-pe
+l fun-da-men-tal na manutenção
+[32] [33] [34]
+Underfull \vbox (badness 1688) has occurred while \output is active [35]
+[36] [37] [38] [39] [40{/usr/share/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}
+] [41] [42]
+Overfull \hbox (11.18776pt too wide) in paragraph at lines 789--790
+[]\T1/lmr/bx/n/12 (-20) Métodos de Otimiza-ção Numérica\T1/lmr/m/n/12 (-20) : U
+ti-lizam téc-ni-cas como pro-gra-mação quadrática
+[43] [44] [45]) [46] (./capitulos/construcao_veiculo.tex
+Cap\'{\i }tulo 3.
+[47] [48] [49] [50] [51] [52]
+Overfull \hbox (17.67053pt too wide) in paragraph at lines 273--276
+\T1/lmr/m/n/12 (-20) ve-loci-dade e di-reção no tópico \T1/lmtt/m/n/12 /drive \
+T1/lmr/m/n/12 (-20) (tipo \T1/lmtt/m/n/12 ackermann_msgs/AckermannDriveStamped\
+T1/lmr/m/n/12 (-20) ). 
+[53] [54]
+Overfull \hbox (51.81638pt too wide) in paragraph at lines 332--338
+[]\T1/lmr/m/n/12 (-20) Essa in-te-gração fornece os da-dos de per-cepção essen-
+ci-ais, no for-mato \T1/lmtt/m/n/12 sensor_msgs/LaserScan\T1/lmr/m/n/12 (-20) ,
+
+) [55] (./capitulos/regulamentacao.tex [56]
+Cap\'{\i }tulo 4.
+[57] [58] [59] [60] [61] [62]) [63] (./capitulos/consideracoes.tex [64]
+Cap\'{\i }tulo 5.
+) [65] [66] [67] [68] (./capitulos/proposta.tex
+Cap\'{\i }tulo 6.
+[69] [70]
+Overfull \hbox (22.16048pt too wide) in paragraph at lines 99--102
+[]\T1/lmr/m/n/12 (-20) No âm-bito do con-t-role autônomo, foram im-ple-men-ta-d
+os con-tro-ladores PID (Proportional-
+
+Overfull \hbox (52.65863pt too wide) in paragraph at lines 166--167
+ [][] 
+[71] [72] [73] [74] [75] [76] [77] [78]
+Overfull \hbox (26.82928pt too wide) in paragraph at lines 486--487
+[]\T1/lmr/bx/n/12 (-20) Termo Deriva-tivo\T1/lmr/m/n/12 (-20) : Cal-cula a taxa
+ de vari-ação do erro (\T1/lmtt/m/n/12 error - self.prev_error\T1/lmr/m/n/12 (-
+20) ),
+[79]
+Overfull \hbox (22.48645pt too wide) in paragraph at lines 539--541
+[]\T1/lmr/m/n/12 (-20) Recalcula os lim-ites dos eixos para aco-modar novos da-
+dos (\T1/lmtt/m/n/12 relim \T1/lmr/m/n/12 (-20) e \T1/lmtt/m/n/12 autoscale_vie
+w\T1/lmr/m/n/12 (-20) ). 
+
+Overfull \hbox (66.5358pt too wide) in paragraph at lines 546--549
+[]\T1/lmr/m/n/12 (-20) Esta fun-cional-i-dade, em-b-ora de-sati-vada no código 
+prin-ci-pal (\T1/lmtt/m/n/12 #self.plot_error_vs_time()\T1/lmr/m/n/12 (-20) ),
+[80] [81] [82]
+Overfull \hbox (15.89851pt too wide) in paragraph at lines 714--715
+ [][] 
+[83] [84] [85] [86] [87] [88] [89] [90] [91] [92] [93]
+Overfull \hbox (2.67924pt too wide) in paragraph at lines 1201--1203
+[]\T1/lmr/m/n/12 (-20) Determina mag-ni-tude das difer-enças us-ando norma eu-c
+lid-i-ana (\T1/lmtt/m/n/12 np.linalg.norm\T1/lmr/m/n/12 (-20) ) 
+[94] [95] [96] [97] [98] [99]
+Overfull \hbox (39.11172pt too wide) in paragraph at lines 1484--1485
+ [][] 
+[100] [101] [102] [103] [104] [105] [106]
+Cap\'{\i }tulo 7.
+[107] [108] [109]) [110] (./capitulos/metodologia_validacao.tex
+Cap\'{\i }tulo 8.
+[111]
+Underfull \vbox (badness 10000) has occurred while \output is active [112]
+[113] [114] [115] [116] [117]
+Underfull \hbox (badness 10000) in paragraph at lines 386--387
+[]|\T1/lmr/m/n/12 (+20) reprovado
+
+Underfull \hbox (badness 3525) in paragraph at lines 388--388
+[]|\T1/lmr/m/n/12 (+20) 300k + \T1/lmtt/m/n/12 wall_w
+
+Underfull \hbox (badness 10000) in paragraph at lines 388--389
+[]|\T1/lmr/m/n/12 (+20) reprovado
+[118] [119] [120] [121] [122]
+Underfull \vbox (badness 3471) has occurred while \output is active [123]
+Underfull \vbox (badness 3058) has occurred while \output is active [124]
+[125]
+Underfull \vbox (badness 1067) has occurred while \output is active [126]
+[127] [128] [129] [130] [131] [132] [133]
+Underfull \vbox (badness 1286) has occurred while \output is active [134]
+[135]) [136] [137] [138] (./capitulos/resultados.tex
+Cap\'{\i }tulo 9.
+[139] [140]
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[141] [142]
+Underfull \vbox (badness 1019) has occurred while \output is active [143]
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[144] [145]
+Underfull \vbox (badness 10000) has occurred while \output is active [146]
+[147] [148]
+Underfull \vbox (badness 1888) has occurred while \output is active [149]
+Underfull \vbox (badness 10000) has occurred while \output is active [150]
+[151]
+Overfull \hbox (29.43921pt too wide) in paragraph at lines 848--873
+ [][] 
+[152] [153]
+Underfull \vbox (badness 10000) has occurred while \output is active [154]
+[155] [156] [157]) [158] (./capitulos/conclusao.tex [159] [160] [161] [162]
+[163] [164] [165]) [166] [167] (/tmp/tg-review-20260910/latex/dissertacao.bbl
+(/tmp/tg-review-20260910/latex/dissertacao.brf) [168]
+bibitemlist
+[169] [170] [171] [172] [173]) [174]
+
+enddocument/afterlastpage (AED): lastpage setting LastPage.
+(/tmp/tg-review-20260910/latex/dissertacao.aux
+(/tmp/tg-review-20260910/latex/pretextual/capa.aux)
+(/tmp/tg-review-20260910/latex/pretextual/catalografica.aux)
+(/tmp/tg-review-20260910/latex/pretextual/assinaturas.aux)
+(/tmp/tg-review-20260910/latex/pretextual/agradecimentos.aux)
+(/tmp/tg-review-20260910/latex/pretextual/epigrafe.aux)
+(/tmp/tg-review-20260910/latex/pretextual/resumos.aux)
+(/tmp/tg-review-20260910/latex/capitulos/introducao.aux)
+(/tmp/tg-review-20260910/latex/capitulos/estadodaarte.aux)
+(/tmp/tg-review-20260910/latex/capitulos/ferramentas.aux)
+(/tmp/tg-review-20260910/latex/capitulos/construcao_veiculo.aux)
+(/tmp/tg-review-20260910/latex/capitulos/regulamentacao.aux)
+(/tmp/tg-review-20260910/latex/capitulos/consideracoes.aux)
+(/tmp/tg-review-20260910/latex/capitulos/proposta.aux)
+(/tmp/tg-review-20260910/latex/capitulos/metodologia_validacao.aux)
+(/tmp/tg-review-20260910/latex/capitulos/resultados.aux)
+(/tmp/tg-review-20260910/latex/capitulos/conclusao.aux)) )
+(see the transcript file for additional information)</usr/share/texmf-dist/font
+s/type1/public/lm/lmbx10.pfb></usr/share/texmf-dist/fonts/type1/public/lm/lmbx1
+2.pfb></usr/share/texmf-dist/fonts/type1/public/lm/lmex10.pfb></usr/share/texmf
+-dist/fonts/type1/public/lm/lmmi10.pfb></usr/share/texmf-dist/fonts/type1/publi
+c/lm/lmmi12.pfb></usr/share/texmf-dist/fonts/type1/public/lm/lmmi6.pfb></usr/sh
+are/texmf-dist/fonts/type1/public/lm/lmmi7.pfb></usr/share/texmf-dist/fonts/typ
+e1/public/lm/lmmi8.pfb></usr/share/texmf-dist/fonts/type1/public/lm/lmr10.pfb><
+/usr/share/texmf-dist/fonts/type1/public/lm/lmr12.pfb></usr/share/texmf-dist/fo
+nts/type1/public/lm/lmr7.pfb></usr/share/texmf-dist/fonts/type1/public/lm/lmr8.
+pfb></usr/share/texmf-dist/fonts/type1/public/lm/lmri10.pfb></usr/share/texmf-d
+ist/fonts/type1/public/lm/lmri12.pfb></usr/share/texmf-dist/fonts/type1/public/
+lm/lmss10.pfb></usr/share/texmf-dist/fonts/type1/public/lm/lmss12.pfb></usr/sha
+re/texmf-dist/fonts/type1/public/lm/lmss17.pfb></usr/share/texmf-dist/fonts/typ
+e1/public/lm/lmssbx10.pfb></usr/share/texmf-dist/fonts/type1/public/lm/lmsy10.p
+fb></usr/share/texmf-dist/fonts/type1/public/lm/lmsy8.pfb></usr/share/texmf-dis
+t/fonts/type1/public/lm/lmtk10.pfb></usr/share/texmf-dist/fonts/type1/public/lm
+/lmtt10.pfb></usr/share/texmf-dist/fonts/type1/public/lm/lmtt12.pfb></usr/share
+/texmf-dist/fonts/type1/public/lm/lmtti10.pfb>
+Output written on /tmp/tg-review-20260910/latex/dissertacao.pdf (206 pages, 132
+9899 bytes).
+Transcript written on /tmp/tg-review-20260910/latex/dissertacao.log.
+Latexmk: Getting log file '/tmp/tg-review-20260910/latex/dissertacao.log'
+Latexmk: Examining '/tmp/tg-review-20260910/latex/dissertacao.fls'
+Latexmk: Examining '/tmp/tg-review-20260910/latex/dissertacao.log'
+Latexmk: Found input bbl file '/tmp/tg-review-20260910/latex/dissertacao.bbl'
+Latexmk: Log file says output to '/tmp/tg-review-20260910/latex/dissertacao.pdf'
+Latexmk: Log file says output to '/tmp/tg-review-20260910/latex/dissertacao.pdf'
+Latexmk: Index file '/tmp/tg-review-20260910/latex/dissertacao.idx' was written
+Latexmk: Using bibtex to make bibliography file(s).
+  ===Source file '/tmp/tg-review-20260910/latex/dissertacao.bbl' for 'pdflatex'
+Latexmk: Found bibliography file(s):
+  ./bibliografia.bib
+  /usr/share/texmf-dist/bibtex/bib/abntex2/abntex2-options.bib
+Latexmk: applying rule 'bibtex /tmp/tg-review-20260910/latex/dissertacao'...
+Rule 'bibtex /tmp/tg-review-20260910/latex/dissertacao':  Reasons for rerun
+Changed files or newly in use/created:
+  /tmp/tg-review-20260910/latex/capitulos/conclusao.aux
+  /tmp/tg-review-20260910/latex/capitulos/consideracoes.aux
+  /tmp/tg-review-20260910/latex/capitulos/construcao_veiculo.aux
+  /tmp/tg-review-20260910/latex/capitulos/estadodaarte.aux
+  /tmp/tg-review-20260910/latex/capitulos/ferramentas.aux
+  /tmp/tg-review-20260910/latex/capitulos/introducao.aux
+  /tmp/tg-review-20260910/latex/capitulos/metodologia_validacao.aux
+  /tmp/tg-review-20260910/latex/capitulos/proposta.aux
+  /tmp/tg-review-20260910/latex/capitulos/regulamentacao.aux
+  /tmp/tg-review-20260910/latex/capitulos/resultados.aux
+  /tmp/tg-review-20260910/latex/pretextual/agradecimentos.aux
+  /tmp/tg-review-20260910/latex/pretextual/assinaturas.aux
+  /tmp/tg-review-20260910/latex/pretextual/capa.aux
+  /tmp/tg-review-20260910/latex/pretextual/catalografica.aux
+  /tmp/tg-review-20260910/latex/pretextual/epigrafe.aux
+  /tmp/tg-review-20260910/latex/pretextual/resumos.aux
+
+------------
+Run number 2 of rule 'bibtex /tmp/tg-review-20260910/latex/dissertacao'
+------------
+Latexmk: Change directory to '/tmp/tg-review-20260910/latex/'.
+To assist finding of files in document directory, I set
+  BIBINPUTS='/home/disney/Documents/repos/TG/disertacao:/tmp/tg-review-20260910/latex:'
+  BSTINPUTS='/home/disney/Documents/repos/TG/disertacao:'.
+------------
+Running 'bibtex  "dissertacao.aux"'
+------------
+This is BibTeX, Version 0.99e (TeX Live 2026/Arch Linux)
+The top-level auxiliary file: dissertacao.aux
+The style file: abntex2-num.bst
+Database file #1: abntex2-options.bib
+Database file #2: bibliografia.bib
++---------------------------------------------------------+
+| Estilo bibliogrÃ¡fico abntex2-num.bst versÃ£o v-1.9.7           |
+| Em caso de dÃºvidas ou problemas com este estilo procure |
+| http://www.abntex.net.br/                               |
++---------------------------------------------------------+
+Latexmk: Change directory back to '/home/disney/Documents/repos/TG/disertacao'
+Latexmk: applying rule 'pdflatex'...
+Rule 'pdflatex':  Reasons for rerun
+Changed files or newly in use/created:
+  /tmp/tg-review-20260910/latex/capitulos/conclusao.aux
+  /tmp/tg-review-20260910/latex/capitulos/consideracoes.aux
+  /tmp/tg-review-20260910/latex/capitulos/construcao_veiculo.aux
+  /tmp/tg-review-20260910/latex/capitulos/estadodaarte.aux
+  /tmp/tg-review-20260910/latex/capitulos/ferramentas.aux
+  /tmp/tg-review-20260910/latex/capitulos/introducao.aux
+  /tmp/tg-review-20260910/latex/capitulos/metodologia_validacao.aux
+  /tmp/tg-review-20260910/latex/capitulos/proposta.aux
+  /tmp/tg-review-20260910/latex/capitulos/regulamentacao.aux
+  /tmp/tg-review-20260910/latex/capitulos/resultados.aux
+  /tmp/tg-review-20260910/latex/dissertacao.lof
+  /tmp/tg-review-20260910/latex/dissertacao.lot
+  /tmp/tg-review-20260910/latex/dissertacao.toc
+  /tmp/tg-review-20260910/latex/pretextual/agradecimentos.aux
+  /tmp/tg-review-20260910/latex/pretextual/assinaturas.aux
+  /tmp/tg-review-20260910/latex/pretextual/capa.aux
+  /tmp/tg-review-20260910/latex/pretextual/catalografica.aux
+  /tmp/tg-review-20260910/latex/pretextual/epigrafe.aux
+  /tmp/tg-review-20260910/latex/pretextual/resumos.aux
+
+------------
+Run number 5 of rule 'pdflatex'
+------------
+------------
+Running 'pdflatex  -interaction=nonstopmode -halt-on-error -recorder -output-directory="/tmp/tg-review-20260910/latex"  "dissertacao.tex"'
+------------
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Arch Linux) (preloaded format=pdflatex)
+ restricted \write18 enabled.
+entering extended mode
+(./dissertacao.tex
+LaTeX2e <2025-11-01>
+L3 programming layer <2026-01-19>
+(/usr/share/texmf-dist/tex/latex/abntex2/abntex2.cls
+Document Class: abntex2 2018/11/24 v-1.9.7 abnTeX2
+(/usr/share/texmf-dist/tex/latex/base/ifthen.sty)
+(/usr/share/texmf-dist/tex/latex/memoir/memoir.cls
+Document Class: memoir 2025/11/04 v3.8.4b configurable book, report, article do
+cument class
+(/usr/share/texmf-dist/tex/latex/xpatch/xpatch.sty
+(/usr/share/texmf-dist/tex/latex/l3kernel/expl3.sty
+(/usr/share/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def))
+(/usr/share/texmf-dist/tex/latex/l3packages/xparse/xparse.sty)
+(/usr/share/texmf-dist/tex/latex/etoolbox/etoolbox.sty))
+(/usr/share/texmf-dist/tex/generic/iftex/iftex.sty)
+(/usr/share/texmf-dist/tex/latex/memoir/mem12.clo)
+(/usr/share/texmf-dist/tex/latex/tools/array.sty)
+(/usr/share/texmf-dist/tex/latex/tools/dcolumn.sty)
+(/usr/share/texmf-dist/tex/latex/tools/delarray.sty)
+(/usr/share/texmf-dist/tex/latex/tools/tabularx.sty)
+(/usr/share/texmf-dist/tex/latex/booktabs/booktabs.sty)
+(/usr/share/texmf-dist/tex/latex/hyperref/nameref.sty
+(/usr/share/texmf-dist/tex/latex/refcount/refcount.sty
+(/usr/share/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty)
+(/usr/share/texmf-dist/tex/generic/infwarerr/infwarerr.sty))
+(/usr/share/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
+(/usr/share/texmf-dist/tex/latex/kvoptions/kvoptions.sty
+(/usr/share/texmf-dist/tex/latex/graphics/keyval.sty)
+(/usr/share/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty))))
+(/usr/share/texmf-dist/tex/latex/tools/verbatim.sty)
+(/usr/share/texmf-dist/tex/latex/base/shortvrb.sty))
+(/usr/share/texmf-dist/tex/latex/textcase/textcase.sty)
+(/usr/share/texmf-dist/tex/latex/hyperref/hyperref.sty
+(/usr/share/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty)
+(/usr/share/texmf-dist/tex/generic/pdfescape/pdfescape.sty
+(/usr/share/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty))
+(/usr/share/texmf-dist/tex/latex/hycolor/hycolor.sty)
+(/usr/share/texmf-dist/tex/generic/stringenc/stringenc.sty)
+(/usr/share/texmf-dist/tex/latex/hyperref/pd1enc.def)
+(/usr/share/texmf-dist/tex/generic/intcalc/intcalc.sty)
+(/usr/share/texmf-dist/tex/latex/hyperref/puenc.def)
+(/usr/share/texmf-dist/tex/latex/url/url.sty)
+(/usr/share/texmf-dist/tex/generic/bitset/bitset.sty
+(/usr/share/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty)))
+(/usr/share/texmf-dist/tex/latex/hyperref/hpdftex.def
+(/usr/share/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+(/usr/share/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty)))
+(/usr/share/texmf-dist/tex/latex/memoir/memhfixc.sty)
+(/usr/share/texmf-dist/tex/latex/bookmark/bookmark.sty
+(/usr/share/texmf-dist/tex/latex/bookmark/bkm-pdftex.def))
+(/usr/share/texmf-dist/tex/generic/babel/babel.sty
+(/usr/share/texmf-dist/tex/generic/babel/txtbabel.def)
+(/usr/share/texmf-dist/tex/generic/babel/locale/en/babel-english.tex)
+(/usr/share/texmf-dist/tex/generic/babel/locale/invalid/babel-brazil.tex)
+(/usr/share/texmf-dist/tex/generic/babel-english/english.ldf)
+
+Package babel Warning: Name 'brazil' is deprecated.
+(babel)                Use 'brazilian' instead.
+(babel)                Reported on input line 4330.
+
+(/usr/share/texmf-dist/tex/generic/babel-portuges/brazilian.ldf
+
+Package babel Warning: No hyphenation patterns were preloaded for
+(babel)                the language 'Portuguese' into the format.
+(babel)                Please, configure your TeX system to add them and
+(babel)                rebuild the format. Now I will use the patterns
+(babel)                preloaded for \language=0 instead on input line 42.
+
+)) (/usr/share/texmf-dist/tex/latex/enumitem/enumitem.sty)
+(/usr/share/texmf-dist/tex/latex/tools/calc.sty)
+
+******************************************************
+Stock height and width: 845.04684pt by 597.50787pt
+Top and edge trims: 0pt and 0pt
+Page height and width: 845.04684pt by 597.50787pt
+Text height and width: 708pt by 455pt
+Spine and edge margins: 85.35826pt and 56.9055pt
+Upper and lower margins: 85.35826pt and 51.68858pt
+Headheight and headsep: 14.5pt and 19.8738pt
+Footskip: 30pt
+Columnsep and columnseprule: 10pt and 0pt
+Marginparsep and marginparwidth: 7pt and 42.9055pt
+Sidecapsep and sidecapwidth: 7pt and 92pt
+Sidebarhsep and sidebarwidth: 7pt and 92pt
+Sidebarvsep and sidebartopsep: 14.5pt and 0pt
+Sidebarheight: 590.14995pt
+Sidefoothsep and sidefootwidth: 7pt and 92pt
+Sidefootvsep and sidefootheight: 14.5pt and 590.14995pt
+******************************************************
+
+
+Class memoir Warning: \settocpreprocessor is marked deprecated and will be
+(memoir)              removed in 2026, the problem it tried to solve 
+(memoir)              (see manual, section 9.2.3),
+(memoir)              has been fixed in the kernel, and the feature is
+(memoir)              no longer needed. on input line 483.
+
+) (/usr/share/texmf-dist/tex/latex/lm/lmodern.sty)
+(/usr/share/texmf-dist/tex/latex/base/fontenc.sty
+(/usr/share/texmf-dist/tex/latex/lm/t1lmr.fd))
+(/usr/share/texmf-dist/tex/latex/base/inputenc.sty)
+(/usr/share/texmf-dist/tex/latex/lastpage/lastpage.sty
+(/usr/share/texmf-dist/tex/latex/lastpage/lastpage2e.sty
+(/usr/share/texmf-dist/tex/latex/lastpage/lastpagemodern.sty) 
+)) (/usr/share/texmf-dist/tex/latex/tools/indentfirst.sty)
+(/usr/share/texmf-dist/tex/latex/graphics/color.sty
+(/usr/share/texmf-dist/tex/latex/graphics-cfg/color.cfg)
+(/usr/share/texmf-dist/tex/latex/graphics-def/pdftex.def)
+(/usr/share/texmf-dist/tex/latex/graphics/mathcolor.ltx))
+(/usr/share/texmf-dist/tex/latex/graphics/graphicx.sty
+(/usr/share/texmf-dist/tex/latex/graphics/graphics.sty
+(/usr/share/texmf-dist/tex/latex/graphics/trig.sty)
+(/usr/share/texmf-dist/tex/latex/graphics-cfg/graphics.cfg)))
+(/usr/share/texmf-dist/tex/latex/graphics/epsfig.sty)
+
+Class memoir Warning: The subfig package hasn't been updated since 2005.
+(memoir)              Consider using the subcaption package instead.  on input 
+line 39.
+
+(/usr/share/texmf-dist/tex/latex/subfig/subfig.sty
+(/usr/share/texmf-dist/tex/latex/caption/caption.sty
+(/usr/share/texmf-dist/tex/latex/caption/caption3.sty
+(/usr/share/texmf-dist/tex/latex/caption/caption-memoir.sto))))
+(/usr/share/texmf-dist/tex/latex/microtype/microtype.sty
+(/usr/share/texmf-dist/tex/latex/microtype/microtype-pdftex.def)
+(/usr/share/texmf-dist/tex/latex/microtype/microtype.cfg))
+(/usr/share/texmf-dist/tex/latex/lipsum/lipsum.sty
+(/usr/share/texmf-dist/tex/latex/l3packages/l3keys2e/l3keys2e.sty)
+(/usr/share/texmf-dist/tex/latex/lipsum/lipsum.ltd.tex))
+(/usr/share/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/usr/share/texmf-dist/tex/latex/amsmath/amstext.sty
+(/usr/share/texmf-dist/tex/latex/amsmath/amsgen.sty))
+(/usr/share/texmf-dist/tex/latex/amsmath/amsbsy.sty)
+(/usr/share/texmf-dist/tex/latex/amsmath/amsopn.sty))
+(/usr/share/texmf-dist/tex/latex/amsfonts/amssymb.sty
+(/usr/share/texmf-dist/tex/latex/amsfonts/amsfonts.sty))
+(/usr/share/texmf-dist/tex/latex/jknapltx/mathrsfs.sty)
+(/usr/share/texmf-dist/tex/latex/listings/listings.sty
+(/usr/share/texmf-dist/tex/latex/listings/lstpatch.sty)
+(/usr/share/texmf-dist/tex/latex/listings/lstmisc.sty)
+(/usr/share/texmf-dist/tex/latex/listings/listings.cfg))
+==> First Aid for listings.sty no longer applied!
+    Expected:
+        2024/09/23 1.10c (Carsten Heinz)
+    but found:
+        2025/11/14 1.11b (Carsten Heinz)
+    so I'm assuming it got fixed.
+(/usr/share/texmf-dist/tex/latex/tools/afterpage.sty)
+(/usr/share/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty
+(/usr/share/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty
+(/usr/share/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty
+(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def)
+(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgfrcs.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/pgf.revision.tex)))
+(/usr/share/texmf-dist/tex/latex/pgf/basiclayer/pgfcore.sty
+(/usr/share/texmf-dist/tex/latex/pgf/systemlayer/pgfsys.sty
+(/usr/share/texmf-dist/tex/generic/pgf/systemlayer/pgfsys.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgfkeyslibraryfiltered.code.te
+x)) (/usr/share/texmf-dist/tex/generic/pgf/systemlayer/pgf.cfg)
+(/usr/share/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-pdftex.def
+(/usr/share/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-common-pdf.def)))
+(/usr/share/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.code.tex))
+(/usr/share/texmf-dist/tex/latex/xcolor/xcolor.sty
+(/usr/share/texmf-dist/tex/latex/graphics-cfg/color.cfg)
+(/usr/share/texmf-dist/tex/latex/graphics/mathcolor.ltx))
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcore.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.basic.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.trigonometric.code
+.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.random.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.comparison.code.te
+x) (/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.base.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.round.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.misc.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.integerarithmetics
+.code.tex) (/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathcalc.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfloat.code.tex))
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfint.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepoints.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathconstruct.code.tex
+) (/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathusage.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorescopes.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoregraphicstate.code.tex)
+
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransformations.code.t
+ex) (/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorequick.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreobjects.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathprocessing.code.te
+x) (/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorearrows.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreshade.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreimage.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreexternal.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorelayers.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransparency.code.tex)
+ (/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepatterns.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorerdf.code.tex)))
+(/usr/share/texmf-dist/tex/generic/pgf/modules/pgfmoduleshapes.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/modules/pgfmoduleplot.code.tex)
+(/usr/share/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-0-65.sty)
+(/usr/share/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-1-18.sty))
+(/usr/share/texmf-dist/tex/latex/pgf/utilities/pgffor.sty
+(/usr/share/texmf-dist/tex/latex/pgf/utilities/pgfkeys.sty
+(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex))
+(/usr/share/texmf-dist/tex/latex/pgf/math/pgfmath.sty
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex))
+(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgffor.code.tex))
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/tikz.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/libraries/pgflibraryplothandlers.code.te
+x) (/usr/share/texmf-dist/tex/generic/pgf/modules/pgfmodulematrix.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+topaths.code.tex)))
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+positioning.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+arrows.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/libraries/pgflibraryarrows.code.tex))
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+shapes.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+shapes.geometric.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.geomet
+ric.code.tex))
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+shapes.misc.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.misc.c
+ode.tex))
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+shapes.symbols.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.symbol
+s.code.tex))
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+shapes.arrows.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.arrows
+.code.tex))
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+shapes.callouts.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.callou
+ts.code.tex))
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
+shapes.multipart.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.multip
+art.code.tex))) (/usr/share/texmf-dist/tex/latex/hyperref/backref.sty)
+(/usr/share/texmf-dist/tex/latex/abntex2/abntex2cite.sty
+(/usr/share/texmf-dist/tex/latex/abntex2/abntex2abrev.sty)
+(/usr/share/texmf-dist/tex/generic/iftex/ifpdf.sty)
+(/usr/share/texmf-dist/tex/generic/iftex/ifxetex.sty)
+(/usr/share/texmf-dist/tex/latex/relsize/relsize.sty))
+(./extras/conf_citacoes.tex) (./extras/dados.tex) (./extras/conf_pdf.tex)
+Writing index file dissertacao.idx 
+(/tmp/tg-review-20260910/latex/dissertacao.aux
+(/tmp/tg-review-20260910/latex/pretextual/capa.aux)
+(/tmp/tg-review-20260910/latex/pretextual/catalografica.aux)
+(/tmp/tg-review-20260910/latex/pretextual/assinaturas.aux)
+(/tmp/tg-review-20260910/latex/pretextual/agradecimentos.aux)
+(/tmp/tg-review-20260910/latex/pretextual/epigrafe.aux)
+(/tmp/tg-review-20260910/latex/pretextual/resumos.aux)
+(/tmp/tg-review-20260910/latex/capitulos/introducao.aux)
+(/tmp/tg-review-20260910/latex/capitulos/estadodaarte.aux)
+(/tmp/tg-review-20260910/latex/capitulos/ferramentas.aux)
+(/tmp/tg-review-20260910/latex/capitulos/construcao_veiculo.aux)
+(/tmp/tg-review-20260910/latex/capitulos/regulamentacao.aux)
+(/tmp/tg-review-20260910/latex/capitulos/consideracoes.aux)
+(/tmp/tg-review-20260910/latex/capitulos/proposta.aux)
+(/tmp/tg-review-20260910/latex/capitulos/metodologia_validacao.aux)
+(/tmp/tg-review-20260910/latex/capitulos/resultados.aux)
+(/tmp/tg-review-20260910/latex/capitulos/conclusao.aux))
+(/usr/share/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+) (/usr/share/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+(/usr/share/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg))
+(/usr/share/texmf-dist/tex/latex/microtype/mt-cmr.cfg) (./pretextual/capa.tex
+(/usr/share/texmf-dist/tex/latex/lm/t1lmss.fd) [1{/var/lib/texmf/fonts/map/pdft
+ex/updmap/pdftex.map}{/usr/share/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc} <./fi
+gs/logo.png>] [2])
+Underfull \hbox (badness 1019) in paragraph at lines 123--123
+\T1/lmr/m/n/12 (+20) Pro-grama de Grad-u-ação em En-gen-haria
+(/usr/share/texmf-dist/tex/latex/lm/ot1lmr.fd)
+(/usr/share/texmf-dist/tex/latex/lm/omllmm.fd)
+(/usr/share/texmf-dist/tex/latex/lm/omslmsy.fd)
+(/usr/share/texmf-dist/tex/latex/lm/omxlmex.fd)
+(/usr/share/texmf-dist/tex/latex/amsfonts/umsa.fd)
+(/usr/share/texmf-dist/tex/latex/microtype/mt-msa.cfg)
+(/usr/share/texmf-dist/tex/latex/amsfonts/umsb.fd)
+(/usr/share/texmf-dist/tex/latex/microtype/mt-msb.cfg)
+(/usr/share/texmf-dist/tex/latex/jknapltx/ursfs.fd)
+pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.123 
+       [1] (./pretextual/catalografica.tex
+Underfull \hbox (badness 10000) in paragraph at lines 25--26
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 27--28
+
+
+Overfull \hbox (16.44858pt too wide) in paragraph at lines 29--32
+[]  [] 
+
+Underfull \hbox (badness 10000) in paragraph at lines 29--32
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 33--40
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 41--42
+
+)
+pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.125 \include{pretextual/catalografica}
+                                         [2] (./pretextual/assinaturas.tex
+Underfull \hbox (badness 1019) in paragraph at lines 24--25
+\T1/lmr/m/n/12 (+20) Pro-grama de Grad-u-ação em En-gen-haria
+[3] [4]) (./pretextual/agradecimentos.tex [5] [6]) (./pretextual/epigrafe.tex
+[7] [8]) (./pretextual/resumos.tex [9] [10] [11] [12])
+(/tmp/tg-review-20260910/latex/dissertacao.lof) [13] [14]
+(/tmp/tg-review-20260910/latex/dissertacao.lot
+(/usr/share/texmf-dist/tex/latex/lm/t1lmtt.fd)
+Underfull \vbox (badness 10000) has occurred while \output is active [15{/usr/s
+hare/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/texmf-dist/fonts/enc/d
+vips/lm/lm-mathsy.enc}{/usr/share/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}]
+)
+Underfull \vbox (badness 10000) has occurred while \output is active [16]
+[17] [18] [19] [20] [21] [22] (/tmp/tg-review-20260910/latex/dissertacao.toc
+[23] [24] [25] [26]
+Overfull \hbox (1.5877pt too wide) detected at line 184
+ \T1/lmss/bx/n/12 103
+
+Overfull \hbox (1.5877pt too wide) detected at line 190
+ \T1/lmss/bx/n/12 107
+
+Overfull \hbox (1.5877pt too wide) detected at line 191
+ \T1/lmss/bx/n/12 107
+
+Overfull \hbox (1.5877pt too wide) detected at line 192
+ \T1/lmss/bx/n/12 107
+
+Overfull \hbox (1.5877pt too wide) detected at line 193
+ \T1/lmss/bx/n/12 108
+
+Overfull \hbox (1.5877pt too wide) detected at line 194
+ \T1/lmss/bx/n/12 109
+
+Overfull \hbox (1.5877pt too wide) detected at line 199
+ \T1/lmss/bx/n/12 111
+
+Overfull \hbox (1.5877pt too wide) detected at line 200
+ \T1/lmss/bx/n/12 111
+[27]
+Overfull \hbox (1.5877pt too wide) detected at line 206
+ \T1/lmss/bx/n/12 115
+
+Overfull \hbox (1.5877pt too wide) detected at line 209
+ \T1/lmss/bx/n/12 116
+
+Overfull \hbox (1.5877pt too wide) detected at line 212
+ \T1/lmss/bx/n/12 119
+
+Overfull \hbox (1.5877pt too wide) detected at line 218
+ \T1/lmss/bx/n/12 124
+
+Overfull \hbox (1.5877pt too wide) detected at line 225
+ \T1/lmss/bx/n/12 132
+
+Overfull \hbox (1.5877pt too wide) detected at line 235
+ \T1/lmss/bx/n/12 139
+
+Overfull \hbox (1.5877pt too wide) detected at line 236
+ \T1/lmss/bx/n/12 139
+
+Overfull \hbox (1.5877pt too wide) detected at line 237
+ \T1/lmss/bx/n/12 140
+[28]
+Overfull \hbox (1.5877pt too wide) detected at line 241
+ \T1/lmss/bx/n/12 142
+
+Overfull \hbox (1.5877pt too wide) detected at line 245
+ \T1/lmss/bx/n/12 144
+
+Overfull \hbox (1.5877pt too wide) detected at line 249
+ \T1/lmss/bx/n/12 147
+
+Overfull \hbox (1.5877pt too wide) detected at line 253
+ \T1/lmss/bx/n/12 150
+
+Overfull \hbox (1.5877pt too wide) detected at line 258
+ \T1/lmss/bx/n/12 155
+
+Overfull \hbox (1.5877pt too wide) detected at line 266
+ \T1/lmss/bx/n/12 159
+
+Overfull \hbox (1.5877pt too wide) detected at line 267
+ \T1/lmss/bx/n/12 159
+
+Overfull \hbox (1.5877pt too wide) detected at line 268
+ \T1/lmss/bx/n/12 163
+
+Overfull \hbox (1.5877pt too wide) detected at line 271
+ \T1/lmss/bx/n/12 169
+) [29] [30] (./capitulos/introducao.tex
+Underfull \vbox (badness 10000) has occurred while \output is active
+pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.64 
+      [1]
+pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.107 
+       [2])
+pdfTeX warning (ext4): destination with the same identifier (name{page.3}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.181 \include{capitulos/introducao}
+                                     [3]
+pdfTeX warning (ext4): destination with the same identifier (name{page.4}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.184 \part
+           {PreparaÃ§Ã£o da pesquisa} [4]
+pdfTeX warning (ext4): destination with the same identifier (name{page.5}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.184 \part{PreparaÃ§Ã£o da pesquisa}
+                                      [5]
+pdfTeX warning (ext4): destination with the same identifier (name{page.6}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.184 \part{PreparaÃ§Ã£o da pesquisa}
+                                      [6] (./capitulos/estadodaarte.tex
+Cap\'{\i }tulo 1.
+(/usr/share/texmf-dist/tex/latex/lm/ts1lmr.fd)
+pdfTeX warning (ext4): destination with the same identifier (name{page.7}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.52 \section
+             {Plataformas e simuladores para corrida autÃ´noma em escala}\la...
+[7{/usr/share/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}]
+pdfTeX warning (ext4): destination with the same identifier (name{page.8}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.97 
+      [8]
+Underfull \vbox (badness 10000) has occurred while \output is active
+pdfTeX warning (ext4): destination with the same identifier (name{page.9}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.146 I
+       vanov e colaboradores \cite{Ivanov2020Verifying} tomam um controlador...
+[9]
+pdfTeX warning (ext4): destination with the same identifier (name{page.10}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.195 
+       [10]
+pdfTeX warning (ext4): destination with the same identifier (name{page.11}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.240 
+       [11]
+Underfull \vbox (badness 1286) has occurred while \output is active
+pdfTeX warning (ext4): destination with the same identifier (name{page.12}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.288 
+       [12]
+pdfTeX warning (ext4): destination with the same identifier (name{page.13}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.336 
+       [13]
+pdfTeX warning (ext4): destination with the same identifier (name{page.14}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.379 A
+        primeira Ã© \textbf{interativa}: o DAgger \cite{Ross2011DAgger} exec...
+[14]
+pdfTeX warning (ext4): destination with the same identifier (name{page.15}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.430 
+       [15]
+Underfull \vbox (badness 1286) has occurred while \output is active
+pdfTeX warning (ext4): destination with the same identifier (name{page.16}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.480 
+       [16]
+Underfull \vbox (badness 2600) has occurred while \output is active
+pdfTeX warning (ext4): destination with the same identifier (name{page.17}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.526 \[
+         [17]
+pdfTeX warning (ext4): destination with the same identifier (name{page.18}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.577 
+       [18]
+Underfull \vbox (badness 1286) has occurred while \output is active
+pdfTeX warning (ext4): destination with the same identifier (name{page.19}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.621 
+       [19]
+pdfTeX warning (ext4): destination with the same identifier (name{page.20}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.673 
+       [20]
+pdfTeX warning (ext4): destination with the same identifier (name{page.21}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.717 
+       [21]
+Underfull \hbox (badness 10000) in paragraph at lines 744--744
+\T1/lmr/bx/n/10.95 (+20) ex-ige pose
+
+Underfull \hbox (badness 10000) in paragraph at lines 745--746
+[]|\T1/lmr/bx/n/10.95 (+20) Critério
+
+Underfull \hbox (badness 10000) in paragraph at lines 745--746
+\T1/lmr/bx/n/10.95 (+20) con-ge-lado
+
+Underfull \hbox (badness 10000) in paragraph at lines 749--749
+[]|\T1/lmr/m/n/10.95 (+20) Simulação
+
+Underfull \hbox (badness 10000) in paragraph at lines 749--749
+\T1/lmr/m/n/10.95 (+20) (duas es-
+
+Underfull \hbox (badness 10000) in paragraph at lines 753--753
+[]|\T1/lmr/m/n/10.95 (+20) Hardware
+
+Underfull \hbox (badness 1102) in paragraph at lines 755--755
+[]|\T1/lmr/m/n/10.95 (+20) RL + ver-i-fi-
+
+Underfull \hbox (badness 2253) in paragraph at lines 755--755
+[]|\T1/lmr/m/n/10.95 (+20) Hardware +
+
+Underfull \hbox (badness 10000) in paragraph at lines 755--756
+[]|\T1/lmr/m/n/10.95 (+20) Propriedade
+
+Underfull \hbox (badness 10000) in paragraph at lines 757--757
+[]|\T1/lmr/m/n/10.95 (+20) RL com
+
+Underfull \hbox (badness 10000) in paragraph at lines 757--757
+\T1/lmr/m/n/10.95 (+20) rec-om-pensa
+
+Underfull \hbox (badness 10000) in paragraph at lines 757--757
+\T1/lmr/m/n/10.95 (+20) guiada por
+
+Underfull \hbox (badness 10000) in paragraph at lines 757--757
+[]|\T1/lmr/m/n/10.95 (+20) Trajetória
+
+Underfull \hbox (badness 10000) in paragraph at lines 757--757
+\T1/lmr/m/n/10.95 (+20) de refer-ên-cia
+
+Underfull \hbox (badness 10000) in paragraph at lines 757--757
+\T1/lmr/m/n/10.95 (+20) exigida no
+
+Underfull \hbox (badness 10000) in paragraph at lines 759--759
+[]|\T1/lmr/m/n/10.95 (+20) Imitação +
+
+Underfull \vbox (badness 10000) has occurred while \output is active
+pdfTeX warning (ext4): destination with the same identifier (name{page.22}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.774     \item \textbf
+                       {Nenhum experimento no veÃ­culo fÃ­sico.} O FastRLAP
+[22]
+pdfTeX warning (ext4): destination with the same identifier (name{page.23}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.823 
+       [23])
+pdfTeX warning (ext4): destination with the same identifier (name{page.24}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.185 \include{capitulos/estadodaarte}
+                                       [24] (./capitulos/ferramentas.tex
+Cap\'{\i }tulo 2.
+
+pdfTeX warning (ext4): destination with the same identifier (name{page.25}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.47     \item \textbf
+                      {Discovery dinÃ¢mico}: Permite que novos nÃ³s sejam de...
+[25]
+pdfTeX warning (ext4): destination with the same identifier (name{page.26}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.93 \subsection
+                {Middleware e Camadas de AbstraÃ§Ã£o} [26]
+pdfTeX warning (ext4): destination with the same identifier (name{page.27}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.131     \item \textbf
+                       {Motor BLDC}: Tipicamente controlado via ESC (Electro...
+[27]
+pdfTeX warning (ext4): destination with the same identifier (name{page.28}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.173     \item M
+                 onitoramento contÃ­nuo de condiÃ§Ãµes de seguranÃ§a e desem...
+[28]
+pdfTeX warning (ext4): destination with the same identifier (name{page.29}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.213 
+       [29]
+pdfTeX warning (ext4): destination with the same identifier (name{page.30}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.251     \item \textbf
+                       {rosbag2}: GravaÃ§Ã£o e reproduÃ§Ã£o de dados de sens...
+[30] [31]
+Overfull \hbox (8.8326pt too wide) in paragraph at lines 290--297
+[]\T1/lmr/m/n/12 (-20) No con-texto do ROS2, a odome-tria de-sem-penha um pa-pe
+l fun-da-men-tal na manutenção
+[32] [33] [34]
+Underfull \vbox (badness 1688) has occurred while \output is active [35]
+[36] [37] [38] [39] [40{/usr/share/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}
+] [41] [42]
+Overfull \hbox (11.18776pt too wide) in paragraph at lines 789--790
+[]\T1/lmr/bx/n/12 (-20) Métodos de Otimiza-ção Numérica\T1/lmr/m/n/12 (-20) : U
+ti-lizam téc-ni-cas como pro-gra-mação quadrática
+[43] [44] [45]) [46] (./capitulos/construcao_veiculo.tex
+Cap\'{\i }tulo 3.
+[47] [48] [49] [50] [51] [52]
+Overfull \hbox (17.67053pt too wide) in paragraph at lines 273--276
+\T1/lmr/m/n/12 (-20) ve-loci-dade e di-reção no tópico \T1/lmtt/m/n/12 /drive \
+T1/lmr/m/n/12 (-20) (tipo \T1/lmtt/m/n/12 ackermann_msgs/AckermannDriveStamped\
+T1/lmr/m/n/12 (-20) ). 
+[53] [54]
+Overfull \hbox (51.81638pt too wide) in paragraph at lines 332--338
+[]\T1/lmr/m/n/12 (-20) Essa in-te-gração fornece os da-dos de per-cepção essen-
+ci-ais, no for-mato \T1/lmtt/m/n/12 sensor_msgs/LaserScan\T1/lmr/m/n/12 (-20) ,
+
+) [55] (./capitulos/regulamentacao.tex [56]
+Cap\'{\i }tulo 4.
+[57] [58] [59] [60] [61] [62]) [63] (./capitulos/consideracoes.tex [64]
+Cap\'{\i }tulo 5.
+) [65] [66] [67] [68] (./capitulos/proposta.tex
+Cap\'{\i }tulo 6.
+[69] [70]
+Overfull \hbox (22.16048pt too wide) in paragraph at lines 99--102
+[]\T1/lmr/m/n/12 (-20) No âm-bito do con-t-role autônomo, foram im-ple-men-ta-d
+os con-tro-ladores PID (Proportional-
+
+Overfull \hbox (52.65863pt too wide) in paragraph at lines 166--167
+ [][] 
+[71] [72] [73] [74] [75] [76] [77] [78]
+Overfull \hbox (26.82928pt too wide) in paragraph at lines 486--487
+[]\T1/lmr/bx/n/12 (-20) Termo Deriva-tivo\T1/lmr/m/n/12 (-20) : Cal-cula a taxa
+ de vari-ação do erro (\T1/lmtt/m/n/12 error - self.prev_error\T1/lmr/m/n/12 (-
+20) ),
+[79]
+Overfull \hbox (22.48645pt too wide) in paragraph at lines 539--541
+[]\T1/lmr/m/n/12 (-20) Recalcula os lim-ites dos eixos para aco-modar novos da-
+dos (\T1/lmtt/m/n/12 relim \T1/lmr/m/n/12 (-20) e \T1/lmtt/m/n/12 autoscale_vie
+w\T1/lmr/m/n/12 (-20) ). 
+
+Overfull \hbox (66.5358pt too wide) in paragraph at lines 546--549
+[]\T1/lmr/m/n/12 (-20) Esta fun-cional-i-dade, em-b-ora de-sati-vada no código 
+prin-ci-pal (\T1/lmtt/m/n/12 #self.plot_error_vs_time()\T1/lmr/m/n/12 (-20) ),
+[80] [81] [82]
+Overfull \hbox (15.89851pt too wide) in paragraph at lines 714--715
+ [][] 
+[83] [84] [85] [86] [87] [88] [89] [90] [91] [92] [93]
+Overfull \hbox (2.67924pt too wide) in paragraph at lines 1201--1203
+[]\T1/lmr/m/n/12 (-20) Determina mag-ni-tude das difer-enças us-ando norma eu-c
+lid-i-ana (\T1/lmtt/m/n/12 np.linalg.norm\T1/lmr/m/n/12 (-20) ) 
+[94] [95] [96] [97] [98] [99]
+Overfull \hbox (39.11172pt too wide) in paragraph at lines 1484--1485
+ [][] 
+[100] [101] [102] [103] [104] [105] [106]
+Cap\'{\i }tulo 7.
+[107] [108] [109]) [110] (./capitulos/metodologia_validacao.tex
+Cap\'{\i }tulo 8.
+[111]
+Underfull \vbox (badness 10000) has occurred while \output is active [112]
+[113] [114] [115] [116] [117]
+Underfull \hbox (badness 10000) in paragraph at lines 386--387
+[]|\T1/lmr/m/n/12 (+20) reprovado
+
+Underfull \hbox (badness 3525) in paragraph at lines 388--388
+[]|\T1/lmr/m/n/12 (+20) 300k + \T1/lmtt/m/n/12 wall_w
+
+Underfull \hbox (badness 10000) in paragraph at lines 388--389
+[]|\T1/lmr/m/n/12 (+20) reprovado
+[118] [119] [120] [121] [122]
+Underfull \vbox (badness 3471) has occurred while \output is active [123]
+Underfull \vbox (badness 3058) has occurred while \output is active [124]
+[125]
+Underfull \vbox (badness 1067) has occurred while \output is active [126]
+[127] [128] [129] [130] [131] [132] [133]
+Underfull \vbox (badness 1286) has occurred while \output is active [134]
+[135]) [136] [137] [138] (./capitulos/resultados.tex
+Cap\'{\i }tulo 9.
+[139] [140]
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[141] [142]
+Underfull \vbox (badness 1019) has occurred while \output is active [143]
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[144] [145]
+Underfull \vbox (badness 10000) has occurred while \output is active [146]
+[147] [148]
+Underfull \vbox (badness 1888) has occurred while \output is active [149]
+Underfull \vbox (badness 10000) has occurred while \output is active [150]
+[151]
+Overfull \hbox (29.43921pt too wide) in paragraph at lines 848--873
+ [][] 
+[152] [153]
+Underfull \vbox (badness 10000) has occurred while \output is active [154]
+[155] [156] [157]) [158] (./capitulos/conclusao.tex [159] [160] [161] [162]
+[163] [164] [165]) [166] [167] (/tmp/tg-review-20260910/latex/dissertacao.bbl
+(/tmp/tg-review-20260910/latex/dissertacao.brf) [168]
+bibitemlist
+[169] [170] [171] [172] [173]) [174]
+
+enddocument/afterlastpage (AED): lastpage setting LastPage.
+(/tmp/tg-review-20260910/latex/dissertacao.aux
+(/tmp/tg-review-20260910/latex/pretextual/capa.aux)
+(/tmp/tg-review-20260910/latex/pretextual/catalografica.aux)
+(/tmp/tg-review-20260910/latex/pretextual/assinaturas.aux)
+(/tmp/tg-review-20260910/latex/pretextual/agradecimentos.aux)
+(/tmp/tg-review-20260910/latex/pretextual/epigrafe.aux)
+(/tmp/tg-review-20260910/latex/pretextual/resumos.aux)
+(/tmp/tg-review-20260910/latex/capitulos/introducao.aux)
+(/tmp/tg-review-20260910/latex/capitulos/estadodaarte.aux)
+(/tmp/tg-review-20260910/latex/capitulos/ferramentas.aux)
+(/tmp/tg-review-20260910/latex/capitulos/construcao_veiculo.aux)
+(/tmp/tg-review-20260910/latex/capitulos/regulamentacao.aux)
+(/tmp/tg-review-20260910/latex/capitulos/consideracoes.aux)
+(/tmp/tg-review-20260910/latex/capitulos/proposta.aux)
+(/tmp/tg-review-20260910/latex/capitulos/metodologia_validacao.aux)
+(/tmp/tg-review-20260910/latex/capitulos/resultados.aux)
+(/tmp/tg-review-20260910/latex/capitulos/conclusao.aux)) )
+(see the transcript file for additional information)</usr/share/texmf-dist/font
+s/type1/public/lm/lmbx10.pfb></usr/share/texmf-dist/fonts/type1/public/lm/lmbx1
+2.pfb></usr/share/texmf-dist/fonts/type1/public/lm/lmex10.pfb></usr/share/texmf
+-dist/fonts/type1/public/lm/lmmi10.pfb></usr/share/texmf-dist/fonts/type1/publi
+c/lm/lmmi12.pfb></usr/share/texmf-dist/fonts/type1/public/lm/lmmi6.pfb></usr/sh
+are/texmf-dist/fonts/type1/public/lm/lmmi7.pfb></usr/share/texmf-dist/fonts/typ
+e1/public/lm/lmmi8.pfb></usr/share/texmf-dist/fonts/type1/public/lm/lmr10.pfb><
+/usr/share/texmf-dist/fonts/type1/public/lm/lmr12.pfb></usr/share/texmf-dist/fo
+nts/type1/public/lm/lmr7.pfb></usr/share/texmf-dist/fonts/type1/public/lm/lmr8.
+pfb></usr/share/texmf-dist/fonts/type1/public/lm/lmri10.pfb></usr/share/texmf-d
+ist/fonts/type1/public/lm/lmri12.pfb></usr/share/texmf-dist/fonts/type1/public/
+lm/lmss10.pfb></usr/share/texmf-dist/fonts/type1/public/lm/lmss12.pfb></usr/sha
+re/texmf-dist/fonts/type1/public/lm/lmss17.pfb></usr/share/texmf-dist/fonts/typ
+e1/public/lm/lmssbx10.pfb></usr/share/texmf-dist/fonts/type1/public/lm/lmsy10.p
+fb></usr/share/texmf-dist/fonts/type1/public/lm/lmsy8.pfb></usr/share/texmf-dis
+t/fonts/type1/public/lm/lmtk10.pfb></usr/share/texmf-dist/fonts/type1/public/lm
+/lmtt10.pfb></usr/share/texmf-dist/fonts/type1/public/lm/lmtt12.pfb></usr/share
+/texmf-dist/fonts/type1/public/lm/lmtti10.pfb>
+Output written on /tmp/tg-review-20260910/latex/dissertacao.pdf (206 pages, 132
+9899 bytes).
+Transcript written on /tmp/tg-review-20260910/latex/dissertacao.log.
+Latexmk: Getting log file '/tmp/tg-review-20260910/latex/dissertacao.log'
+Latexmk: Examining '/tmp/tg-review-20260910/latex/dissertacao.fls'
+Latexmk: Examining '/tmp/tg-review-20260910/latex/dissertacao.log'
+Latexmk: Found input bbl file '/tmp/tg-review-20260910/latex/dissertacao.bbl'
+Latexmk: Log file says output to '/tmp/tg-review-20260910/latex/dissertacao.pdf'
+Latexmk: Log file says output to '/tmp/tg-review-20260910/latex/dissertacao.pdf'
+Latexmk: Index file '/tmp/tg-review-20260910/latex/dissertacao.idx' was written
+Latexmk: Using bibtex to make bibliography file(s).
+  ===Source file '/tmp/tg-review-20260910/latex/dissertacao.bbl' for 'pdflatex'
+Latexmk: Found bibliography file(s):
+  ./bibliografia.bib
+  /usr/share/texmf-dist/bibtex/bib/abntex2/abntex2-options.bib
+Latexmk: All targets (/tmp/tg-review-20260910/latex/dissertacao.pdf) are up-to-date
+

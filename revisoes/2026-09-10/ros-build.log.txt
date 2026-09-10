@@ -1,0 +1,18 @@
+Starting >>> data_collector
+Starting >>> f1tenth_gym_ros
+Starting >>> gap_follow
+Starting >>> joy_converter
+Starting >>> my_robot_mapper
+Starting >>> perfil_lidar
+Starting >>> policy_runner
+Starting >>> wall_follow
+Finished <<< wall_follow [1.03s]
+Finished <<< perfil_lidar [1.04s]
+Finished <<< gap_follow [1.04s]
+Finished <<< policy_runner [1.04s]
+Finished <<< joy_converter [1.05s]
+Finished <<< f1tenth_gym_ros [1.05s]
+Finished <<< data_collector [1.07s]
+Finished <<< my_robot_mapper [1.33s]
+
+Summary: 8 packages finished [1.47s]

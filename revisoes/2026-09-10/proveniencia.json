@@ -1,0 +1,17 @@
+{
+  "20": {
+    "total": 20,
+    "aprovados": {
+      "e3": "e3_rl_Spielberg_20260823-211722_a46cc0a_0311b9",
+      "e2": "e2_il_Spielberg_20260823-140231_6fbedb5_690375"
+    }
+  },
+  "10000": {
+    "total": 22,
+    "aprovados": {
+      "e3": "e3_rl_Spielberg_20260823-211722_a46cc0a_0311b9",
+      "e2": "e2_il_Spielberg_20260823-140231_6fbedb5_690375",
+      "e1": "e1_pp_Spielberg_20260823-001606_1e154ec_696cdc"
+    }
+  }
+}

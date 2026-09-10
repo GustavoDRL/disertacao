@@ -272,7 +272,7 @@ A comunicação se dá da seguinte forma:
             do servo (se configurado) em \texttt{/sensors/servo\_position\_command}.
       \item Recebimento de Comandos: O nó \texttt{vesc\_ackermann} recebe comandos de alto
             nível de velocidade e direção no tópico \texttt{/drive} (tipo
-            \texttt{ackermann\_msgs/AckermannDriveStamped}).
+            \path{ackermann_msgs/AckermannDriveStamped}).
       \item Conversão e Envio: \texttt{vesc\_ackermann} converte os comandos de Ackermann
             em comandos de ERPM para o motor e posição para o servo, publicando-os nos
             tópicos \texttt{/commands/motor/speed} e \texttt{/commands/servo/position}

@@ -34,7 +34,7 @@
 \usepackage{lastpage}			% Usado pela Ficha catalográfica
 \usepackage{indentfirst}			% Indenta o primeiro parágrafo de cada seção.
 \usepackage{color}				% Controle das cores
-\usepackage{graphicx,graphicx}	% Inclusão de gráficos
+\usepackage{graphicx}	% Inclusão de gráficos
 \usepackage{epsfig,subfig}		% Inclusão de figuras
 \usepackage{microtype} 			% Melhorias de justificação
 % ---------------------
@@ -42,15 +42,15 @@
 % ---------------------
 % Pacotes ADICIONAIS
 % ---------------------
-\usepackage{lipsum}						% Geração de dummy text
+% \usepackage{lipsum}						% Geração de dummy text
 \usepackage{amsmath,amssymb,mathrsfs}	% Comandos matemáticos avançados 
 \usepackage{setspace}  					% Para permitir espaçamento simples, 1 1/2 e duplo
 \usepackage{verbatim}					% Para poder usar o ambiente "comment"
 \usepackage{listings}					% Para listagens de código com quebra de linha automática
 \lstset{
-	basicstyle=\ttfamily,
+	basicstyle=\small\ttfamily,
 	breaklines=true,				% "verbatim" nao quebra linha e estourava a margem
-	breakatwhitespace=true,			% so quebrar em espaco - nunca partir um identificador ao meio
+	breakatwhitespace=false,			% so quebrar em espaco - nunca partir um identificador ao meio
 	breakindent=1em,
 	columns=fullflexible,
 	keepspaces=true,
@@ -92,6 +92,7 @@
 
 % O tamanho da identação do parágrafo é dado por:
 \setlength{\parindent}{1.3cm}
+\setlength{\emergencystretch}{3em}
 
 % Controle do espaçamento entre um parágrafo e outro:
 \setlength{\parskip}{0.2cm}  % tente também \onelineskip
@@ -99,6 +100,8 @@
 % ---------------------
 % Compila o indice
 % ---------------------
+\setpnumwidth{2.5em}
+\setrmarg{3.5em}
 \makeindex
 % ---------------------
 
@@ -122,16 +125,16 @@
 \imprimirfolhaderosto*
 
 % Imprimir Ficha Catalografica
-\include{pretextual/catalografica}
+% Ficha oficial pendente; não incluir dados fictícios.
 
 % Inserir Folha de Aprovação
-\include{pretextual/assinaturas}
+% Folha assinada pendente; esta é uma versão de trabalho.
 
 % Dedicatória
 %\include{pretextual/dedicatoria}
 
 % Agradecimentos
-\include{pretextual/agradecimentos}
+% Agradecimentos pessoais pendentes.
 
 % Epígrafe
 \include{pretextual/epigrafe}
@@ -151,16 +154,22 @@
 
 % Lista de abreviaturas e siglas
 \begin{siglas}
-	\item[ABNT] Associação Brasileira de Normas Técnicas
-	\item[abnTeX] Normas para TeX
+    \item[BC] Clonagem comportamental (\textit{behavior cloning})
+    \item[IL] Aprendizado por imitação
+    \item[LiDAR] Detecção e medição de distância por luz
+    \item[ONNX] Open Neural Network Exchange
+    \item[PID] Proporcional, integral e derivativo
+    \item[RL] Aprendizado por reforço
+    \item[ROS] Robot Operating System
+    \item[SAC] Soft Actor-Critic
+    \item[SLAM] Localização e mapeamento simultâneos
 \end{siglas}
 
-% Lista de símbolos
 \begin{simbolos}
-	\item[$ \Gamma $] Letra grega Gama
-	\item[$ \Lambda $] Lambda
-	\item[$ \zeta $] Letra grega minúscula zeta
-	\item[$ \in $] Pertence
+    \item[$v$] Velocidade longitudinal
+    \item[$\delta$] Ângulo de esterçamento
+    \item[$\mu$] Coeficiente de atrito
+    \item[$T_{pp}$] Tempo de volta da referência Pure Pursuit
 \end{simbolos}
 
 % Inserir o SUMÁRIO
