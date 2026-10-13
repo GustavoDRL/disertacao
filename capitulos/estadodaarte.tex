@@ -33,9 +33,19 @@ trabalho citados neste capítulo foram obtidos em simulação}, no ambiente
 resultado próprio com um resultado da literatura obtido em hardware, a
 assimetria será dita explicitamente.
 
-% TODO-ESCOPO: apresentar, neste ponto, os dois outros tipos de piloto do comparativo (o seguidor de gap reativo, já descrito na Seção sobre métodos reativos, e o piloto humano por joystick, em duas vistas), de modo que a lista E1--E3 acima não seja lida como o conjunto completo de pilotos.
+Além dessas três etapas, o comparativo inclui outros dois tipos de piloto, que
+completam o conjunto. O primeiro é o seguidor de gap por descontinuidade, um
+controlador reativo clássico que decide o comando só a partir da varredura do
+LiDAR, sem pose, sem mapa e sem linha de corrida; ele é descrito, com o Disparity
+Extender, na Seção~\ref{sec:arte-classico}, entre os métodos reativos. O segundo é
+o piloto humano, que conduz o veículo simulado com um \textit{joystick} sob os
+mesmos limites de ação das políticas e em duas condições de informação: a pista
+inteira vista de cima e apenas os pontos do LiDAR. A Seção~\ref{sec:arte-humanos}
+reúne o que a literatura diz sobre essa referência humana. Assim, a lista E1--E3
+acima enumera as etapas do pipeline de aprendizado, e não todos os pilotos
+medidos.
 
-O capítulo está organizado em sete partes. A Seção~\ref{sec:arte-plataformas}
+O capítulo está organizado em oito partes. A Seção~\ref{sec:arte-plataformas}
 trata das plataformas e simuladores para corrida em escala reduzida, e do que
 significa escolher um simulador em vez de outro. A
 Seção~\ref{sec:arte-classico} percorre o planejamento e o controle clássicos:
@@ -46,7 +56,9 @@ aprendizado por reforço aplicado à corrida, com atenção particular à
 formulação residual. A Seção~\ref{sec:arte-rand} trata, em um parágrafo, da
 randomização de domínio, que justifica a variação de condições usada no
 treino e na avaliação. A Seção~\ref{sec:arte-timetrial} descreve o formato
-\textit{time trial}, que o comparativo imita, e a Seção~\ref{sec:arte-lacuna}
+\textit{time trial}, que o comparativo imita, a
+Seção~\ref{sec:arte-humanos} trata de pilotos humanos e controladores
+autônomos em corrida, e a Seção~\ref{sec:arte-lacuna}
 fecha posicionando a lacuna: o que este trabalho faz que os citados não fazem,
 e o que eles fazem que este não faz.
 
@@ -651,7 +663,50 @@ par de grandezas, volta rápida e voltas completas sem colisão, que as métrica
 conclusão e de tempo de volta deste trabalho medem, para todos os pilotos sob o
 mesmo avaliador.
 
-% TODO-ESCOPO: seção/subseção sobre pilotos humanos e controladores autônomos em corrida, com os ganchos já presentes no texto (GT Sophy e Kaufmann em sec:arte-rl, clonagem de comportamento em sec:arte-il): o que a literatura reporta sobre desempenho humano de referência, o efeito de aprendizado ao longo das tentativas e a comparação de suavidade de comando. Acrescentar as entradas bibliográficas correspondentes (não inventar referências).
+\section{Pilotos humanos e controladores autônomos em corrida}\label{sec:arte-humanos}
+
+Comparar um controlador com um piloto humano é uma prática antiga da área, mas
+raramente é o objeto central do estudo: em geral o humano aparece como régua de
+um resultado cujo foco é o algoritmo. Esta seção reúne o que esses trabalhos
+reportam e delimita o que deles se aproveita.
+
+\textbf{Desempenho humano como referência.} Os resultados mais citados usam o
+humano como teto a superar. Wurman e colaboradores \cite{Wurman2022GranTurismo}
+medem o agente contra campeões humanos em um simulador comercial, e Kaufmann e
+colaboradores \cite{Kaufmann2023DroneRacing} fazem o mesmo em corrida de drones.
+Fuchs e colaboradores \cite{Fuchs2021SuperHuman} comparam o tempo de volta de uma
+política treinada por aprendizado por reforço com os de uma base de mais de
+50\,000 jogadores do mesmo simulador, e reportam que ela supera o mais rápido da
+base. Nesses trabalhos o humano é um especialista com muita prática e a comparação
+central é de tempo de volta. Igualar a informação do humano à do agente e comparar a
+suavidade do comando não são o foco deles; são esses dois eixos que o presente
+trabalho acrescenta, em escala bem menor.
+
+\textbf{Imitação de pilotos humanos.} A clonagem de comportamento, vista na
+Seção~\ref{sec:arte-il}, tem na condução humana a sua origem
+\cite{Pomerleau1989ALVINN, Bojarski2016EndToEnd}. Em corrida, Löckel, Peters e
+van Vliet \cite{Lockel2020ProMoD} propõem um arcabouço probabilístico para imitar
+o comportamento de pilotos de corrida em simulação, com trajetória-alvo e rede
+que escolhe as ações. Este trabalho não imita humanos: o especialista que
+gera as demonstrações do E2 é geométrico, e a imitação de demonstrações humanas
+fica como trabalho futuro.
+
+\textbf{Aprendizado do piloto ao longo das tentativas.} Um humano melhora com a
+prática, e o tempo de volta numa sessão curta mistura habilidade com
+familiaridade. Por isso a medida de uma pessoa depende do treino que ela teve
+antes de ser medida, e um protocolo de comparação precisa fixar esse treino e
+registrar a evolução do tempo de volta, em vez de apresentar um único número.
+Esta é uma consequência do modo como o aprendizado humano é medido em geral, e
+não uma afirmação extraída dos trabalhos citados acima, que não a examinam.
+
+\textbf{Informação disponível ao piloto.} O desempenho de quem pilota depende do
+que ele vê. Uma pessoa com o mapa da pista pode antecipar curvas e escolher
+velocidade com antecedência; uma política que recebe apenas a varredura do LiDAR
+no passo atual decide só pelo que está à frente. Comparar um humano com a vista
+da pista inteira contra essa política mistura habilidade com informação. Por isso
+o comparativo mede o humano também com a vista restrita ao LiDAR, em que a
+informação é equivalente à da política, e declara a assimetria da primeira vista
+(Seção~\ref{sec:val-limitacoes-comparativo}).
 
 \section{Posicionamento: a lacuna e os seus limites}\label{sec:arte-lacuna}
 
@@ -730,7 +785,10 @@ trabalhos mais próximos.
     \label{tab:arte_posicionamento}
 \end{table}
 
-% TODO-ESCOPO: avaliar se a Tabela~\ref{tab:arte_posicionamento} ganha linhas para trabalhos que comparam humanos e controladores autônomos (depende da seção nova sobre pilotos humanos).
+A tabela não inclui os trabalhos da Seção~\ref{sec:arte-humanos}: as suas colunas
+(exigência de pose global, validação em hardware, critério congelado) descrevem
+políticas aprendidas sem pose, e os trabalhos de comparação com humanos citados
+ali não as reportam de forma que permita preencher a linha sem suposição.
 
 \subsection{O que os trabalhos citados fazem e este não faz}
 
@@ -800,4 +858,9 @@ O que falta a essa literatura, e o que este trabalho se propõe a medir, é a
 posição desses pilotos entre si e em relação a uma referência humana, no mesmo
 simulador e sob os mesmos critérios.
 
-% TODO-ESCOPO: um parágrafo de fecho do Estado da Arte sobre o seguidor de gap como reativo sem mapa e o piloto humano como referência, ligando-os à Seção sobre métodos reativos e à seção do \textit{time trial}.
+Dois dos pilotos do comparativo ocupam as pontas desse arranjo. O seguidor de gap,
+descrito entre os métodos reativos (Seção~\ref{sec:arte-classico}), é o reativo
+sem mapa: decide só pela varredura atual, como a rede, mas sem aprender nada. O
+piloto humano é a referência de desempenho e de modo de decidir
+(Seção~\ref{sec:arte-humanos}), medida sob o formato \textit{time trial} da
+Seção~\ref{sec:arte-timetrial}: volta rápida e voltas completas sem colisão.

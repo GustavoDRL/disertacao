@@ -33,6 +33,8 @@ critérios antes da medição, e de tornar a proveniência do resultado parte do
 veredito. A Seção~\ref{sec:val-estatistica} trata da decisão estatística e do
 escalonamento automático de amostra. A Seção~\ref{sec:val-camadas} descreve as
 cinco camadas de verificação. A
+Seção~\ref{sec:val-humano} aplica o aparato ao comparativo, com o protocolo
+comum, os pilotos humanos e as métricas novas. A
 Seção~\ref{sec:val-limitacoes} declara o que este aparato não cobre.
 
 \section{O problema: um número medido não é um resultado}\label{sec:val-problema}
@@ -684,7 +686,108 @@ compatíveis porque as perguntas são diferentes --- uma estima um valor contra 
 limiar próximo, a outra ordena níveis separados por um fator de quinze ---, mas a
 diferença precisa estar escrita, e não deduzida pelo leitor.
 
-% TODO-ESCOPO: seção sobre o protocolo humano e as métricas novas: critérios congelados próprios do comparativo (volta válida, colisão encerra a sessão, 10 min de treino e 3 sessões × 5 voltas por vista, ordem fixa das vistas), métricas (suavidade do esterço, desvio da raceline, perfil de velocidade, curva de aprendizado), estudo de caso descritivo sem teste de hipótese, ética (TCLE, anonimização, Comitê de Ética se houver).
+\section{Protocolo comum, pilotos humanos e métricas do comparativo}\label{sec:val-humano}
+
+As seções anteriores fixam como um número é medido e aceito. Esta seção aplica o
+mesmo critério ao comparativo entre pilotos: o protocolo é escrito e congelado
+antes da coleta, e vale para todos os pilotos, automáticos e humanos.
+
+\subsection{Protocolo comum}
+
+Todos os pilotos correm em Spielberg, com randomização do atrito e do ruído do
+LiDAR e largada em ponto aleatório da linha de corrida, sob o mesmo avaliador e os
+mesmos limites de ação (esterço de $\pm 0{,}4189$~rad, velocidade de 1 a 8~m/s,
+atraso de esterço de 100~ms e passo de 0,05~s). Uma colisão encerra o episódio, e
+voltas não iniciadas não contam como tentadas. Os pilotos automáticos correm cinco
+\textit{seeds} (1000 a 1004) de dez voltas. Os humanos correm três sessões
+de cinco voltas, nas \textit{seeds} 1000, 1001 e 1002, que são as três primeiras
+dos automáticos: largada e atrito coincidem, e a comparação é pareada.
+
+\subsection{Protocolo dos pilotos humanos}
+
+Em cada vista, o piloto faz 10~minutos de treino, medidos no relógio, e em seguida
+três sessões que contam. O treino usa \textit{seeds} próprias (9000, 9001, \dots),
+reinicia o carro após uma colisão, é gravado e não entra nos resultados, exceto na
+curva de aprendizado. Durante o treino, o condutor responde apenas a dúvidas sobre
+os controles, sem sugerir trajetória, velocidade ou estratégia. Cada sessão tem
+contagem regressiva de 3~s e termina ao completar cinco voltas ou ao primeiro
+choque; as voltas completas até ali contam, e a volta em andamento não. Nenhuma
+sessão é repetida por desempenho ruim. Uma sessão só é excluída por motivo externo
+ao desempenho (falha de software, falha do \textit{joystick}, interferência na
+sala ou pedido do voluntário), com o motivo registrado, e a decisão não olha o
+resultado da volta.
+
+A ordem das vistas é fixa: primeiro a pista inteira, depois só o LiDAR, na mesma
+visita e com pausa de pelo menos 5~minutos entre elas. As sessões são presenciais,
+no mesmo computador, monitor e \textit{joystick}. Participam os dois autores e de
+três a cinco voluntários, e os dois grupos são reportados em separado.
+
+\subsection{Critérios congelados}
+
+O protocolo recebe um \textit{hash}, calculado pela mesma técnica do \textit{hash}
+dos critérios de aceite e gravado no registro de cada piloto e vista. Estão
+congelados a pista, a randomização e a largada; as \textit{seeds} de sessão e de
+treino; o número de sessões, de voltas e a duração do treino; a ordem e o conteúdo
+das vistas; o mapeamento do \textit{joystick}, a zona morta e os limites de ação;
+o alcance de visualização do LiDAR e a contagem regressiva. Mudar qualquer um
+exige refazer a coleta. Antes do congelamento, uma sessão-piloto com um dos autores
+valida o roteiro e não entra nos resultados.
+
+\subsection{Ética}
+
+O voluntário lê e assina o Termo de Consentimento Livre e Esclarecido (TCLE) em
+duas vias e preenche uma ficha curta com a experiência em jogos de corrida
+(nenhuma, alguma ou bastante). A ficha não tem nome, e nos dados, nos nomes de
+pasta e nas mensagens de versionamento aparece apenas um código anônimo (P01,
+P02, \dots). O TCLE, que tem o nome, fica em papel e separado dos dados. O termo
+segue as Resoluções CNS 466/2012 e 510/2016. Se o projeto for submetido ao Comitê
+de Ética em Pesquisa, nenhuma coleta com voluntários ocorre antes da aprovação;
+se o parecer não sair a tempo, o estudo se limita aos autores e a participação de
+voluntários passa a trabalho futuro. O voluntário pode interromper a qualquer
+momento, e a retirada do consentimento implica descartar os seus dados.
+
+\subsection{Métricas}
+
+As métricas por piloto são calculadas sobre os dados gravados passo a passo.
+\begin{itemize}
+    \item \textbf{Conclusão de volta}, como proporção de voltas completas entre as
+          tentadas, com intervalo de Wilson, como nas seções anteriores.
+    \item \textbf{Tempo de volta}, pela mediana e pelo melhor valor entre as voltas
+          completas.
+    \item \textbf{Colisões}, em contagem.
+    \item \textbf{Taxa de esterço}, a média e o percentil 95 de
+          $|\Delta\delta|/\Delta t$ em rad/s, com $\delta$ o esterço comandado e
+          $\Delta t = 0{,}05$~s, como medida de suavidade do comando.
+    \item \textbf{Desvio da linha de corrida}, a média e o percentil 95 da
+          distância da pose à linha de corrida, densificada para espaçamento de
+          no máximo 0,05~m antes da medição, para que o erro de discretização
+          não entre como desvio do carro.
+    \item \textbf{Perfil de velocidade}, a velocidade média por faixa de 1~m ao
+          longo da volta.
+    \item \textbf{Curva de aprendizado}, o tempo de cada volta em ordem cronológica,
+          nas fases de treino e de cada uma das três sessões.
+\end{itemize}
+A volta é segmentada pelo progresso acumulado, e se foi completa e qual foi o seu
+tempo vêm sempre do resultado da volta no avaliador, nunca de inferência sobre os
+passos gravados. Os agregados usam apenas voltas completas.
+
+\subsection{Estudo de caso descritivo}
+
+Com poucas pessoas, sem amostragem aleatória, o estudo é descritivo. Reporta-se,
+por piloto e vista, a tabela das métricas acima, a faixa do grupo humano (melhor,
+mediana e pior) e a posição de cada política em relação a ela. Não há teste de
+hipótese entre humanos e máquinas, porque a amostra não o sustentaria e porque
+ele sugeriria uma generalização que o desenho não permite.
+
+\subsection{Reavaliação dos pilotos aprendidos e do especialista}
+
+O E1, o E2 e o E3 são reavaliados a partir dos \textit{checkpoints} aprovados, sem
+retreino, pelo protocolo comum, com randomização e com o gravador passo a passo
+(cinco \textit{seeds} de dez voltas). O E1 oficial foi medido \textbf{sem}
+randomização (59,000~s, 50 de 50 voltas), e o E1 do comparativo é medido com ela:
+são dois números distintos, que convivem no texto com a indicação de qual é qual.
+Os números oficiais de E1, E2 e E3 continuam sendo os dos critérios congelados
+anteriores; a reavaliação não os substitui.
 
 \section{As cinco camadas de validação}\label{sec:val-camadas}
 
@@ -997,7 +1100,36 @@ O aparato descrito neste capítulo, por sua vez, não depende do simulador
 escolhido: as camadas, o contrato numérico e a proveniência valem para qualquer
 ambiente em que o critério de aceite possa ser congelado antes da medição.
 
-% TODO-ESCOPO: limitações próprias do comparativo com humanos (ordem fixa das vistas, amostra pequena, autores separados dos voluntários, E1 oficial sem randomização × E1 com randomização, pista única).
+\subsection{Limitações do comparativo}\label{sec:val-limitacoes-comparativo}
+
+\begin{itemize}
+    \item \textbf{Ordem fixa das vistas.} Todos fazem primeiro a pista inteira e
+          depois só o LiDAR. O efeito de aprendizado e o de cansaço ficam misturados
+          com o efeito da vista, e tendem a favorecer a segunda. Não houve
+          contrabalanço, pela amostra pequena; a curva de aprendizado mostra o
+          tamanho do efeito de prática.
+    \item \textbf{Informação desigual na vista da pista inteira.} O humano vê o
+          mapa completo e pode antecipar curvas, enquanto a política tem apenas o
+          LiDAR do passo atual. A vista só LiDAR é a comparação em informação
+          equivalente.
+    \item \textbf{Amostra pequena.} Dois autores e de três a cinco voluntários, sem
+          amostragem aleatória: os resultados descrevem esse grupo e não permitem
+          generalizar para pilotos humanos.
+    \item \textbf{Autores separados dos voluntários.} Os autores conhecem o
+          simulador, a pista e o estudo, e um deles tem bastante experiência em jogos
+          de corrida. Por isso o grupo é um campo dos dados e os resultados são
+          mostrados por grupo.
+    \item \textbf{Uma só pista, um só \textit{joystick}, um só computador.} Spielberg
+          é a única pista do comparativo.
+    \item \textbf{Colisão encerra a sessão.} O número de voltas humanas fica
+          reduzido para quem bate cedo, o que alarga o intervalo de Wilson e
+          limita a comparação do tempo de volta a voltas completas.
+    \item \textbf{Treino curto e atraso do programa.} Dez minutos por vista podem não
+          estabilizar o desempenho, e o passo é segurado até 0,05~s de relógio, com
+          os passos que ultrapassam o prazo medidos e relatados.
+    \item \textbf{Dois números de E1.} O E1 oficial, sem randomização, e o E1 do
+          comparativo, com ela, não são intercambiáveis.
+\end{itemize}
 
 \subsection{O que este aparato transfere}
 
