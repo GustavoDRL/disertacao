@@ -1,0 +1,1006 @@
+{
+  "kind": "gap",
+  "track": "Spielberg",
+  "grade_nome": "oficial",
+  "grade": {
+    "max_speed": [
+      3.0,
+      5.0
+    ],
+    "max_gap_depth": [
+      2.0,
+      3.5,
+      5.0
+    ],
+    "steer_kp": [
+      1.5,
+      2.2
+    ],
+    "speed_mode": [
+      "pid",
+      "direto"
+    ]
+  },
+  "criterio": "mais voltas completas nas seeds de sonda; empate: menor mediana do tempo de volta; novo empate: menor taxa m\u00e9dia de ester\u00e7o |d(delta)|/dt; se nenhuma combina\u00e7\u00e3o completa volta: maior progresso m\u00e9dio",
+  "escolhida": {
+    "max_range": 10.0,
+    "min_gap_width": 0.8,
+    "max_gap_depth": 5.0,
+    "max_speed": 3.0,
+    "min_speed": 1.0,
+    "max_steering_angle": 0.7,
+    "distance_weight": 0.5,
+    "steer_kp": 2.2,
+    "steer_ki": 0.01,
+    "steer_kd": 0.3,
+    "speed_kp": 0.8,
+    "speed_ki": 0.05,
+    "speed_kd": 0.1,
+    "median_filter_size": 5,
+    "safety_margin": 0.5,
+    "d_filter_alpha": 0.2,
+    "speed_mode": "direto"
+  },
+  "resultados": [
+    {
+      "track": "Spielberg",
+      "params": {
+        "max_speed": 3.0,
+        "max_gap_depth": 2.0,
+        "steer_kp": 1.5,
+        "speed_mode": "pid"
+      },
+      "voltas_completas": 0,
+      "voltas_tentadas": 3,
+      "tempo_mediano_s": null,
+      "taxa_esterco_rad_s": 0.6390778344437544,
+      "progresso_medio_m": 6.193653076555205,
+      "seeds": [
+        {
+          "seed": 2000,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 4.577069187033629,
+          "colisao": true,
+          "taxa_esterco_rad_s": 0.589984918508927
+        },
+        {
+          "seed": 2001,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 7.554178104079574,
+          "colisao": true,
+          "taxa_esterco_rad_s": 0.5078896761138076
+        },
+        {
+          "seed": 2002,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 6.4497119385524115,
+          "colisao": true,
+          "taxa_esterco_rad_s": 0.8193589087085288
+        }
+      ]
+    },
+    {
+      "track": "Spielberg",
+      "params": {
+        "max_speed": 3.0,
+        "max_gap_depth": 2.0,
+        "steer_kp": 1.5,
+        "speed_mode": "direto"
+      },
+      "voltas_completas": 0,
+      "voltas_tentadas": 3,
+      "tempo_mediano_s": null,
+      "taxa_esterco_rad_s": 1.9054749359837502,
+      "progresso_medio_m": 4.7248673000231465,
+      "seeds": [
+        {
+          "seed": 2000,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 4.648815894742739,
+          "colisao": true,
+          "taxa_esterco_rad_s": 2.048995291090373
+        },
+        {
+          "seed": 2001,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 3.190610761469806,
+          "colisao": true,
+          "taxa_esterco_rad_s": 1.4769381535631765
+        },
+        {
+          "seed": 2002,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 6.335175243856895,
+          "colisao": true,
+          "taxa_esterco_rad_s": 2.190491363297701
+        }
+      ]
+    },
+    {
+      "track": "Spielberg",
+      "params": {
+        "max_speed": 3.0,
+        "max_gap_depth": 2.0,
+        "steer_kp": 2.2,
+        "speed_mode": "pid"
+      },
+      "voltas_completas": 0,
+      "voltas_tentadas": 3,
+      "tempo_mediano_s": null,
+      "taxa_esterco_rad_s": 1.76836193216542,
+      "progresso_medio_m": 5.3457474360779615,
+      "seeds": [
+        {
+          "seed": 2000,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 4.069518298572419,
+          "colisao": true,
+          "taxa_esterco_rad_s": 1.9836209375641563
+        },
+        {
+          "seed": 2001,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 4.766018308510565,
+          "colisao": true,
+          "taxa_esterco_rad_s": 1.2239047132816518
+        },
+        {
+          "seed": 2002,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 7.2017057011509,
+          "colisao": true,
+          "taxa_esterco_rad_s": 2.0975601456504522
+        }
+      ]
+    },
+    {
+      "track": "Spielberg",
+      "params": {
+        "max_speed": 3.0,
+        "max_gap_depth": 2.0,
+        "steer_kp": 2.2,
+        "speed_mode": "direto"
+      },
+      "voltas_completas": 0,
+      "voltas_tentadas": 3,
+      "tempo_mediano_s": null,
+      "taxa_esterco_rad_s": 1.7852532580484433,
+      "progresso_medio_m": 8.039790300566414,
+      "seeds": [
+        {
+          "seed": 2000,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 14.956375636908021,
+          "colisao": true,
+          "taxa_esterco_rad_s": 2.1460131036393775
+        },
+        {
+          "seed": 2001,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 2.0961873166749,
+          "colisao": true,
+          "taxa_esterco_rad_s": 1.1572203720862213
+        },
+        {
+          "seed": 2002,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 7.06680794811632,
+          "colisao": true,
+          "taxa_esterco_rad_s": 2.0525262984197314
+        }
+      ]
+    },
+    {
+      "track": "Spielberg",
+      "params": {
+        "max_speed": 3.0,
+        "max_gap_depth": 3.5,
+        "steer_kp": 1.5,
+        "speed_mode": "pid"
+      },
+      "voltas_completas": 0,
+      "voltas_tentadas": 3,
+      "tempo_mediano_s": null,
+      "taxa_esterco_rad_s": 0.6547233207912558,
+      "progresso_medio_m": 6.200668329839812,
+      "seeds": [
+        {
+          "seed": 2000,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 4.577069187033629,
+          "colisao": true,
+          "taxa_esterco_rad_s": 0.589984918508927
+        },
+        {
+          "seed": 2001,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 7.5752238639333935,
+          "colisao": true,
+          "taxa_esterco_rad_s": 0.5548261351563119
+        },
+        {
+          "seed": 2002,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 6.4497119385524115,
+          "colisao": true,
+          "taxa_esterco_rad_s": 0.8193589087085288
+        }
+      ]
+    },
+    {
+      "track": "Spielberg",
+      "params": {
+        "max_speed": 3.0,
+        "max_gap_depth": 3.5,
+        "steer_kp": 1.5,
+        "speed_mode": "direto"
+      },
+      "voltas_completas": 0,
+      "voltas_tentadas": 3,
+      "tempo_mediano_s": null,
+      "taxa_esterco_rad_s": 1.8914088583307676,
+      "progresso_medio_m": 4.727242631558976,
+      "seeds": [
+        {
+          "seed": 2000,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 4.648815894742739,
+          "colisao": true,
+          "taxa_esterco_rad_s": 2.048995291090373
+        },
+        {
+          "seed": 2001,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 3.197736756077294,
+          "colisao": true,
+          "taxa_esterco_rad_s": 1.4347399206042288
+        },
+        {
+          "seed": 2002,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 6.335175243856895,
+          "colisao": true,
+          "taxa_esterco_rad_s": 2.190491363297701
+        }
+      ]
+    },
+    {
+      "track": "Spielberg",
+      "params": {
+        "max_speed": 3.0,
+        "max_gap_depth": 3.5,
+        "steer_kp": 2.2,
+        "speed_mode": "pid"
+      },
+      "voltas_completas": 0,
+      "voltas_tentadas": 3,
+      "tempo_mediano_s": null,
+      "taxa_esterco_rad_s": 1.830728659286928,
+      "progresso_medio_m": 5.265651687826574,
+      "seeds": [
+        {
+          "seed": 2000,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 4.069518298572419,
+          "colisao": true,
+          "taxa_esterco_rad_s": 1.9836209375641563
+        },
+        {
+          "seed": 2001,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 4.525731063756401,
+          "colisao": true,
+          "taxa_esterco_rad_s": 1.4110048946461762
+        },
+        {
+          "seed": 2002,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 7.2017057011509,
+          "colisao": true,
+          "taxa_esterco_rad_s": 2.0975601456504522
+        }
+      ]
+    },
+    {
+      "track": "Spielberg",
+      "params": {
+        "max_speed": 3.0,
+        "max_gap_depth": 3.5,
+        "steer_kp": 2.2,
+        "speed_mode": "direto"
+      },
+      "voltas_completas": 0,
+      "voltas_tentadas": 3,
+      "tempo_mediano_s": null,
+      "taxa_esterco_rad_s": 1.6620852451309212,
+      "progresso_medio_m": 8.354338558187774,
+      "seeds": [
+        {
+          "seed": 2000,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 15.95213840415768,
+          "colisao": true,
+          "taxa_esterco_rad_s": 1.7230036399499404
+        },
+        {
+          "seed": 2001,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 2.044069322289321,
+          "colisao": true,
+          "taxa_esterco_rad_s": 1.2107257970230918
+        },
+        {
+          "seed": 2002,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 7.06680794811632,
+          "colisao": true,
+          "taxa_esterco_rad_s": 2.0525262984197314
+        }
+      ]
+    },
+    {
+      "track": "Spielberg",
+      "params": {
+        "max_speed": 3.0,
+        "max_gap_depth": 5.0,
+        "steer_kp": 1.5,
+        "speed_mode": "pid"
+      },
+      "voltas_completas": 0,
+      "voltas_tentadas": 3,
+      "tempo_mediano_s": null,
+      "taxa_esterco_rad_s": 0.4126187843394211,
+      "progresso_medio_m": 6.716482491190909,
+      "seeds": [
+        {
+          "seed": 2000,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 4.577069187033629,
+          "colisao": true,
+          "taxa_esterco_rad_s": 0.589984918508927
+        },
+        {
+          "seed": 2001,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 9.04923130543039,
+          "colisao": true,
+          "taxa_esterco_rad_s": 0.1990998058578089
+        },
+        {
+          "seed": 2002,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 6.5231469811087095,
+          "colisao": true,
+          "taxa_esterco_rad_s": 0.4487716286515276
+        }
+      ]
+    },
+    {
+      "track": "Spielberg",
+      "params": {
+        "max_speed": 3.0,
+        "max_gap_depth": 5.0,
+        "steer_kp": 1.5,
+        "speed_mode": "direto"
+      },
+      "voltas_completas": 0,
+      "voltas_tentadas": 3,
+      "tempo_mediano_s": null,
+      "taxa_esterco_rad_s": 1.3204714087527012,
+      "progresso_medio_m": 4.932304513836929,
+      "seeds": [
+        {
+          "seed": 2000,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 4.648815894742739,
+          "colisao": true,
+          "taxa_esterco_rad_s": 2.048995291090373
+        },
+        {
+          "seed": 2001,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 3.4837940331037593,
+          "colisao": true,
+          "taxa_esterco_rad_s": 1.2208318149480037
+        },
+        {
+          "seed": 2002,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 6.664303613664288,
+          "colisao": true,
+          "taxa_esterco_rad_s": 0.6915871202197272
+        }
+      ]
+    },
+    {
+      "track": "Spielberg",
+      "params": {
+        "max_speed": 3.0,
+        "max_gap_depth": 5.0,
+        "steer_kp": 2.2,
+        "speed_mode": "pid"
+      },
+      "voltas_completas": 0,
+      "voltas_tentadas": 3,
+      "tempo_mediano_s": null,
+      "taxa_esterco_rad_s": 1.1212542606924627,
+      "progresso_medio_m": 6.578955984879756,
+      "seeds": [
+        {
+          "seed": 2000,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 4.069518298572419,
+          "colisao": true,
+          "taxa_esterco_rad_s": 1.9836209375641563
+        },
+        {
+          "seed": 2001,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 9.155803125670506,
+          "colisao": true,
+          "taxa_esterco_rad_s": 0.2040702675871259
+        },
+        {
+          "seed": 2002,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 6.511546530396345,
+          "colisao": true,
+          "taxa_esterco_rad_s": 1.1760715769261059
+        }
+      ]
+    },
+    {
+      "track": "Spielberg",
+      "params": {
+        "max_speed": 3.0,
+        "max_gap_depth": 5.0,
+        "steer_kp": 2.2,
+        "speed_mode": "direto"
+      },
+      "voltas_completas": 0,
+      "voltas_tentadas": 3,
+      "tempo_mediano_s": null,
+      "taxa_esterco_rad_s": 1.2371468903612677,
+      "progresso_medio_m": 8.549439034016016,
+      "seeds": [
+        {
+          "seed": 2000,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 15.793843860108268,
+          "colisao": true,
+          "taxa_esterco_rad_s": 1.5121232416940584
+        },
+        {
+          "seed": 2001,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 3.2317767082820357,
+          "colisao": true,
+          "taxa_esterco_rad_s": 1.1751508678346871
+        },
+        {
+          "seed": 2002,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 6.622696533657745,
+          "colisao": true,
+          "taxa_esterco_rad_s": 1.0241665615550573
+        }
+      ]
+    },
+    {
+      "track": "Spielberg",
+      "params": {
+        "max_speed": 5.0,
+        "max_gap_depth": 2.0,
+        "steer_kp": 1.5,
+        "speed_mode": "pid"
+      },
+      "voltas_completas": 0,
+      "voltas_tentadas": 3,
+      "tempo_mediano_s": null,
+      "taxa_esterco_rad_s": 1.7354053071370883,
+      "progresso_medio_m": 4.6752204553482075,
+      "seeds": [
+        {
+          "seed": 2000,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 3.5851437139099858,
+          "colisao": true,
+          "taxa_esterco_rad_s": 1.8410285074664097
+        },
+        {
+          "seed": 2001,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 3.6503709016756627,
+          "colisao": true,
+          "taxa_esterco_rad_s": 1.2804161703657697
+        },
+        {
+          "seed": 2002,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 6.790146750458973,
+          "colisao": true,
+          "taxa_esterco_rad_s": 2.0847712435790857
+        }
+      ]
+    },
+    {
+      "track": "Spielberg",
+      "params": {
+        "max_speed": 5.0,
+        "max_gap_depth": 2.0,
+        "steer_kp": 1.5,
+        "speed_mode": "direto"
+      },
+      "voltas_completas": 0,
+      "voltas_tentadas": 3,
+      "tempo_mediano_s": null,
+      "taxa_esterco_rad_s": 1.877033504725846,
+      "progresso_medio_m": 8.458086198501274,
+      "seeds": [
+        {
+          "seed": 2000,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 14.931748859472506,
+          "colisao": true,
+          "taxa_esterco_rad_s": 2.171378151212013
+        },
+        {
+          "seed": 2001,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 2.946025580799546,
+          "colisao": true,
+          "taxa_esterco_rad_s": 1.3827305297568442
+        },
+        {
+          "seed": 2002,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 7.496484155231769,
+          "colisao": true,
+          "taxa_esterco_rad_s": 2.076991833208681
+        }
+      ]
+    },
+    {
+      "track": "Spielberg",
+      "params": {
+        "max_speed": 5.0,
+        "max_gap_depth": 2.0,
+        "steer_kp": 2.2,
+        "speed_mode": "pid"
+      },
+      "voltas_completas": 0,
+      "voltas_tentadas": 3,
+      "tempo_mediano_s": null,
+      "taxa_esterco_rad_s": 1.8459868462731814,
+      "progresso_medio_m": 6.9222080900117655,
+      "seeds": [
+        {
+          "seed": 2000,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 5.759651184087829,
+          "colisao": true,
+          "taxa_esterco_rad_s": 2.0492807765007015
+        },
+        {
+          "seed": 2001,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 2.4908008908906574,
+          "colisao": true,
+          "taxa_esterco_rad_s": 1.3744043515921767
+        },
+        {
+          "seed": 2002,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 12.51617219505681,
+          "colisao": true,
+          "taxa_esterco_rad_s": 2.114275410726666
+        }
+      ]
+    },
+    {
+      "track": "Spielberg",
+      "params": {
+        "max_speed": 5.0,
+        "max_gap_depth": 2.0,
+        "steer_kp": 2.2,
+        "speed_mode": "direto"
+      },
+      "voltas_completas": 0,
+      "voltas_tentadas": 3,
+      "tempo_mediano_s": null,
+      "taxa_esterco_rad_s": 1.970730037653606,
+      "progresso_medio_m": 5.837454858302138,
+      "seeds": [
+        {
+          "seed": 2000,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 9.53244838613601,
+          "colisao": true,
+          "taxa_esterco_rad_s": 2.2111045568348864
+        },
+        {
+          "seed": 2001,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 2.7922785095977947,
+          "colisao": true,
+          "taxa_esterco_rad_s": 1.5499774480178243
+        },
+        {
+          "seed": 2002,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 5.18763767917261,
+          "colisao": true,
+          "taxa_esterco_rad_s": 2.151108108108108
+        }
+      ]
+    },
+    {
+      "track": "Spielberg",
+      "params": {
+        "max_speed": 5.0,
+        "max_gap_depth": 3.5,
+        "steer_kp": 1.5,
+        "speed_mode": "pid"
+      },
+      "voltas_completas": 0,
+      "voltas_tentadas": 3,
+      "tempo_mediano_s": null,
+      "taxa_esterco_rad_s": 1.7354053071370883,
+      "progresso_medio_m": 4.6738410138562125,
+      "seeds": [
+        {
+          "seed": 2000,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 3.5851437139099858,
+          "colisao": true,
+          "taxa_esterco_rad_s": 1.8410285074664097
+        },
+        {
+          "seed": 2001,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 3.6462325771996777,
+          "colisao": true,
+          "taxa_esterco_rad_s": 1.2804161703657697
+        },
+        {
+          "seed": 2002,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 6.790146750458973,
+          "colisao": true,
+          "taxa_esterco_rad_s": 2.0847712435790857
+        }
+      ]
+    },
+    {
+      "track": "Spielberg",
+      "params": {
+        "max_speed": 5.0,
+        "max_gap_depth": 3.5,
+        "steer_kp": 1.5,
+        "speed_mode": "direto"
+      },
+      "voltas_completas": 0,
+      "voltas_tentadas": 3,
+      "tempo_mediano_s": null,
+      "taxa_esterco_rad_s": 1.8108154734194375,
+      "progresso_medio_m": 7.452784682630082,
+      "seeds": [
+        {
+          "seed": 2000,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 11.898097174548653,
+          "colisao": true,
+          "taxa_esterco_rad_s": 1.9970496693520225
+        },
+        {
+          "seed": 2001,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 2.9637727181098246,
+          "colisao": true,
+          "taxa_esterco_rad_s": 1.358404917697608
+        },
+        {
+          "seed": 2002,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 7.496484155231769,
+          "colisao": true,
+          "taxa_esterco_rad_s": 2.076991833208681
+        }
+      ]
+    },
+    {
+      "track": "Spielberg",
+      "params": {
+        "max_speed": 5.0,
+        "max_gap_depth": 3.5,
+        "steer_kp": 2.2,
+        "speed_mode": "pid"
+      },
+      "voltas_completas": 0,
+      "voltas_tentadas": 3,
+      "tempo_mediano_s": null,
+      "taxa_esterco_rad_s": 1.8654486816045788,
+      "progresso_medio_m": 7.109877199623697,
+      "seeds": [
+        {
+          "seed": 2000,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 5.759651184087829,
+          "colisao": true,
+          "taxa_esterco_rad_s": 2.0492807765007015
+        },
+        {
+          "seed": 2001,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 2.4908008908906574,
+          "colisao": true,
+          "taxa_esterco_rad_s": 1.3744043515921767
+        },
+        {
+          "seed": 2002,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 13.079179523892606,
+          "colisao": true,
+          "taxa_esterco_rad_s": 2.172660916720858
+        }
+      ]
+    },
+    {
+      "track": "Spielberg",
+      "params": {
+        "max_speed": 5.0,
+        "max_gap_depth": 3.5,
+        "steer_kp": 2.2,
+        "speed_mode": "direto"
+      },
+      "voltas_completas": 0,
+      "voltas_tentadas": 3,
+      "tempo_mediano_s": null,
+      "taxa_esterco_rad_s": 1.979713290043562,
+      "progresso_medio_m": 5.5586619208349575,
+      "seeds": [
+        {
+          "seed": 2000,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 8.726503989087703,
+          "colisao": true,
+          "taxa_esterco_rad_s": 2.1605554416038624
+        },
+        {
+          "seed": 2001,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 2.7618440942445606,
+          "colisao": true,
+          "taxa_esterco_rad_s": 1.6274763204187155
+        },
+        {
+          "seed": 2002,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 5.18763767917261,
+          "colisao": true,
+          "taxa_esterco_rad_s": 2.151108108108108
+        }
+      ]
+    },
+    {
+      "track": "Spielberg",
+      "params": {
+        "max_speed": 5.0,
+        "max_gap_depth": 5.0,
+        "steer_kp": 1.5,
+        "speed_mode": "pid"
+      },
+      "voltas_completas": 0,
+      "voltas_tentadas": 3,
+      "tempo_mediano_s": null,
+      "taxa_esterco_rad_s": 0.9441581226049659,
+      "progresso_medio_m": 6.288078940705745,
+      "seeds": [
+        {
+          "seed": 2000,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 3.5851437139099858,
+          "colisao": true,
+          "taxa_esterco_rad_s": 1.8410285074664097
+        },
+        {
+          "seed": 2001,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 8.68283917167305,
+          "colisao": true,
+          "taxa_esterco_rad_s": 0.30017591655337
+        },
+        {
+          "seed": 2002,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 6.596253936534197,
+          "colisao": true,
+          "taxa_esterco_rad_s": 0.6912699437951179
+        }
+      ]
+    },
+    {
+      "track": "Spielberg",
+      "params": {
+        "max_speed": 5.0,
+        "max_gap_depth": 5.0,
+        "steer_kp": 1.5,
+        "speed_mode": "direto"
+      },
+      "voltas_completas": 0,
+      "voltas_tentadas": 3,
+      "tempo_mediano_s": null,
+      "taxa_esterco_rad_s": 1.8206522718765867,
+      "progresso_medio_m": 8.40137240362346,
+      "seeds": [
+        {
+          "seed": 2000,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 13.221895289386438,
+          "colisao": true,
+          "taxa_esterco_rad_s": 1.1451146092862645
+        },
+        {
+          "seed": 2001,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 5.362774045893174,
+          "colisao": true,
+          "taxa_esterco_rad_s": 2.0111136226769006
+        },
+        {
+          "seed": 2002,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 6.619447875590765,
+          "colisao": true,
+          "taxa_esterco_rad_s": 2.3057285836665944
+        }
+      ]
+    },
+    {
+      "track": "Spielberg",
+      "params": {
+        "max_speed": 5.0,
+        "max_gap_depth": 5.0,
+        "steer_kp": 2.2,
+        "speed_mode": "pid"
+      },
+      "voltas_completas": 0,
+      "voltas_tentadas": 3,
+      "tempo_mediano_s": null,
+      "taxa_esterco_rad_s": 1.7791839454453289,
+      "progresso_medio_m": 7.446074284012191,
+      "seeds": [
+        {
+          "seed": 2000,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 5.759651184087829,
+          "colisao": true,
+          "taxa_esterco_rad_s": 2.0492807765007015
+        },
+        {
+          "seed": 2001,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 4.128799053464796,
+          "colisao": true,
+          "taxa_esterco_rad_s": 1.2446403193509663
+        },
+        {
+          "seed": 2002,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 12.449772614483948,
+          "colisao": true,
+          "taxa_esterco_rad_s": 2.0436307404843186
+        }
+      ]
+    },
+    {
+      "track": "Spielberg",
+      "params": {
+        "max_speed": 5.0,
+        "max_gap_depth": 5.0,
+        "steer_kp": 2.2,
+        "speed_mode": "direto"
+      },
+      "voltas_completas": 0,
+      "voltas_tentadas": 3,
+      "tempo_mediano_s": null,
+      "taxa_esterco_rad_s": 1.5199737004147071,
+      "progresso_medio_m": 6.12734517041271,
+      "seeds": [
+        {
+          "seed": 2000,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 8.890758141254608,
+          "colisao": true,
+          "taxa_esterco_rad_s": 1.4390694361496015
+        },
+        {
+          "seed": 2001,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 3.046608503654765,
+          "colisao": true,
+          "taxa_esterco_rad_s": 1.5642779271586564
+        },
+        {
+          "seed": 2002,
+          "voltas_completas": 0,
+          "tempos_s": [],
+          "progresso_m": 6.444668866328755,
+          "colisao": true,
+          "taxa_esterco_rad_s": 1.5565737379358637
+        }
+      ]
+    }
+  ]
+}

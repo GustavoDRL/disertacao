@@ -17,6 +17,9 @@
 
 # Generated PDF file
 *.pdf
+# Figuras e resultados do comparativo são fonte, não saída de compilação
+!figs/comparativo/*.pdf
+!resultados-comparativo/*.pdf
 
 # Other temporary files
 _minted*/ 

@@ -12,17 +12,33 @@ repetir o que já foi estabelecido nesses dois capítulos.
 medidas no ambiente \texttt{f110\_gym} \cite{OKelly2020F1TENTH} executado
 \textit{headless}, e nada neste capítulo deve ser lido como medição de campo.
 
-O capítulo apresenta, em ordem, a linha de base geométrica
-(Seção~\ref{sec:res-e1}), a rede de imitação (Seção~\ref{sec:res-e2}) e o
-resíduo de aprendizado por reforço (Seção~\ref{sec:res-e3}). A
-Seção~\ref{sec:res-discussao} discute o conjunto, com atenção às três ressalvas
-que o trabalho declarou antes de medir.
+O capítulo tem duas partes. A primeira reporta as três etapas da cascata pelos
+seus portões oficiais: a linha de base geométrica (Seção~\ref{sec:res-e1}), a
+rede de imitação (Seção~\ref{sec:res-e2}) e o resíduo de aprendizado por reforço
+(Seção~\ref{sec:res-e3}). Esses são os números julgados pelos critérios
+congelados antes de cada execução, e nada na segunda parte os substitui.
 
-% TODO-ESCOPO: ampliar esta abertura e a ordem das seções para o comparativo: reavaliação de E1, E2 e E3 com randomização e gravador passo a passo, seguidor de gap, pilotos humanos (autores e voluntários, duas vistas), tabela comparativa única e figuras (perfil de velocidade, suavidade × tempo de volta, curva de aprendizado humano). Nenhum número desses existe ainda.
+A segunda parte é o comparativo entre pilotos (Seção~\ref{sec:res-comparativo}),
+medido sob o protocolo comum da Seção~\ref{sec:val-humano}: todos os pilotos em
+Spielberg, com randomização, com as mesmas \textit{seeds} e com o gravador passo
+a passo. Ela traz a reavaliação de E1, E2 e E3 sob esse protocolo, as varreduras
+e a avaliação congelada dos dois controladores reativos --- o Disparity Extender
+e o seguidor de gap por descontinuidade ---, a tabela comparativa única e as
+figuras de perfil de velocidade, de taxa de esterço contra tempo de volta e de
+trajetórias no trecho de maior curvatura. As sessões dos pilotos humanos ainda
+não foram realizadas; os pontos do texto que dependem delas estão marcados como
+pendentes, e a tabela e as figuras já reservam o lugar desses dados.
+
+A Seção~\ref{sec:res-discussao} discute o conjunto: primeiro as três ressalvas
+que o trabalho declarou antes de medir as etapas da cascata, depois o
+comparativo entre controladores clássicos e de aprendizado de máquina, e a
+moldura da comparação com os pilotos humanos.
 
 \section{Procedência dos resultados}\label{sec:res-proveniencia}
 
-Três execuções sustentam o capítulo inteiro, uma por etapa. A
+Três execuções sustentam a primeira parte do capítulo, uma por etapa; a
+procedência das execuções do comparativo está na
+Seção~\ref{sec:res-cmp-proveniencia}. A
 Tabela~\ref{tab:res_proveniencia} registra a procedência de cada uma, porque,
 pelas regras descritas na Seção~\ref{sec:val-congelado}, esses campos são parte
 do veredito e não metadado: um resultado obtido com a árvore de trabalho suja é
@@ -559,32 +575,346 @@ contra 52,500~s sem ela --- uma piora relativa de 0,0019 contra um limiar de
 0,05. Não há ambiguidade estatística nesses dois números, e vale dizê-lo
 explicitamente porque a há nos outros dois.
 
+\section{O comparativo entre pilotos}\label{sec:res-comparativo}
+
+Esta seção reporta o comparativo sob o protocolo comum da
+Seção~\ref{sec:val-humano}: pista Spielberg, randomização de atrito, de ruído do
+LiDAR e de largada na linha de corrida, cinco sementes (1000 a 1004) de dez
+voltas para cada piloto automático, os mesmos limites de ação e o mesmo atraso
+de esterço de 100~ms. As métricas são as da mesma seção, calculadas sobre os
+dados gravados passo a passo, e todos os agregados usam apenas voltas completas.
+Nenhum valor desta seção é veredito de portão: o comparativo é descritivo, e os
+números oficiais de E1, E2 e E3 continuam sendo os das seções anteriores.
+
+\subsection{Procedência}\label{sec:res-cmp-proveniencia}
+
+Cinco execuções sustentam esta seção, uma por piloto automático, todas no mesmo
+\textit{commit} do código. A Tabela~\ref{tab:res_cmp_proveniencia} as registra;
+os identificadores completos são:
+
+\begin{itemize}
+    \item E1 --- \texttt{cmp\_\allowbreak Spielberg\_\allowbreak 20261012-225730\_\allowbreak 0dda764\_\allowbreak 11e48d}
+    \item E2 --- \texttt{cmp\_\allowbreak Spielberg\_\allowbreak 20261012-225730\_\allowbreak 0dda764\_\allowbreak f7b67f}
+    \item E3 --- \texttt{cmp\_\allowbreak Spielberg\_\allowbreak 20261012-225731\_\allowbreak 0dda764\_\allowbreak 00a206}
+    \item Disparity Extender --- \texttt{cmp\_\allowbreak Spielberg\_\allowbreak 20261013-080135\_\allowbreak 8d57af8\_\allowbreak e562f9}
+    \item Seguidor de gap --- \texttt{cmp\_\allowbreak Spielberg\_\allowbreak 20261013-080135\_\allowbreak 8d57af8\_\allowbreak 3a64c2}
+\end{itemize}
+
+\begin{table}[htb]
+    \centering
+    \footnotesize
+    \begin{tabular}{|l|c|c|c|l|}
+        \hline
+        \textbf{Piloto} & \textbf{Execução} & \textbf{Commit} &
+        \textbf{Árvore limpa} & \textbf{Origem da política} \\
+        \hline
+        E1 & \texttt{11e48d} & \texttt{0dda764} & sim & configuração de \texttt{696cdc} \\
+        \hline
+        E2 & \texttt{f7b67f} & \texttt{0dda764} & sim & ponto de verificação de \texttt{690375} \\
+        \hline
+        E3 & \texttt{00a206} & \texttt{0dda764} & sim & ponto de verificação de \texttt{0311b9} \\
+        \hline
+        Disparity Extender & \texttt{e562f9} & \texttt{8d57af8} & sim & configuração congelada \\
+        \hline
+        Seguidor de gap & \texttt{3a64c2} & \texttt{8d57af8} & sim & configuração congelada \\
+        \hline
+    \end{tabular}
+    \caption{Procedência das cinco execuções do comparativo. E1, E2 e E3 são
+    reavaliados a partir das execuções aprovadas da
+    Tabela~\ref{tab:res_proveniencia}, sem retreino; os dois reativos leem a
+    configuração congelada pela varredura}
+    \label{tab:res_cmp_proveniencia}
+\end{table}
+
+As cinco execuções foram gravadas com a árvore de trabalho limpa. As dos dois
+reativos são de um \textit{commit} posterior ao das outras três porque leem as
+configurações congeladas, que só existem depois das varreduras. Entre os dois
+\textit{commits}, a única mudança de código está no desenho da figura de
+trajetórias, que não participa da avaliação. Nenhuma das cinco
+execuções teve volta cortada pelo teto de passos do episódio (137.330 passos), de
+modo que toda volta não concluída é uma colisão.
+
+O resumo das cinco execuções --- a tabela, as figuras, os dados agregados e os
+registros das varreduras --- está versionado junto com o texto desta monografia,
+e é dele que saem os números desta seção. Os dados passo a passo continuam nos
+diretórios de execução, com a ressalva de durabilidade da
+Seção~\ref{sec:res-proveniencia}.
+
+\subsection{E1, E2 e E3 sob o protocolo comum}\label{sec:res-cmp-reavaliacao}
+
+A reavaliação não retreina nada: ela mede de novo as políticas aprovadas, agora
+com o gravador passo a passo e, no caso do E1, com randomização. A
+Tabela~\ref{tab:comparativo}, adiante, traz as três linhas.
+
+\textbf{E1.} O especialista completou \textbf{44 de 45 voltas tentadas}, com uma
+colisão, na quinta volta da semente 1002, que encerrou o episódio daquela
+semente. A taxa de conclusão é de 97,8\%, com intervalo de Wilson de
+$[88{,}4;\ 99{,}6]$\%, e a mediana de tempo de volta ficou em 59,00~s, com melhor
+volta de 58,95~s. O E1 oficial, medido \textbf{sem} randomização, completou 50 de
+50 voltas em 59,000~s. Os dois números convivem e não se substituem: o oficial é o
+denominador $T_{pp}$ de todos os critérios de aceite, e o do comparativo é o que
+se compara com os demais pilotos sob o mesmo protocolo. A diferença entre eles
+diz algo sobre o especialista: sem randomização ele é determinístico e não
+colide em Spielberg; com randomização a mediana se mantém, a melhor volta deixa
+de coincidir com ela, e uma colisão aparece em 45 voltas.
+
+\textbf{E2.} A rede de imitação completou 50 de 50 voltas, com mediana de
+60,05~s e melhor volta de 59,40~s. A mediana reproduz a oficial (60,050~s), o
+que é esperado, porque o portão oficial do E2 já era medido com randomização.
+
+\textbf{E3.} O resíduo completou 50 de 50 voltas, com mediana de 52,55~s e
+melhor volta de 52,00~s, contra 52,525~s e 91 de 92 voltas na execução oficial.
+As duas contagens não se contradizem: a oficial é de dez sementes, escaladas pela
+regra de meia largura, e a do comparativo é de cinco. O intervalo de Wilson das
+50 voltas, $[92{,}9;\ 100{,}0]$\%, contém o limiar de 98\% do portão do E3, como o
+da execução oficial, e a ressalva da Seção~\ref{sec:res-ic} vale igualmente
+aqui.
+
+\subsection{Os controladores reativos}\label{sec:res-cmp-reativos}
+
+Os dois controladores reativos descritos na Seção~\ref{sec:prop-portes} passaram
+por uma varredura curta em grade antes da avaliação, com o critério fixado antes
+de medir: cada combinação corre uma volta em cada uma de três sementes de sonda
+(2000, 2001 e 2002); vence a de mais voltas completas, com desempate pela menor
+mediana de tempo de volta e, depois, pela menor taxa média de esterço; se
+nenhuma combinação completar volta, vence a de maior progresso médio. A
+Tabela~\ref{tab:res_varreduras} resume as três varreduras feitas.
+
+\begin{table}[htb]
+    \centering
+    \footnotesize
+    \setlength{\tabcolsep}{3pt}
+    \begin{tabularx}{\textwidth}{|l|>{\raggedright\arraybackslash}X|c|c|>{\raggedright\arraybackslash}p{3.0cm}|}
+        \hline
+        \textbf{Varredura} & \textbf{Parâmetros e valores varridos} &
+        \textbf{Comb.} & \textbf{Com volta} & \textbf{Escolhida} \\
+        \hline
+        Disparity Extender, oficial &
+        teto de velocidade 3,0 / 4,0 / 5,0~m/s; largura do carro 0,4 / 0,5~m;
+        raio da bolha 0,15 / 0,25~m; ganho de esterço 1,0 / 1,5 &
+        24 & 24 & 5,0~m/s; 0,4~m; 0,15~m; 1,0 \\
+        \hline
+        Seguidor de gap, oficial &
+        teto de velocidade 3,0 / 5,0~m/s; profundidade máxima de
+        descontinuidade 2,0 / 3,5 / 5,0~m; ganho proporcional de esterço
+        1,5 / 2,2; velocidade por PID ou direta &
+        24 & 0 & 3,0~m/s; 5,0~m; 2,2; direta \\
+        \hline
+        Seguidor de gap, ampliada &
+        teto de velocidade 2,0 / 3,0~m/s; profundidade máxima de
+        descontinuidade 1,0 / 3,0~m; ganho proporcional de esterço
+        0,3 / 0,6 / 1,0; velocidade por PID ou direta &
+        24 & 0 & (2,0~m/s; 3,0~m; 0,3; direta) \\
+        \hline
+    \end{tabularx}
+    \caption{As três varreduras dos controladores reativos em Spielberg, com
+    três sementes de sonda de uma volta cada. ``Com volta'' conta as combinações
+    que completaram ao menos uma volta. A configuração congelada do seguidor de
+    gap é a da grade oficial; a da grade ampliada aparece entre parênteses, como
+    a vencedora daquela grade}
+    \label{tab:res_varreduras}
+\end{table}
+
+\textbf{Disparity Extender.} As 24 combinações completaram as três voltas de
+sonda, com medianas entre 145,20~s e 243,15~s, e a escolha se resolveu pelo
+primeiro desempate. A grade mostra duas tendências sem exceção: com os demais
+parâmetros fixos, o ganho de esterço 1,0 foi sempre mais rápido que 1,5, e um teto
+de velocidade maior foi sempre mais rápido que um menor. A configuração escolhida
+tem o maior teto da grade, 5,0~m/s, e isso tem uma consequência que precisa ser
+dita: a varredura não estabelece se um teto mais alto ainda completaria a volta, e
+a regra congelada não autoriza buscar depois de ver o resultado. Na avaliação, o
+Disparity Extender completou \textbf{50 de 50 voltas} sem colisão, com mediana de
+\textbf{145,55~s}, melhor volta de 143,25~s e velocidade média de 2,50~m/s.
+
+\textbf{Seguidor de gap.} Nenhuma das 24 combinações da grade oficial completou
+uma volta: as 72 voltas de sonda terminaram em colisão, com progresso médio por
+combinação entre 4,67~m e 8,55~m, numa volta de cerca de 343~m. Com ganho
+proporcional de esterço de 1,5 ou 2,2, a taxa média de esterço por combinação
+ficou entre 0,41 e 1,98~rad/s. Como nenhuma combinação completou volta, a escolha
+caiu na regra de progresso: teto de 3,0~m/s, profundidade de 5,0~m, ganho de 2,2 e
+velocidade direta, com 8,55~m.
+
+Diante desse resultado, foi criada \textbf{depois} uma grade ampliada, com
+ganhos de esterço menores (0,3 a 1,0), tetos de velocidade menores e
+profundidades de descontinuidade menores, sob o mesmo critério. Ela também não
+produziu volta completa: progresso médio entre 5,42~m e 8,20~m, com taxa média
+de esterço entre 0,08 e 1,65~rad/s. Somadas, as duas grades testaram 48
+combinações em 144 voltas de sonda, sem uma volta completa. As duas varreduras
+são reportadas porque a segunda só existe por causa do resultado da primeira; a
+configuração congelada é a da grade oficial, que é também a de maior progresso
+entre as 48 combinações, de modo que aplicar o critério às duas grades juntas
+levaria à mesma escolha.
+
+Na avaliação congelada, o seguidor de gap \textbf{não completou volta alguma}: 0
+de 5 voltas tentadas, cinco colisões, uma em cada semente, na primeira volta,
+com progresso entre 1,6~m e 14,1~m. O intervalo de Wilson da taxa de conclusão é
+$[0{,}0;\ 43{,}4]$\%, e as colunas de tempo, de esterço, de desvio e de
+velocidade ficam vazias, porque todas são calculadas sobre voltas completas. A
+Seção~\ref{sec:res-disc-cmp} discute por que o controlador falha; aqui fica
+registrado que, pelo critério fixado antes da medição, esse é o resultado.
+
+\subsection{Tabela comparativa e métricas}\label{sec:res-cmp-tabela}
+
+A Tabela~\ref{tab:comparativo} reúne os cinco pilotos automáticos e reserva as
+linhas dos pilotos humanos. Ela é gerada pelo código a partir das execuções
+listadas acima e entra neste texto sem edição. A coluna de esterço é a mediana,
+entre as voltas completas, da taxa média de esterço $|\Delta\delta|/\Delta t$ de
+cada volta; o desvio da linha de corrida é dado pela média e pelo percentil 95.
+
+% Página deitada: com 12 colunas, a tabela gerada (`\resizebox` em \textwidth)
+% ficaria com fonte ilegível na vertical; no ambiente landscape o \textwidth é
+% a altura da página. O arquivo gerado não é editado.
+\begin{landscape}
+\input{tabelas/tabela_comparativo}
+\end{landscape}
+
+Três leituras saem da tabela. A primeira é que o E1 e o E2 são quase
+indistinguíveis em tudo o que não é a conclusão: 59,00~s contra 60,05~s, a mesma
+taxa de esterço de 0,08~rad/s, desvios de 0,26 e 0,27~m em média e velocidades
+médias de 5,78 e 5,68~m/s. A rede reproduz o comportamento do especialista, e
+não apenas o seu tempo de volta. A segunda é que o E3 é o mais rápido e o que
+mais se afasta desse comportamento: 52,55~s, com taxa de esterço de 0,42~rad/s,
+desvio médio de 0,40~m e percentil 95 de 0,81~m. A terceira é que o Disparity
+Extender completa todas as voltas, mas leva 145,55~s, com a maior taxa de esterço
+(0,97~rad/s) e o maior desvio (0,71~m em média e 1,25~m no percentil 95) entre os
+pilotos que completam volta.
+
+A Figura~\ref{fig:cmp_perfil} mostra a velocidade média por faixa de 1~m ao longo
+da volta. As curvas do E1 e do E2 se sobrepõem nas retas e frenam nas mesmas
+curvas, com o E2 frenando mais fundo em algumas delas. O E3 fica acima dos dois
+em quase toda a volta, inclusive nas retas, em que o patamar dos outros dois é
+plano e o dele oscila. O Disparity Extender oscila ao longo de toda a volta,
+abaixo dos demais, em torno da sua média de 2,50~m/s, com quedas e picos
+isolados perto das curvas mais fechadas. O
+seguidor de gap não tem curva, porque não completou volta.
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=\textwidth]{figs/comparativo/perfil_velocidade}
+    \caption{Perfil de velocidade dos pilotos automáticos em Spielberg:
+    velocidade longitudinal média por faixa de 1~m da posição $s$ ao longo da
+    volta, sobre as voltas completas. A curva cinza é a velocidade de referência
+    da linha de corrida}
+    \label{fig:cmp_perfil}
+\end{figure}
+
+A Figura~\ref{fig:cmp_esterco} põe cada volta completa num plano de taxa de
+esterço contra tempo de volta. Os pilotos formam grupos separados, sem
+sobreposição entre eles exceto a do E1 com o E2. Não há relação monotônica entre
+as duas grandezas: o piloto mais rápido, o E3, esterça mais que o E1 e o E2, e o
+mais lento, o Disparity Extender, é também o que mais esterça.
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.85\textwidth]{figs/comparativo/esterco_vs_tempo}
+    \caption{Taxa média de esterço contra tempo de volta, uma marca por volta
+    completa de cada piloto automático}
+    \label{fig:cmp_esterco}
+\end{figure}
+
+A Figura~\ref{fig:cmp_trajetorias} mostra, no trecho de maior curvatura da linha
+de corrida, a trajetória da volta de tempo mediano de cada piloto. As
+trajetórias do E1, do E2 e do E3 praticamente se sobrepõem e acompanham a linha
+de corrida de perto. A do Disparity Extender ondula de um lado a outro do
+corredor, inclusive na reta de saída, o que é a forma geométrica da sua taxa de
+esterço e do seu desvio.
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.85\textwidth]{figs/comparativo/trajetorias_curva}
+    \caption{Trajetórias da volta de tempo mediano de cada piloto automático no
+    trecho de maior curvatura da linha de corrida de Spielberg, com 15~m para
+    cada lado do ponto de maior curvatura. A linha tracejada é a linha de
+    corrida}
+    \label{fig:cmp_trajetorias}
+\end{figure}
+
+\subsection{Pilotos humanos}\label{sec:res-cmp-humanos}
+
+As sessões humanas seguem o protocolo da Seção~\ref{sec:val-humano}: em cada
+vista, dez minutos de treino e três sessões de cinco voltas nas sementes 1000,
+1001 e 1002, primeiro com a pista inteira e depois só com o LiDAR. As linhas
+humanas da Tabela~\ref{tab:comparativo} estão reservadas e ainda vazias.
+Participaram \pendentehumano{número de autores e de voluntários, por grupo e
+experiência em jogos de corrida; sessões excluídas e motivo}.
+
+\textbf{Resultado por piloto e vista.} Na vista da pista inteira, os pilotos
+humanos completaram \pendentehumano{voltas completas/tentadas, colisões, mediana
+e melhor volta, por piloto, autores separados dos voluntários}. Na vista só
+LiDAR, \pendentehumano{os mesmos campos na vista só LiDAR}.
+
+\textbf{Tempo real.} O passo de controle humano é segurado até 0,05~s de relógio
+e o atraso de cada passo é registrado. Nas sessões que contam,
+\pendentehumano{atraso médio, percentil 99 e passos fora do prazo, por sessão}.
+
+A Figura~\ref{fig:cmp_curva} mostra o tempo de cada volta humana na ordem em que
+foi feita, do treino às três sessões de cada vista.
+\pendentehumano{leitura da curva de aprendizado: tendência no treino, diferença
+entre a primeira e a terceira sessão e mudança na troca de vista}.
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.85\textwidth]{figs/comparativo/curva_aprendizado}
+    \caption{Curva de aprendizado dos pilotos humanos: tempo de volta na ordem
+    cronológica, no treino e nas três sessões de cada vista}
+    \label{fig:cmp_curva}
+\end{figure}
+
+\textbf{Faixa do grupo e posição das políticas.} Por vista, a faixa do grupo
+humano --- melhor, mediana e pior piloto pela mediana de tempo de volta --- é
+\pendentehumano{faixa do grupo na vista da pista inteira e na vista só LiDAR, e
+posição de E1, E2, E3 e Disparity Extender em relação a ela}.
+
+\textbf{Comparação entre as vistas.} Com a mesma pessoa nas duas vistas,
+\pendentehumano{diferença de conclusão e de tempo de volta entre a pista inteira
+e só o LiDAR, por piloto}. Como a ordem das vistas é fixa, essa diferença mistura
+o efeito da informação com o da prática acumulada.
+
 \section{Discussão}\label{sec:res-discussao}
 
 \subsection{O que os números sustentam}
 
-A Tabela~\ref{tab:res_sintese} reúne as três etapas na única comparação que
-interessa ao argumento do trabalho: desempenho contra dependência de
-infraestrutura de percepção.
+A Tabela~\ref{tab:res_sintese} reúne as etapas da cascata e os demais pilotos
+do comparativo na comparação que organiza o argumento do trabalho: desempenho
+contra dependência de infraestrutura de percepção. As colunas oficiais são as
+dos portões; as do comparativo, as da Seção~\ref{sec:res-comparativo}.
 
-\begin{table}[h]
+\begin{table}[htb]
     \centering
     \footnotesize
-    \begin{tabular}{|c|l|c|c|c|c|}
+    \setlength{\tabcolsep}{2.5pt}
+    \begin{tabular}{|l|c|c|c|c|c|c|c|}
         \hline
-        \textbf{Etapa} & \textbf{Política} & \textbf{Volta (s)} &
-        \textbf{Razão a $T_{pp}$} & \textbf{Conclusão} &
-        \textbf{Exige pose global?} \\
+        & & \multicolumn{3}{c|}{\textbf{Portão oficial}} &
+        \multicolumn{2}{c|}{\textbf{Comparativo}} & \\
+        \cline{3-7}
+        \textbf{Piloto} & \textbf{Tipo} & \textbf{Volta (s)} &
+        \textbf{Razão a $T_{pp}$} & \textbf{Concl.} & \textbf{Volta (s)} &
+        \textbf{Concl.} & \textbf{Pose global?} \\
         \hline
-        E1 & \textit{pure pursuit} & 59,000 & 1,000 & 1,0000 (50/50) & sim \\
+        E1 (\textit{pure pursuit}) & clássico & 59,000 & 1,000 & 50/50 & 59,00 &
+        44/45 & sim \\
         \hline
-        E2 & TinyLidarNet & 60,050 & 1,018 & 1,0000 (50/50) & não \\
+        E2 (TinyLidarNet) & ML & 60,050 & 1,018 & 50/50 & 60,05 & 50/50 & não \\
         \hline
-        E3 & E2 + resíduo SAC & 52,525 & 0,890 & 0,9891 (91/92) & não \\
+        E3 (E2 + resíduo SAC) & ML & 52,525 & 0,890 & 91/92 & 52,55 & 50/50 & não \\
+        \hline
+        Disparity Extender & clássico & --- & --- & --- & 145,55 & 50/50 & não \\
+        \hline
+        Seguidor de gap & clássico & --- & --- & --- & --- & 0/5 & não \\
+        \hline
+        Humano, pista inteira & humano &
+        \multicolumn{5}{c|}{\pendentehumano{faixa do grupo}} & vê o mapa \\
+        \hline
+        Humano, só LiDAR & humano &
+        \multicolumn{5}{c|}{\pendentehumano{faixa do grupo}} & não \\
         \hline
     \end{tabular}
-    \caption{Síntese das três etapas em Spielberg. A etapa E1 é avaliada sem
-    randomização do ambiente; as etapas E2 e E3, com randomização}
+    \caption{Síntese dos pilotos em Spielberg. As colunas oficiais são as dos
+    portões: o E1 sem randomização, o E2 e o E3 com ela. As colunas do
+    comparativo (cmp.) são todas com randomização, cinco sementes de dez voltas;
+    a volta é a mediana sobre as voltas completas. Nas linhas humanas, a faixa é
+    a do grupo (melhor, mediana e pior piloto)}
     \label{tab:res_sintese}
 \end{table}
 
@@ -607,6 +937,13 @@ tamanho desse efeito: 52,500~s contra 52,600~s, isto é, cerca de um décimo de
 segundo. A assimetria existe, é declarada, e é pequena --- mas ela existe, e um
 leitor que compare 52,525~s com 59,000~s deve saber que os dois números não foram
 medidos sob o mesmo protocolo.
+
+O comparativo permite fazer essa comparação sob o mesmo protocolo, sem trocar o
+número oficial. Com randomização, nas mesmas cinco sementes, o especialista
+mediu 59,00~s e o resíduo 52,55~s: a ordem e a distância entre os dois se mantêm,
+e a mediana do especialista não se moveu com a randomização. O que a
+randomização acrescentou ao especialista foi uma colisão em 45 voltas, e não
+tempo de volta.
 
 \subsection{Primeira ressalva: o limiar cai dentro do intervalo de confiança}\label{sec:res-ic}
 
@@ -736,10 +1073,96 @@ deste capítulo. Nenhum deles é atenuado.
     \item \textbf{A evidência não é durável.} Os relatórios que sustentam cada
           número deste capítulo não são versionados, e o relatório de
           verificação é sobrescrito a cada execução, de modo que medições
-          feitas por esse relatório não podem ser reconferidas depois.
+          feitas por esse relatório não podem ser reconferidas depois. No
+          comparativo, o resumo das execuções --- tabela, figuras, dados
+          agregados e registros das varreduras --- está versionado junto com
+          este texto, mas os dados passo a passo, não.
 \end{itemize}
 
-% TODO-ESCOPO: subseção de discussão do comparativo (humano × clássico × aprendizado de máquina), com a tab:res_sintese atualizada para incluir seguidor de gap, humanos por vista e as métricas novas; posição de cada política em relação à faixa do grupo humano. Sem teste de hipótese.
+\subsection{O comparativo: controladores clássicos e de aprendizado de máquina}\label{sec:res-disc-cmp}
+
+\textbf{Mesma informação, desempenhos distintos.} Quatro pilotos do comparativo
+executam apenas com LiDAR e proprioceptiva: o E2, o E3 e os dois reativos. Sob o
+mesmo protocolo, os dois aprendidos completam 50 de 50 voltas em 60,05~s e
+52,55~s; o Disparity Extender completa 50 de 50 em 145,55~s; e o seguidor de gap
+não completa volta. O único piloto que usa pose global e linha de corrida, o
+E1, fica em 59,00~s. Com o mesmo sensor em execução, as políticas aprendidas
+chegaram ao tempo do piloto que usa o mapa, e uma delas o superou; os
+controladores reativos, não.
+
+\textbf{O que essa comparação não diz.} Ela compara estas implementações, e não
+as famílias de método. Três diferenças entre os dois lados precisam acompanhar
+os números. Os reativos são portes de nós escritos para um veículo real lento,
+ajustados por uma varredura de no máximo 24 combinações, e a configuração do
+Disparity Extender ficou no limite da sua grade. Os aprendidos passaram por laços
+automáticos com várias tentativas e ações pré-declaradas (Seções~\ref{sec:res-e2}
+e~\ref{sec:res-e3}). E, sobretudo, os aprendidos foram treinados com
+demonstrações de um especialista que usa pose e linha de corrida: eles não
+precisam do mapa em execução, mas a informação do mapa de Spielberg entrou neles
+pelo treino. Os reativos não têm acesso a essa informação em momento algum. A
+vantagem que eles teriam --- funcionar num circuito desconhecido, sem mapa e sem
+treino, como argumenta a Seção~\ref{sec:arte-classico} --- não é medida aqui,
+porque o comparativo usa uma só pista.
+
+\textbf{Suavidade e desvio.} O E1 e o E2 têm a mesma taxa de esterço,
+0,08~rad/s; o E3, o mais rápido, sobe para 0,42~rad/s;
+o Disparity Extender tem a maior taxa, 0,97~rad/s, e o maior tempo. A taxa de
+esterço, sozinha, não ordena os pilotos por desempenho, e a
+Figura~\ref{fig:cmp_esterco} mostra que não há relação monotônica entre as duas
+grandezas. O desvio da linha de corrida também não é medida de qualidade: o E3
+se afasta mais dela que o E1 e o E2 (0,40~m em média, contra 0,26 e 0,27~m) e é o
+mais rápido. O que o desvio mede é a semelhança com o especialista, cuja
+referência é a própria linha de corrida.
+
+\textbf{Por que o seguidor de gap não completa volta.} Os dados das varreduras
+são compatíveis com dois mecanismos, que se somam. O primeiro está na escolha do
+alvo. A detecção por descontinuidade define uma abertura por um salto de alcance
+maior que o limiar de profundidade entre pontos consecutivos do \textit{scan}.
+Numa pista fechada e sem obstáculos, as paredes produzem um \textit{scan}
+contínuo, exceto onde uma parede próxima esconde um trecho mais distante, o que
+ocorre tipicamente na borda interna de uma curva. As bordas das aberturas
+candidatas caem, assim, sobre a própria parede, e o alvo, pontuado por distância e
+largura, fica junto a uma dessas bordas, e não no centro do corredor livre. O
+Disparity Extender, ao contrário, estende cada disparidade pela largura do carro
+antes de escolher, o que afasta o alvo da borda. O segundo mecanismo é a
+oscilação do esterço. Com ganho proporcional de 1,5 ou 2,2, a taxa média de
+esterço por combinação da grade oficial ficou entre 0,41 e 1,98~rad/s, contra
+0,08~rad/s do E1, o que é compatível com um esterço que oscila entre os limites:
+com o atraso de dois passos (100~ms), o PID corrige um erro que o carro já deixou
+para trás, e um ganho alto transforma essa defasagem em oscilação. A isso se soma
+a saturação: o nó original permitia 0,7~rad de esterço, e o porte corta em
+0,4189~rad, como todos os pilotos.
+
+A grade ampliada separa os dois mecanismos, e é por isso que ela é informativa
+apesar de não ter produzido volta. Com ganho de 0,3, a taxa média de esterço
+caiu para 0,08 a 0,29~rad/s, a faixa do E1 e do E2, e o carro continuou batendo
+nos primeiros metros, com progresso médio de no máximo 8,20~m. Um esterço suave
+não bastou, o que aponta a escolha do alvo como causa dominante --- e a escolha do
+alvo não depende de nenhum dos parâmetros varridos. Esta é uma interpretação de
+dados agregados: o alvo escolhido a cada passo não foi gravado, e confirmá-la
+exigiria gravá-lo. O que não depende de interpretação é o resultado, obtido pelo
+critério fixado antes da medição: o seguidor de gap, nesta implementação e neste
+regime de velocidade e atraso, não completa uma volta em Spielberg.
+
+\textbf{A comparação com os pilotos humanos.} O desenho é descritivo e não tem
+teste de hipótese (Seção~\ref{sec:val-humano}). O que ele permite dizer é a
+posição de cada política em relação à faixa do grupo humano, vista a vista, e a
+leitura de cada vista foi fixada antes da coleta. Na vista só LiDAR, humanos e
+políticas sem pose recebem a mesma informação, e a diferença entre eles é de
+decisão e de controle; na vista da pista inteira, o humano vê o mapa e pode
+antecipar as curvas, e a diferença mistura habilidade com informação. Com os
+dados, \pendentehumano{posição de E1, E2, E3 e Disparity Extender em relação à
+faixa do grupo, por vista}.
+
+Dois cruzamentos têm leitura direta. O primeiro é entre o humano na vista só
+LiDAR e o seguidor de gap, que reagem ao mesmo \textit{scan} do passo atual:
+\pendentehumano{se e quanto os humanos na vista só LiDAR completaram as voltas que
+o seguidor de gap não completa}. O segundo é a suavidade:
+\pendentehumano{taxa de esterço e desvio da linha de corrida dos humanos diante
+das políticas}. As quatro limitações da Seção~\ref{sec:val-limitacoes-comparativo}
+--- ordem fixa das vistas, amostra pequena, autores separados dos voluntários e
+uma só pista --- acompanham qualquer uma dessas leituras.
+
 
 \subsection{Síntese}
 
@@ -752,6 +1175,14 @@ a propriedade conquistada no anterior: o especialista fornece competência, a
 imitação a transfere para uma política sem pose global, e o resíduo recupera e supera
 o desempenho perdido na destilação sem devolver a dependência de localização, com
 o pior caso da terceira etapa sendo o resultado da segunda.
+
+Sob o protocolo comum do comparativo, a ordem se mantém: com randomização e nas
+mesmas cinco sementes, o resíduo faz 52,55~s, o especialista 59,00~s e a rede de
+imitação 60,05~s. Dos dois controladores reativos que usam apenas o LiDAR, o
+Disparity Extender completa todas as voltas em 145,55~s, e o seguidor de gap não
+completa nenhuma, nem nas 48 combinações das duas varreduras nem na avaliação
+congelada. Quanto aos pilotos humanos, \pendentehumano{uma frase com a posição das
+políticas diante da faixa do grupo humano em cada vista}.
 
 O resultado metodológico é de outra natureza e, no julgamento deste trabalho, é o
 mais transferível dos dois. As três ressalvas discutidas acima --- o limiar dentro

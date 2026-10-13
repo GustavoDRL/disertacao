@@ -1,0 +1,8 @@
+tipo,piloto,codigo,vista,grupo,experiencia,estatistica,n_pilotos,status,run_id,voltas_tentadas,voltas_completas,colisoes,truncadas,conclusao,conclusao_ic_baixo,conclusao_ic_alto,tempo_mediano_s,melhor_tempo_s,esterco_taxa_mediana_rad_s,esterco_taxa_p95_mediana_rad_s,raceline_dev_media_m,raceline_dev_p95_m,velocidade_media_mps
+clássico,Pure pursuit (E1),e1,,,,,,ok,cmp_Spielberg_20261012-225730_0dda764_11e48d,45,44,1,0,0.977778,0.884333,0.996066,59,58.95,0.0841389,0.229131,0.263616,0.459936,5.77672
+ML,Imitação (E2),e2,,,,,,ok,cmp_Spielberg_20261012-225730_0dda764_f7b67f,50,50,0,0,1,0.928652,1,60.05,59.4,0.0826573,0.220469,0.269598,0.478292,5.67833
+ML,Resíduo SAC (E3),e3,,,,,,ok,cmp_Spielberg_20261012-225731_0dda764_00a206,50,50,0,0,1,0.928652,1,52.55,52,0.418205,1.26999,0.397843,0.809475,6.52233
+clássico,Disparity Extender,disparity,,,,,,ok,cmp_Spielberg_20261013-080135_8d57af8_e562f9,50,50,0,0,1,0.928652,1,145.55,143.25,0.966586,2.87511,0.708771,1.245,2.50287
+clássico,Seguidor de gap,gap,,,,,,ok,cmp_Spielberg_20261013-080135_8d57af8_3a64c2,5,0,5,0,0,0,0.434482,,,,,,,
+humano,humano (mapa),,mapa,,,,,pendente,,,,,,,,,,,,,,,
+humano,humano (lidar),,lidar,,,,,pendente,,,,,,,,,,,,,,,

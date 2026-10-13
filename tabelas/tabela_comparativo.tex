@@ -1,0 +1,22 @@
+\begin{table}[htb]
+\centering
+\small
+\caption{Comparativo entre pilotos clássicos, de aprendizado de máquina e humanos na pista Spielberg.}
+\label{tab:comparativo}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{llcccccccccc}
+\hline
+Piloto & Tipo & Voltas & Colis. & Trunc. & Conclusão (\%) & IC 95\% (\%) & Mediana (s) & Melhor (s) & Esterço (rad/s) & Desv. raceline (m) & $v$ média (m/s) \\
+ &  & compl./tent. &  &  &  &  &  &  & mediana & média / p95 &  \\
+\hline
+Pure pursuit (E1) & clássico & 44/45 & 1 & 0 & 97,8 & [88,4; 99,6] & 59,00 & 58,95 & 0,08 & 0,26 / 0,46 & 5,78 \\
+Imitação (E2) & ML & 50/50 & 0 & 0 & 100,0 & [92,9; 100,0] & 60,05 & 59,40 & 0,08 & 0,27 / 0,48 & 5,68 \\
+Resíduo SAC (E3) & ML & 50/50 & 0 & 0 & 100,0 & [92,9; 100,0] & 52,55 & 52,00 & 0,42 & 0,40 / 0,81 & 6,52 \\
+Disparity Extender & clássico & 50/50 & 0 & 0 & 100,0 & [92,9; 100,0] & 145,55 & 143,25 & 0,97 & 0,71 / 1,25 & 2,50 \\
+Seguidor de gap & clássico & 0/5 & 5 & 0 & 0,0 & [0,0; 43,4] & -- & -- & -- & -- / -- & -- \\
+humano (mapa) & humano & \multicolumn{10}{c}{pendente} \\
+humano (lidar) & humano & \multicolumn{10}{c}{pendente} \\
+\hline
+\end{tabular}
+}
+\end{table}
