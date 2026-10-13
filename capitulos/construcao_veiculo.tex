@@ -120,7 +120,8 @@ obstáculos.
 \subsubsection{YDLIDAR X4PRO}
 
 O LiDAR YDLIDAR X4PRO foi escolhido por suas características técnicas que
-atendem aos requisitos da competição:
+atendem aos requisitos da competição. Segundo o \textit{datasheet} do
+fabricante:
 
 \begin{itemize}
       \item Varredura omnidirecional de 360°, permitindo detecção completa do ambiente ao
@@ -139,11 +140,22 @@ atendem aos requisitos da competição:
       \item Dimensões compactas e peso de 178g, facilitando a integração no veículo
 \end{itemize}
 
-Este sensor fornece dados cruciais para algoritmos de mapeamento, localização,
-planejamento de trajetória e detecção de outros veículos durante as corridas
-head-to-head. Sua capacidade de detecção omnidirecional é particularmente
-importante para a implementação de estratégias defensivas e ofensivas durante
-ultrapassagens.
+Esses valores são do \textit{datasheet}, e não do sensor instalado. A
+configuração efetivamente aplicada ao \textit{driver} pelo arquivo de
+inicialização do veículo é outra: alcance de 0,1 a 12~m, 360$^\circ$ de
+abertura, frequência de varredura pedida de 10~Hz e leituras inválidas
+publicadas como $0{,}0$. Nenhuma dessas grandezas foi medida no sensor do
+carro: o perfil versionado do sensor mantém o campo \texttt{medido} falso até
+a caracterização de bancada, e a taxa de 10~Hz é um pedido ao \textit{driver},
+não uma garantia.
+
+No software do veículo, os consumidores previstos do \textit{scan} são o
+adaptador de observação (\texttt{scan\_adapter\_node}), o seguidor de parede e o
+executor de políticas (\texttt{policy\_runner}), descritos no
+Capítulo~\ref{cap:proposta}; nenhum deles foi executado no carro. Não há, no
+veículo, mapeamento, localização nem detecção de outros veículos. A cobertura
+omnidirecional seria relevante para estratégias de ultrapassagem em corridas
+\textit{head-to-head}, que estão fora do escopo deste trabalho.
 
 \subsection{Unidade de Processamento}
 
@@ -174,7 +186,12 @@ A Raspberry Pi 4B executa o sistema operacional Ubuntu 22.04 LTS com ROS2
 Humble Hawksbill, fornecendo um ambiente robusto para desenvolvimento e
 execução dos algoritmos de controle. A integração com o VESC e o LiDAR é
 realizada através de interfaces seriais e pacotes ROS2 específicos, criando uma
-arquitetura de software modular e extensível.
+arquitetura de software modular e extensível. O desempenho da unidade com a
+pilha autônoma não foi medido: a paridade numérica da inferência entre o
+computador de desenvolvimento e a Raspberry Pi e a taxa, a latência $p99$ e o
+uso de CPU do executor de políticas embarcado (\texttt{SPEC-S2R-20} e
+\texttt{SPEC-S2R-21}) têm o procedimento de medição escrito, mas ainda não
+foram executados no veículo.
 
 \subsection{Sistema de Alimentação}
 
@@ -222,23 +239,36 @@ sessões prolongadas de teste e operação.
 
 Para acomodar os diversos componentes e garantir a integridade estrutural do
 veículo, várias peças customizadas foram projetadas e fabricadas utilizando
-tecnologia de impressão 3D.
-
-\subsection{Suportes e Estruturas Principais}
-
-[Esta seção será completada posteriormente com detalhes sobre o suporte para a unidade de processamento e controlador eletrônico.]
-
-\subsection{Sistema de Montagem e Integração}
-
-[Esta seção será completada posteriormente com informações sobre como as peças customizadas se integram ao chassi e entre si, incluindo considerações sobre manutenção e acesso aos componentes.]
-
-\subsection{Processo de Fabricação}
-
-[Esta seção será completada posteriormente com detalhes sobre os parâmetros de impressão 3D, materiais utilizados e técnicas de pós-processamento.]
+tecnologia de impressão 3D, entre elas os suportes da unidade de processamento
+e do controlador eletrônico. Os arquivos de projeto dessas peças não estão
+versionados no repositório do trabalho, e os seus parâmetros de fabricação não
+são documentados neste texto.
 
 \section{Arquitetura de Hardware do Veículo}
 
- [Esta seção será completada posteriormente com um diagrama detalhado da arquitetura de hardware e explicações sobre as conexões entre componentes.]
+As conexões entre os componentes, tal como configuradas no arquivo de
+inicialização do sistema do veículo
+(\path{f1tenth_complete_system.launch.py}), são as seguintes:
+
+\begin{itemize}
+      \item \textbf{Raspberry Pi 4B $\leftrightarrow$ VESC}: USB, como porta
+            serial com o alias \path{/dev/sensors/vesc}. Por ela trafegam os
+            comandos de velocidade do motor e a telemetria do controlador.
+      \item \textbf{Raspberry Pi 4B $\leftrightarrow$ LiDAR}: USB, como porta
+            serial com o alias \texttt{/dev/ydlidar}, a 128000~baud.
+      \item \textbf{Raspberry Pi 4B $\rightarrow$ servo de direção}: sinal PWM
+            de 50~Hz no GPIO18, gerado pelo \textit{daemon} \texttt{pigpio}. O
+            servo não é comandado pelo VESC.
+      \item \textbf{VESC $\rightarrow$ motor}: acionamento trifásico do motor
+            EZRUN, alimentado pela bateria LiPo de propulsão.
+      \item \textbf{Controle manual}: \textit{joystick} lido pelo nó
+            \texttt{joy\_node} do ROS2; um botão do controle serve de
+            habilitação (homem-morto) também no modo autônomo.
+\end{itemize}
+
+A alimentação segue a separação descrita na seção anterior: a bateria LiPo
+alimenta o VESC e o motor, e o \textit{power bank} alimenta a eletrônica de
+controle.
 
 \section{Arquitetura de Software do Veículo}
 
@@ -251,47 +281,87 @@ algoritmos de controle.
 A integração do controlador VESC MINI 6.7 com o sistema ROS2 é realizada
 utilizando os pacotes ROS2 mantidos pela comunidade F1TENTH, especificamente o
 metapacote \texttt{vesc}\footnote{Repositório F1TENTH VESC ROS2 Driver:
-      \url{https://github.com/f1tenth/vesc/tree/ros2}}\cite{F1TENTHVESC}. Este
-metapacote inclui:
+      \url{https://github.com/f1tenth/vesc/tree/ros2}}\cite{F1TENTHVESC},
+incluído no \textit{workspace} do veículo. Este metapacote inclui:
 \begin{itemize}
       \item \texttt{vesc\_driver}: O nó principal que gerencia a comunicação serial com o
-            VESC via USB (tipicamente na porta \texttt{/dev/ttyACM0}).
+            VESC via USB (no alias \texttt{/dev/sensors/vesc}).
       \item \texttt{vesc\_msgs}: Define os tipos de mensagens customizadas para
-            comunicação com o VESC, como \texttt{VescStateStamped} para telemetria e
-            comandos.
-      \item \texttt{vesc\_ackermann}: Converte comandos de \texttt{AckermannDriveStamped} (velocidade
-            linear e ângulo de direção) em comandos de baixo nível compreensíveis pelo
-            VESC (velocidade do motor em ERPM e posição do servo).
+            comunicação com o VESC, como \texttt{VescStateStamped} para telemetria.
+      \item \texttt{vesc\_ackermann}: Contém o nó \texttt{ackermann\_to\_vesc\_node},
+            que converte comandos \texttt{AckermannDriveStamped} em velocidade do
+            motor em ERPM, e o nó \texttt{vesc\_to\_odom\_node}, que integra a
+            odometria.
 \end{itemize}
 
-A comunicação se dá da seguinte forma:
+O esterçamento \textbf{não} passa pelo VESC. O servo de direção é acionado
+diretamente pela Raspberry Pi, por PWM de 50~Hz no GPIO18 gerado pelo
+\textit{daemon} \texttt{pigpio}, no nó \texttt{servo\_control\_node} do pacote
+\texttt{f1tenth\_control}, com o ângulo limitado a $\pm 0{,}4$~rad. A
+configuração desabilita o servo do VESC (\texttt{use\_servo\_cmd: false}); como
+a versão do \textit{driver} em uso não implementa esse parâmetro, o arquivo de
+inicialização também redireciona a saída de posição de servo do
+\texttt{ackermann\_to\_vesc\_node} para um tópico sem assinantes, de modo que
+não existam dois comandantes para o mesmo eixo. As duas cadeias de comando são,
+portanto:
 \begin{itemize}
-      \item Publicação de Estado: O nó \texttt{vesc\_driver} lê dados do VESC via serial e
-            publica a telemetria (tensão, corrente, ERPM, temperatura, etc.) no tópico
-            \texttt{/sensors/core} (tipo \texttt{vesc\_msgs/VescStateStamped}) e a posição
-            do servo (se configurado) em \texttt{/sensors/servo\_position\_command}.
-      \item Recebimento de Comandos: O nó \texttt{vesc\_ackermann} recebe comandos de alto
-            nível de velocidade e direção no tópico \texttt{/drive} (tipo
-            \path{ackermann_msgs/AckermannDriveStamped}).
-      \item Conversão e Envio: \texttt{vesc\_ackermann} converte os comandos de Ackermann
-            em comandos de ERPM para o motor e posição para o servo, publicando-os nos
-            tópicos \texttt{/commands/motor/speed} e \texttt{/commands/servo/position}
-            respectivamente.
-      \item Atuação: O nó \texttt{vesc\_driver} subscreve a esses tópicos de comando e
-            envia as instruções correspondentes ao VESC via comunicação serial.
+      \item \textbf{Motor}: \texttt{/drive} $\rightarrow$
+            \texttt{ackermann\_to\_vesc\_node} $\rightarrow$
+            \texttt{/commands/motor/speed} $\rightarrow$ \texttt{vesc\_driver}
+            $\rightarrow$ VESC.
+      \item \textbf{Direção}: \texttt{/drive} $\rightarrow$
+            \texttt{servo\_control\_node} $\rightarrow$ PWM no GPIO18
+            $\rightarrow$ servo.
 \end{itemize}
 
-A configuração do sistema, incluindo a porta serial, ganhos de conversão
-(velocidade para ERPM, ângulo para posição do servo) e limites operacionais, é
-gerenciada através de arquivos de parâmetros YAML (como o
-\texttt{vesc\_config.yaml} no pacote \texttt{vesc\_driver}), carregados durante
-a inicialização dos nós com \texttt{ros2 launch}.
+No sentido inverso, o \texttt{vesc\_driver} publica a telemetria do controlador
+(tensão, corrente, ERPM, temperatura) em \texttt{/sensors/core}, e o
+\texttt{vesc\_to\_odom\_node} publica a odometria em \texttt{/odom}. Como o servo
+não tem realimentação de posição, o ângulo usado na odometria é o comando que o
+\texttt{servo\_control\_node} republica em
+\texttt{/sensors/servo\_position\_command}.
+
+A configuração do sistema --- inclusive os limites do \texttt{vesc\_driver} e os
+parâmetros do nó de servo --- é carregada do arquivo \texttt{system\_config.yaml}
+do pacote \texttt{f1tenth\_control}, complementado por valores definidos
+diretamente no arquivo de inicialização (porta serial, limites de velocidade e
+ganho de conversão de velocidade para ERPM). O arquivo \texttt{vesc\_config.yaml}
+existe no pacote \texttt{vesc\_config}, e não no \texttt{vesc\_driver}.
 
 Essa arquitetura modular permite que os algoritmos de planejamento e controle
 operem em um nível de abstração mais alto, enviando comandos
-\texttt{AckermannDriveStamped}, enquanto os pacotes \texttt{vesc} cuidam da
-comunicação de baixo nível e da conversão necessária para o hardware
-específico.
+\texttt{AckermannDriveStamped}, enquanto os nós de baixo nível cuidam da
+comunicação com o hardware específico.
+
+\subsection{Camadas de segurança do comando}
+
+O caminho de comando inclui camadas de segurança independentes, detalhadas no
+Capítulo~\ref{cap:proposta}:
+\begin{itemize}
+      \item \textbf{Guarda de comando}: em modo autônomo, os controladores
+            publicam em \texttt{/drive\_raw}, e o nó \texttt{drive\_guard} é o
+            único publicador de \texttt{/drive}. Ele exige o botão de
+            homem-morto pressionado, impõe um tempo limite de entrada e satura
+            velocidade e esterço. Ao soltar o botão, publica 0,5~s de parada e
+            silencia; ao pressioná-lo, publica 0,2~s de comando neutro, para
+            que o bloqueio do motor descrito abaixo possa rearmar.
+      \item \textbf{Nó de servo}: o \texttt{servo\_control\_node} corta o motor
+            quando o fluxo de \texttt{/drive} cessa e trata como emergência a
+            perda do \textit{daemon} \texttt{pigpio}, inclusive por tempo limite
+            de 0,25~s no \textit{socket} do cliente. É ele que publica a
+            habilitação periódica do motor em \texttt{/safety/motor\_enable},
+            e só a concede depois de o servo responder e de um rearme por
+            \texttt{/drive} com velocidade zero.
+      \item \textbf{Bloqueio no \textit{driver} do VESC}: o
+            \texttt{vesc\_driver} só repassa comandos de motor enquanto a
+            habilitação for verdadeira e tiver menos de 0,35~s; fora disso,
+            descarta o comando e envia potência nula.
+\end{itemize}
+
+Nenhuma dessas camadas substitui o freio primário, que é cortar fisicamente a
+alimentação do controlador do motor. Nenhuma delas foi validada no veículo: a
+única validação em hardware registrada é a do controle manual por
+\textit{joystick}, realizada antes da introdução do bloqueio do motor.
 
 \subsection{Integração do LiDAR com ROS2}
 
@@ -308,7 +378,7 @@ Principais aspectos da integração:
       \item Comunicação: O driver estabelece comunicação com o LiDAR através da porta
             serial (tipicamente \texttt{/dev/ttyUSB0} ou um alias como
             \texttt{/dev/ydlidar}) na Raspberry Pi. Os parâmetros de comunicação, como
-            \texttt{baudrate} (230400 para o X4PRO) e \texttt{port}, são configuráveis.
+            \texttt{baudrate} (128000 na configuração do veículo) e \texttt{port}, são configuráveis.
       \item Publicação de Dados: O driver processa os dados brutos do LiDAR e os publica no
             tópico ROS2 \texttt{/scan}. A mensagem publicada é do tipo
             \texttt{sensor\_msgs/LaserScan}, um formato padrão em ROS para dados de
@@ -318,24 +388,27 @@ Principais aspectos da integração:
             (\texttt{angle\_min}, \texttt{angle\_max}), limites de alcance
             (\texttt{range\_min}, \texttt{range\_max}), frequência de varredura
             (\texttt{frequency}), e \texttt{frame\_id} (identificador da coordenada TF,
-            e.g., \texttt{laser\_frame}), são definidos em arquivos de configuração (YAML)
-            ou diretamente em arquivos de inicialização (arquivos \texttt{.launch.py}).
-      \item Execução: O nó do driver é iniciado utilizando \texttt{ros2 launch},
-            tipicamente com um arquivo \texttt{launch.py} customizado que carrega os
-            parâmetros corretos para o X4PRO (e.g., \texttt{ydlidar\_launch.py}
-            referenciado no repositório).
+            e.g., \texttt{laser\_frame}), são definidos diretamente no arquivo de
+            inicialização do sistema do veículo, e não num arquivo YAML.
+      \item Execução: O nó do driver é iniciado pelo mesmo arquivo de
+            inicialização do sistema, de forma opcional. O pacote do
+            \textit{driver} não é versionado no repositório do trabalho: ele é
+            clonado à parte do repositório oficial, junto com o YDLidar-SDK, na
+            própria Raspberry Pi.
       \item Serviços: O driver também oferece serviços ROS2 básicos, como
             \texttt{start\_scan} e \texttt{stop\_scan}, permitindo ligar e desligar o
             sensor programaticamente.
 \end{itemize}
 
-Essa integração fornece os dados de percepção essenciais, no formato
-\texttt{sensor\_msgs/LaserScan}, para os nós ROS2 responsáveis pelo mapeamento
-SLAM (Simultaneous Localization and Mapping), localização (como AMCL --
-Adaptive Monte Carlo Localization), planejamento de trajetória e detecção de
-obstáculos. A padronização da mensagem facilita a interoperabilidade com outros
-pacotes ROS2 do ecossistema de navegação.
+Essa integração fornece os dados de percepção no formato
+\texttt{sensor\_msgs/LaserScan}, padrão do ecossistema ROS2. No veículo, os
+consumidores previstos desse tópico são o adaptador de observação, o seguidor de
+parede e o executor de políticas; nenhum deles foi executado no carro, e não há
+mapeamento por SLAM nem localização por AMCL na pilha do veículo.
 
 \subsection{Algoritmos de Percepção e Controle}
 
-[Esta seção será completada posteriormente com informações sobre os algoritmos implementados para mapeamento, localização, planejamento de trajetória e controle do veículo.]
+Os algoritmos de controle do veículo --- o seguidor de parede, a guarda de
+comando, o adaptador de observação do LiDAR e o executor das políticas
+aprendidas --- são descritos no Capítulo~\ref{cap:proposta}, e o seu método de
+validação, no Capítulo~\ref{cap:metodologia}.

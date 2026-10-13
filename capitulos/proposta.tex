@@ -2,11 +2,14 @@
 
 \noindent\textbf{Escopo e versão.} Este capítulo descreve a organização do
 workspace \texttt{f1tenth\_code} revisada em 10 de setembro de 2026, incluindo
-as correções posteriores ao commit \texttt{fabf7e5}. Os resultados apresentados
+as correções posteriores ao commit \texttt{fabf7e5}, e atualizada em 12 de
+outubro de 2026 com o neutro de rearme da guarda de comando (commit
+\texttt{79a7c2c}). Os resultados apresentados
 no capítulo de resultados pertencem às execuções identificadas naquele capítulo;
 esta atualização de arquitetura não constitui uma nova avaliação experimental.
-A validação física documentada cobre o controle manual. Os controladores
-autônomos e os novos mecanismos de segurança ainda requerem validação no veículo.
+A validação física documentada cobre o controle manual, e foi feita antes da
+introdução do bloqueio do motor descrito adiante. Os controladores autônomos e
+os novos mecanismos de segurança ainda requerem validação no veículo.
 
 \section{Organização do software}
 
@@ -137,7 +140,7 @@ e o deslocamento angular do perfil de montagem do LiDAR.
 O erro lateral previsto determina o esterçamento e sua magnitude reduz a
 velocidade solicitada. Os ganhos permanecem sujeitos a calibração física.
 
-Os controladores autônomos publicam em \texttt{/drive\_raw}.
+No veículo, os controladores autônomos publicam em \texttt{/drive\_raw}.
 O componente \texttt{drive\_guard} aplica limites, prazo de validade e
 habilitação pelo operador antes de publicar em \texttt{/drive}. A política
 recebe também o comando autorizado em \texttt{/drive\_guard/applied},
@@ -150,8 +153,12 @@ O driver VESC condiciona os comandos de motor a uma habilitação periódica em
 quando perde o serviço do servo ou o fluxo de comandos. O driver bloqueia novas
 solicitações e envia potência nula quando a habilitação falta ou expira.
 Após uma falha, um comando neutro com a direção operacional é necessário para
-rearmar o sistema. Essa interdição no driver impede que a parada dependa apenas
-da disputa entre publicações de velocidade e de potência nula.
+rearmar o sistema. Como em modo autônomo o primeiro comando repassado já viria
+do controlador com velocidade positiva, a guarda publica 0,2~s de comando
+neutro, com o motivo \texttt{rearme}, na borda de subida do botão de
+habilitação, antes de repassar qualquer comando. Essa interdição no driver
+impede que a parada dependa apenas da disputa entre publicações de velocidade e
+de potência nula.
 
 \section{Execução das políticas aprendidas}
 

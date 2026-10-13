@@ -68,13 +68,16 @@ retroativamente.
 Duas outras ressalvas, declaradas nos mesmos capítulos sem receber número,
 prendem-se diretamente a cifras que esta conclusão acabou de imprimir, e por isso
 viajam com elas. A primeira é de \textbf{proveniência}: o relatório de
-verificação que registra os 381~m traz veredito global \textit{reprovado}, e uma
-das camadas que reprovam é a de proveniência, por árvore de trabalho suja. É, nos
-termos da Seção~\ref{sec:res-deploy}, a única cifra daquele capítulo cuja
-proveniência não satisfaz o padrão que o próprio trabalho exige das demais ---
-diferente, portanto, das três execuções de E1, E2 e E3, que foram medidas com a
-árvore limpa. Refazer a medição nessa condição, e promover o relatório para um
-caminho versionado, fecha a ressalva. A segunda é de \textbf{protocolo}: o
+verificação que registrava os 381~m trazia veredito global \textit{reprovado},
+e uma das camadas que reprovavam era a de proveniência, por árvore de trabalho
+suja. Esse relatório foi sobrescrito em setembro de 2026, e a medição sobrevive
+apenas transcrita no documento de estado do projeto; ela é, além disso,
+anterior às mudanças posteriores no executor de políticas. É, nos termos da
+Seção~\ref{sec:res-deploy}, a única cifra daquele capítulo cuja proveniência
+não satisfaz o padrão que o próprio trabalho exige das demais --- diferente,
+portanto, das três execuções de E1, E2 e E3, que foram medidas com a árvore
+limpa. Refazer a medição nessa condição, com o nó atual, e promover o relatório
+para um caminho versionado, fecha a ressalva. A segunda é de \textbf{protocolo}: o
 denominador $T_{pp}$ é medido \textbf{sem} randomização, enquanto as etapas E2 e
 E3 são medidas \textbf{com} randomização de atrito, de posição de largada e de
 ruído de sensor. A comparação entre 52,525~s e 59,000~s não é, portanto, entre
@@ -88,7 +91,7 @@ declarar a assimetria, não confiar na direção dela.
 
 O resultado que este trabalho considera mais transferível não é o tempo de volta.
 É o aparato descrito no Capítulo~\ref{cap:metodologia}: um contrato numérico de
-93 asserções com identificador estável, cada uma registrando a falha medida que a
+118 asserções com identificador estável, cada uma registrando a falha medida que a
 originou; seis camadas de verificação que vão da cobertura do contrato até a
 execução do artefato de \textit{deploy} no ambiente de destino; critérios de
 aceite congelados no nascimento de cada execução, com a proveniência tratada como
@@ -131,7 +134,7 @@ linha.
         implementados e testados em ambiente simulado & \textbf{Atingido} \\
         \hline
         2 & Construir e parametrizar o modelo físico do veículo, hardware e
-        chassi & \textbf{Parcial} --- duas grandezas pendentes de medição \\
+        chassi & \textbf{Parcial} --- grandezas pendentes de medição \\
         \hline
         3 & Software embarcado capaz de executar os algoritmos em tempo real no
         veículo físico & \textbf{Parcial} --- só o controle manual \\
@@ -160,27 +163,34 @@ declarado como limite na Seção~\ref{sec:arte-lacuna}.
 \textbf{Objetivo 2 --- parcialmente atingido.} O veículo foi construído e opera:
 chassi, propulsão com controlador VESC, servo de direção, LiDAR YDLIDAR X4PRO,
 unidade de processamento e sistema de alimentação estão descritos no capítulo de
-construção do veículo, junto das peças customizadas e da integração com o ROS2.
+construção do veículo, junto da integração com o ROS2; as peças customizadas
+são mencionadas ali, mas os seus arquivos de projeto não estão versionados.
 A \textit{parametrização}, porém, só está completa para as grandezas que se
 resolvem lendo o próprio repositório. O ganho velocidade--ERPM e a distância
 entre eixos tinham valores divergentes em arquivos distintos do carro e
 hoje têm um valor cada, com teste que falha se voltarem a divergir
 (\texttt{SPEC-CAR-01} e \texttt{SPEC-CAR-02}, este último fixando 0,3302~m, o
-valor medido, idêntico ao do modelo do simulador). As duas grandezas que exigem
-medir o carro em movimento --- a relação entre comando e velocidade real
-(\texttt{SPEC-CAR-04}) e o zero angular do LiDAR contra o eixo longitudinal
-(\texttt{SPEC-CAR-05}) --- seguem \textbf{pendentes de medição}, e estão
-declaradas como pendentes em vez de estimadas.
+valor medido, idêntico ao do modelo do simulador). As grandezas que exigem
+medir o carro --- a relação entre comando e velocidade real
+(\texttt{SPEC-CAR-04}), o zero angular do LiDAR contra o eixo longitudinal
+(\texttt{SPEC-CAR-05}), o sentido físico do esterço do servo
+(\texttt{steering\_sign}) e o perfil do X4PRO instalado, cujo campo
+\texttt{medido} permanece falso --- seguem \textbf{pendentes de medição}, e
+estão declaradas como pendentes em vez de estimadas.
 
 \textbf{Objetivo 3 --- parcialmente atingido.} Existe software embarcado, ele roda
 no veículo e há uma parte dele validada em hardware: o \textbf{controle manual}
 --- motor, servo de direção, odometria e comando por \textit{joystick}. Essa é a
-extensão do que o carro comprovadamente faz. \textbf{Todo o restante da pilha
+extensão do que o carro comprovadamente faz, com uma qualificação: essa
+validação é anterior ao bloqueio do motor no \textit{driver} do VESC e ao
+rearme exigido pelo nó de servo, que alteram o caminho de comando também no
+modo manual, e não foi repetida depois deles. \textbf{Todo o restante da pilha
 autônoma, inclusive o seguidor de parede reativo presente no repositório, segue
 sem validação no veículo real.} Desde então a pilha autônoma passou a existir por
 inteiro no repositório --- adaptador de observação, guarda de comando como
-publicador único, seguidor de parede reescrito por geometria e a política
-parametrizada para o computador embarcado ---, com testes e com um procedimento de
+publicador único, bloqueio do motor no \textit{driver} com habilitação
+periódica, seguidor de parede reescrito por geometria e a política parametrizada
+para o computador embarcado ---, com testes e com um procedimento de
 operação por estágios; nada disso altera a situação do objetivo, porque nenhuma
 dessas linhas foi executada no veículo. Do lado da política aprendida, o requisito de
 tempo real foi demonstrado --- 20,00~Hz de frequência de controle e $p99$ de
@@ -301,7 +311,12 @@ contrato numérico já existente: a redução do scan exige divisão exata em ja
 (1080/60 = 18 fecha; 375/60 = 6,25 não), de modo que o número de feixes do
 contrato novo precisa ser múltiplo de 60 --- 360 ou 420 são os candidatos mais
 próximos dessa estimativa ---, e a arquitetura convolucional não monta com
-poucos feixes, o que obriga a verificar a pilha antes de retreinar.
+poucos feixes, o que obriga a verificar a pilha antes de retreinar. O caminho
+adotado na preparação da transferência, porém, preserva o contrato de 1080
+feixes: o adaptador de observação reconstrói esses feixes a partir do
+\textit{scan} real, e a política é retreinada sob o sensor emulado com o perfil
+medido na bancada (etapa E4.3). Trocar o número de feixes do contrato fica como
+alternativa, e as duas restrições acima só se aplicam a ela.
 
 \subsection*{A sequência da transferência}
 
@@ -317,9 +332,10 @@ A fase seguinte é uma sequência, e a ordem dela é requisito, não preferênci
           de higiene de parametrização a \textbf{bloqueante} pela reprovação do
           portão \texttt{SPEC-S2R-31}: nenhum estágio com o veículo no chão
           começa antes dela.
-    \item \textbf{Reparametrizar o simulador} com o perfil medido, escolhendo um
-          número de feixes múltiplo de 60 e verificando que a rede convolucional
-          ainda monta.
+    \item \textbf{Reparametrizar o sensor emulado} com o perfil medido e
+          reexecutar sob ele a campanha de sensibilidade, mantendo o adaptador e
+          o contrato de 1080 feixes; só se esse caminho falhar a troca do número
+          de feixes por um múltiplo de 60 volta a ser considerada.
     \item \textbf{Levantar a pista real} por SLAM, e derivar dela a linha central
           e a linha de corrida de curvatura mínima.
     \item \textbf{Reexecutar E1, E2 e E3} sob o contrato de observação e o
@@ -370,13 +386,13 @@ acionáveis sem tocar no hardware, e valem como trabalho futuro imediato:
           critérios de aceite das três etapas são medidos em Spielberg, e a etapa
           E3 nunca foi pontuada em nenhuma outra pista: o valor de generalização
           do resíduo simplesmente não existe.
-    \item \textbf{Congelar, antes da próxima execução da etapa E2, a correção da
-          sobreposição} entre o conjunto de coleta e o de generalização --- ou
-          tornando as duas listas disjuntas por construção, ou derivando o
-          conjunto de generalização do conjunto de coleta de cada execução. A
-          Seção~\ref{sec:val-heldout} explica por que a correção não podia ser
-          aplicada retroativamente, e por que ela é mais grave para as execuções
-          futuras do que para a reportada.
+    \item \textbf{Reexecutar a etapa E2 sob a correção da sobreposição} entre o
+          conjunto de coleta e o de generalização. A correção já está congelada
+          no contrato (\texttt{SPEC-GATE-09}): nenhuma ação pré-declarada pode
+          coletar numa pista de generalização. A
+          Seção~\ref{sec:val-heldout} explica por que ela não podia ser
+          aplicada retroativamente, e a execução reportada segue parcialmente
+          contaminada até ser substituída.
     \item \textbf{Refazer o estudo de sensibilidade numérica nesta máquina.} As
           execuções que o sustentam são da máquina anterior do projeto e não
           sobreviveram à migração, de modo que a confrontação entre a margem da
@@ -387,9 +403,11 @@ acionáveis sem tocar no hardware, e valem como trabalho futuro imediato:
           de verificação é sobrescrito a cada execução; promovê-los para um
           caminho versionado fecha, de uma vez, a discrepância indecidível
           discutida na Seção~\ref{sec:res-deploy} e a ressalva de proveniência da
-          medição de \textit{deploy}. No mesmo movimento cabe ligar a regra de
-          escalonamento por meia largura de intervalo na etapa E1, hoje a única
-          etapa em que a condição avalia verdadeiro e nada acontece.
+          medição de \textit{deploy}. No mesmo movimento cabe reavaliar as três
+          execuções sob o avaliador corrigido, em que a colisão tem precedência
+          sobre a chegada, e corrigir as poses de largada que nascem em colisão
+          em Monza e Oschersleben, aceitando a perda de comparabilidade com as
+          execuções anteriores.
 \end{itemize}
 
 Além dessas, permanecem em aberto as direções que a Seção~\ref{sec:arte-lacuna}
@@ -402,8 +420,9 @@ a sequência acima.
 \subsection*{Consideração final}
 
 O trabalho termina com uma política desenhada para ser embarcada, um artefato que
-já roda no formato em que será embarcado, um veículo construído e funcionando sob
-controle manual, um procedimento escrito para produzir os primeiros dados reais,
+já roda no formato em que será embarcado, um veículo construído e validado sob
+controle manual --- antes do bloqueio do motor que hoje integra o caminho de
+comando ---, um procedimento escrito para produzir os primeiros dados reais,
 e nenhuma medição no carro. Essa lista, dita nessa ordem, é o estado real do
 projeto --- e enunciá-la assim é a mesma prática que o
 Capítulo~\ref{cap:metodologia} defende como contribuição: declarar o que se cobre,

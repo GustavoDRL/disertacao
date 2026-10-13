@@ -104,10 +104,12 @@ middleware DDS, cada qual com características distintas
 
 A escolha do middleware pode impactar significativamente o desempenho do
 sistema em cenários de corrida, onde a latência é crítica e os recursos
-computacionais limitados. Testes comparativos realizados por
-\cite{kronauer2021latency} demonstraram que o Cyclone DDS apresenta menor
-latência em configurações típicas de F1TENTH, sendo frequentemente a escolha
-preferencial para estas aplicações.
+computacionais limitados. A análise de latência de sistemas ROS2 com múltiplos
+nós realizada por \cite{kronauer2021latency} mostra que a implementação de DDS
+e a configuração de execução afetam a latência ponta a ponta de forma
+mensurável; a escolha do middleware para uma plataforma específica deve,
+portanto, ser medida no próprio hardware, e não presumida. Este trabalho não
+realizou essa comparação no veículo.
 
 \subsection{Integração de Sensores e Atuadores para F1TENTH}
 
@@ -117,7 +119,7 @@ O ROS2 fornece frameworks padronizados para integração de sensores comumente
 utilizados em plataformas F1TENTH:
 
 \begin{itemize}
-    \item \textbf{LiDAR}: Pacotes como urg\_node2 para sensores Hokuyo ou rplidar\_ros para RPLIDAR proporcionam interfaces padronizadas que publicam dados em formato compatível com algoritmos de SLAM e detecção de obstáculos \cite{quigley2015programming}.
+    \item \textbf{LiDAR}: Pacotes como urg\_node2 para sensores Hokuyo ou rplidar\_ros para RPLIDAR proporcionam interfaces padronizadas que publicam dados em formato compatível com algoritmos de SLAM e detecção de obstáculos \cite{quigley2015programming}. No veículo deste trabalho, o sensor YDLIDAR X4PRO é integrado pelo driver oficial \texttt{ydlidar\_ros2\_driver} \cite{YDLIDARDriver}, que publica \texttt{sensor\_msgs/LaserScan} no tópico \texttt{/scan}.
     \item \textbf{IMU}: O pacote sensor\_msgs define mensagens padronizadas para sensores inerciais, facilitando a integração com algoritmos de odometria e controle. Em aplicações F1TENTH, IMUs são frequentemente utilizados para estimar aceleração lateral em curvas e compensar derrapagens.
     \item \textbf{Encoders}: Sensores de rotação nas rodas fornecem dados cruciais para odometria, implementados através da interface joint\_state\_publisher que permite a estimativa de velocidade e posição.
 \end{itemize}
@@ -802,55 +804,92 @@ dinâmica do veículo, e $g(\cdot)$ as restrições do sistema.
 
 Embora a implementação completa destes métodos de planejamento global esteja
 além do escopo deste trabalho, eles representam o estado da arte que guiou
-nossas escolhas e fornecerão a base para trabalhos futuros. A etapa de
-mapeamento implementada via SLAM Toolbox, discutida na Seção
-\ref{sec:implementacao_pratica}, estabelece o alicerce necessário para a
-eventual aplicação destes algoritmos.
+nossas escolhas e fornecerão a base para trabalhos futuros. O mapeamento da
+pista real, que seria o alicerce necessário para aplicá-los ao veículo, não foi
+realizado, como registra a Seção~\ref{sec:implementacao_pratica}.
 
 \subsection{Planejamento Local de Trajetória Implementado}
 
-A implementação do planejamento local de trajetória neste trabalho focou em
-abordagens práticas e robustas para navegação reativa em ambientes de corrida.
-Duas estratégias principais foram utilizadas:
+O planejamento local implementado neste trabalho restringe-se a controladores
+reativos, que não usam mapa nem localização, e a uma linha de base geométrica
+usada apenas em simulação. Os controladores presentes no repositório são:
 
 \begin{itemize}
-    \item \textbf{Algoritmo de Seguidor de Parede}: Desenvolvemos um algoritmo simples mas eficaz para seguimento de barreiras laterais, adequado para circuitos de corrida com contornos bem definidos.
+    \item \textbf{Seguidor de parede do veículo} (\path{car/src/wall_follow}):
+          controlador PID de distância lateral, descrito a seguir. Publica em
+          \texttt{/drive\_raw}, atrás da guarda de comando, e nunca foi executado
+          no veículo.
 
-    \item \textbf{Navegação Reativa com Nav2}: Utilizamos funcionalidades do framework Nav2, que implementa internamente o algoritmo Dynamic Window Approach (DWA) para evitar obstáculos em tempo real.
+    \item \textbf{Disparity Extender} (pacote \texttt{wall\_follow} do
+          simulador, em \path{src/wall_follow}): apesar do nome histórico do
+          pacote, é navegação reativa por extensão de disparidades, descrita no
+          Capítulo~\ref{cap:proposta}.
+
+    \item \textbf{Seguidor de gap} (\path{src/gap_follow}): seleção geométrica
+          de aberturas com controle PID de direção e velocidade, também no
+          simulador.
+
+    \item \textbf{\textit{Pure pursuit}} sobre a linha de corrida: especialista
+          da etapa E1 no ambiente de pesquisa, dependente da pose global que o
+          simulador fornece.
+
+    \item \textbf{Políticas aprendidas}, executadas pelo pacote
+          \texttt{policy\_runner} a partir do grafo ONNX exportado.
 \end{itemize}
+
+O framework Nav2 não é usado como controlador. Da sua distribuição, a ponte do
+simulador inicia apenas o servidor de mapas (\texttt{nav2\_map\_server}) e o
+gerenciador de ciclo de vida (\texttt{nav2\_lifecycle\_manager}), para
+disponibilizar o mapa da pista à visualização no RViz. Nenhum planejador ou
+controlador local do Nav2, como o \textit{Dynamic Window Approach} (DWA), foi
+configurado ou executado.
 
 \subsubsection{Algoritmo de Seguidor de Parede}
 
-O algoritmo de seguidor de parede implementado representa uma solução
-pragmática para o planejamento local de trajetória em circuitos de corrida.
-Esta abordagem reativa utiliza leituras de sensores para manter o veículo a uma
-distância consistente das barreiras laterais.
-
-O controlador implementado segue um modelo PD (Proporcional-Derivativo):
+O seguidor de parede do veículo segue a formulação clássica do laboratório de
+\textit{wall following} da plataforma F1TENTH. Dois feixes do LiDAR são
+localizados por ângulo, a partir de \texttt{angle\_min} e
+\texttt{angle\_increment} da própria mensagem: o feixe $b$, perpendicular à
+parede seguida, e o feixe $a$, adiantado de um ângulo $\theta$ em direção à
+frente do veículo. Cada distância é a mediana dos feixes válidos numa janela de
+$\pm 5^\circ$ em torno do ângulo alvo, depois de aplicados o espelhamento e o
+deslocamento angular do perfil de montagem do sensor. A orientação $\alpha$ do
+veículo em relação à parede e a distância projetada à frente são
 
 \begin{equation}
-    \omega = K_p(d_{desejada} - d_{medida}) + K_d\frac{d(d_{medida})}{dt}
+    \alpha = \operatorname{atan2}\left(a\cos\theta - b,\ a\sin\theta\right),
+    \qquad
+    d_{fut} = b\cos\alpha + L\sin\alpha,
+    \label{eq:wall_follower_geometria}
+\end{equation}
+
+\noindent em que $L$ é a distância de antecipação (\textit{lookahead}). O termo
+$L\sin\alpha$ faz o controle reagir à orientação do veículo, e não apenas à
+distância presente. O erro e o comando de esterço são
+
+\begin{equation}
+    e = d_{alvo} - d_{fut},
+    \qquad
+    \delta = \sigma\,\operatorname{sat}_{\delta_{max}}\!\left(K_p e + K_i \int e\,dt + K_d\frac{de}{dt}\right),
     \label{eq:wall_follower_control}
 \end{equation}
 
-Onde:
-\begin{itemize}
-    \item $\omega$ é a velocidade angular comandada
-    \item $d_{desejada}$ representa a distância ideal que o veículo deve manter da parede
-    \item $d_{medida}$ é a distância atual medida pelo sensor laser
-    \item $K_p$ e $K_d$ são os ganhos proporcional e derivativo do controlador
-\end{itemize}
+\noindent em que $\sigma = -1$ para parede à esquerda e $+1$ para parede à
+direita, de acordo com a convenção REP-103 de esterço positivo à esquerda, e a
+saturação vem acompanhada de \textit{anti-windup} condicional. A saída do PID já
+é o ângulo de esterçamento $\delta$, em radianos, e não uma velocidade angular.
+A velocidade longitudinal é escolhida por faixa de esterço: 1,0~m/s para
+$|\delta| < 10^\circ$, 0,7~m/s abaixo de $20^\circ$ e 0,5~m/s nos demais casos.
+Sem parede válida por cinco varreduras consecutivas, o nó comanda parada.
 
-A implementação prática deste algoritmo envolveu as seguintes etapas:
-
-\begin{enumerate}
-    \item Processamento das leituras do sensor laser para identificar a parede mais
-          próxima
-    \item Filtragem de ruídos e outliers nas medições de distância
-    \item Cálculo da velocidade angular usando o controlador PD
-    \item Aplicação de uma velocidade linear constante ou adaptativa baseada na curvatura
-          estimada
-\end{enumerate}
+Os valores configurados em \path{car/src/wall_follow/config/wall_follow.yaml}
+são $\theta = 50^\circ$, $L = 0{,}5$~m, $d_{alvo} = 0{,}8$~m, $K_p = 1{,}2$,
+$K_i = 0$, $K_d = 0{,}08$ e $\delta_{max} = 0{,}4$~rad. São valores
+conservadores de bancada, escolhidos sem medição no veículo, e o próprio arquivo
+de configuração os declara como não validados em hardware. A geometria e o PID
+vivem num módulo sem dependência de ROS2, o que permite verificar com testes
+unitários, no computador de desenvolvimento, o sinal do esterço em cada caso ---
+a parte do controlador que não se pode validar na pista sem colidir.
 
 Esta abordagem oferece vantagens significativas para aplicações em tempo real:
 
@@ -859,22 +898,6 @@ Esta abordagem oferece vantagens significativas para aplicações em tempo real:
     \item \textbf{Robustez a incertezas}: Não depende de um mapa global preciso ou localização absoluta
     \item \textbf{Resposta reativa}: Adapta-se instantaneamente a mudanças no ambiente
 \end{itemize}
-
-\subsubsection{Integração com Nav2}
-
-O framework Navigation2 (Nav2) foi utilizado como complemento ao algoritmo de
-seguidor de parede, fornecendo capacidades adicionais de navegação. Nav2
-implementa internamente o Dynamic Window Approach (DWA), que considera um
-espaço de velocidades admissíveis baseado nas limitações dinâmicas do veículo:
-
-\begin{equation}
-    V_a = \{(v,\omega) | v \in [v_{min}, v_{max}], \omega \in [\omega_{min}, \omega_{max}], \ddot{v} \leq a_{max}, \dot{\omega} \leq \alpha_{max}\}
-    \label{eq:dwa_velocity_space}
-\end{equation}
-
-Esta integração permitiu combinar a simplicidade e eficiência do seguidor de
-parede com as capacidades mais avançadas de evitação de obstáculos e
-planejamento local do Nav2 quando necessário.
 
 \subsection{Otimização de Linha de Corrida}
 
@@ -895,32 +918,22 @@ planejamento local do Nav2 quando necessário.
           Onde $\phi_i(s)$ são funções base e $a_i$ são coeficientes a serem otimizados.
 \end{itemize}
 
-\subsection{Implementação Prática: Mapeamento com SLAM Toolbox}
+\subsection{Mapeamento da pista real: não realizado}
 \label{sec:implementacao_pratica}
 
-Para fornecer a base necessária para navegação autônoma, implementamos um
-sistema de mapeamento usando a SLAM Toolbox. Esta ferramenta foi essencial para
-construir uma representação consistente do ambiente de corrida:
+O mapeamento da pista real por SLAM, que forneceria a base para localização e
+para os métodos de planejamento global discutidos acima, \textbf{não foi
+realizado}. O repositório contém um pacote de mapeamento
+(\texttt{my\_robot\_mapper}) configurado para o Cartographer --- e não para a
+SLAM Toolbox ---, mas o seu diretório de mapas existe vazio, aguardando a saída
+de um mapeamento que nunca foi executado, e a documentação do veículo registra
+o SLAM e o mapeamento da pista real como não iniciados.
 
-\begin{itemize}
-    \item \textbf{Mapeamento em Tempo Real}: A SLAM Toolbox permite a construção incremental de mapas 2D enquanto o veículo navega pelo circuito, criando uma representação precisa das barreiras e obstáculos.
-
-    \item \textbf{Localização Simultânea}: Além do mapeamento, o sistema fornece estimativas contínuas da posição e orientação do veículo dentro do mapa, essenciais para qualquer estratégia de navegação.
-
-    \item \textbf{Correção de Loop}: Os algoritmos implementados na SLAM Toolbox detectam e corrigem automaticamente erros acumulados quando o veículo revisita áreas previamente mapeadas, garantindo a consistência global do mapa.
-\end{itemize}
-
-O processo de mapeamento foi executado em duas fases:
-
-\begin{enumerate}
-    \item \textbf{Mapeamento Inicial}: O veículo foi controlado manualmente ao redor do circuito para gerar um mapa completo e preciso, que foi então salvo para uso posterior.
-
-    \item \textbf{Localização em Mapa Conhecido}: Durante a operação autônoma, o mapa pré-construído foi utilizado para localização, reduzindo a carga computacional e aumentando a precisão do posicionamento.
-\end{enumerate}
-
-Este mapeamento serviu como fundação para as estratégias de navegação
-implementadas, fornecendo o contexto espacial necessário tanto para o seguidor
-de parede quanto para a navegação baseada em Nav2.
+Nenhum controlador deste trabalho depende de mapa. Os controladores reativos
+operam diretamente sobre o \textit{scan}, e o especialista \textit{pure
+pursuit} da etapa E1 usa a pose fornecida pelo simulador sobre mapas de pistas
+distribuídos com o próprio ambiente de simulação. Levantar a pista real por SLAM
+permanece como etapa da fase seguinte do trabalho.
 
 \subsection{Considerações de Segurança e Robustez}
 

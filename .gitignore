@@ -20,3 +20,15 @@
 
 # Other temporary files
 _minted*/ 
+# Claude Code: logs, overrides locais e rastros (acrescentado pelo deploy.sh)
+.claude/audit.log
+.claude/settings.local.json
+.claude/settings.json.bak
+.mcp.json.bak
+.claude/Boas-praticas.bak/
+.claude/templates.bak/
+Reports/*.md
+!Reports/README.md
+.cache/doc-consistency/
+.claude/doc-consistency/.venv/
+.codex/audit.log

@@ -74,6 +74,14 @@ em disco por essas execuções, e não transcrito de documentos intermediários.
 etapa E1 não tem dispositivo de treino porque não treina nada: é um controlador
 geométrico.
 
+As três execuções são anteriores a uma correção do avaliador feita em setembro
+de 2026: antes dela, uma volta cujo passo de chegada coincidisse com uma colisão
+podia ser contada como completa; hoje a colisão tem precedência sobre a
+chegada. As execuções não foram reavaliadas depois da correção. Uma revisão dos
+19 relatórios de avaliação com voltas registradas não encontrou nenhum caso
+visível de conflito entre colisão e chegada, mas uma colisão descartada no
+último passo não é recuperável a partir das métricas agregadas.
+
 Uma ressalva de durabilidade acompanha essa afirmação e é declarada na
 Seção~\ref{sec:val-limitacoes}: os diretórios de execução não são versionados, de
 modo que os relatórios que hoje sustentam cada número não sobrevivem a um clone
@@ -154,7 +162,8 @@ anterior feita em arquitetura diferente, com a árvore de trabalho limpa, o que 
 o que autoriza comparar as tabelas deste capítulo com o registro histórico do
 projeto. O segundo é que o relatório de portão desta execução marca o critério de
 taxa de conclusão como limítrofe e \textbf{não} dispara a re-execução com mais
-sementes, porque a regra de escalonamento não está ligada nesta etapa: a
+sementes, porque o contrato exclui esta etapa da regra de escalonamento, pelo
+motivo exposto na Seção~\ref{sec:val-estatistica}: a
 consequência disso para a leitura dos resultados está na
 Seção~\ref{sec:val-limitacoes} e é retomada na Seção~\ref{sec:res-discussao}.
 
@@ -201,7 +210,10 @@ significam que uma única semente sobreviveu para tentar a segunda. E a
 consequência disso é que a mediana de Oschersleben não é mediana de coisa alguma
 --- ela vem de \textbf{uma única volta completa}, e o relatório de avaliação a
 marca como tal. Ela está na tabela para completude, e não sustenta comparação de
-tempo com as outras três pistas.
+tempo com as outras três pistas. Há ainda uma ressalva de protocolo em Monza e
+Oschersleben: cerca de 10\% das poses de largada sorteadas na linha de corrida
+dessas pistas já colidem no \textit{reset}, encerrando o episódio em um passo
+para qualquer política, efeito discutido na Seção~\ref{sec:val-heldout}.
 
 \section{E2: destilação do especialista numa política sem pose global}\label{sec:res-e2}
 
@@ -447,10 +459,10 @@ que o relatório de avaliação registra e o intervalo de Wilson de cada ponto.
     \label{tab:res_e3_pontos}
 \end{table}
 
-Os dois primeiros pontos da Tabela~\ref{tab:res_e3_pontos} isolam a troca. As
-duas configurações diferem \textbf{exclusivamente} no número de passos de treino;
-todo o resto, inclusive a penalidade de proximidade de muro desligada, é
-idêntico. Dobrar o treino comprou 3,8~s de volta e custou 12 pontos de taxa de
+Os dois primeiros pontos da Tabela~\ref{tab:res_e3_pontos} isolam a troca. Na
+configuração, as duas execuções diferem \textbf{exclusivamente} no número de
+passos de treino; todo o resto do arquivo de configuração, inclusive a
+penalidade de proximidade de muro desligada, é idêntico. Dobrar o treino comprou 3,8~s de volta e custou 12 pontos de taxa de
 conclusão. A contagem bruta é mais eloquente que a razão: de \textbf{zero
 colisões em 100 voltas} para \textbf{sete colisões em 58 voltas tentadas}. O
 próprio número de tentativas é sinal --- uma colisão encerra o episódio da
@@ -532,7 +544,11 @@ simulação. Três observações a qualificam.
 O valor de taxa de conclusão \textbf{já é uma medição escalonada}: o relatório de
 portão registra a nota de re-execução com 10 sementes, disparada pela regra de
 meia largura de intervalo porque a primeira medição ficou próxima demais do
-limiar. Os 0,9891 são 91 voltas completas em 92 tentadas, com uma colisão.
+limiar. Os 0,9891 são 91 voltas completas em 92 tentadas, com uma colisão. Por
+semente, nove das dez completam as dez voltas, e uma completa uma volta e colide
+na segunda; como o denominador conta voltas iniciadas
+(Seção~\ref{sec:val-estatistica}), essa semente pesa duas tentativas no
+agregado.
 
 A mediana de volta de \textbf{52,525~s} é \textbf{11,0\% mais rápida que o
 especialista} ($T_{pp} = 59{,}000$~s) e 7,525~s mais rápida que a rede da etapa
@@ -580,9 +596,9 @@ portanto, à realização exportada, e não necessariamente àquela que mediu 0,
         \hline
     \end{tabular}
     \caption{A política da etapa E3 executando como nó ROS2 no contêiner,
-    medida contra os limiares do portão de deploy. As três primeiras linhas são
-    lidas do relatório de verificação em disco; a contagem de paradas de
-    emergência é a da medição registrada na Tabela~\ref{tab:val_deploy}}
+    medida contra os limiares do portão de deploy. Os valores vêm do documento
+    de estado do projeto, que é o registro durável que restou: o relatório de
+    verificação original foi sobrescrito em setembro de 2026}
     \label{tab:res_deploy}
 \end{table}
 
@@ -618,22 +634,32 @@ Seção~\ref{sec:val-problema} documenta e que a camada de documentação existe
 não repetir --- limitada, como declarado na Seção~\ref{sec:val-limitacoes}, por
 não julgar número medido em prosa.
 
-A discrepância em si não alcança o valor desta seção: os 381~m da política da
-etapa E3 estão registrados no relatório de verificação vigente, com a frequência
-e a latência da Tabela~\ref{tab:res_deploy} --- o que os alcança é a subseção
-seguinte. Ela alcança, porém, a \textit{durabilidade}
-dessa evidência, que é do mesmo tipo: o relatório que sustenta os 381~m será
-sobrescrito pela próxima execução da verificação. Nenhuma das seis camadas
-escreve num caminho versionado, e isso é o estado real do repositório, não uma
-política de retenção que falte redigir.
+A discrepância em si não alcança o valor desta seção, mas a \textit{durabilidade}
+dessa evidência sofreu o mesmo destino. O relatório de verificação que
+registrava os 381~m, a frequência e a latência da Tabela~\ref{tab:res_deploy}
+foi sobrescrito por uma execução da verificação em 10 de setembro de 2026, e
+não contém mais esses números. O registro que restou é o documento de estado do
+projeto (\texttt{STATUS.md}), que transcreve a medição --- 381~m a 20,00~Hz,
+$p99$ de 0,53~ms --- justamente para que ela sobrevivesse à próxima execução.
+É texto, e não artefato: nenhuma das seis camadas escreve num caminho
+versionado, e isso é o estado real do repositório, não uma política de retenção
+que falte redigir.
+
+A medição é também anterior a mudanças posteriores no executor de políticas: a
+exigência de odometria recente, a confirmação do comando aplicado pela guarda e
+a nova instrumentação de tempo de ciclo e de CPU. O nó medido não é,
+portanto, idêntico ao nó atual, e a medição não foi refeita depois dessas
+mudanças.
 
 \subsection{A medição de deploy não tem a proveniência das outras três}
 
 Há uma segunda ressalva sobre o mesmo relatório, e ela é de natureza diferente da
-durabilidade. O relatório de verificação que registra os 381~m traz veredito
-global \textbf{reprovado}, e uma das camadas que reprovam é justamente a de
+durabilidade. Quando consultado para a redação deste capítulo, antes de ser
+sobrescrito, o relatório de verificação que registrava os 381~m trazia veredito
+global \textbf{reprovado}, e uma das camadas que reprovavam era justamente a de
 proveniência (Camada~E), com o motivo \textit{``árvore de trabalho suja: um
-\texttt{PASS} agora sairia como \texttt{PASS-NAO-REPRODUZIVEL}''}.
+\texttt{PASS} agora sairia como \texttt{PASS-NAO-REPRODUZIVEL}''}. Essa
+constatação não é mais reconferível em disco.
 
 A consequência precisa ser dita nos termos que a Seção~\ref{sec:val-congelado}
 estabelece. A Tabela~\ref{tab:res_proveniencia} pôde afirmar ``árvore limpa:
@@ -1100,9 +1126,9 @@ não foi feito.
 
 A sobreposição entre o conjunto de coleta e o conjunto de generalização foi
 tratada duas vezes: a Seção~\ref{sec:val-heldout} expõe o defeito de desenho que
-a produz, mostra por que ele é mais grave para execuções futuras do que para a
-execução reportada, e explica por que a correção não pôde ser aplicada
-retroativamente; a Seção~\ref{sec:res-e2} deste capítulo acrescenta a metade
+a produz, mostra por que ele era mais grave para execuções futuras do que para a
+execução reportada, explica por que a correção não pôde ser aplicada
+retroativamente e registra a regra que a fechou para as execuções seguintes; a Seção~\ref{sec:res-e2} deste capítulo acrescenta a metade
 recíproca, que a mesma coleta foi causalmente necessária.
 
 O que resta dizer, e é a consequência prática para quem lê os números, cabe em
@@ -1148,9 +1174,10 @@ deste capítulo. Nenhum deles é atenuado.
           assimétrica, e assim deve ser lida.
     \item \textbf{A evidência não é durável.} Os relatórios que sustentam cada
           número deste capítulo não são versionados, e o relatório de
-          verificação é sobrescrito a cada execução. A discrepância de 331~m
-          contra 329~m da Seção~\ref{sec:res-deploy} é o caso em que essa
-          propriedade já produziu uma pergunta sem resposta.
+          verificação é sobrescrito a cada execução --- o que registrava os
+          381~m já foi. A discrepância de 331~m contra 329~m da
+          Seção~\ref{sec:res-deploy} é o caso em que essa propriedade já
+          produziu uma pergunta sem resposta.
 \end{itemize}
 
 \subsection{Síntese}

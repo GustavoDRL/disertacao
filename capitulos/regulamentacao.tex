@@ -45,10 +45,13 @@ restrições de orçamento e espaço em veículos reais. O LiDAR principal deve 
 equivalente ou inferior ao Hokuyo UST-30LX, sendo as características observadas
 o alcance de detecção de 30 metros, a frequência de varredura de 40 Hz e a
 resolução angular de 0,25 graus~\cite{F1TENTHRules2023}. O LiDAR YDLIDAR X4PRO selecionado para o
-projeto atende adequadamente aos requisitos regulamentares, apresentando
-especificações compatíveis com os limites estabelecidos: alcance de 0,12--10m
-(inferior ao limite de 30m), frequência de varredura ajustável de 6--12Hz e
-resolução angular entre 0,43° e 0,86° dependendo da frequência utilizada. Sua
+projeto atende adequadamente aos requisitos regulamentares, apresentando, no
+\textit{datasheet}, especificações compatíveis com os limites estabelecidos:
+alcance de 0,12--10m (inferior ao limite de 30m), frequência de varredura
+ajustável de 6--12Hz e resolução angular entre 0,43° e 0,86° dependendo da
+frequência utilizada. A configuração aplicada ao sensor no veículo pede 0,1 a
+12~m de alcance e 10~Hz de varredura, igualmente dentro do limite; nenhuma
+dessas grandezas foi medida no sensor instalado. Sua
 conformidade com a classificação Class I de segurança laser também é um aspecto
 importante para atender às normas de segurança da competição
 ~\cite{F1TENTHRules2023}. Estas especificações restringem a quantidade e
@@ -236,13 +239,13 @@ desafios de autonomia, exigindo:
             oponente
 \end{itemize}
 
-O LiDAR YDLIDAR X4PRO, com sua capacidade de varredura de 360° e alta
-frequência de amostragem (5kHz), fornece dados cruciais para a detecção de
-outros veículos durante as corridas head-to-head. A resolução angular permite
-identificar com precisão a posição do oponente, enquanto a Raspberry Pi 4B
-oferece o poder de processamento necessário para executar algoritmos complexos
-de planejamento de trajetória e tomada de decisões em tempo real, fundamentais
-para implementar estratégias eficazes de ultrapassagem.
+O LiDAR YDLIDAR X4PRO, com sua capacidade de varredura de 360° e frequência de
+amostragem de 5~kHz segundo o \textit{datasheet}, poderia fornecer os dados
+para a detecção de outros veículos durante as corridas head-to-head, e a
+Raspberry Pi 4B é a unidade em que algoritmos de planejamento e decisão teriam
+de rodar em tempo real. Nenhuma dessas capacidades foi exercida neste trabalho:
+a detecção de oponentes e a ultrapassagem estão fora do escopo, e o desempenho
+da Raspberry Pi com a pilha autônoma ainda não foi medido.
 
 As corridas são organizadas como um torneio eliminatório cujas chaves são
 semeadas pelos resultados da qualificação, de modo que os veículos mais rápidos

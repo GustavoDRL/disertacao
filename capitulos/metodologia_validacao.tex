@@ -225,9 +225,9 @@ confiabilidade do próprio número que se pretende verificar.
 
 O primeiro mecanismo é um documento único, \texttt{SPEC.md}, em que cada decisão
 numérica do ambiente de pesquisa é escrita como uma asserção testável com
-identificador estável. Na versão descrita aqui são \textbf{93 asserções},
-distribuídas em 18 famílias temáticas, com identificadores da forma
-\texttt{SPEC-<FAMÍLIA>-<NN>}.
+identificador estável. Na versão vigente, contada em outubro de 2026, são
+\textbf{118 asserções}, distribuídas em 20 famílias temáticas, com
+identificadores da forma \texttt{SPEC-<FAMÍLIA>-<NN>}.
 
 \subsection{O que uma asserção contém}
 
@@ -424,7 +424,13 @@ quais resultados o trabalho pode reportar.
 A taxa de conclusão de voltas é decidida pelo \textbf{valor pontual}
 $\geq$ limiar, com o intervalo de Wilson reportado ao lado
 (\texttt{SPEC-GATE-01}). A proporção é calculada sobre o total de ensaios ---
-50 voltas em 5 sementes ---, e não sobre as cinco taxas por semente. A escolha de
+50 voltas em 5 sementes, quando nenhuma semente colide ---, e não sobre as cinco
+taxas por semente. O denominador conta as voltas \textit{iniciadas}: como uma
+colisão encerra o episódio da semente, uma semente que bate na primeira volta
+pesa uma tentativa, e uma que sobrevive às dez pesa dez. O agregado pondera,
+portanto, as sementes pelo tempo de sobrevivência, e pode esconder sementes sem
+nenhuma volta completa; por isso, onde o agregado não é 1,0, o texto reporta
+também a contagem por semente. A escolha de
 Wilson em vez do intervalo normal é técnica: ele se comporta bem perto de 0 e de
 1, onde a aproximação normal produz limites fora de $[0,1]$, e é exatamente nessa
 região que estes portões operam.
@@ -477,8 +483,9 @@ Nenhuma delas trata de \textit{quais} pistas entram na conta, e é aí que está
 defeito. Ele apareceu ao conferir os artefatos da execução aprovada do E2 contra
 o texto que a descrevia, e é da mesma classe da assimetria do escalonamento
 discutida na subseção seguinte: um arranjo que \textbf{parece conservador} e não
-é. A diferença é que aquela assimetria virou regra corrigida, e esta fica
-declarada e não corrigida, pelo motivo exposto ao final da subseção.
+é. A diferença é que aquela assimetria foi corrigida antes da execução
+reportada, e esta só pôde ser corrigida para as execuções seguintes, pelo motivo
+exposto ao final da subseção.
 
 O conjunto de pistas de generalização é fixo no código --- Monza, Catalunya,
 Silverstone e Oschersleben --- e não depende de onde as demonstrações foram
@@ -486,8 +493,9 @@ coletadas. A tabela de ações pré-declaradas da Seção~\ref{sec:val-congelado
 acionada quando o critério de generalização reprova, faz exatamente o oposto:
 ela aumenta o conjunto de coleta pista a pista. A primeira ação coleta em
 Spielberg e Catalunya; a segunda acrescenta Silverstone; a terceira acrescenta
-Oschersleben. \textbf{As duas listas se sobrepõem}, e nem o contrato numérico nem
-o documento de estado registram a sobreposição.
+Oschersleben. \textbf{As duas listas se sobrepunham}, e, quando a execução
+aprovada do E2 foi feita, nem o contrato numérico nem o documento de estado
+registravam a sobreposição.
 
 A execução aprovada do E2 é a segunda ação: coletou em Spielberg, Catalunya e
 Silverstone. Duas das quatro pistas de generalização estavam, portanto, dentro do
@@ -537,7 +545,13 @@ esta: a rede completa \textbf{100\% das voltas em Oschersleben e 92\% em Monza},
 as duas pistas que nunca entraram na coleta, enquanto o especialista que a
 treinou completa 16,7\% e 0\% nessas mesmas pistas. Catalunya e Silverstone, onde
 a rede também completa 100\%, entraram na coleta por ação pré-declarada do laço,
-e por isso não medem generalização.
+e por isso não medem generalização. Uma ressalva de protocolo alcança as duas
+pistas inéditas: cerca de 10\% dos pontos da linha de corrida usados como pose
+de largada em Oschersleben (10,1\%) e em Monza (10,9\%) já colidem no momento
+do \textit{reset} --- em Spielberg, nenhum ---, o que encerra o episódio em um
+passo para qualquer política. O efeito deprime por igual a rede e o
+especialista nessas pistas, e fica declarado em vez de corrigido porque a
+correção mudaria a comparabilidade com todas as execuções anteriores.
 
 Que a coleta é o que move esse número está registrado na sequência das três
 execuções, com o conjunto de generalização fixo o tempo todo: com uma única pista
@@ -558,15 +572,20 @@ vazio de conteúdo de generalização \textbf{sem que nada acusasse}. A execuç�
 aprovada parou na segunda ação e não chegou lá --- o que é sorte de ordem de
 execução, não propriedade do aparato.
 
-Diferente das outras falhas deste capítulo, esta não gerou regra, e a razão é
-metodológica em vez de técnica: as duas listas são artefatos congelados antes da
-medição, e reescrevê-las agora seria mexer no critério depois de ver o número, que
-é exatamente o que \texttt{SPEC-PROV-01} existe para impedir. O que cabe fazer é
-o que esta subseção faz --- declarar o que a execução vigente de fato mede --- e
-congelar a correção antes da próxima execução do E2: ou tornar as duas listas
-disjuntas por construção, ou derivar o conjunto de generalização do conjunto de
-coleta de cada execução, de modo que uma pista coletada deixe de ser contada como
-não vista.
+A correção não pode alcançar a execução aprovada, e a razão é metodológica em
+vez de técnica: as duas listas eram artefatos congelados antes da medição, e
+reescrevê-las para reavaliar aquela execução seria mexer no critério depois de
+ver o número, que é exatamente o que \texttt{SPEC-PROV-01} existe para impedir.
+O que cabe à execução vigente é o que esta subseção faz --- declarar o que ela de
+fato mede. Para as execuções seguintes, a correção foi congelada como regra:
+\texttt{SPEC-GATE-09} proíbe que qualquer ação pré-declarada inclua na coleta
+uma pista do conjunto de generalização. Como o projeto só dispõe das cinco
+pistas já citadas e não há uma sexta pista neutra para coletar, as listas de
+ações dos dois critérios de generalização ficaram \textbf{vazias} de propósito:
+uma reprovação em generalização passa a encerrar o laço com diagnóstico, em vez
+de acionar um remédio que esvaziaria o próprio critério. A execução aprovada
+segue, portanto, parcialmente contaminada, e é assim que ela é lida neste
+trabalho.
 
 \subsection{Escalonamento por meia largura de intervalo}
 
@@ -577,11 +596,10 @@ justificativa é direta --- nessa faixa, a diferença entre aprovar e reprovar e
 dentro do ruído amostral, e decidir ali é decidir por sorteio.
 
 O contrato declara que a regra vale \textit{igualmente} para \texttt{PASS} e
-para \texttt{FAIL}, e para todas as etapas --- seria uma regra do portão, não de
-uma etapa. A simetria entre \texttt{PASS} e \texttt{FAIL} precisou ser
-conquistada duas vezes, e o registro dessa falha é parte do argumento do
-capítulo. A generalidade entre etapas, como se verá ao final desta seção, ainda
-não foi conquistada.
+para \texttt{FAIL}, mas não para todas as etapas: só para o E2 e o E3. A
+simetria entre \texttt{PASS} e \texttt{FAIL} precisou ser conquistada duas
+vezes, e o registro dessa falha é parte do argumento do capítulo. A exclusão do
+E1 tem motivo próprio, discutido ao final desta seção.
 
 A primeira implementação chamava o escalonamento apenas na segunda etapa. A
 segunda o condicionava a \texttt{ok and iv.low < threshold}, isto é, só remediava
@@ -610,15 +628,22 @@ limiar 0,95, a distância ao limiar (0,05) excede a meia largura do intervalo
 (0,0357), e a condição não disparou. Escalonamento é remédio num caso e filtro no
 outro.
 
-Resta uma lacuna, e declará-la é mais útil do que repetir a promessa do contrato:
-\textbf{a regra não está ligada em todas as etapas}. No código, apenas o E2 e o
-E3 passam pelo invólucro que re-executa com mais sementes; o E1 chama a avaliação
-do portão diretamente. O efeito é visível no artefato: o relatório do E1 aprovado
-traz o critério de \textit{completion} marcado como limítrofe, com 5 sementes e
-\textbf{nenhuma nota de re-execução}. A condição avaliou verdadeiro e nada
-aconteceu. É justamente o portão cujo valor pontual encosta no limiar, e a
-consequência para a leitura dos resultados está na
-Seção~\ref{sec:val-limitacoes}.
+Resta o E1, que o contrato exclui da regra. No código, apenas o E2 e o E3 passam
+pelo invólucro que re-executa com mais sementes; o E1 chama a avaliação do
+portão diretamente. O motivo é que o limiar do E1 é 1,00, o teto da própria
+escala: um resultado perfeito tem distância zero até ele, e a condição de meia
+largura avalia verdadeiro em \textit{toda} execução, sem separar nada. Ligá-la
+teria ainda um custo medido: com 100 voltas, uma única colisão dá 0,9900 e
+reprova o E1, que fixa o $T_{pp}$ de que dependem todos os critérios do E2 e do
+E3 --- remedir automaticamente uma medição limítrofe por construção, e não por
+sorte de amostragem, arriscaria trocar uma linha de base boa por outra pior sem
+sinal de que algo mudou. O efeito é visível no artefato: o relatório do E1
+aprovado traz o critério de \textit{completion} marcado como limítrofe, com 5
+sementes e \textbf{nenhuma nota de re-execução}, que é o comportamento
+declarado. Convém registrar a cronologia: o código sempre se comportou assim,
+mas a justificativa foi escrita no contrato em setembro de 2026, depois da
+medição do E1 --- é uma exclusão declarada, não um pré-registro. A consequência
+para a leitura dos resultados está na Seção~\ref{sec:val-limitacoes}.
 
 \subsection{Uma taxa estimada com poucos eventos, e o que torna a escolha
 robusta}\label{sec:val-poisson}
@@ -633,9 +658,11 @@ medido cabe num alvo de colisões por quilômetro fixado antes de qualquer medi�
 registra a escolha como não atingida --- calibração que não alcançou o alvo não é
 calibração silenciosamente bem-sucedida.
 
-O ponto fraco é o tamanho da amostra. Cada nível é medido sobre aproximadamente
-14~km de condução, o que produz \textbf{pouquíssimos eventos}: no nível escolhido
-para Spielberg, exatamente uma colisão em 13,5~km. Contagens dessa ordem carregam
+O ponto fraco é o tamanho da amostra. A medição de um nível se encerra ao
+atingir cinco colisões, o que nos níveis mais ruidosos acontece em menos de
+5~km, e os níveis de risco baixo rodam entre cerca de 12,5 e 21~km de condução.
+Mesmo esses produzem \textbf{pouquíssimos eventos}: no nível escolhido para
+Spielberg, exatamente uma colisão em 13,5~km. Contagens dessa ordem carregam
 incerteza de Poisson larga --- um único evento sustenta um intervalo de 95\% para a
 taxa que vai de cerca de 0,002 a cerca de 0,4 colisões por quilômetro, duas ordens
 de grandeza. Tomada isoladamente, a taxa estimada em cada nível não é um número
@@ -666,16 +693,9 @@ testes de um lado, um subcomando de invariantes de outro, e o portão científic
 só dentro de uma etapa. Quem quisesse saber se o repositório estava saudável
 precisava lembrar de três comandos e interpretar três saídas. As seis camadas
 consolidam isso num comando e num veredito, e a Tabela~\ref{tab:val_camadas}
-resume o que cada uma cobre.\footnote{A letra D é usada com dois sentidos nas
-fontes do projeto: o verificador e o relatório executável que ele emite a
-atribuem à documentação, enquanto as docstrings dos módulos de portão e de laço,
-e a seção \texttt{SPEC-LOOP} do contrato, a usam para o laço automático e as
-regras de aceite. Este capítulo adota a taxonomia do verificador, que é a que o
-artefato imprime; o laço é descrito sem letra, por não ser uma camada de
-\texttt{verify}. A colisão é registrada aqui em vez de silenciada porque ela é
-uma instância do que a Seção~\ref{sec:val-contrato} argumenta: um nome sem
-definição única vira folclore, e o contrato numerado existe justamente para
-impedir isso --- inclusive quando o próprio contrato escorrega.}
+resume o que cada uma cobre. As letras nomeiam exclusivamente as camadas do
+verificador (\texttt{SPEC-DOC-08}); o laço automático e o portão científico não
+são camadas e não recebem letra.
 
 \begin{table}[h]
     \centering
@@ -685,7 +705,9 @@ impedir isso --- inclusive quando o próprio contrato escorrega.}
         \hline
         A & specs & Todo identificador do contrato é citado por algum teste \\
         \hline
-        B & testes & Suíte do ambiente de pesquisa e suíte do servidor MCP \\
+        B & testes & Três suítes: ambiente de pesquisa, raiz do repositório
+        (servidor MCP e coletor de dados) e veículo, esta sem os testes que
+        exigem hardware \\
         \hline
         C & invariantes & Paridade host/contêiner, \textit{hash} do mapa, commit
         do simulador vendorizado \\
@@ -716,11 +738,16 @@ justamente o silencioso.
 \subsection{Camadas A a C}
 
 A Camada~A é a cobertura do contrato, descrita na Seção~\ref{sec:val-contrato}. A
-Camada~B roda as duas suítes de teste do projeto: a do ambiente de pesquisa e a
-do servidor de ferramentas, que vive na raiz do repositório e tem outro conjunto
-de dependências. Mantê-las sob o mesmo comando é o que impede a segunda de voltar
-a ficar invisível --- uma suíte anterior existiu por meses sem que nada a
-executasse, até desaparecer.
+Camada~B roda três suítes de teste: a do ambiente de pesquisa; a da raiz do
+repositório, que cobre o servidor de ferramentas e o coletor de dados e tem
+outro conjunto de dependências; e a do veículo, executada com a exclusão dos
+testes marcados como dependentes de hardware, de desempenho ou lentos. Na
+contagem de outubro de 2026, são 433 testes aprovados na primeira, 160 na
+segunda e 551 na terceira, com 2 pulados e 24 excluídos pelos marcadores.
+Mantê-las sob o mesmo comando é o que impede uma delas de voltar a ficar
+invisível --- uma suíte anterior existiu por meses sem que nada a executasse,
+até desaparecer. Testes aprovados na suíte do veículo verificam lógica no
+computador de desenvolvimento; não são validação no carro.
 
 A Camada~C verifica invariantes de integração: paridade numérica entre a
 inferência no host e no contêiner, integridade do mapa por \textit{hash}, e
@@ -799,7 +826,9 @@ perfeita.
 É a camada mais cara de manter. Exige o contêiner construído e no ar, e o
 invariante de paridade permanece vermelho até que alguém execute o lado do
 contêiner. Todas as demais camadas medem a política em Python \textit{headless},
-a aproximadamente 40 vezes o tempo real; só esta a executa no ambiente de
+muito mais rápido que o tempo real --- a física do simulador, isolada, roda a
+cerca de 106 vezes o tempo real num único processo, segundo a medição de
+viabilidade feita no início do projeto ---; só esta a executa no ambiente de
 destino.
 
 Um detalhe de protocolo tem consequência mensurável. O carro é
@@ -829,7 +858,8 @@ viu no treino.
 
 O efeito medido é categórico: \textit{completion} de \textbf{0,0\%} (três
 colisões em três voltas) contra 98,9\% da composição correta, e no contêiner
-111~m contra 331~m da rede do E2.
+111~m contra 331~m da rede do E2 --- valor que o repositório também cita como
+329~m, discrepância discutida na Seção~\ref{sec:res-deploy}.
 
 \begin{table}[h]
     \centering
@@ -846,7 +876,8 @@ colisões em três voltas) contra 98,9\% da composição correta, e no contêine
         \hline
     \end{tabularx}
     \caption{Camada F: o artefato de deploy medido no contêiner ROS2, janela de
-    60~s}
+    60~s. Valores do documento de estado do projeto; os relatórios de
+    verificação dessas execuções foram sobrescritos e não existem mais}
     \label{tab:val_deploy}
 \end{table}
 
@@ -920,8 +951,9 @@ padrão de critério congelado que o restante do capítulo aplica.
 
 O adaptador é uma função pura, sem dependência de ROS2, que recebe o vetor de
 distâncias publicado pelo sensor --- com o seu próprio ângulo inicial e o seu
-próprio incremento --- e devolve \textit{sempre} 1080 valores finitos em
-$[0; 30]$, nos ângulos exatos do contrato do simulador. Ele descarta as leituras
+próprio incremento --- e devolve 1080 valores finitos em $[0; 30]$, nos ângulos
+exatos do contrato do simulador, ou nenhuma observação, nos casos descritos
+adiante. Ele descarta as leituras
 inválidas ($0{,}0$, não numéricas, infinitas ou fora da faixa do sensor), corrige
 o zero angular, recorta os 90,7$^\circ$ traseiros que o contrato não prevê e
 reamostra o que sobra nos ângulos alvo.
@@ -941,9 +973,12 @@ o alcance máximo do sensor e não o do simulador --- um feixe sem retorno signi
 medida, não arbitrada, e a seção de resultados reporta o custo de escolher a
 errada.
 
-Se menos da metade dos pontos da janela frontal for válida, o adaptador não
-devolve observação alguma. O nó então não publica, a política não infere, e o
-carro é parado pela guarda por ausência de comando: uma observação
+O adaptador não devolve observação alguma em três situações: quando o
+\textit{scan} tem menos de três pontos; quando a cobertura angular do sensor
+não abrange a janela frontal do contrato; e quando a fração de pontos válidos
+nessa janela, ou a fração de ângulos alvo cobertos sem lacuna, fica abaixo do
+mínimo do perfil, que é metade. O nó então não publica, a política não infere,
+e o carro é parado pela guarda por ausência de comando: uma observação
 majoritariamente inventada é pior do que nenhuma.
 
 Um único arquivo implementa o adaptador, e tanto o veículo quanto o experimento em
@@ -974,6 +1009,22 @@ parada, porque o seu tempo limite é metade do daquele cão de guarda e ela exis
 justamente para agir antes dele. Nenhuma dessas paradas é o freio primário: o
 freio primário é cortar fisicamente a alimentação do controlador de motor, e o
 procedimento de operação diz isso em cada estágio.
+
+Abaixo da guarda há um bloqueio no próprio \textit{driver} do controlador de
+motor. O nó de servo publica uma habilitação periódica do motor e a retira
+quando perde o serviço do servo ou o fluxo de comandos; o \textit{driver} só
+repassa comandos de motor enquanto essa habilitação for verdadeira e tiver menos
+de 0,35~s, e envia potência nula fora disso. Depois de retirada, a habilitação só
+volta após o servo responder e chegar um comando com velocidade zero. Para que
+esse rearme aconteça em modo autônomo, a guarda publica 0,2~s de comando neutro
+na borda de subida do homem-morto, antes de repassar o primeiro comando do
+controlador; sem isso, o primeiro comando repassado já teria velocidade positiva
+e o motor permaneceria bloqueado. Do lado da política, o executor só atualiza a
+sua memória de ação com o comando que a guarda confirma ter aplicado, publicado
+num tópico próprio, e publica parada enquanto falta essa confirmação ou quando a
+odometria deixa de ser recente.
+Essas camadas são posteriores às medições deste capítulo e, como o restante da
+ponte, não foram executadas no veículo.
 
 \subsubsection*{O sensor emulado e as dez condições}
 
@@ -1056,7 +1107,9 @@ consequência já declarada por extenso:
           bloqueante antes de qualquer estágio com o veículo no chão.
     \item \textbf{Envelope de velocidade} --- taxa de conclusão sob a guarda
           saturando a velocidade em 1~m/s, com limiar de 0,80. Reprovado, o
-          estágio de operação no chão roda apenas com o seguidor de parede.
+          estágio de operação no chão roda a política apenas a partir do menor
+          limite de velocidade que passar; se nenhum passar, esse estágio roda
+          só com o seguidor de parede.
 \end{enumerate}
 
 A escolha de congelar as consequências, e não apenas os limiares, é o que impede
@@ -1156,15 +1209,17 @@ fecha consigo mesma --- 389 milhões é exatamente \textit{um} conjunto de dados
 inconsistente no documento de estado, por ato humano, porque nenhuma camada é
 capaz de marcá-la sozinha.
 
-Um segundo caso, do mesmo tipo, apareceu durante a redação deste capítulo: a
-prosa de \texttt{SPEC-GATE-08} registra que o especialista faz 33\% em
-Oschersleben, enquanto o relatório de avaliação do E1 em disco registra 1/6, isto
-é 16,7\%. A Seção~\ref{sec:val-estatistica} usa o valor do artefato. Nenhuma
-camada acusou a divergência, pela razão exata desta subseção --- é número medido
-escrito em prosa --- e com um agravante: ela está no próprio contrato, que é o
-único documento isento da checagem de veredito, justamente por definir faixas em
-vez de afirmar resultado. A isenção é correta para veredito e não protege número
-em prosa.
+Um segundo caso, do mesmo tipo, apareceu durante a redação deste capítulo e já
+foi corrigido: a prosa de \texttt{SPEC-GATE-08} registrava que o especialista
+fazia 33\% em Oschersleben, enquanto o relatório de avaliação do E1 em disco
+registra 1/6, isto é 16,7\%. O contrato foi corrigido para o valor do artefato,
+com a nota de que o número anterior não tinha artefato que o sustentasse, e a
+Seção~\ref{sec:val-estatistica} usa o mesmo valor. Nenhuma camada acusou a
+divergência enquanto ela existiu, pela razão exata desta subseção --- é número
+medido escrito em prosa --- e com um agravante: ela estava no próprio contrato,
+que é o único documento isento da checagem de veredito, justamente por definir
+faixas em vez de afirmar resultado. A isenção é correta para veredito e não
+protege número em prosa; a correção veio de leitura humana.
 
 \subsection{O limiar cai dentro do intervalo nos três portões aprovados}
 
@@ -1203,7 +1258,8 @@ cerca de 73 voltas perfeitas, em 98\%, cerca de 190. O orçamento de simulação
 trabalho não comporta esse número de voltas, e um critério que nenhum resultado
 bom atinge não separa bom de ruim.
 
-Três observações limitam o alcance da ressalva; uma quarta a agrava. O resultado
+Três observações limitam o alcance da ressalva; uma quarta a torna mais aguda
+numa das linhas. O resultado
 aprovado do E3 já é um valor escalonado para 10 sementes pela regra de meia
 largura de intervalo, e não a primeira medição. A mais severa das reprovações do
 E3 não depende desta questão: 0,8793 com 10 sementes tem o intervalo inteiramente
@@ -1222,16 +1278,18 @@ corretamente, não escalonou. A ressalva desta tabela é, portanto, mais
 conservadora que o critério operacional do portão, e é assim que ela deve ser
 lida.
 
-O que agrava é a linha do E1, e é a linha para a qual o leitor olha primeiro,
-porque valor e limiar coincidem em 1,00. O critério foi marcado como limítrofe
-pelo próprio portão --- a condição de \texttt{SPEC-GATE-07} avaliou verdadeiro
---- e \textbf{não foi remedido}, porque, como descrito na
-Seção~\ref{sec:val-estatistica}, o escalonamento não está ligado nessa etapa. O
-E1 permanece medido em 5 sementes e 50 voltas, com o limiar dentro do intervalo e
-sem a re-execução que a própria regra pedia. Isso não move o $T_{pp}$, que é uma
+A ressalva é mais aguda na linha do E1, que é a linha para a qual o leitor olha
+primeiro, porque valor e limiar coincidem em 1,00. O critério foi marcado como
+limítrofe pelo próprio portão --- a condição de \texttt{SPEC-GATE-07} avaliou
+verdadeiro --- e \textbf{não foi remedido}, porque, como descrito na
+Seção~\ref{sec:val-estatistica}, o contrato exclui essa etapa do escalonamento:
+com o limiar no teto da escala, a condição é verdadeira em toda execução e
+remedir só arriscaria a linha de base. O E1 permanece medido em 5 sementes e 50
+voltas, com o limiar dentro do intervalo. Isso não move o $T_{pp}$, que é uma
 mediana de tempo de volta e não uma proporção, e que reproduziu dígito a dígito
-entre duas arquiteturas; mas é uma dívida declarada do aparato, e não uma
-decisão.
+entre duas arquiteturas; mas o leitor deve saber que a ausência de re-execução é
+decisão declarada, justificada no contrato depois da medição, e não uma
+propriedade estatística do resultado.
 
 A conduta adotada no texto é a única defensável: reportar o valor pontual
 \textbf{com o intervalo ao lado}, declarar que o critério é o valor pontual por
@@ -1275,11 +1333,15 @@ disponível, mas o leitor precisa saber que ele repousa sobre medição registra
 não sobre artefato reconferível, e que reproduzi-lo exigiria refazer o estudo
 nesta máquina.
 
-O que \textit{é} auditável são as medições feitas no host atual: as
-Tabelas~\ref{tab:val_acoes_e3}, \ref{tab:val_deploy} e \ref{tab:val_ic} batem
-dígito a dígito com os relatórios de portão e de avaliação em disco, e o tempo do
-especialista da máquina anterior é confirmável pelo histórico de versão de um
-arquivo de ativo.
+O que \textit{é} auditável são as medições de portão e de avaliação feitas no
+host atual: as Tabelas~\ref{tab:val_acoes_e3} e \ref{tab:val_ic} batem dígito a
+dígito com os relatórios em disco, e o tempo do especialista da máquina anterior
+é confirmável pelo histórico de versão de um arquivo de ativo. A
+Tabela~\ref{tab:val_deploy} não tem essa propriedade: as medições de deploy
+vivem no relatório de verificação, que é sobrescrito a cada execução, e os
+relatórios que as registraram não existem mais. Os seus valores vêm do documento
+de estado do projeto, e o da rede do E2 tem uma discrepância aberta --- 331~m
+contra 329~m ---, discutida na Seção~\ref{sec:res-deploy}.
 
 \subsection{O escopo é a simulação, e a Camada F é o contêiner}\label{sec:val-escopo-simulacao}
 

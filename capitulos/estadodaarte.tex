@@ -683,6 +683,15 @@ observação real; validar os controladores reativos no veículo \textbf{antes} 
 colocar uma rede neural no comando; e só então medir a política embarcada e
 comparar com a simulação.
 
+Parte da preparação dessa fase já foi feita, inteiramente em simulação: um
+adaptador que converte o \textit{scan} do sensor do veículo para o contrato de
+observação da política, uma guarda de comando como única porta para o atuador,
+um sensor emulado com o perfil \textit{assumido} do X4PRO, a campanha de
+sensibilidade da política a esse sensor e uma prévia do retreino sob ele. A
+Seção~\ref{sec:res-s2r} reporta esses resultados. Nenhum desses passos
+substitui as tarefas acima que dependem do carro: o perfil do sensor continua
+não medido e nada disso foi executado no veículo.
+
 A ordem não é arbitrária. Validar o controlador reativo antes da política
 aprendida é requisito de segurança, e reparametrizar o simulador antes de
 retreinar evita gastar o orçamento de treino sobre um contrato de observação que

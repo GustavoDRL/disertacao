@@ -46,59 +46,31 @@ atuar neste mercado em expansão.
 Neste contexto, este trabalho tem como objetivo principal desenvolver um
 veículo autônomo de corrida seguindo as especificações da categoria F1TENTH,
 abordando aspectos desde a construção do modelo físico até a implementação dos
-sistemas de percepção, planejamento de trajetória e controle. O desenvolvimento
-será realizado considerando as questões de segurança e verificação formal
-destacadas por \cite{Ivanov2020Verifying}, que enfatizam a importância da
-validação rigorosa em sistemas autônomos.
+sistemas de percepção, planejamento de trajetória e controle. As questões de
+segurança e de validação destacadas por \cite{Ivanov2020Verifying} orientam o
+trabalho, mas por outra via: em vez de verificação formal de propriedades da
+política, que não é realizada aqui, o trabalho adota validação experimental com
+critérios fixados antes da medição, descrita no Capítulo~\ref{cap:metodologia}.
 
 \section*{Justificativa}\label{sec:Justificativa}
 \addcontentsline{toc}{section}{Justificativa}
 
-O desenvolvimento de veículos autônomos representa uma das fronteiras mais
-promissoras da engenharia moderna, combinando avanços em robótica, inteligência
-artificial, sistemas de controle e processamento de sinais. Neste contexto, a
-categoria F1TENTH emerge como uma plataforma educacional valiosa, permitindo
-que estudantes e pesquisadores trabalhem com os mesmos princípios e desafios
-encontrados em veículos autônomos em escala real, porém em um ambiente mais
-controlado e acessível.
+Do ponto de vista educacional, o desenvolvimento de um veículo autônomo de
+corrida oferece uma oportunidade única de aplicar conhecimentos teóricos em um
+projeto prático e desafiador. Os conceitos fundamentais de engenharia de
+controle, processamento de sinais, programação em tempo real e robótica
+convergem em um único projeto, proporcionando uma experiência de aprendizado
+integrada e multidisciplinar.
 
-A relevância deste trabalho se estabelece em múltiplas dimensões. Do ponto de
-vista educacional, o desenvolvimento de um veículo autônomo de corrida oferece
-uma oportunidade única de aplicar conhecimentos teóricos em um projeto prático
-e desafiador. Os conceitos fundamentais de engenharia de controle,
-processamento de sinais, programação em tempo real e robótica convergem em um
-único projeto, proporcionando uma experiência de aprendizado integrada e
-multidisciplinar.
-
-No âmbito tecnológico, os desafios enfrentados no desenvolvimento de um veículo
-F1TENTH espelham, em menor escala, os problemas encontrados na indústria
-automotiva atual. A necessidade de desenvolver sistemas robustos de percepção,
-planejamento de trajetória e controle em tempo real reflete diretamente os
-desafios enfrentados por empresas que trabalham com veículos autônomos em
-escala real.
-
-Do ponto de vista prático, o desenvolvimento de um veículo autônomo em escala
-reduzida apresenta vantagens significativas em termos de custos, segurança e
-facilidade de experimentação. A plataforma permite a realização de testes e
-validações de forma mais ágil e segura do que seria possível com veículos em
-escala real, possibilitando uma iteração mais rápida no desenvolvimento e
-aperfeiçoamento dos algoritmos e sistemas.
+Do ponto de vista técnico, a escala reduzida não elimina os problemas que
+justificam o estudo: a política de controle continua a depender de um sensor
+com contrato de observação próprio, de atuadores com atraso e de uma
+transferência entre simulação e realidade que precisa ser medida, e não
+presumida. É essa transferência, mais do que um algoritmo isolado, que o
+trabalho toma como objeto.
 
 \section*{Motivação}\label{sec:motivacao}
 \addcontentsline{toc}{section}{Motivação}
-
-A escolha da plataforma F1TENTH é particularmente apropriada por seu caráter
-open-source e pela existência de uma comunidade internacional ativa. Esta
-característica não apenas facilita o acesso a recursos e conhecimentos, mas
-também permite que os resultados obtidos possam ser compartilhados e utilizados
-por outros pesquisadores e estudantes, multiplicando o impacto do trabalho
-desenvolvido.
-
-Além disso, o projeto se alinha com as tendências atuais da indústria
-automotiva, onde há uma crescente demanda por profissionais com conhecimento em
-sistemas autônomos. A experiência adquirida no desenvolvimento deste trabalho
-pode contribuir significativamente para a formação de profissionais melhor
-preparados para atuar neste mercado em expansão.
 
 A competitividade inerente à categoria F1TENTH também adiciona um elemento
 motivador importante ao projeto. A necessidade de otimizar o desempenho do
@@ -132,6 +104,11 @@ específicos:
     \item Comparar os resultados obtidos nos ambientes simulado e real, avaliando a
           fidelidade do modelo e a robustez das soluções propostas.
 \end{enumerate}
+
+Os objetivos 4 e 5 não foram cumpridos nesta versão do trabalho: nenhuma
+política foi executada no veículo físico, e a comparação entre os ambientes
+simulado e real não pôde ser iniciada. A Conclusão retoma os cinco objetivos um
+a um e declara a situação de cada um.
 
 Dessa forma, espera-se consolidar um conjunto de práticas e diretrizes para o
 desenvolvimento e validação de veículos autônomos em escala reduzida,
