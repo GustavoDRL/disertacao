@@ -29,14 +29,13 @@ cada uma delas herda um problema aberto de uma linha de pesquisa distinta:
 
 Uma advertência precede tudo o que se segue. \textbf{Todos os resultados deste
 trabalho citados neste capítulo foram obtidos em simulação}, no ambiente
-\texttt{f110\_gym} \cite{OKelly2020F1TENTH} e na ponte ROS2 derivada dele
-\cite{f1tenthgymros, f1tenthgymufabc}. Nenhuma política foi executada no veículo
-físico. Sempre que este capítulo comparar um resultado próprio com um resultado
-da literatura obtido em hardware, a assimetria será dita explicitamente ---
-porque ela é, hoje, a principal limitação do trabalho e o objeto da fase
-seguinte.
+\texttt{f110\_gym} \cite{OKelly2020F1TENTH}. Sempre que este capítulo comparar um
+resultado próprio com um resultado da literatura obtido em hardware, a
+assimetria será dita explicitamente.
 
-O capítulo está organizado em seis partes. A Seção~\ref{sec:arte-plataformas}
+% TODO-ESCOPO: apresentar, neste ponto, os dois outros tipos de piloto do comparativo (o seguidor de gap reativo, já descrito na Seção sobre métodos reativos, e o piloto humano por joystick, em duas vistas), de modo que a lista E1--E3 acima não seja lida como o conjunto completo de pilotos.
+
+O capítulo está organizado em sete partes. A Seção~\ref{sec:arte-plataformas}
 trata das plataformas e simuladores para corrida em escala reduzida, e do que
 significa escolher um simulador em vez de outro. A
 Seção~\ref{sec:arte-classico} percorre o planejamento e o controle clássicos:
@@ -44,10 +43,12 @@ linha de corrida, \textit{pure pursuit}, controle preditivo e os métodos
 reativos. A Seção~\ref{sec:arte-il} trata do aprendizado por imitação e do
 desvio de distribuição que o DART ataca. A Seção~\ref{sec:arte-rl} trata do
 aprendizado por reforço aplicado à corrida, com atenção particular à
-formulação residual. A Seção~\ref{sec:arte-s2r} trata da transferência
-simulação-realidade, que é a fase seguinte deste trabalho e não uma entrega
-dele. A Seção~\ref{sec:arte-lacuna} fecha posicionando a lacuna: o que este
-trabalho faz que os citados não fazem, e o que eles fazem que este não faz.
+formulação residual. A Seção~\ref{sec:arte-rand} trata, em um parágrafo, da
+randomização de domínio, que justifica a variação de condições usada no
+treino e na avaliação. A Seção~\ref{sec:arte-timetrial} descreve o formato
+\textit{time trial}, que o comparativo imita, e a Seção~\ref{sec:arte-lacuna}
+fecha posicionando a lacuna: o que este trabalho faz que os citados não fazem,
+e o que eles fazem que este não faz.
 
 \section{Plataformas e simuladores para corrida autônoma em escala}\label{sec:arte-plataformas}
 
@@ -126,17 +127,11 @@ ocupação. É o caso do ambiente \texttt{f110\_gym} distribuído com a platafor
 \cite{OKelly2020F1TENTH}, adotado por este trabalho. O ganho é de ordem de
 grandeza em vazão; a perda é a interface, que deixa de ser ROS2.
 
-A resposta deste trabalho a esse compromisso é não escolher: usar o ambiente
-rápido para treinar e avaliar, e a ponte ROS2 \cite{f1tenthgymros,
-f1tenthgymufabc} como camada final de verificação, em que o artefato exportado
-roda como nó ROS2 dentro de um contêiner, sujeito ao mesmo relógio e à mesma
-fila de mensagens do veículo. A justificativa dessa camada e o defeito que ela
-capturou --- e que nenhuma outra camada capturou --- estão no
-Capítulo~\ref{cap:metodologia}. O ponto de estado da arte é que a divisão entre
-``simulador de treino'' e ``simulador de interface'' não é um detalhe de
-implementação: ela é o que permite treinar com o orçamento de amostras que o
-aprendizado por reforço exige sem abrir mão de medir a política no formato em
-que ela será embarcada.
+A escolha deste trabalho é o ambiente rápido, que permite treinar e avaliar
+com o orçamento de amostras que o aprendizado por reforço exige. A interface
+ROS2 do veículo não faz parte do escopo: o trabalho compara pilotos dentro do
+mesmo simulador e sob o mesmo avaliador, e a fidelidade de interface que a
+primeira família oferece não é necessária a essa comparação.
 
 \subsection{Verificação e teste como parte da plataforma}
 
@@ -300,8 +295,9 @@ seguimento de vão, formalizado por Sezer e Gokasan
 dirige para o seu centro, ponderando o alvo pela direção do objetivo.
 
 Os dois são parte do repertório canônico da plataforma
-\cite{Agnihotri2020Teaching, Babu2020Simulator} e estão implementados neste
-trabalho, conforme descrito no Capítulo~\ref{cap:proposta}. Eles não competem em
+\cite{Agnihotri2020Teaching, Babu2020Simulator}. Neste trabalho, o seguimento de
+vão e uma variante por extensão de disparidades estão implementados no
+simulador, conforme descrito no Capítulo~\ref{cap:proposta}. Eles não competem em
 tempo de volta com uma linha de corrida otimizada --- não têm informação para
 isso, já que enxergam apenas o horizonte do sensor. O que eles têm, e que
 nenhum método baseado em trajetória global tem, é a independência de pose: um
@@ -554,16 +550,16 @@ foi rejeitada deliberadamente. Ela daria uma base mais rápida, já que o
 especialista completa a volta em 59,000~s contra 60,050~s da rede que o imita.
 Dois argumentos a derrubam.
 
-O primeiro é de \textbf{embarcabilidade}, e é o argumento decisivo. O
+O primeiro é de \textbf{independência de localização}, e é o argumento decisivo. O
 \textit{pure pursuit} exige pose global, portanto exige localização. Se a base
 for ele, a política final herda essa dependência inteira: mapa, filtro de
 localização, orçamento computacional e modos de falha associados
 \cite{fox2003adapting}. A rede de imitação, ao contrário, enxerga apenas LiDAR e
 proprioceptiva. Ancorando o resíduo nela, a política final \textbf{não depende de
-pose global} e continua embarcável --- que é exatamente a propriedade que
+pose global} e continua usando só o que o sensor entrega --- que é exatamente a propriedade que
 justifica a etapa E2 existir, e que seria desperdiçada ao voltar a depender do
 especialista na etapa seguinte. A decisão subordina o desempenho da linha de base
-à viabilidade da transferência, e o faz explicitamente.
+à independência de localização, e o faz explicitamente.
 
 O segundo é de \textbf{falha graciosa}. Se o resíduo não aprender nada útil e a
 sua saída convergir para zero, a política composta degrada exatamente para a rede
@@ -619,84 +615,43 @@ Capítulo~\ref{cap:metodologia}; o que interessa ao estado da arte é que trabal
 que reportam um valor pontual de taxa de conclusão para políticas residuais de
 alta velocidade podem estar reportando uma realização, e não uma estimativa.
 
-\section{Transferência simulação-realidade}\label{sec:arte-s2r}
+\section{Randomização de domínio}\label{sec:arte-rand}
 
-\subsection{As duas estratégias dominantes}
-
-A diferença entre o comportamento de uma política em simulação e no hardware é o
-obstáculo permanente da área, e a literatura consolidou duas estratégias
-principais \cite{Zhao2020Sim2Real}.
-
-A primeira é a \textbf{randomização}. Tobin e colaboradores
-\cite{Tobin2017DomainRand} randomizam a aparência visual do ambiente simulado de
-modo que o mundo real seja apenas mais uma amostra da distribuição de treino;
-Peng e colaboradores \cite{Peng2018DynamicsRand} aplicam a mesma lógica aos
+Treinar e avaliar uma política sob uma única configuração do simulador mede o
+quanto ela se ajusta àquela configuração, e não o quanto ela é robusta. A
+literatura de transferência entre simulação e realidade consolidou a
+\textbf{randomização de domínio} como resposta a isso: Tobin e colaboradores
+\cite{Tobin2017DomainRand} randomizam a aparência visual do ambiente simulado,
+de modo que o mundo real seja apenas mais uma amostra da distribuição de treino,
+e Peng e colaboradores \cite{Peng2018DynamicsRand} aplicam a mesma lógica aos
 parâmetros de \textbf{dinâmica}, treinando sob uma distribuição de massas,
-atritos e atrasos. É a estratégia adotada por este trabalho na medida em que o
-coeficiente de atrito é sorteado a cada episódio e a robustez a essa variação é
-um critério de aceite explícito, medido de forma pareada. Ela não é, contudo,
-suficiente: a randomização de atrito não cobre discrepância de sensor, atraso de
-comunicação nem geometria de pista real.
+atritos e atrasos. Este trabalho adota a ideia pelo seu efeito de robustez, e
+não para atravessar qualquer fronteira: o coeficiente de atrito é sorteado a
+cada episódio, a largada é sorteada sobre a linha de corrida e o sensor recebe
+ruído, nas etapas E2 e E3 e na avaliação de todos os pilotos, e a robustez a
+essa variação é um critério de aceite explícito, medido de forma pareada. A
+randomização cobre apenas essas três fontes de variação, e a Seção~\ref{sec:arte-lacuna}
+registra o que fica de fora.
 
-A segunda é a \textbf{identificação de sistema} --- ajustar o simulador ao
-veículo medido, em vez de alargar a distribuição de treino. É a estratégia
-central do trabalho original da plataforma \cite{OKelly2020F1TENTH}, e é o que
-sustenta a discrepância de 0,61\% em tempo de volta ali reportada. O BayesRace
-\cite{Jain2020Bayesrace} pode ser lido como uma terceira via entre as duas:
-aprende a discrepância em vez de eliminá-la ou de diluí-la.
+\section{O formato \textit{time trial} e a comparação com pilotos humanos}\label{sec:arte-timetrial}
 
-\subsection{O que a literatura mede ao atravessar a fronteira}
+A comparação de tempo de volta feita neste trabalho imita o formato \textit{time
+trial} da competição F1TENTH. Nessa modalidade, cada veículo percorre a pista
+individualmente, em duas baterias de 5 minutos, buscando completar o maior número
+possível de voltas consecutivas sem interrupções e registrar a volta mais rápida
+do período alocado.
 
-Vale registrar o que os trabalhos que efetivamente atravessam a fronteira medem,
-porque é isso que define o que falta a este.
+A pontuação é deliberadamente construída para equilibrar velocidade e
+consistência: soma os pontos do \emph{ranking} dos tempos de volta mais rápidos
+aos pontos do \emph{ranking} do número de voltas consecutivas ininterruptas
+\cite{F1TENTHRules2023}. Isso força quem compete a balancear trajetórias
+agressivas, que dão velocidade máxima, com controle que se mantenha consistente
+ao longo de várias voltas e que minimize a probabilidade de falha. É esse mesmo
+par de grandezas, volta rápida e voltas completas sem colisão, que as métricas de
+conclusão e de tempo de volta deste trabalho medem, para todos os pilotos sob o
+mesmo avaliador.
 
-Chisari e colaboradores \cite{Chisari2021LearningSim} treinam em simulação e
-correm com o veículo real, reportando desempenho de volta no hardware. Brunnbauer
-e colaboradores \cite{Brunnbauer2022Latent} demonstram transferência sem ajuste
-adicional para o veículo em escala. Zarrar e colaboradores
-\cite{Zarrar2024TinyLidarNet} medem a rede embarcada em competição real,
-reportando latência de inferência e colocação. Ivanov e colaboradores
-\cite{Ivanov2020Verifying} caracterizam padrões de falha do LiDAR real e os
-reproduzem em simulação --- que é a forma mais informativa de reportar a
-diferença, porque transforma a discrepância em algo simulável. E o FastRLAP
-\cite{Stachowicz2023FastRLAP} dispensa a fronteira ao treinar diretamente no
-mundo real.
-
-\subsection{A fronteira neste trabalho}
-
-O ponto mais avançado alcançado por este trabalho na direção do hardware é a
-execução da política exportada como \textbf{nó ROS2 dentro de um contêiner},
-sobre a ponte que reproduz os tópicos, o relógio e a fila de mensagens do veículo
-\cite{f1tenthgymros, f1tenthgymufabc}. Nessa configuração, a política da etapa E3
-percorreu 381~m numa janela de 60~s, publicando comandos a 20,00~Hz e sem
-nenhuma parada de emergência.
-
-Isso é o último ponto \textbf{antes} do hardware, e não o hardware. Não há dado
-coletado no veículo físico, não há mapa de pista real construído por SLAM, e
-nenhuma política deste trabalho foi executada no carro. As tarefas que compõem a
-fase seguinte estão identificadas e são consequência direta do que este capítulo
-descreve: caracterizar o sensor real --- taxa de publicação, número de feixes,
-abertura angular, fração de leituras inválidas ---; reparametrizar o simulador
-com o perfil medido; levantar a pista real por SLAM e derivar dela a linha
-central e a linha de corrida; reexecutar as três etapas sob o contrato de
-observação real; validar os controladores reativos no veículo \textbf{antes} de
-colocar uma rede neural no comando; e só então medir a política embarcada e
-comparar com a simulação.
-
-Parte da preparação dessa fase já foi feita, inteiramente em simulação: um
-adaptador que converte o \textit{scan} do sensor do veículo para o contrato de
-observação da política, uma guarda de comando como única porta para o atuador,
-um sensor emulado com o perfil \textit{assumido} do X4PRO, a campanha de
-sensibilidade da política a esse sensor e uma prévia do retreino sob ele. A
-Seção~\ref{sec:res-s2r} reporta esses resultados. Nenhum desses passos
-substitui as tarefas acima que dependem do carro: o perfil do sensor continua
-não medido e nada disso foi executado no veículo.
-
-A ordem não é arbitrária. Validar o controlador reativo antes da política
-aprendida é requisito de segurança, e reparametrizar o simulador antes de
-retreinar evita gastar o orçamento de treino sobre um contrato de observação que
-o hardware não fornece --- que é precisamente o modo de falha que
-\cite{Ivanov2020Verifying} documenta ao caracterizar o LiDAR real.
+% TODO-ESCOPO: seção/subseção sobre pilotos humanos e controladores autônomos em corrida, com os ganchos já presentes no texto (GT Sophy e Kaufmann em sec:arte-rl, clonagem de comportamento em sec:arte-il): o que a literatura reporta sobre desempenho humano de referência, o efeito de aprendizado ao longo das tentativas e a comparação de suavidade de comando. Acrescentar as entradas bibliográficas correspondentes (não inventar referências).
 
 \section{Posicionamento: a lacuna e os seus limites}\label{sec:arte-lacuna}
 
@@ -712,10 +667,11 @@ Johannink2019Residual}. O BayesRace \cite{Jain2020Bayesrace}, que é o vizinho
 conceitual mais próximo, coloca o resíduo no espaço do \textbf{modelo}, corrigido
 por processos gaussianos e consumido por um MPC que exige pose e solucionador.
 Aqui a base é uma rede de imitação sem pose global, o resíduo vive no espaço da
-\textbf{ação}, e a composição inteira permanece embarcável. A escolha custa
+\textbf{ação}, e a composição inteira continua dependendo só do sensor. A escolha custa
 desempenho de linha de base --- 60,050~s contra 59,000~s do especialista --- e
-compra independência de localização. É um compromisso explícito, e a justificativa
-dele é a etapa seguinte do trabalho, não uma preferência estética.
+compra independência de localização. É um compromisso explícito, e não uma
+preferência estética: a política passa a receber a mesma informação que um
+piloto humano com a vista restrita ao LiDAR.
 
 \textbf{Segunda: falha graciosa por construção.} Com a saturação e o limite de
 autoridade do resíduo, o pior caso da política composta é o comportamento da
@@ -774,21 +730,23 @@ trabalhos mais próximos.
     \label{tab:arte_posicionamento}
 \end{table}
 
+% TODO-ESCOPO: avaliar se a Tabela~\ref{tab:arte_posicionamento} ganha linhas para trabalhos que comparam humanos e controladores autônomos (depende da seção nova sobre pilotos humanos).
+
 \subsection{O que os trabalhos citados fazem e este não faz}
 
 Um estado da arte que só elogia a literatura não posiciona nada. As lacunas deste
 trabalho em relação aos citados são as seguintes, e são declaradas sem atenuação.
 
 \begin{itemize}
-    \item \textbf{Nenhum experimento no veículo físico.} O FastRLAP
+    \item \textbf{Nenhum experimento em hardware.} O FastRLAP
           \cite{Stachowicz2023FastRLAP}, o TinyLidarNet
           \cite{Zarrar2024TinyLidarNet}, o trabalho de verificação
           \cite{Ivanov2020Verifying}, a transferência de
           \cite{Chisari2021LearningSim} e \cite{Brunnbauer2022Latent} e a
           própria plataforma \cite{OKelly2020F1TENTH} medem no hardware. Este
-          trabalho mede em simulação e, no máximo, num nó ROS2 dentro de um
-          contêiner. \textbf{Toda} comparação numérica deste texto com resultados
-          de campo é, portanto, assimétrica.
+          trabalho mede em simulação, por escolha de escopo.
+          \textbf{Toda} comparação numérica deste texto com resultados de campo
+          é, portanto, assimétrica.
     \item \textbf{Nenhuma corrida direta nem ultrapassagem.} O regulamento da
           categoria \cite{F1TENTHRules2023} prevê corrida com dois veículos, e a
           literatura trata do assunto tanto do lado do planejamento quanto do
@@ -805,7 +763,7 @@ trabalho em relação aos citados são as seguintes, e são declaradas sem atenu
           melhoram a cada volta executada. A política aqui é fixa após o treino.
     \item \textbf{Nenhuma percepção por câmera nem fusão sensorial.} A política
           consome exclusivamente LiDAR bidimensional e proprioceptiva. Isso é uma
-          escolha coerente com a embarcabilidade, mas exclui o trabalho da
+          escolha coerente com a independência de localização, mas exclui o trabalho da
           discussão de percepção em alta velocidade que a revisão da área
           identifica como desafio central \cite{Betz2022Survey}.
     \item \textbf{Um simulador, um modelo de veículo, um circuito de portão.} A
@@ -830,7 +788,7 @@ as dependências do segundo, e paga por isso com o desvio de distribuição que 
 DART \cite{Laskey2017DART} e o DAgger \cite{Ross2011DAgger} atacam por caminhos
 distintos.
 
-A cascata proposta neste trabalho percorre esse arranjo em três passos, e cada
+A cascata de pilotos aprendidos deste trabalho percorre esse arranjo em três passos, e cada
 passo preserva a propriedade conquistada no anterior: o especialista geométrico
 fornece competência; a imitação a transfere para uma política sem pose global; e
 o resíduo de aprendizado por reforço recupera --- e supera --- o desempenho
@@ -838,7 +796,8 @@ perdido na destilação, sem devolver a dependência de localização e sem que 
 caso seja pior que a política que ele corrige. O resultado, 52,525~s contra
 59,000~s do especialista, é a medida dessa recuperação.
 
-O que falta é a travessia da fronteira. Ela é o objeto declarado da fase seguinte
-e é onde este capítulo termina: com uma política desenhada para ser embarcada, um
-artefato que já roda no formato em que será embarcado, e nenhuma medição no
-veículo.
+O que falta a essa literatura, e o que este trabalho se propõe a medir, é a
+posição desses pilotos entre si e em relação a uma referência humana, no mesmo
+simulador e sob os mesmos critérios.
+
+% TODO-ESCOPO: um parágrafo de fecho do Estado da Arte sobre o seguidor de gap como reativo sem mapa e o piloto humano como referência, ligando-os à Seção sobre métodos reativos e à seção do \textit{time trial}.
