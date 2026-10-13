@@ -1,0 +1,84 @@
+env_kwargs:
+  max_episode_steps: 137330
+  start_mode: raceline
+f110_gym_commit: 4fdb9c7e6fb7c701290f4dc18377d07c1681724f
+gate_hash: '966705'
+gate_thresholds:
+  GATE_E1_COMPLETION: 1.0
+  GATE_E2_COMPLETION: 0.95
+  GATE_E2_HELDOUT_COMPLETION: 0.8
+  GATE_E2_HELDOUT_MIN_PER_TRACK: 0.6
+  GATE_E2_LAP_RATIO: 1.1
+  GATE_E3_COMPLETION: 0.98
+  GATE_E3_LAP_RATIO: 0.95
+  GATE_E3_LAP_RATIO_PARTIAL: 1.0
+  GATE_E3_MU_COMPLETION_DROP: 0.03
+  GATE_E3_MU_LAP_WORSENING: 0.05
+git_dirty: false
+git_sha: 8d57af8
+heldout:
+- Monza
+- Catalunya
+- Silverstone
+- Oschersleben
+kind: avaliacao
+machine: x86_64
+n_laps: 10
+n_seeds: 5
+numpy: 1.22.0
+origem:
+  arquivo: /home/disney/Documents/repos/UFABC/TG/.worktrees/cmp-execucao/research/assets/reactive_gap.json
+  config:
+    d_filter_alpha: 0.2
+    distance_weight: 0.5
+    max_gap_depth: 5.0
+    max_range: 10.0
+    max_speed: 3.0
+    max_steering_angle: 0.7
+    median_filter_size: 5
+    min_gap_width: 0.8
+    min_speed: 1.0
+    safety_margin: 0.5
+    speed_kd: 0.1
+    speed_ki: 0.05
+    speed_kp: 0.8
+    speed_mode: direto
+    steer_kd: 0.3
+    steer_ki: 0.01
+    steer_kp: 2.2
+  sensor: null
+  tipo: congelado
+pilot: gap
+protocolo:
+  base_seed: 1000
+  colisao: "encerra o epis\xF3dio; voltas n\xE3o iniciadas n\xE3o contam como tentadas"
+  control_dt_s: 0.05
+  max_episode_steps: 137330
+  n_laps: 10
+  n_seeds: 5
+  pista: Spielberg
+  randomize: true
+  seeds:
+  - 1000
+  - 1001
+  - 1002
+  - 1003
+  - 1004
+  start_mode: raceline
+  steer_delay_steps: 2
+  steer_max_rad: 0.4189
+  velocidade_mps:
+  - 1.0
+  - 8.0
+python: 3.10.21
+rotulo: Seguidor de gap
+sensor: null
+stage: cmp
+tipo: "cl\xE1ssico"
+track: Spielberg
+versoes:
+  matplotlib: 3.8.4
+  numpy: 1.22.0
+  scipy: 1.11.4
+  stable-baselines3: 2.4.1
+  torch: 2.4.1

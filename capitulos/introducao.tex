@@ -67,8 +67,8 @@ Do ponto de vista técnico, o piloto humano é uma referência de desempenho
 conhecida: sabe-se o que uma pessoa consegue fazer com um joystick e uma vista da
 pista, e isso dá ao tempo de volta de uma política um ponto de comparação que
 um controlador clássico sozinho não dá. A comparação também permite ler o que a
-rede aprendeu. Quando o humano recebe apenas as leituras do LiDAR, as mesmas que
-a política recebe, as diferenças de trajetória, de velocidade e de suavidade do
+rede aprendeu. Quando o humano recebe apenas as leituras do LiDAR, informação
+equivalente à que a política recebe, as diferenças de trajetória, de velocidade e de suavidade do
 comando deixam de ser atribuíveis à informação disponível e passam a dizer algo
 sobre o modo de decidir de cada piloto.
 
@@ -100,13 +100,15 @@ pesquisas na área de sistemas autônomos.
 
 De modo geral, este trabalho tem como objetivo comparar, num mesmo simulador da
 plataforma F1TENTH e sob os mesmos critérios de avaliação, três formas de
-pilotar um veículo de corrida em escala 1:10: um piloto humano, controladores
+pilotar um veículo de corrida em escala 1:10: pilotos humanos, controladores
 clássicos e políticas obtidas por aprendizado de máquina. Para tanto, são
 perseguidos os seguintes objetivos específicos:
 \begin{enumerate}
-    \item Implementar e avaliar em simulação controladores clássicos: o
-          especialista \textit{pure pursuit}, que também gera as demonstrações, e
-          um seguidor de gap reativo;
+    \item Implementar e avaliar em simulação três controladores clássicos: o
+          especialista \textit{pure pursuit}, que segue a linha de corrida
+          calculada sobre o mapa da pista e também gera as demonstrações, e dois
+          controladores reativos que usam apenas o LiDAR, o Disparity Extender e
+          o seguidor de gap;
     \item Treinar uma política de imitação sem pose global e refiná-la por
           aprendizado por reforço residual, sob critérios fixados antes da
           medição;
@@ -116,16 +118,13 @@ perseguidos os seguintes objetivos específicos:
     \item Comparar os três tipos de piloto quanto a conclusão de volta, tempo de
           volta, colisões, suavidade do esterço, desvio da raceline e perfil de
           velocidade, com o humano em duas condições de informação: a pista
-          inteira vista de cima e apenas as leituras do LiDAR, as mesmas que as
-          políticas recebem.
+          inteira vista de cima e apenas as leituras do LiDAR, informação
+          equivalente à que as políticas recebem.
 \end{enumerate}
 
 \subsection*{Delimitação do escopo}
 
 O plano inicial deste trabalho previa a construção de um veículo em escala e
 experimentos com ele. Essa frente foi descontinuada após a falha da unidade de
-processamento embarcada, e o trabalho foi redefinido, em comum acordo com o
-orientador, como um estudo comparativo inteiramente em simulação. Nenhum
-resultado deste texto depende de hardware.
-
-% TODO-ESCOPO: confirmar a expressão "em comum acordo com o orientador" depois da resposta dele sobre a mudança de escopo (Fase 7 do plano); remover se não se confirmar.
+processamento embarcada, e o escopo foi redefinido para um estudo comparativo
+inteiramente em simulação. Nenhum resultado deste texto depende de hardware.

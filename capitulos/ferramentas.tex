@@ -1,19 +1,22 @@
 \chapter{Fundamentação Teórica}\label{cap:ferramentas}
 
-Este capítulo reúne apenas os fundamentos de que o trabalho faz uso: o ROS2 como
-camada de comunicação do simulador, os referenciais de pose que ele publica, o
+Este capítulo reúne apenas os fundamentos de que o trabalho faz uso: o ROS2, em
+que foram escritos os nós originais dos controladores reativos, os referenciais de pose que ele publica, o
 modelo cinemático de direção Ackermann, o LiDAR bidimensional, os algoritmos de
 planejamento e controle implementados, a linha de corrida e as considerações de
 segurança. Tudo o que diz respeito a sensores e atuadores reais, a pilhas de
 navegação completas e a mapeamento de pistas reais está fora do escopo do
 estudo, que é inteiramente em simulação.
 
-\section{ROS2 como camada de comunicação do simulador}
+\section{ROS2 como contexto dos nós originais}
 
-O ROS2 é a evolução do ROS original \cite{quigley2009ros}. O simulador expõe o scan e a odometria como tópicos ROS2 e recebe comandos
-Ackermann, de modo que os controladores reativos do Capítulo~\ref{cap:proposta}
-são nós ROS2. Esta seção resume o que é necessário para ler esse capítulo.
-Os demais componentes da pilha, treinamento e avaliação, não dependem do ROS2.
+O ROS2 é a evolução do ROS original \cite{quigley2009ros}. O repositório do
+projeto mantém uma ponte que expõe o scan e a odometria do simulador como tópicos
+ROS2, e os nós originais dos controladores reativos foram escritos sobre ela. O
+que o comparativo mede, porém, são os portes desses nós para o ambiente de
+pesquisa, sem ROS (Seção~\ref{sec:prop-portes}), e nenhum piloto é avaliado
+através do ROS2. Esta seção resume apenas o necessário para ler a descrição dos
+nós originais no Capítulo~\ref{cap:proposta}.
 
 \subsection{Arquitetura e Fundamentos do ROS2}
 
@@ -52,7 +55,9 @@ requisitos de interação entre componentes:
 
 Uma inovação significativa do ROS2 é a incorporação de políticas de Qualidade
 de Serviço configuráveis, permitindo ajustar parâmetros de comunicação conforme
-requisitos específicos \cite{gutierrez2019time}:
+requisitos específicos \cite{gutierrez2019time}. A
+Tabela~\ref{tab:qos_policies} resume as políticas mais usadas e a sua aplicação
+típica num veículo F1TENTH:
 
 \begin{table}[h]
     \centering
@@ -125,7 +130,7 @@ $\Delta t_i$ é o tempo de voo do pulso. No simulador, o scan é sintetizado por
 lançamento de raios sobre o mapa de ocupação da pista.
 
 O processamento dos dados do LiDAR é importante para a navegação em alta
-velocidade. \cite{Wang2020LMPC} descrevem as principais etapas:
+velocidade, e costuma passar pelas seguintes etapas:
 
 \begin{itemize}
     \item \textbf{Filtragem de Ruído}: Remoção de medições espúrias através de filtros estatísticos e temporais.
@@ -169,7 +174,7 @@ Onde $x(t)$ representa o estado do veículo, $u(t)$ os comandos de controle,
 $L(\cdot)$ a função objetivo (tipicamente tempo ou energia), $f(\cdot)$ a
 dinâmica do veículo, e $g(\cdot)$ as restrições do sistema.
 
-\cite{Wang2020LMPC} destacam três abordagens para resolvê-lo: métodos baseados em
+Três famílias de abordagem são usuais para resolvê-lo: métodos baseados em
 amostragem (RRT*, PRM*), métodos de otimização numérica e métodos baseados em
 curvas paramétricas. A implementação desses métodos está fora do escopo deste
 trabalho; a linha de corrida usada pelo especialista é uma trajetória de
@@ -182,27 +187,28 @@ reativos, que não usam mapa nem localização, e a uma linha de base geométric
 que usa a pose global fornecida pelo simulador. Os controladores avaliados são:
 
 \begin{itemize}
-    \item \textbf{Disparity Extender} (pacote \texttt{wall\_follow} do
-          simulador, em \path{src/wall_follow}): apesar do nome histórico do
-          pacote, é navegação reativa por extensão de disparidades, descrita no
+    \item \textbf{Disparity Extender} \cite{Otterness2019Disparity}:
+          navegação reativa por extensão de disparidades, medida no porte para o
+          ambiente de pesquisa do nó ROS2 \texttt{wall\_follow}, descrito no
           Capítulo~\ref{cap:proposta}.
 
-    \item \textbf{Seguidor de gap} (\path{src/gap_follow}): seleção geométrica
-          de aberturas com controle PID de direção e velocidade, também descrito
-          no Capítulo~\ref{cap:proposta}.
+    \item \textbf{Seguidor de gap}: seleção geométrica de aberturas com
+          controle PID de direção e velocidade, medida no porte do nó ROS2
+          \texttt{gap\_follow}, também descrito no Capítulo~\ref{cap:proposta}.
 
     \item \textbf{\textit{Pure pursuit}} sobre a linha de corrida: especialista
           da etapa E1 no ambiente de pesquisa, dependente da pose global que o
           simulador fornece.
 
-    \item \textbf{Políticas aprendidas}, executadas pelo pacote
-          \texttt{policy\_runner} a partir do grafo ONNX exportado.
+    \item \textbf{Políticas aprendidas} das etapas E2 e E3, executadas no
+          ambiente de pesquisa a partir dos pontos de verificação aprovados.
 \end{itemize}
 
-Nenhum controlador deste trabalho depende de mapa para decidir o comando: os
-controladores reativos operam diretamente sobre o \textit{scan}, e o
-especialista \textit{pure pursuit} usa a pose e a linha de corrida sobre mapas de
-pistas distribuídos com o próprio ambiente de simulação.
+Os controladores reativos e as políticas aprendidas não usam mapa nem pose em
+execução: decidem o comando a partir do \textit{scan} e da informação
+proprioceptiva. O especialista \textit{pure pursuit} é o único que usa o mapa:
+segue, com a pose fornecida pelo simulador, a linha de corrida calculada sobre o
+mapa da pista.
 
 O comparativo inclui ainda um tipo de piloto que não é controlador: o piloto
 humano, que conduz o veículo simulado com um \textit{joystick} sob os mesmos
@@ -230,7 +236,7 @@ descrita na Seção~\ref{sec:prop-humano} do Capítulo~\ref{cap:proposta}.
 
 \subsection{Considerações de Segurança e Robustez}
 
-\cite{Ivanov2020Verifying} enfatizam a importância de garantir segurança e robustez no planejamento de trajetória através de:
+Garantir segurança e robustez no planejamento de trajetória envolve, de forma geral, os seguintes elementos:
 
 \begin{itemize}
     \item \textbf{Margens de Segurança Adaptativas}:

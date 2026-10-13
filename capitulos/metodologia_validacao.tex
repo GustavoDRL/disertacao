@@ -24,17 +24,17 @@ simulador e sob um mesmo avaliador, e não uma limitação contornada: o que a
 validação descrita garante é que o número comparado entre os pilotos mede o que
 o texto diz que mede.
 
-O capítulo está organizado em torno de um argumento único, exposto em seis
+O capítulo está organizado em torno de um argumento único, exposto em sete
 partes. A Seção~\ref{sec:val-problema} apresenta quatro falhas reais do projeto
 que motivam tudo o que vem depois. A Seção~\ref{sec:val-contrato} descreve o contrato
 numérico com identificador, que é a forma escolhida para impedir que uma decisão
 de projeto vire folclore. A Seção~\ref{sec:val-congelado} trata de congelar
 critérios antes da medição, e de tornar a proveniência do resultado parte do
 veredito. A Seção~\ref{sec:val-estatistica} trata da decisão estatística e do
-escalonamento automático de amostra. A Seção~\ref{sec:val-camadas} descreve as
-cinco camadas de verificação. A
+escalonamento automático de amostra. A
 Seção~\ref{sec:val-humano} aplica o aparato ao comparativo, com o protocolo
-comum, os pilotos humanos e as métricas novas. A
+comum, os pilotos humanos e as métricas novas. A Seção~\ref{sec:val-camadas}
+descreve as cinco camadas de verificação. A
 Seção~\ref{sec:val-limitacoes} declara o que este aparato não cobre.
 
 \section{O problema: um número medido não é um resultado}\label{sec:val-problema}
@@ -95,9 +95,10 @@ preserva o último \textit{heading} válido.
 Uma restrição de engenharia acompanha a correção e é parte dela. Ela vive num
 invólucro, e o \texttt{f110\_gym} incorporado ao repositório permanece no commit
 fixado (\texttt{SPEC-COL-07}), com teste que falha se alguém o alterar. O que o
-simulador executa continua sendo o código original, e a paridade de scan entre o
-ambiente de pesquisa e a execução em contêiner --- verificada na
-Seção~\ref{sec:val-camadas} --- segue exata. Corrigir o critério de colisão sem tocar no simulador é o que
+simulador executa continua sendo o código original, e o scan do ambiente de
+pesquisa segue idêntico ao que o mesmo simulador produz no \textit{workspace} ROS2
+do repositório --- uma paridade herdada da fase com veículo e ainda verificada
+pela Camada~C (Seção~\ref{sec:val-camadas}). Corrigir o critério de colisão sem tocar no simulador é o que
 permite as duas coisas ao mesmo tempo.
 
 \subsection{Vazamento de estado entre episódios}
@@ -708,7 +709,7 @@ dos automáticos: largada e atrito coincidem, e a comparação é pareada.
 Em cada vista, o piloto faz 10~minutos de treino, medidos no relógio, e em seguida
 três sessões que contam. O treino usa \textit{seeds} próprias (9000, 9001, \dots),
 reinicia o carro após uma colisão, é gravado e não entra nos resultados, exceto na
-curva de aprendizado. Durante o treino, o condutor responde apenas a dúvidas sobre
+curva de aprendizado. Durante o treino, o pesquisador que conduz a sessão responde apenas a dúvidas sobre
 os controles, sem sugerir trajetória, velocidade ou estratégia. Cada sessão tem
 contagem regressiva de 3~s e termina ao completar cinco voltas ou ao primeiro
 choque; as voltas completas até ali contam, e a volta em andamento não. Nenhuma
@@ -812,8 +813,8 @@ são camadas e não recebem letra.
         (servidor MCP e coletor de dados) e um terceiro workspace do repositório, este sem os
         testes dependentes de dispositivos externos \\
         \hline
-        C & invariantes & Paridade host/contêiner, \textit{hash} do mapa, commit
-        do simulador vendorizado \\
+        C & invariantes & Paridade com o \textit{workspace} ROS2 do repositório,
+        \textit{hash} do mapa, commit do simulador vendorizado \\
         \hline
         D & documentação & Nenhum documento declara arquivo, identificador ou
         contagem que não existe \\
@@ -850,14 +851,18 @@ até desaparecer. Testes aprovados verificam lógica no computador de
 desenvolvimento, em simulação.
 
 A Camada~C verifica invariantes de integração: paridade numérica entre a
-inferência no host e no contêiner, integridade do mapa por \textit{hash}, e
-alinhamento do commit do simulador vendorizado. São seis invariantes, com a
+inferência no ambiente de pesquisa e no \textit{workspace} ROS2 do repositório,
+integridade do mapa por \textit{hash}, e alinhamento do commit do simulador
+vendorizado. O \textit{workspace} ROS2, executado num ambiente isolado próprio, é
+herança da fase com veículo (Capítulo~\ref{cap:proposta}); nenhum número deste
+texto é medido nele, e o invariante de paridade fica apenas como garantia de que o
+mapa e a inferência do ambiente de pesquisa coincidem com os dele. São seis invariantes, com a
 numeração pulando dois identificadores descartados; o contrato registra
 explicitamente que os identificadores \textbf{não são reaproveitados}, porque
 renumerar tornaria ilegíveis os relatórios já gravados
 (\texttt{SPEC-CHK-01}). A camada roda \textbf{antes de cada tentativa} do laço
 automático (\texttt{SPEC-CHK-03}): sem isso, uma aprovação podia sair com o mapa
-do contêiner divergente ou o commit do simulador desalinhado --- números
+divergente ou o commit do simulador desalinhado --- números
 plausíveis medidos na pista errada.
 
 \subsection{Camada D: documentação verificável}
@@ -1152,10 +1157,6 @@ a controle:
     \item \textbf{As ações de correção são pré-declaradas por critério.} É o que
           separa um experimento de uma busca livre, e é o que torna uma tabela de
           quatro linhas legível como demonstração.
-    \item \textbf{O que vai a produção é medido em produção.} Equivalência
-          numérica entre artefatos não substitui a execução do artefato no
-          ambiente de destino, porque testes de equivalência comparam o mesmo
-          grafo com os mesmos inputs e não enxergam um input errado.
     \item \textbf{As limitações são declaradas com o custo quantificado.} Uma
           ressalva sem número é uma ressalva que o leitor não consegue avaliar.
 \end{itemize}
