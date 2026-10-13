@@ -5,81 +5,80 @@
 % RESUMO em português
 \setlength{\absparsep}{18pt} % ajusta o espaçamento dos parágrafos do resumo
 \begin{resumo}
- Este trabalho tem como objetivo avaliar, em simulação, o uso de aprendizado
- por imitação e de aprendizado por reforço residual para o controle de um
- veículo autônomo de corrida na categoria F1TENTH, comparando essas
- abordagens a um controlador clássico de referência (pure pursuit). A
- metodologia consistiu em implementar um piloto especialista baseado em
- pure pursuit, usado como referência de desempenho e como fonte de
- demonstrações; treinar, a partir dessas demonstrações, uma rede de
- imitação convolucional unidimensional (TinyLidarNet, com 221 mil
- parâmetros); e refinar essa política por meio de aprendizado por reforço
- residual (SAC) aplicado sobre a rede de imitação, avaliando os três
- controladores segundo um conjunto pré-registrado de critérios de
- conclusão de volta, tempo de volta e generalização a circuitos distintos
- do circuito de avaliação.
- Os resultados mostram que o especialista completa 50 de 50 voltas sem
- colisões, com tempo de volta de 59,00 s; a rede de imitação atinge os
- quatro critérios de avaliação, com completude de 1,0000 e tempo de volta
- de 60,050 s, e completa 100\% das voltas em Oschersleben e 92\% em Monza
- -- os dois circuitos que nunca entraram na coleta de demonstrações --,
- onde o especialista que a treinou completa 17\% e 0\%; e
- a política refinada por reforço residual também atinge os quatro
- critérios, com completude de 0,9891 e tempo de volta de 52,525 s -- 11\%
- mais rápida que o especialista --, sem degradação de desempenho sob
- atrito randomizado. Ressalva-se que o critério de completude é avaliado
- pelo valor pontual, por decisão pré-registrada, e que o intervalo de
- confiança de 95\% dessa métrica contém o limiar de aceitação nos três
- controladores. Conclui-se que, em simulação, o aprendizado por reforço
- residual aplicado sobre uma política de imitação supera o controlador
- clássico de referência em velocidade sem perda de robustez a variações de
- atrito.
+ Este trabalho compara, em simulação, três formas de pilotar um veículo de
+ corrida autônomo em escala 1:10 da plataforma F1TENTH: controladores
+ clássicos, políticas obtidas por aprendizado de máquina e pilotos humanos. Os
+ pilotos clássicos são um seguidor de trajetória pure pursuit, que usa pose
+ global e a linha de corrida e também gera as demonstrações de treino, e dois
+ controladores reativos que usam apenas o LiDAR, o Disparity Extender e um
+ seguidor de gap por descontinuidade. Os pilotos de aprendizado de máquina são
+ uma rede de imitação convolucional unidimensional (TinyLidarNet), que dispensa
+ pose global, e um resíduo de aprendizado por reforço (SAC) aplicado sobre ela.
+ Os pilotos humanos usam um joystick, com os mesmos limites de ação e o mesmo
+ atraso de esterço das políticas, em duas vistas: a pista inteira vista de cima
+ e apenas os pontos do LiDAR. As políticas aprendidas foram aprovadas por
+ critérios de aceite congelados antes da medição. O comparativo usa um protocolo
+ comum na pista Spielberg, com randomização de atrito, de ruído do sensor e de
+ largada, e mede conclusão de volta, tempo de volta, colisões, taxa de esterço,
+ desvio da linha de corrida e perfil de velocidade, num estudo de caso
+ descritivo, sem teste de hipótese. Nos portões de aceite, o pure pursuit
+ completa 50 de 50 voltas em 59,000 s, sem randomização; a rede de imitação, 50
+ de 50 em 60,050 s; e o resíduo, 91 de 92 em 52,525 s, 11,0\% mais rápido que o
+ especialista. Sob o protocolo comum, o resíduo faz 52,55 s com 50 de 50
+ voltas, o pure pursuit 59,00 s com 44 de 45 e a rede de imitação 60,05 s com
+ 50 de 50; o Disparity Extender completa 50 de 50 voltas em 145,55 s, com a
+ maior taxa de esterço; e o seguidor de gap não completa volta em nenhuma das 48
+ combinações de parâmetros varridas nem na avaliação, com 0 de 5 voltas.
+ \pendentehumano{uma frase com o resultado dos pilotos humanos em cada vista}.
+ Conclui-se que, com o mesmo sensor em execução, as políticas aprendidas
+ alcançaram o desempenho do controlador que usa o mapa e os controladores
+ reativos não o alcançaram, com a ressalva de que a informação do mapa entrou nas
+ políticas aprendidas pelas demonstrações de treino.
 
- % TODO-ESCOPO: reescrever o resumo para o comparativo (humano, clássico e aprendizado de máquina): objetivo geral, os pilotos (pure pursuit, seguidor de gap, imitação, resíduo SAC, humanos em duas vistas), as métricas novas, o resultado da comparação e a conclusão. Os números de E1/E2/E3 acima são os oficiais; os do seguidor de gap e dos humanos ainda não existem.
-
- \textbf{Palavras-chaves}: F1TENTH. Veículos autônomos. Aprendizado por
- imitação. Aprendizado por reforço. Piloto humano.
+ \textbf{Palavras-chaves}: F1TENTH. Piloto humano. Controle reativo.
+ Aprendizado por imitação. Aprendizado por reforço. Simulação.
 \end{resumo}
 
 % ABSTRACT in english
 \begin{resumo}[Abstract]
  \begin{otherlanguage*}{english}
-   This work aims to evaluate, in simulation, the use of imitation
-   learning and residual reinforcement learning for controlling an
-   autonomous racing vehicle in the F1TENTH category, comparing these
-   approaches against a classical reference controller (pure pursuit). The
-   methodology consisted of implementing an expert pilot based on pure
-   pursuit, used both as a performance reference and as a source of
-   demonstrations; training, from these demonstrations, a one-dimensional
-   convolutional imitation network (TinyLidarNet, with 221 thousand
-   parameters); and refining this policy through residual reinforcement
-   learning (SAC) applied on top of the imitation network, evaluating the
-   three controllers against a pre-registered set of criteria for lap
-   completion, lap time, and generalization to circuits other than the
-   evaluation circuit. The results
-   show that the expert completes 50 of 50 laps with zero collisions, with
-   a lap time of 59.00 s; the imitation network meets all four evaluation
-   criteria, with a completion of 1.0000 and a lap time of 60.050 s, and
-   completes 100\% of the laps at Oschersleben and 92\% at Monza
-   -- the two circuits that never entered the demonstration collection --,
-   where the expert that trained it completes 17\% and 0\%; and the
-   residual reinforcement learning policy also meets all four criteria,
-   with a completion of 0.9891 and a lap time of 52.525 s -- 11\% faster
-   than the expert --, with zero performance degradation under randomized
-   friction. It should be noted that the completion criterion is evaluated
-   as a point estimate, by pre-registered decision, and that the 95\%
-   confidence interval of this metric contains the acceptance threshold
-   for all three controllers. It is concluded that, in simulation,
-   residual reinforcement learning applied on top of an imitation policy
-   outperforms the classical reference controller in speed without loss
-   of robustness to friction variation.
-
-   % TODO-ESCOPO: reescrever o abstract para o comparativo, em paralelo ao resumo.
+   This work compares, in simulation, three ways of driving a 1:10 scale
+   autonomous racing vehicle of the F1TENTH platform: classical controllers,
+   policies obtained by machine learning, and human drivers. The classical
+   drivers are a pure pursuit path follower, which uses the global pose and
+   the racing line and also generates the training demonstrations, and two
+   reactive controllers that use only the LiDAR, the Disparity Extender and a
+   discontinuity-based gap follower. The machine learning drivers are a
+   one-dimensional convolutional imitation network (TinyLidarNet), which
+   does not require a global pose, and a residual reinforcement learning
+   policy (SAC) applied on top of it. The human drivers use a joystick, with
+   the same action limits and the same steering delay as the policies, in
+   two views: the whole track seen from above and only the LiDAR points. The
+   learned policies were approved by acceptance criteria frozen before
+   measurement. The comparison uses a common protocol on the Spielberg
+   track, with randomized friction, sensor noise and start pose, and
+   measures lap completion, lap time, collisions, steering rate, deviation
+   from the racing line and speed profile, in a descriptive case study,
+   without hypothesis testing. At the acceptance gates, pure pursuit
+   completes 50 of 50 laps in 59.000 s, without randomization; the imitation
+   network, 50 of 50 in 60.050 s; and the residual policy, 91 of 92 in
+   52.525 s, 11.0\% faster than the expert. Under the common protocol, the
+   residual policy runs 52.55 s with 50 of 50 laps, pure pursuit 59.00 s with
+   44 of 45, and the imitation network 60.05 s with 50 of 50; the Disparity
+   Extender completes 50 of 50 laps in 145.55 s, with the highest steering
+   rate; and the gap follower completes no lap in any of the 48 swept
+   parameter combinations nor in the evaluation, with 0 of 5 laps.
+   \pendentehumano{uma frase com o resultado dos pilotos humanos em cada vista}.
+   It is concluded that, with the same sensor at run time, the learned
+   policies reached the performance of the controller that uses the map,
+   while the reactive controllers did not, with the caveat that the map
+   information entered the learned policies through the training
+   demonstrations.
 
    \vspace{\onelineskip}
 
    \noindent
-   \textbf{Keywords}: F1TENTH. Autonomous vehicles. Imitation learning.
-   Reinforcement learning. Human driver.
+   \textbf{Keywords}: F1TENTH. Human driver. Reactive control. Imitation
+   learning. Reinforcement learning. Simulation.
  \end{otherlanguage*}
 \end{resumo}

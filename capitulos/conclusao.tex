@@ -11,13 +11,17 @@ sob os mesmos critérios de avaliação, três formas de pilotar um veículo de
 corrida em escala 1:10: controladores clássicos, políticas obtidas por
 aprendizado de máquina e pilotos humanos. O que ele entrega e o que ele não
 entrega separam-se por uma fronteira nítida, e é ela que organiza esta
-conclusão: tudo o que foi medido foi medido em simulação, e a parte do
-comparativo que depende de dados ainda não coletados está sinalizada como tal.
+conclusão. Estão medidos, em simulação e sob um protocolo comum, os cinco pilotos
+automáticos: o \textit{pure pursuit} do E1, o Disparity Extender e o seguidor de
+gap por descontinuidade, do lado clássico, e a rede de imitação do E2 e o resíduo
+de aprendizado por reforço do E3, do lado do aprendizado de máquina. Estão
+prontos a interface de pilotagem humana e o protocolo da coleta. Faltam as
+sessões com os pilotos humanos, e cada ponto desta conclusão que depende delas
+está marcado como pendente.
 
-% TODO-ESCOPO: reescrever este parágrafo de abertura depois das Fases 2--9 do plano, com o que o comparativo efetivamente entregou (pilotos clássicos, de aprendizado de máquina e humanos), sem antecipar resultados.
-
-Esta conclusão não repete os números do Capítulo~\ref{cap:resultados} nem
-reconstrói o argumento do Capítulo~\ref{cap:metodologia}. Ela faz duas coisas:
+Esta conclusão retoma do Capítulo~\ref{cap:resultados} apenas os números que
+sustentam as suas afirmações e não reconstrói o argumento do
+Capítulo~\ref{cap:metodologia}. Ela faz duas coisas:
 enuncia o que o trabalho sustenta e responde um a um aos quatro objetivos
 específicos declarados na seção \textit{Objetivos} da Introdução.
 
@@ -28,7 +32,7 @@ específicos declarados na seção \textit{Objetivos} da Introdução.
 
 A cascata de três etapas cumpriu, em simulação, o que se propôs a fazer, e a
 Tabela~\ref{tab:res_sintese} do Capítulo~\ref{cap:resultados} a resume numa linha
-por etapa. O especialista geométrico da etapa E1 fixou o tempo de referência
+por piloto, ao lado dos demais pilotos do comparativo. O especialista geométrico da etapa E1 fixou o tempo de referência
 $T_{pp} = 59{,}000$~s, com 50 de 50 voltas sem colisão e com determinismo
 verificado --- o valor reproduziu dígito a dígito uma medição anterior feita em
 outra arquitetura, o que é o que autoriza usá-lo como denominador de todos os
@@ -64,7 +68,26 @@ medições feitas sob o mesmo protocolo. A direção do efeito favorece a leitur
 conservadora --- a política que supera a referência é a que corre em condições
 mais duras, e o braço sem randomização da comparação pareada da etapa E3 estima o
 tamanho disso em cerca de um décimo de segundo ---, mas o padrão deste trabalho é
-declarar a assimetria, não confiar na direção dela.
+declarar a assimetria, não confiar na direção dela. O comparativo a mede
+diretamente: com randomização e nas mesmas sementes, o especialista fez 59,00~s, e
+o resíduo, 52,55~s.
+
+\subsection*{O que o comparativo mediu}
+
+Sob o protocolo comum, os pilotos automáticos se separam em três grupos. Os
+pilotos aprendidos e o especialista completam a volta entre 52,55~s e 60,05~s: o
+resíduo em 52,55~s, o especialista em 59,00~s, com uma colisão em 45 voltas, e a
+rede de imitação em 60,05~s, com taxa de esterço e desvio da linha de corrida
+praticamente iguais aos do especialista que ela imita. O Disparity Extender
+completa todas as 50 voltas, mas em 145,55~s, com a maior taxa de esterço e o
+maior desvio da linha de corrida. E o seguidor de gap não completa volta alguma:
+nenhuma das 48 combinações das duas varreduras de parâmetros completou uma volta
+de sonda, e a configuração congelada colidiu nas cinco sementes da avaliação. Com
+o mesmo sensor em execução, as políticas aprendidas alcançaram o piloto que usa
+o mapa; os controladores reativos, não. A ressalva central dessa leitura está na
+Seção~\ref{sec:res-disc-cmp}: as políticas aprendidas não usam o mapa em
+execução, mas a informação dele entrou no treino, pelas demonstrações do
+especialista.
 
 \subsection*{A contribuição metodológica}
 
@@ -110,48 +133,79 @@ linha.
         \textbf{\#} & \textbf{Objetivo específico declarado} & \textbf{Situação} \\
         \hline
         1 & Implementar e avaliar em simulação controladores clássicos: o
-        especialista \textit{pure pursuit} e um seguidor de gap reativo & --- \\
+        especialista \textit{pure pursuit} e um seguidor de gap reativo &
+        atingido; o seguidor de gap não completa volta \\
         \hline
         2 & Treinar uma política de imitação sem pose global e refiná-la por
         aprendizado por reforço residual, sob critérios fixados antes da
-        medição & --- \\
+        medição & atingido \\
         \hline
         3 & Desenvolver uma interface de pilotagem humana no mesmo simulador e
         coletar voltas de pilotos humanos sob protocolo fixado antes da coleta
-        & --- \\
+        & em parte: interface e protocolo prontos, coleta pendente \\
         \hline
         4 & Comparar os três tipos de piloto quanto a conclusão de volta, tempo de
         volta, colisões, suavidade do esterço, desvio da raceline e perfil de
-        velocidade, com o humano em duas condições de informação & --- \\
+        velocidade, com o humano em duas condições de informação & em parte:
+        pilotos automáticos comparados, humanos pendentes \\
         \hline
     \end{tabularx}
     \caption{Os quatro objetivos específicos declarados na Introdução diante do
-    que o trabalho de fato mediu}
+    que o trabalho de fato mediu. A situação dos objetivos 3 e 4 é a desta
+    versão, anterior às sessões humanas}
     \label{tab:conc_objetivos}
 \end{table}
 
-% TODO-ESCOPO: preencher a coluna Situação da Tabela~\ref{tab:conc_objetivos} (atingido, parcial ou não atingido) e os quatro parágrafos abaixo com números das Fases 2--9; nada disso pode ser decidido antes das medições.
-
-\textbf{Objetivo 1.}
-% TODO-ESCOPO: situação do seguidor de gap (portado, varredura de parâmetros, resultado) e do \textit{pure pursuit}. O \textit{pure pursuit} (E1) está medido: 59,000~s, 50 de 50 voltas, sem randomização; o texto deve dizer qual E1 é qual (oficial sem randomização × reavaliado com randomização).
+\textbf{Objetivo 1.} Os três controladores clássicos foram implementados e
+avaliados sob o protocolo comum. O \textit{pure pursuit} tem dois números, que
+convivem e não se substituem: o oficial, sem randomização, de 59,000~s e 50 de
+50 voltas, que é o denominador $T_{pp}$ dos critérios de aceite; e o do
+comparativo, com randomização, de 59,00~s e 44 de 45 voltas. O seguidor de gap foi
+portado do nó ROS2 para o ambiente de pesquisa, passou pela varredura da grade
+oficial e por uma grade ampliada criada depois dela, e foi avaliado na
+configuração congelada: 0 de 5 voltas, com cinco colisões. O objetivo pedia
+implementar e avaliar, e isso foi feito; o resultado da avaliação é negativo, e a
+Seção~\ref{sec:res-disc-cmp} discute as causas prováveis. O Disparity Extender,
+portado pelo mesmo caminho, completa 50 de 50 voltas em 145,55~s.
 
 \textbf{Objetivo 2.} A rede de imitação sem pose global (E2) e o resíduo de
 aprendizado por reforço (E3) foram treinados e avaliados sob portões cujos
 limiares foram congelados antes da medição, e ambos aprovaram os seus critérios,
 com as ressalvas declaradas acima (E2: 60,050~s e 50 de 50 voltas; E3: 52,525~s e
-91 de 92 voltas, ambos com randomização). A percepção consumida pela política é
-exclusivamente LiDAR bidimensional e proprioceptiva, o que está declarado como
-limite na Seção~\ref{sec:arte-lacuna}.
+91 de 92 voltas, ambos com randomização). Reavaliados sob o protocolo comum, sem
+retreino, repetiram as medianas (60,05~s e 52,55~s, ambos com 50 de 50 voltas).
+A percepção consumida pela política é exclusivamente LiDAR bidimensional e
+proprioceptiva, o que está declarado como limite na Seção~\ref{sec:arte-lacuna}.
 
-\textbf{Objetivo 3.}
-% TODO-ESCOPO: situação da interface de pilotagem humana e da coleta (autores e voluntários), incluindo a dependência da resposta do orientador sobre o Comitê de Ética.
+\textbf{Objetivo 3.} A interface de pilotagem humana está pronta: \textit{joystick}
+com os mesmos limites e o mesmo atraso das políticas, passo segurado em tempo
+real com o atraso registrado, duas vistas e gravação no mesmo formato dos pilotos
+automáticos (Seção~\ref{sec:prop-humano}). O protocolo da coleta está escrito,
+com \textit{hash} gravado em cada registro (Seção~\ref{sec:val-humano}). A coleta
+não foi feita: \pendentehumano{pilotos coletados (autores e voluntários), sessões
+completas e excluídas, e a situação do Comitê de Ética}. A participação de
+voluntários depende da resposta sobre a necessidade de submissão ao Comitê de
+Ética em Pesquisa; sem ela, o estudo se limita aos autores.
 
-\textbf{Objetivo 4.}
-% TODO-ESCOPO: situação da comparação entre os três tipos de piloto, com a faixa do grupo humano e a posição de cada política; limitações declaradas (ordem fixa das vistas, amostra pequena, autores separados dos voluntários, uma só pista).
+\textbf{Objetivo 4.} A comparação entre os pilotos automáticos está feita, nas
+seis métricas do objetivo, e a Tabela~\ref{tab:comparativo} já reserva as linhas
+humanas. Falta a parte humana: \pendentehumano{faixa do grupo humano por vista e
+posição de cada política em relação a ela}. Quatro limitações acompanham essa
+parte e estão declaradas antes da coleta: a ordem fixa das vistas, a amostra
+pequena, a separação entre autores e voluntários e a pista única
+(Seção~\ref{sec:val-limitacoes-comparativo}).
 
 \subsection*{O que fica dito com precisão}
 
-% TODO-ESCOPO: fechamento com a contagem de objetivos atingidos, em parte e não atingidos, e a afirmação central do comparativo. Por ora, vale o que está medido: uma política que enxerga apenas LiDAR e proprioceptiva completa 91 de 92 voltas sob randomização e percorre Spielberg 11,0\% mais rápido que o especialista geométrico que a ensinou, que é avaliado sem a randomização a que ela é submetida.
+Dos quatro objetivos, dois estão atingidos e dois em parte, e nenhum ficou sem
+execução: os dois incompletos dependem da mesma coleta. O que o trabalho afirma,
+nesta versão, é o que está medido: uma política que enxerga apenas LiDAR e
+proprioceptiva completa 91 de 92 voltas sob randomização no seu portão e percorre
+Spielberg 11,0\% mais rápido que o especialista geométrico que a ensinou; sob o
+protocolo comum, ela faz 52,55~s contra 59,00~s do especialista, e os dois
+controladores reativos que usam o mesmo sensor ficam muito atrás ou não
+completam a volta. A afirmação sobre os humanos fica para depois da coleta:
+\pendentehumano{afirmação central sobre humano e máquina, por vista}.
 
 \section*{Trabalhos Futuros}
 \addcontentsline{toc}{section}{Trabalhos Futuros}
@@ -197,25 +251,42 @@ como trabalho futuro imediato:
           execuções anteriores.
 \end{itemize}
 
+\subsection*{Extensões do comparativo}
+
+Do próprio comparativo, quatro extensões são diretas:
+
+\begin{itemize}
+    \item \textbf{Validação em hardware.} Todos os pilotos deste trabalho correm
+          em simulação. Repetir o comparativo num veículo físico é a extensão de
+          maior custo, e este trabalho não a aborda.
+    \item \textbf{Imitação de pilotos humanos.} As voltas humanas gravadas passo a
+          passo, no mesmo formato das demonstrações do especialista, podem servir
+          de demonstração para a rede de imitação, no lugar do especialista
+          geométrico.
+    \item \textbf{Outras pistas.} O comparativo usa só Spielberg. Em pistas não
+          vistas, a independência de mapa dos controladores reativos passa a
+          contar, e a generalização das políticas aprendidas e dos humanos pode ser
+          medida.
+    \item \textbf{Contrabalanço das vistas.} A ordem fixa das vistas mistura o
+          efeito da informação com o da prática. Alternar a ordem entre pilotos,
+          com amostra maior, separa os dois.
+\end{itemize}
+
 Além dessas, permanecem em aberto as direções que a Seção~\ref{sec:arte-lacuna}
 identifica como ausentes deste trabalho e presentes na literatura: corrida com
 dois veículos e ultrapassagem, adaptação de modelo em linha, garantias formais
-sobre a política e percepção além do LiDAR bidimensional. Do próprio
-comparativo, ficam como extensões a imitação de demonstrações humanas, a
-avaliação em outras pistas e, no máximo, a validação em hardware, que este
-trabalho não aborda.
-
-% TODO-ESCOPO: ajustar esta lista de trabalhos futuros ao que o comparativo efetivamente entregar (curta: hardware, imitação de humano, outras pistas).
+sobre a política e percepção além do LiDAR bidimensional.
 
 \subsection*{Consideração final}
 
-O trabalho termina com um comparativo em simulação cuja base --- uma cascata de
-um especialista geométrico, de uma rede de imitação e de um resíduo de
-aprendizado por reforço, avaliada sob critérios congelados antes da medição ---
-está medida, e cuja parte humana depende de coleta ainda por fazer. Essa lista,
-dita nessa ordem, é o estado real do projeto --- e enunciá-la assim é a mesma
-prática que o Capítulo~\ref{cap:metodologia} defende como contribuição: declarar
-o que se cobre, declarar o que não se cobre, e quantificar a distância entre os
-dois sempre que houver medição que permita.
-
-% TODO-ESCOPO: reescrever a consideração final com o resultado do comparativo, depois das Fases 2--9.
+O trabalho termina com um comparativo em simulação cuja parte automática está
+medida e cuja parte humana depende de coleta ainda por fazer. Sob o mesmo
+protocolo, uma política que só vê o LiDAR, obtida por imitação de um especialista
+geométrico e refinada por um resíduo de aprendizado por reforço, percorre
+Spielberg mais rápido que esse especialista; o controlador reativo que usa o mesmo
+sensor sem treino completa a volta em 145,55~s, e o outro não a completa. Onde os pilotos humanos se colocam diante disso,
+\pendentehumano{uma frase com o resultado humano}. Dizer isso nessa ordem, com o
+que está medido separado do que falta medir, é a mesma prática que o
+Capítulo~\ref{cap:metodologia} defende como contribuição: declarar o que se
+cobre, declarar o que não se cobre, e quantificar a distância entre os dois sempre
+que houver medição que permita.
