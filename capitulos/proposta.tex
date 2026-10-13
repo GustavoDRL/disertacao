@@ -50,6 +50,10 @@ box/.style={draw, rounded corners, text width=10cm, minimum height=1cm}]
 
 \subsection{Disparity Extender}
 
+Esta subseção descreve o nó ROS2 original. O objeto medido no comparativo é o
+seu porte para o ambiente de pesquisa, sem ROS, descrito na
+Seção~\ref{sec:prop-portes}, que diverge do nó em pontos ali declarados.
+
 O arquivo \path{src/wall_follow/wall_follow/wall_follow.py} define a classe
 \texttt{WallFollowHybrid}. A implementação atual usa Disparity Extender, não
 o antigo controlador de distância lateral com a classe \texttt{WallFollow}.
@@ -80,6 +84,11 @@ box/.style={draw, text width=10cm, align=center, minimum height=0.7cm}]
 \end{figure}
 
 \subsection{Seguimento de gap}
+
+Também aqui a descrição é a do nó ROS2 original, com seus temporizadores e prazos
+de validade. O comparativo mede o porte sem ROS da Seção~\ref{sec:prop-portes},
+em que a sincronização por temporizadores desaparece: a política é chamada uma
+vez por passo de controle.
 
 A classe \texttt{ThreadedGapFollower} está implementada em
 \path{src/gap_follow/gap_follow/gap_follow.py}. Apesar desse nome histórico, sua execução atual
@@ -123,9 +132,108 @@ prazo de validade de 0,5~s; ausência ou expiração invalida o processamento e
 produz um comando de parada. Esse mecanismo evita perpetuar comandos a partir
 de uma observação antiga.
 
-% TODO-ESCOPO: seção sobre o seguidor de gap portado para o ambiente de pesquisa (\texttt{research/}) como política sem ROS, usando o scan bruto e a ação normalizada pelos mesmos limites; varredura curta de parâmetros com critério de escolha escrito antes. Não preencher com números antes das medições.
+\section{Controladores reativos portados para o ambiente de pesquisa}\label{sec:prop-portes}
 
-% TODO-ESCOPO: seção sobre a interface de pilotagem humana: joystick (analógico esquerdo = esterço, gatilho direito = velocidade), mesmos limites das políticas, passo em tempo real a 0,05 s, duas vistas (pista inteira e só LiDAR) e HUD.
+O Disparity Extender e o seguidor de gap entram no comparativo como políticas do
+ambiente de pesquisa (\texttt{research/}), escritas em Python sem ROS. Cada porte
+é uma política que recebe o \textit{scan} bruto de 1080 feixes (\texttt{scan\_raw})
+e a velocidade longitudinal, e devolve a ação normalizada pelos mesmos limites das
+demais políticas. Não usam pose, mapa nem linha de corrida, o que os separa do
+\textit{pure pursuit} do E1. O ângulo de cada feixe segue a convenção do
+simulador, com o primeiro feixe à direita e o último à esquerda, de modo que uma
+abertura à esquerda produz esterço positivo.
+
+\textbf{Pipelines.} O porte do Disparity Extender preserva o processamento da
+Figura~\ref{fig:wall_follow_arch}: limite de alcance, filtro de média, região de
+proteção ao redor do obstáculo frontal, extensão de disparidades pela largura do
+carro, seleção de abertura e alvo, esterço limitado e suavizado, e velocidade
+decidida pelo espaço frontal e pela curvatura pedida. O porte do seguidor de gap
+preserva o filtro de mediana, a conversão para coordenadas cartesianas, a
+identificação de descontinuidades maiores que um limiar de profundidade, a
+pontuação das aberturas por distância e largura, o PID de esterço e a regra de
+velocidade, com a opção de usar o PID de velocidade do nó ou o alvo direto.
+
+\textbf{O que muda em relação aos nós.} Quatro adaptações são comuns. Primeiro, as
+velocidades originais, próprias de um veículo real lento, são reescaladas para o
+envelope de 1 a 8~m/s do ambiente, e o teto de velocidade de cada porte é um
+parâmetro, mantendo-se a forma da regra de velocidade de cada nó. Segundo, o
+esterço é sempre cortado na saturação comum de $\pm 0{,}4189$~rad, que o ambiente
+impõe a todos os pilotos; o nó do seguidor de gap saturava em valor maior.
+Terceiro, os PIDs avançam com o passo de controle de 0,05~s em tempo de simulação,
+e não com o relógio nem com os 100~Hz fixos do nó. Quarto, o comando de parar do
+original não existe, porque a velocidade mínima do ambiente é 1~m/s: onde o nó
+mandava parar, o porte devolve esterço nulo e velocidade mínima.
+
+\textbf{Correção da extensão de disparidades.} O porte do Disparity Extender
+diverge do nó em um ponto de lógica. O nó estendia o alcance curto sobre o
+próprio obstáculo, o que quase não alterava o \textit{scan}. O porte estende o
+lado distante de cada borda, o vão que parece livre, pela largura do carro, com as
+disparidades detectadas no \textit{scan} original, pois detectá-las sobre o
+\textit{scan} já estendido propagaria o alcance curto por todo o vetor
+(\texttt{SPEC-RCT-09}).
+
+\textbf{Varredura de parâmetros e configuração congelada.} Os valores dos
+parâmetros dos nós foram escolhidos para outro regime de velocidade, e portanto
+cada porte passa por uma varredura curta em grade, no estilo da varredura do E1,
+com no máximo 24 combinações. Para o Disparity Extender, a grade varia o teto de
+velocidade, a largura efetiva do carro, o raio da bolha de segurança e o ganho de
+esterço; para o seguidor de gap, o teto de velocidade, a profundidade máxima de
+descontinuidade, o ganho proporcional do esterço e o modo de velocidade. O
+critério de escolha é fixado antes de qualquer medição: cada combinação corre
+uma volta em cada uma de três \textit{seeds} de sonda (2000, 2001 e 2002), com
+randomização e largada na linha de corrida, e vence a que tiver mais voltas
+completas; o empate se desfaz pela menor mediana do tempo de volta, e um novo
+empate pela menor taxa média de esterço. Se nenhuma combinação completar uma
+volta, vence a de maior progresso médio. As \textit{seeds} de sonda são
+distintas das de avaliação (1000 a 1004), para que a configuração escolhida não
+seja a que melhor decorou as largadas medidas depois. A configuração vencedora é
+gravada em um arquivo versionado, com a grade, o resultado de cada combinação e o
+critério, e a avaliação lê apenas esse arquivo. Um desempenho fraco da
+configuração congelada é, portanto, um resultado do método, e não motivo para
+nova busca.
+
+\section{Interface de pilotagem humana}\label{sec:prop-humano}
+
+O piloto humano conduz o mesmo veículo simulado, no mesmo ambiente e sob o mesmo
+avaliador das políticas. A interface é um pacote do ambiente de pesquisa, e esta
+seção descreve o seu contrato, não a sua implementação.
+
+\textbf{Entrada.} O piloto usa um \textit{joystick}. O analógico esquerdo, na
+horizontal, esterça, e mover para a esquerda produz esterço positivo, que vira o
+carro à esquerda. O gatilho direito controla a velocidade: solto, o carro anda a
+1~m/s; apertado até o fundo, a 8~m/s. O carro nunca para nem dá ré. O esterço tem
+uma zona morta pequena, para que o analógico em repouso não mova o carro, e os
+eixos são calibrados por \textit{joystick}, com índice, valor em repouso, valor
+no fundo e inversão gravados em um arquivo de calibração.
+
+\textbf{Mesmos limites e atraso.} A ação do humano passa pela mesma normalização
+das políticas: esterço máximo de $\pm 0{,}4189$~rad, velocidade entre 1 e 8~m/s,
+atraso de esterço de dois passos (100~ms) e passo de controle de 0,05~s. Assim,
+nenhuma diferença de resultado entre humano e política vem de um limite de
+atuação mais folgado para um dos lados.
+
+\textbf{Tempo real.} A cada passo, a interface desenha o estado, lê o
+\textit{joystick} e segura o passo até o prazo absoluto de 0,05~s de relógio,
+em vez de dormir um intervalo fixo, de modo que o atraso de um passo não se
+acumula nos seguintes. O atraso de cada passo é registrado (média, percentil 95,
+percentil 99, máximo e número de passos que passaram do prazo), para que
+um eventual passo lento seja declarado e não oculto. Antes da primeira chamada de
+cada sessão há uma contagem regressiva de 3~s.
+
+\textbf{Vistas e painel.} Há duas vistas. Na vista da \textit{pista inteira}, o
+mapa da pista é mostrado de cima, com o carro desenhado na pose atual. Na vista
+\textit{só LiDAR}, aparecem apenas os pontos do \textit{scan} atual no referencial
+do carro, com o carro fixo no centro apontando para cima, sem mapa e sem rastro,
+dentro de um alcance fixo. A segunda vista dá ao humano a mesma informação que a
+política recebe. Nas duas, um painel mostra a velocidade, o tempo da volta atual e
+o da última, e o estágio (``Treino mm:ss'' ou ``Sessão $k$ · volta $j$/5'').
+
+\textbf{Gravação.} Para cada piloto e vista, a interface produz um registro no
+mesmo formato dos pilotos automáticos: relatório de avaliação, dados passo a
+passo das sessões que contam, dados do treino, atraso por passo, calibração do
+\textit{joystick}, versão do código e \textit{hash} do protocolo. O piloto é
+identificado por um código anônimo, e nenhum nome aparece nos dados. O protocolo
+que usa essa interface é descrito na Seção~\ref{sec:val-humano}.
 
 \section{Execução das políticas aprendidas}
 
