@@ -1,6 +1,6 @@
 \chapter{Metodologia de Validação Experimental}\label{cap:metodologia}
 
-Os capítulos anteriores descrevem o que foi construído: o veículo, a pilha de
+Os capítulos anteriores descrevem o que foi construído: a pilha de
 software, o simulador e as políticas de controle. Este capítulo descreve o
 aparato que decide se um número produzido por esse conjunto pode ser reportado.
 São coisas diferentes, e a distinção é o assunto do capítulo.
@@ -18,12 +18,11 @@ aparece na receita e que altera o número em magnitude comparável à das difere
 que o trabalho pretende demonstrar.
 
 Todos os resultados discutidos neste capítulo foram obtidos \textbf{em
-simulação}, no ambiente \texttt{f110\_gym} \cite{OKelly2020F1TENTH} e na ponte
-ROS2 derivada dele \cite{f1tenthgymros, f1tenthgymufabc}. Nenhuma política foi
-executada no veículo físico, e nenhuma afirmação deste capítulo deve ser lida
-como medição de campo. A validação descrita valida a cadeia que vai do ambiente
-de pesquisa até o nó ROS2 rodando dentro de um contêiner --- que é o último
-ponto antes do hardware, não o hardware.
+simulação}, no ambiente \texttt{f110\_gym} \cite{OKelly2020F1TENTH}. A simulação
+é uma escolha de escopo do trabalho, que compara pilotos dentro de um mesmo
+simulador e sob um mesmo avaliador, e não uma limitação contornada: o que a
+validação descrita garante é que o número comparado entre os pilotos mede o que
+o texto diz que mede.
 
 O capítulo está organizado em torno de um argumento único, exposto em seis
 partes. A Seção~\ref{sec:val-problema} apresenta quatro falhas reais do projeto
@@ -33,7 +32,7 @@ de projeto vire folclore. A Seção~\ref{sec:val-congelado} trata de congelar
 critérios antes da medição, e de tornar a proveniência do resultado parte do
 veredito. A Seção~\ref{sec:val-estatistica} trata da decisão estatística e do
 escalonamento automático de amostra. A Seção~\ref{sec:val-camadas} descreve as
-seis camadas de verificação e o caso que justifica a mais cara delas. A
+cinco camadas de verificação. A
 Seção~\ref{sec:val-limitacoes} declara o que este aparato não cobre.
 
 \section{O problema: um número medido não é um resultado}\label{sec:val-problema}
@@ -94,9 +93,9 @@ preserva o último \textit{heading} válido.
 Uma restrição de engenharia acompanha a correção e é parte dela. Ela vive num
 invólucro, e o \texttt{f110\_gym} incorporado ao repositório permanece no commit
 fixado (\texttt{SPEC-COL-07}), com teste que falha se alguém o alterar. O que o
-contêiner executa continua sendo o código original, e a paridade de scan entre o
-ambiente de pesquisa e o contêiner --- verificada na Seção~\ref{sec:val-camadas}
---- segue exata. Corrigir o critério de colisão sem tocar no simulador é o que
+simulador executa continua sendo o código original, e a paridade de scan entre o
+ambiente de pesquisa e a execução em contêiner --- verificada na
+Seção~\ref{sec:val-camadas} --- segue exata. Corrigir o critério de colisão sem tocar no simulador é o que
 permite as duas coisas ao mesmo tempo.
 
 \subsection{Vazamento de estado entre episódios}
@@ -188,17 +187,17 @@ composição, usada pelo treino e pela reavaliação.
 \subsection{Três valores para a mesma medição}
 
 A quarta falha não é de código: é de documentação. Três valores diferentes para
-a \textit{mesma} medição de distância percorrida no portão de deploy ---
+a \textit{mesma} medição de distância percorrida numa verificação em tempo real da política ---
 337~m, 428~m e 552,7~m --- conviveram simultaneamente no repositório, em
 documentos distintos, cada um apresentado como o resultado vigente. Pior: um
 deles citava como evidência um arquivo que o contradizia.
 
 Nenhum teste falhava, porque nenhum teste lê prosa. Nenhuma execução divergia,
 porque o código estava certo. O defeito vivia inteiramente na camada que o leitor
-consulta, e a origem de um dos valores foi posteriormente rastreada: o portão de
-deploy não encerrava os nós ROS2 de execuções anteriores, e a leitura de 552~m
+consulta, e a origem de um dos valores foi posteriormente rastreada: a
+verificação não encerrava os nós ROS2 de execuções anteriores, e a leitura de 552~m
 saiu com um nó de 1~h~18~min publicando comandos ao lado do nó novo --- duas
-políticas comandando o mesmo carro.
+políticas comandando o mesmo veículo simulado.
 
 \subsection{O que os quatro casos têm em comum}
 
@@ -213,8 +212,7 @@ programa roda, nem que ele é determinístico: é preciso verificar que o evento
 contado pela métrica corresponde ao que de fato acontece no mundo simulado, que o
 protocolo de avaliação não vaza estado, que existe uma única definição executável
 do objeto avaliado, que o critério de aceite foi fixado antes da medição, que o
-número citado no texto corresponde a um artefato em disco, e que o artefato que vai
-a deploy é o mesmo que foi pontuado. Cada uma dessas verificações é uma camada, e é
+número citado no texto corresponde a um artefato em disco. Cada uma dessas verificações é uma camada, e é
 delas que trata o restante do capítulo. A verificação formal de propriedades de
 segurança de controladores neurais \cite{Ivanov2020Verifying} e a busca ativa por
 cenários de falha \cite{Bak2021Stress} atacam um problema adjacente e
@@ -686,12 +684,14 @@ compatíveis porque as perguntas são diferentes --- uma estima um valor contra 
 limiar próximo, a outra ordena níveis separados por um fator de quinze ---, mas a
 diferença precisa estar escrita, e não deduzida pelo leitor.
 
-\section{As seis camadas de validação}\label{sec:val-camadas}
+% TODO-ESCOPO: seção sobre o protocolo humano e as métricas novas: critérios congelados próprios do comparativo (volta válida, colisão encerra a sessão, 10 min de treino e 3 sessões × 5 voltas por vista, ordem fixa das vistas), métricas (suavidade do esterço, desvio da raceline, perfil de velocidade, curva de aprendizado), estudo de caso descritivo sem teste de hipótese, ética (TCLE, anonimização, Comitê de Ética se houver).
+
+\section{As cinco camadas de validação}\label{sec:val-camadas}
 
 Os mecanismos das seções anteriores estavam originalmente espalhados: a suíte de
 testes de um lado, um subcomando de invariantes de outro, e o portão científico
 só dentro de uma etapa. Quem quisesse saber se o repositório estava saudável
-precisava lembrar de três comandos e interpretar três saídas. As seis camadas
+precisava lembrar de três comandos e interpretar três saídas. As cinco camadas
 consolidam isso num comando e num veredito, e a Tabela~\ref{tab:val_camadas}
 resume o que cada uma cobre. As letras nomeiam exclusivamente as camadas do
 verificador (\texttt{SPEC-DOC-08}); o laço automático e o portão científico não
@@ -706,8 +706,8 @@ são camadas e não recebem letra.
         A & specs & Todo identificador do contrato é citado por algum teste \\
         \hline
         B & testes & Três suítes: ambiente de pesquisa, raiz do repositório
-        (servidor MCP e coletor de dados) e veículo, esta sem os testes que
-        exigem hardware \\
+        (servidor MCP e coletor de dados) e um terceiro workspace do repositório, este sem os
+        testes dependentes de dispositivos externos \\
         \hline
         C & invariantes & Paridade host/contêiner, \textit{hash} do mapa, commit
         do simulador vendorizado \\
@@ -718,18 +718,15 @@ são camadas e não recebem letra.
         E & proveniência & Limiares congelados antes do treino, árvore de
         trabalho limpa \\
         \hline
-        F & deploy & A política dirigindo como nó ROS2 no contêiner, em tempo
-        real \\
-        \hline
     \end{tabularx}
-    \caption{As seis camadas de validação e seu escopo}
+    \caption{As cinco camadas de validação e seu escopo}
     \label{tab:val_camadas}
 \end{table}
 
-Um princípio de projeto atravessa as seis: \textbf{uma camada que explode conta
+Um princípio de projeto atravessa as cinco: \textbf{uma camada que explode conta
 como falha, não como interrupção}. Quando se está diagnosticando um repositório
 quebrado, o valor está justamente em ver todas as camadas de uma vez, e um
-\textit{check} que levanta exceção levaria junto os outros cinco. O mesmo vale
+\textit{check} que levanta exceção levaria junto os outros quatro. O mesmo vale
 dentro da Camada~C, onde um invariante que não consegue ser avaliado reporta
 falha \textbf{com o motivo}, em vez de propagar a exceção
 (\texttt{SPEC-CHK-02}) --- o modo de falha que a camada existe para pegar é
@@ -740,14 +737,14 @@ justamente o silencioso.
 A Camada~A é a cobertura do contrato, descrita na Seção~\ref{sec:val-contrato}. A
 Camada~B roda três suítes de teste: a do ambiente de pesquisa; a da raiz do
 repositório, que cobre o servidor de ferramentas e o coletor de dados e tem
-outro conjunto de dependências; e a do veículo, executada com a exclusão dos
-testes marcados como dependentes de hardware, de desempenho ou lentos. Na
+outro conjunto de dependências; e a de um terceiro workspace do repositório, executada com a exclusão dos
+testes marcados como dependentes de dispositivos externos, de desempenho ou lentos. Na
 contagem de outubro de 2026, são 433 testes aprovados na primeira, 160 na
 segunda e 551 na terceira, com 2 pulados e 24 excluídos pelos marcadores.
 Mantê-las sob o mesmo comando é o que impede uma delas de voltar a ficar
 invisível --- uma suíte anterior existiu por meses sem que nada a executasse,
-até desaparecer. Testes aprovados na suíte do veículo verificam lógica no
-computador de desenvolvimento; não são validação no carro.
+até desaparecer. Testes aprovados verificam lógica no computador de
+desenvolvimento, em simulação.
 
 A Camada~C verifica invariantes de integração: paridade numérica entre a
 inferência no host e no contêiner, integridade do mapa por \textit{hash}, e
@@ -813,363 +810,6 @@ limiares que ainda batem com os de hoje. Execuções antigas aprovadas sob limia
 diferentes são fato histórico, não problema: o que precisa ser defensável é o
 resultado que o repositório reporta \textit{hoje}.
 
-\subsection{Camada F: a política no lugar onde ela vai rodar}
-
-A Camada~F executa o artefato ONNX exportado como nó ROS2 dentro do contêiner,
-com o simulador de pé, e mede três grandezas numa janela de tempo fixa. Os
-critérios de aceite são frequência de controle $\geq$ 19~Hz, latência de
-inferência $p99 \leq$ 5~ms e distância percorrida $\geq$ 150~m
-(\texttt{SPEC-DEP-01}). Os três são exigidos juntos, porque isoladamente cada um
-mente: um carro parado contra a parede publica comandos a 20~Hz com latência
-perfeita.
-
-É a camada mais cara de manter. Exige o contêiner construído e no ar, e o
-invariante de paridade permanece vermelho até que alguém execute o lado do
-contêiner. Todas as demais camadas medem a política em Python \textit{headless},
-muito mais rápido que o tempo real --- a física do simulador, isolada, roda a
-cerca de 106 vezes o tempo real num único processo, segundo a medição de
-viabilidade feita no início do projeto ---; só esta a executa no ambiente de
-destino.
-
-Um detalhe de protocolo tem consequência mensurável. O carro é
-\textit{reposicionado} no primeiro ponto da linha de corrida antes da medição
-(\texttt{SPEC-DEP-02}), porque a configuração do simulador o faz nascer na origem
-com orientação zero, enquanto a tangente da pista em $s=0$ aponta para 3,40~rad:
-em Spielberg, ele nasce de frente para a parede, o freio de emergência do nó
-dispara continuamente e o carro nunca sai do lugar. Foram \textbf{1147} paradas
-de emergência registradas antes de a causa aparecer. Com o reposicionamento, a
-medição registra zero.
-
-\subsection{O caso que justifica a Camada F}
-
-O argumento mais forte a favor de manter a camada mais cara é um defeito que
-somente ela poderia encontrar.
-
-A primeira versão do exportador do E3 afirmava que a política composta cabia na
-\textbf{mesma assinatura} de grafo do E2, com uma entrada de scan e uma de
-proprioceptivos, já que o vetor de 123 dimensões observado pelo resíduo é
-derivável dessas duas. Isso é verdade para o resíduo e \textbf{falso para a
-base}: a política do E3 tem \textbf{dois estados recorrentes distintos}. A rede
-base realimenta esterço e velocidade anteriores com a \textbf{ação dela própria},
-enquanto o resíduo observa os valores anteriores \textbf{do ambiente} --- a ação
-final aplicada, com o esterço atrasado pela fila de atuação de dois passos.
-Colapsar os dois numa entrada só faz a base receber um histórico que ela nunca
-viu no treino.
-
-O efeito medido é categórico: \textit{completion} de \textbf{0,0\%} (três
-colisões em três voltas) contra 98,9\% da composição correta, e no contêiner
-111~m contra 331~m da rede do E2 --- valor que o repositório também cita como
-329~m, discrepância discutida na Seção~\ref{sec:res-deploy}.
-
-\begin{table}[h]
-    \centering
-    \begin{tabularx}{\textwidth}{|X|c|c|>{\centering\arraybackslash}p{2.6cm}|}
-        \hline
-        \textbf{Artefato ONNX medido} & \textbf{Distância} & \textbf{Frequência} &
-        \textbf{Paradas de emergência} \\
-        \hline
-        Rede do E2                   & 331~m          & 20,00~Hz          & 0 \\
-        \hline
-        E3, contrato \textbf{errado} & 111~m          & 5,19~Hz           & 874 \\
-        \hline
-        \textbf{E3, contrato correto} & \textbf{381~m} & \textbf{20,00~Hz} & \textbf{0} \\
-        \hline
-    \end{tabularx}
-    \caption{Camada F: o artefato de deploy medido no contêiner ROS2, janela de
-    60~s. Valores do documento de estado do projeto; os relatórios de
-    verificação dessas execuções foram sobrescritos e não existem mais}
-    \label{tab:val_deploy}
-\end{table}
-
-A Tabela~\ref{tab:val_deploy} resume as três medições. O ponto metodológico é o
-seguinte: \textbf{nem o invariante de paridade
-host/contêiner nem o teste de equivalência ONNX contra torch podiam pegar este
-defeito}. Os dois comparam o \textbf{mesmo grafo com os mesmos inputs}, e o que
-estava errado era o input. A paridade continuava exata --- máximo de diferença
-absoluta igual a zero sobre 200 vetores --- enquanto a política dirigia contra a
-parede. Só a Camada~F pega, porque só ela executa a política no lugar onde ela
-vai rodar, alimentada pelo nó real. A camada mais cara de manter foi a única que
-encontrou o defeito mais caro.
-
-O contrato do artefato do E3 é, portanto, \textit{próprio}: entradas de scan e
-\textit{dois} vetores proprioceptivos, saídas de ação final \textit{e} de ação da
-base --- o nó só consegue realimentar a base se o grafo lhe disser qual foi a
-ação dela. A etapa é descoberta pelo \textit{grafo}, não pelo nome do arquivo.
-Corrigido assim, o artefato percorre 381~m contra 111~m do contrato errado, a
-20,00~Hz e com zero paradas de emergência.
-
-Vale registrar a alternativa recusada. Exportar dois grafos e compor no nó seria
-uma segunda implementação da composição fora do Python --- exatamente o que a
-regra de grafo único existe para impedir, e exatamente a configuração que já
-divergiu uma vez, no \texttt{float32} contra \texttt{float64} da
-Seção~\ref{sec:val-problema}.
-
-Resta uma ressalva que não se resolve com tolerância, e que o contrato declara em
-vez de esconder: o grafo exportado é \texttt{float32} e a composição de
-referência usa o vetor de ganhos em \texttt{float64}. Medido sobre 200 vetores, o
-máximo de diferença absoluta é $2{,}57 \times 10^{-7}$~rad no esterço e
-$9{,}54 \times 10^{-7}$~m/s na velocidade --- dentro da tolerância de $10^{-5}$
-exigida. Mas a Tabela~\ref{tab:val_sensibilidade} mostra que neste sistema
-$10^{-12}$ move a \textit{completion} do E3 em quase quatro pontos. Logo o ONNX é
-\textit{uma} realização da política, não necessariamente a que o portão pontuou.
-É precisamente por isso que a Camada~F mede o \textbf{artefato exportado}: o que
-se afirma sobre o deploy tem de ser medido no que se deploya.
-
-\subsection{Ponte sim-to-real: adaptador de observação, guarda de comando e
-sensor emulado}\label{sec:val-ponte}
-
-A Camada~F valida a política no contêiner, contra o simulador. Entre esse ponto e
-o veículo físico há uma diferença de contrato que não é ruído de medida: o
-simulador entrega 1080 feixes num campo de 269,3$^\circ$, alcance de 30~m e 20~Hz
-síncronos, enquanto o LiDAR YDLIDAR X4PRO do veículo entrega cerca de 500 pontos
-em 360$^\circ$, alcance de 12~m e 10~Hz nominais, com leituras inválidas
-publicadas como $0{,}0$. A rede foi treinada sobre o primeiro contrato e o carro
-só oferece o segundo. Esta seção descreve os três artefatos construídos para
-atravessar essa diferença de forma mensurável --- um adaptador de observação, uma
-guarda de comando e um sensor emulado --- e o critério que decide, antes da
-medição, o que cada resultado autoriza.
-
-O arranjo se apoia em duas linhas da literatura de transferência. A primeira é a
-randomização de domínio, que trata a diferença simulação--realidade como uma
-distribuição a ser coberta durante o treino, seja no domínio visual
-\cite{Tobin2017DomainRand}, seja no da dinâmica \cite{Peng2018DynamicsRand}; a
-revisão de Zhao, Queralta e Westerlund \cite{Zhao2020Sim2Real} organiza as
-famílias de técnicas e registra que a adaptação da observação e a randomização são
-complementares, não substitutas. A segunda é a evidência específica de plataformas
-em escala: Zarrar e colaboradores \cite{Zarrar2024TinyLidarNet} embarcam uma rede
-convolucional unidimensional sobre LiDAR bidimensional e reportam que a redução
-angular do \textit{scan} é viável, mas com custo de robustez proporcional à taxa
-de redução; Evans, Jordaan e Engelbrecht \cite{Evans2023Comparing} relatam
-oscilação de esterço como modo de falha característico da passagem para o
-hardware; e Ghignone e colaboradores \cite{Ghignone2025RLPP} transferem sem
-retreino um resíduo de aprendizado por reforço sobre um controlador base --- a
-mesma arquitetura da etapa E3 deste trabalho --- num veículo em escala real. O que
-segue não é uma técnica nova: é a instrumentação dessa diferença sob o mesmo
-padrão de critério congelado que o restante do capítulo aplica.
-
-\subsubsection*{O adaptador de observação}
-
-O adaptador é uma função pura, sem dependência de ROS2, que recebe o vetor de
-distâncias publicado pelo sensor --- com o seu próprio ângulo inicial e o seu
-próprio incremento --- e devolve 1080 valores finitos em $[0; 30]$, nos ângulos
-exatos do contrato do simulador, ou nenhuma observação, nos casos descritos
-adiante. Ele descarta as leituras
-inválidas ($0{,}0$, não numéricas, infinitas ou fora da faixa do sensor), corrige
-o zero angular, recorta os 90,7$^\circ$ traseiros que o contrato não prevê e
-reamostra o que sobra nos ângulos alvo.
-
-A reamostragem é por \textbf{vizinho mais próximo}, e a escolha é deliberada. Numa
-descontinuidade de profundidade --- a quina de um muro, a borda de um obstáculo
---- a interpolação linear produziria um valor intermediário entre a parede
-próxima e o fundo distante, isto é, uma superfície que não existe no ambiente. O
-vizinho mais próximo reproduz o que um feixe estreito de fato faria: cai de um
-lado ou do outro da quina. A propriedade que isso garante, e que o contrato
-numérico verifica, é que todo valor da saída pertence ao conjunto das leituras
-válidas de entrada, com uma única exceção declarada: quando os dois pontos válidos
-que cercam um ângulo alvo estão separados por mais que um limite angular, o feixe
-é tratado como uma lacuna real do sensor e recebe o valor de preenchimento, que é
-o alcance máximo do sensor e não o do simulador --- um feixe sem retorno significa
-``nada até onde este sensor enxerga'', não ``nada em 30~m''. A alternativa foi
-medida, não arbitrada, e a seção de resultados reporta o custo de escolher a
-errada.
-
-O adaptador não devolve observação alguma em três situações: quando o
-\textit{scan} tem menos de três pontos; quando a cobertura angular do sensor
-não abrange a janela frontal do contrato; e quando a fração de pontos válidos
-nessa janela, ou a fração de ângulos alvo cobertos sem lacuna, fica abaixo do
-mínimo do perfil, que é metade. O nó então não publica, a política não infere,
-e o carro é parado pela guarda por ausência de comando: uma observação
-majoritariamente inventada é pior do que nenhuma.
-
-Um único arquivo implementa o adaptador, e tanto o veículo quanto o experimento em
-simulação o importam. A razão é a falha documentada na
-Seção~\ref{sec:val-duascopias}: duas cópias da mesma composição de política já
-divergiram neste projeto, e a divergência só apareceu na camada de \textit{deploy}.
-O contrato numérico exige a identidade do arquivo, não a semelhança do
-comportamento.
-
-\subsubsection*{A guarda de comando como única porta}
-
-Em modo autônomo, nenhum controlador publica no tópico de comando do veículo. O
-seguidor de parede e a política publicam num tópico intermediário, e um nó de
-guarda é o \textbf{único} publicador do comando efetivo. Ele aplica, nesta ordem:
-um botão de homem-morto no controle manual, sem o qual não há passagem; um tempo
-limite de entrada, findo o qual publica parada explícita; e um envelope que satura
-velocidade e esterço.
-
-A concentração num publicador único é o que torna a propriedade de segurança
-verificável. Com $n$ publicadores, a afirmação ``o carro nunca recebe comando fora
-do envelope'' exigiria auditar $n$ caminhos de código e a ordem de chegada entre
-eles; com um, ela é uma propriedade de uma função sobre a qual se pode escrever
-teste. As duas reações a falha também são distintas de propósito: ao soltar o
-homem-morto a guarda emite uma rajada curta de parada e depois \textbf{silencia},
-entregando o veículo ao cão de guarda de silêncio do nó de servo, que é a última
-linha de defesa e já existia; à falta de comando de entrada ela \textbf{publica}
-parada, porque o seu tempo limite é metade do daquele cão de guarda e ela existe
-justamente para agir antes dele. Nenhuma dessas paradas é o freio primário: o
-freio primário é cortar fisicamente a alimentação do controlador de motor, e o
-procedimento de operação diz isso em cada estágio.
-
-Abaixo da guarda há um bloqueio no próprio \textit{driver} do controlador de
-motor. O nó de servo publica uma habilitação periódica do motor e a retira
-quando perde o serviço do servo ou o fluxo de comandos; o \textit{driver} só
-repassa comandos de motor enquanto essa habilitação for verdadeira e tiver menos
-de 0,35~s, e envia potência nula fora disso. Depois de retirada, a habilitação só
-volta após o servo responder e chegar um comando com velocidade zero. Para que
-esse rearme aconteça em modo autônomo, a guarda publica 0,2~s de comando neutro
-na borda de subida do homem-morto, antes de repassar o primeiro comando do
-controlador; sem isso, o primeiro comando repassado já teria velocidade positiva
-e o motor permaneceria bloqueado. Do lado da política, o executor só atualiza a
-sua memória de ação com o comando que a guarda confirma ter aplicado, publicado
-num tópico próprio, e publica parada enquanto falta essa confirmação ou quando a
-odometria deixa de ser recente.
-Essas camadas são posteriores às medições deste capítulo e, como o restante da
-ponte, não foram executadas no veículo.
-
-\subsubsection*{O sensor emulado e as dez condições}
-
-O terceiro artefato é um \textit{shim} de sensor no simulador: uma camada que
-degrada o \textit{scan} do \texttt{f110\_gym} para o que o X4PRO produziria, antes
-de a observação chegar à política. Ele reamostra o \textit{scan} nos ângulos que o
-sensor real amostraria, invalida leituras além de 12~m, aplica perda aleatória de
-pontos, soma ruído relativo, repete o mesmo quadro para reproduzir a taxa mais
-baixa e, opcionalmente, gira o \textit{scan} para simular erro de zero angular. A
-saída do \textit{shim} passa então pelo mesmo adaptador que o carro executa, e o
-resultado é o que a política enxerga. É a randomização de domínio do
-parágrafo inicial aplicada ao domínio do alcance, e não ao visual.
-
-Nenhum parâmetro do \textit{shim} é medição do sensor físico. Todos vêm ou da
-configuração efetivamente aplicada ao \textit{driver} pelo arquivo de
-inicialização do veículo --- que é a autoridade sobre o \textit{datasheet} --- ou
-do \textit{datasheet}, e os dois que não vêm de nenhum dos dois, a perda de pontos
-e a taxa efetiva, estão marcados como assumidos no perfil versionado do sensor,
-cujo campo ``medido'' permanece falso e faz o nó emitir aviso periódico enquanto
-assim for. A caracterização de bancada substitui esses valores.
-
-As dez condições de avaliação foram declaradas antes da primeira execução:
-
-\begin{table}[h]
-    \centering
-    \small
-    \begin{tabularx}{\textwidth}{|l|>{\raggedright\arraybackslash}X|}
-        \hline
-        \textbf{Condição} & \textbf{O que muda em relação ao nominal} \\
-        \hline
-        \texttt{nominal} & sem \textit{shim}; é o controle, e reproduz o número já
-        conhecido \\
-        \hline
-        \texttt{x4pro} & \textit{shim} completo, preenchimento de lacuna em 12~m \\
-        \hline
-        \texttt{x4pro\_fill30} & preenchimento de lacuna em 30~m \\
-        \hline
-        \texttt{x4pro\_off+3}, \texttt{x4pro\_off-3} & zero angular deslocado de
-        $\pm 3^\circ$, desconhecido pelo adaptador \\
-        \hline
-        \texttt{x4pro\_drop10} & perda de pontos de 10\% em vez de 2\% \\
-        \hline
-        \texttt{x4pro\_hold3} & taxa efetiva de 6,7~Hz em vez de 10~Hz \\
-        \hline
-        \texttt{x4pro\_cap1}, \texttt{x4pro\_cap2}, \texttt{x4pro\_cap3} &
-        \textit{shim} completo mais a guarda saturando a velocidade em 1, 2 e
-        3~m/s \\
-        \hline
-    \end{tabularx}
-    \caption{As dez condições da campanha de sensibilidade ao sensor emulado.
-    Cada condição foi avaliada com as mesmas sementes que todas as outras, para
-    que a comparação entre elas seja pareada}
-    \label{tab:val_s2r_condicoes}
-\end{table}
-
-Duas políticas já aprovadas --- a rede de imitação da etapa E2 e o resíduo da
-etapa E3 --- foram avaliadas sem retreino, em duas pistas, com cinco sementes e
-três voltas por célula, resultando em quarenta células. O deslocamento de zero
-angular é \textit{desconhecido} pelo adaptador: o perfil entregue a ele declara
-sempre deslocamento nulo, mesmo nas condições em que o \textit{shim} o aplica. É
-exatamente essa ignorância que uma das condições mede, porque é a situação real de
-quem monta o sensor sem tê-lo calibrado.
-
-\subsubsection*{Os três portões, congelados antes}
-
-Três portões foram escritos no arquivo de configuração da execução \textbf{antes}
-da primeira avaliação, conforme \texttt{SPEC-PROV-01}, cada um com a sua
-consequência já declarada por extenso:
-
-\begin{enumerate}
-    \item \textbf{Sobrevivência ao sensor} --- taxa de conclusão da política da
-          etapa E3, na pista de treino, sob o \textit{shim} completo, com limiar
-          de 0,80, o mesmo piso que o trabalho já usa para generalização.
-          Reprovado, o adaptador sozinho não basta: retreinar sob o contrato de
-          observação real deixa de ser opcional e a política não vai ao veículo
-          antes disso --- o seguidor de parede vai.
-    \item \textbf{Sensibilidade ao zero angular} --- a queda de taxa de conclusão
-          sob $\pm 3^\circ$ não pode exceder 0,10 em valor absoluto. Reprovado, a
-          calibração do zero angular (\texttt{SPEC-CAR-05}) passa a ser
-          bloqueante antes de qualquer estágio com o veículo no chão.
-    \item \textbf{Envelope de velocidade} --- taxa de conclusão sob a guarda
-          saturando a velocidade em 1~m/s, com limiar de 0,80. Reprovado, o
-          estágio de operação no chão roda a política apenas a partir do menor
-          limite de velocidade que passar; se nenhum passar, esse estágio roda
-          só com o seguidor de parede.
-\end{enumerate}
-
-A escolha de congelar as consequências, e não apenas os limiares, é o que impede
-a leitura que a Seção~\ref{sec:val-congelado} chama de busca livre: com quarenta
-células medidas, sempre haverá um recorte favorável, e o único modo de a tabela
-significar alguma coisa é o veredito já estar escrito quando o número aparece. O
-Capítulo~\ref{cap:resultados} reporta os três vereditos e as consequências que
-eles acionaram.
-
-\subsubsection*{O sensor emulado dentro do laço de treino}
-
-A campanha acima aplica o \textit{shim} sobre políticas já treinadas, o que mede o
-custo do contrato de observação mas não oferece nenhum caminho para reduzi-lo. O
-segundo uso do mesmo artefato o move para \textbf{dentro} do laço: o ambiente de
-treino recebe uma fábrica de \textit{shim} e constrói \textbf{um sensor novo a
-cada episódio}, aplicado depois do ruído gaussiano já existente, de modo que tanto
-a observação empilhada quanto o \textit{scan} bruto entregue à camada residual
-saem do mesmo sensor degradado --- a rede base e o resíduo pagam a mesma
-diferença, que é a lição do primeiro portão. A seleção é uma chave do arquivo de
-configuração da execução, e a sua ausência reproduz bit a bit o comportamento
-anterior; a execução registra ainda sob qual contrato o conjunto de treino foi
-coletado, e reaproveitar dados entre contratos diferentes é recusado, porque os
-feixes gravados são produto do sensor.
-
-O que muda em relação à campanha é \textbf{o que se sorteia}. Ali cada condição é
-um valor fixo, porque o que se mede é a sensibilidade àquele valor. Aqui a
-política está sendo treinada, e treinar sob um valor a faria aprender aquele
-sensor: com o zero angular fixo em $+3^\circ$ ela aprenderia a compensar
-$+3^\circ$ e, no veículo --- que tem o desvio da \textbf{sua} unidade,
-desconhecido até a caracterização de bancada ---, não teria aprendido nada. É a
-randomização de domínio no sentido de Tobin e colaboradores
-\cite{Tobin2017DomainRand} e de Peng e colaboradores \cite{Peng2018DynamicsRand},
-aplicada ao domínio do alcance e da temporização em vez do visual ou do dinâmico:
-treinar sob a faixa de incerteza, não sob o ponto. Três parâmetros são sorteados
-por episódio, e a faixa de cada um é a incerteza declarada, não uma medição ---
-zero angular uniforme em $\pm 3^\circ$, que é a tolerância entre unidades do
-\textit{datasheet}; perda de pontos uniforme entre 0 e 10\%, que a bancada vai
-medir; e taxa efetiva uniforme entre 20, 10 e 6,7~Hz, porque o arquivo de
-inicialização pede 10~Hz e não os garante. Os demais parâmetros do perfil
-permanecem fixos nos valores assumidos.
-
-Duas propriedades desse arranjo são contrato, e não detalhe de implementação. A
-primeira é que o perfil sorteado de cada episódio é gravado ao lado do resultado
-daquele episódio: sem isso uma reprovação não seria atribuível ao sorteio que a
-causou, nem recuperável depois, porque reavaliar sorteia outros. A segunda é que
-\textbf{nenhum limiar muda} sob o contrato emulado --- os portões das etapas e os
-três portões da campanha ficam com os valores já congelados, e o tempo de
-referência do especialista continua o mesmo, porque o especialista lê pose e não
-enxerga o sensor. Declarar isso antes de executar é o que separa retreinar de
-ajustar a trave, e o Capítulo~\ref{cap:resultados} reporta o resultado dessa
-execução sob os limiares originais.
-
-Por fim, o que esta ponte \textbf{não} é. Ela não valida o veículo: o
-\textit{shim} é um modelo do sensor construído com valores assumidos, e um sensor
-real pior que o emulado produziria resultados piores que os medidos. Ela mede o
-custo do contrato de observação, não o de atrito, latência de atuador ou
-dinâmica de pneu. E o adaptador e a guarda, embora testados, nunca foram
-executados no veículo --- a limitação declarada na
-Seção~\ref{sec:val-escopo-simulacao} continua valendo sem atenuação.
-
 \section{Limitações declaradas}\label{sec:val-limitacoes}
 
 Um aparato de validação que não declara o que não cobre pede ao leitor a mesma
@@ -1199,7 +839,7 @@ medição atual'', que não existe.
 
 O custo dessa limitação está documentado e é o caso da
 Seção~\ref{sec:val-problema}: 337~m, 428~m e 552,7~m para a mesma medição de
-deploy conviveram no repositório, um dos documentos citando como evidência um
+distância percorrida conviveram no repositório, um dos documentos citando como evidência um
 arquivo que o contradizia. Nenhuma camada acusou.
 
 Um exemplo residual sobrevive no próprio registro do projeto e fica declarado
@@ -1336,28 +976,28 @@ nesta máquina.
 O que \textit{é} auditável são as medições de portão e de avaliação feitas no
 host atual: as Tabelas~\ref{tab:val_acoes_e3} e \ref{tab:val_ic} batem dígito a
 dígito com os relatórios em disco, e o tempo do especialista da máquina anterior
-é confirmável pelo histórico de versão de um arquivo de ativo. A
-Tabela~\ref{tab:val_deploy} não tem essa propriedade: as medições de deploy
-vivem no relatório de verificação, que é sobrescrito a cada execução, e os
-relatórios que as registraram não existem mais. Os seus valores vêm do documento
-de estado do projeto, e o da rede do E2 tem uma discrepância aberta --- 331~m
-contra 329~m ---, discutida na Seção~\ref{sec:res-deploy}.
+é confirmável pelo histórico de versão de um arquivo de ativo. As
+medições de execução em tempo real feitas em fases anteriores do projeto não
+têm essa propriedade: viviam em relatórios de verificação sobrescritos a cada
+execução, que não existem mais, e por isso não sustentam nenhum número deste
+texto.
 
-\subsection{O escopo é a simulação, e a Camada F é o contêiner}\label{sec:val-escopo-simulacao}
+\subsection{O escopo é a simulação, por escolha}\label{sec:val-escopo-simulacao}
 
-Nenhum dos resultados deste capítulo foi obtido no veículo físico. A Camada~F
-mede o artefato ONNX executando como nó ROS2 dentro do contêiner, contra o
-simulador --- o que ela valida é a cadeia de exportação, o contrato de entradas e
-saídas do grafo, o desempenho temporal do nó e o comportamento da política sob a
-malha de controle real. Ela não valida atrito, latência de atuadores físicos,
-ruído de LiDAR real, nem qualquer dos efeitos que caracterizam a transferência
-para o hardware.
+O trabalho compara pilotos --- clássicos, de aprendizado de máquina e humanos
+--- dentro de um mesmo simulador e sob um mesmo avaliador. Por isso todos os
+resultados deste capítulo e do seguinte foram obtidos em simulação, e essa é uma
+escolha de escopo: comparar sob condições idênticas e repetíveis exige controlar
+atrito, largada e ruído de sensor, e é o simulador que oferece esse controle.
+Disso decorre o que as medições não cobrem: efeitos de atrito real, de latência
+de atuadores e de ruído de sensor real não são avaliados, e nenhuma conclusão
+deste texto os atinge.
 
-A Camada~F também depende de um passo manual: o invariante de paridade
-host/contêiner permanece vermelho até que alguém execute o lado do contêiner, o
-que significa que a camada mais cara é também a que mais facilmente fica
-desatualizada. É uma fragilidade conhecida do arranjo, e a mitigação atual é
-procedimental, não automática.
+O aparato descrito neste capítulo, por sua vez, não depende do simulador
+escolhido: as camadas, o contrato numérico e a proveniência valem para qualquer
+ambiente em que o critério de aceite possa ser congelado antes da medição.
+
+% TODO-ESCOPO: limitações próprias do comparativo com humanos (ordem fixa das vistas, amostra pequena, autores separados dos voluntários, E1 oficial sem randomização × E1 com randomização, pista única).
 
 \subsection{O que este aparato transfere}
 

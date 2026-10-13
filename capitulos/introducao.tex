@@ -43,10 +43,12 @@ adquirida no desenvolvimento deste tipo de trabalho pode contribuir
 significativamente para a formação de profissionais melhor preparados para
 atuar neste mercado em expansão.
 
-Neste contexto, este trabalho tem como objetivo principal desenvolver um
-veículo autônomo de corrida seguindo as especificações da categoria F1TENTH,
-abordando aspectos desde a construção do modelo físico até a implementação dos
-sistemas de percepção, planejamento de trajetória e controle. As questões de
+Neste contexto, este trabalho compara, em simulação, três formas de pilotar um
+veículo de corrida da plataforma F1TENTH: controladores clássicos, políticas
+obtidas por aprendizado de máquina e pilotos humanos. Todos correm no mesmo
+simulador e são medidos pelo mesmo avaliador, o que permite perguntar quanto do
+desempenho de um piloto humano as políticas autônomas alcançam, e o que cada
+tipo de piloto faz de diferente ao volante. As questões de
 segurança e de validação destacadas por \cite{Ivanov2020Verifying} orientam o
 trabalho, mas por outra via: em vez de verificação formal de propriedades da
 política, que não é realizada aqui, o trabalho adota validação experimental com
@@ -55,64 +57,71 @@ critérios fixados antes da medição, descrita no Capítulo~\ref{cap:metodologi
 \section*{Justificativa}\label{sec:Justificativa}
 \addcontentsline{toc}{section}{Justificativa}
 
-Do ponto de vista educacional, o desenvolvimento de um veículo autônomo de
-corrida oferece uma oportunidade única de aplicar conhecimentos teóricos em um
-projeto prático e desafiador. Os conceitos fundamentais de engenharia de
-controle, processamento de sinais, programação em tempo real e robótica
-convergem em um único projeto, proporcionando uma experiência de aprendizado
-integrada e multidisciplinar.
+Do ponto de vista educacional, comparar pilotos de naturezas distintas num
+mesmo problema de corrida oferece uma oportunidade de aplicar conhecimentos de
+engenharia de controle, processamento de sinais e aprendizado de máquina a um
+projeto concreto e mensurável, com uma pergunta cujo enunciado qualquer pessoa
+entende: quem dirige melhor, e de que modo.
 
-Do ponto de vista técnico, a escala reduzida não elimina os problemas que
-justificam o estudo: a política de controle continua a depender de um sensor
-com contrato de observação próprio, de atuadores com atraso e de uma
-transferência entre simulação e realidade que precisa ser medida, e não
-presumida. É essa transferência, mais do que um algoritmo isolado, que o
-trabalho toma como objeto.
+Do ponto de vista técnico, o piloto humano é uma referência de desempenho
+conhecida: sabe-se o que uma pessoa consegue fazer com um joystick e uma vista da
+pista, e isso dá ao tempo de volta de uma política um ponto de comparação que
+um controlador clássico sozinho não dá. A comparação também permite ler o que a
+rede aprendeu. Quando o humano recebe apenas as leituras do LiDAR, as mesmas que
+a política recebe, as diferenças de trajetória, de velocidade e de suavidade do
+comando deixam de ser atribuíveis à informação disponível e passam a dizer algo
+sobre o modo de decidir de cada piloto.
+
+% TODO-ESCOPO: ajustar esta justificativa ao que o estudo efetivamente medir, sem antecipar resultados.
 
 \section*{Motivação}\label{sec:motivacao}
 \addcontentsline{toc}{section}{Motivação}
 
 A competitividade inerente à categoria F1TENTH também adiciona um elemento
-motivador importante ao projeto. A necessidade de otimizar o desempenho do
-veículo para competições estimula a busca por soluções inovadoras e eficientes,
-promovendo um ambiente de aprendizado dinâmico e desafiador.
+motivador importante ao projeto. O formato \textit{time trial}, em que o que
+conta é a volta rápida e o número de voltas completas sem interrupção, dá ao
+tempo de volta um significado imediato para quem pilota, seja a pessoa ou o
+algoritmo, e é o formato que o comparativo imita.
 
 Por fim, este trabalho se justifica pela sua contribuição para o avanço do
 conhecimento em uma área tecnológica estratégica, oferecendo oportunidades de
 desenvolvimento técnico e profissional, ao mesmo tempo em que promove a
 integração de diferentes áreas do conhecimento em engenharia. O resultado
-esperado não é apenas um veículo autônomo funcional, mas também um conjunto de
-conhecimentos e experiências que podem beneficiar futuros projetos e pesquisas
-na área de sistemas autônomos.
+esperado é um conjunto de medições comparáveis entre pilotos, com os critérios de
+avaliação fixados antes da coleta, que possa beneficiar futuros projetos e
+pesquisas na área de sistemas autônomos.
 
 \section*{Objetivos}\label{sec:objetivos}
 \addcontentsline{toc}{section}{Objetivos}
 
-De modo geral, este trabalho tem como objetivo desenvolver e validar um veículo
-autônomo de corrida na plataforma F1TENTH, englobando desde o desenvolvimento
-de algoritmos em ambiente simulado até a implementação do software embarcado no
-modelo físico. Para tanto, serão perseguidos os seguintes objetivos
-específicos:
+De modo geral, este trabalho tem como objetivo comparar, num mesmo simulador da
+plataforma F1TENTH e sob os mesmos critérios de avaliação, três formas de
+pilotar um veículo de corrida em escala 1:10: um piloto humano, controladores
+clássicos e políticas obtidas por aprendizado de máquina. Para tanto, são
+perseguidos os seguintes objetivos específicos:
 \begin{enumerate}
-    \item Projetar, implementar e testar algoritmos de percepção, planejamento de
-          trajetória e controle em ambiente simulado;
-    \item Construir e parametrizar o modelo físico do veículo, contemplando o hardware e
-          o chassi F1TENTH;
-    \item Implementar o software embarcado capaz de executar em tempo real os algoritmos
-          no veículo físico;
-    \item Conduzir experimentos no modelo físico e coletar dados de desempenho;
-    \item Comparar os resultados obtidos nos ambientes simulado e real, avaliando a
-          fidelidade do modelo e a robustez das soluções propostas.
+    \item Implementar e avaliar em simulação controladores clássicos: o
+          especialista \textit{pure pursuit}, que também gera as demonstrações, e
+          um seguidor de gap reativo;
+    \item Treinar uma política de imitação sem pose global e refiná-la por
+          aprendizado por reforço residual, sob critérios fixados antes da
+          medição;
+    \item Desenvolver uma interface de pilotagem humana no mesmo simulador e
+          coletar voltas de pilotos humanos sob protocolo fixado antes da
+          coleta;
+    \item Comparar os três tipos de piloto quanto a conclusão de volta, tempo de
+          volta, colisões, suavidade do esterço, desvio da raceline e perfil de
+          velocidade, com o humano em duas condições de informação: a pista
+          inteira vista de cima e apenas as leituras do LiDAR, as mesmas que as
+          políticas recebem.
 \end{enumerate}
 
-Os objetivos 4 e 5 não foram cumpridos nesta versão do trabalho: nenhuma
-política foi executada no veículo físico, e a comparação entre os ambientes
-simulado e real não pôde ser iniciada. A Conclusão retoma os cinco objetivos um
-a um e declara a situação de cada um.
+\subsection*{Delimitação do escopo}
 
-Dessa forma, espera-se consolidar um conjunto de práticas e diretrizes para o
-desenvolvimento e validação de veículos autônomos em escala reduzida,
-contribuindo de maneira significativa para o avanço técnico e científico na
-área de sistemas autônomos e fomentando futuras pesquisas acadêmicas e
-aplicações práticas.
+O plano inicial deste trabalho previa a construção de um veículo em escala e
+experimentos com ele. Essa frente foi descontinuada após a falha da unidade de
+processamento embarcada, e o trabalho foi redefinido, em comum acordo com o
+orientador, como um estudo comparativo inteiramente em simulação. Nenhum
+resultado deste texto depende de hardware.
 
+% TODO-ESCOPO: confirmar a expressão "em comum acordo com o orientador" depois da resposta dele sobre a mudança de escopo (Fase 7 do plano); remover se não se confirmar.

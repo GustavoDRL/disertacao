@@ -1,6 +1,6 @@
 \chapter{Resultados e Discussão}\label{cap:resultados}
 
-Este capítulo reporta o que as três etapas da cascata mediram, e discute o que
+Este capítulo reporta o que as etapas da cascata mediram, e discute o que
 esses números sustentam e o que não sustentam. O aparato que produziu cada valor
 --- protocolo de avaliação, critérios de aceite, momento em que foram fixados,
 camadas de verificação --- está descrito no Capítulo~\ref{cap:metodologia}, e o
@@ -10,19 +10,15 @@ repetir o que já foi estabelecido nesses dois capítulos.
 
 \textbf{Todos os resultados deste capítulo são de simulação.} As etapas foram
 medidas no ambiente \texttt{f110\_gym} \cite{OKelly2020F1TENTH} executado
-\textit{headless}, e o ponto mais avançado na direção do hardware é a política
-exportada rodando como nó ROS2 dentro de um contêiner, sobre a ponte derivada do
-mesmo simulador \cite{f1tenthgymros, f1tenthgymufabc}. \textbf{Nenhuma política
-deste trabalho foi executada no veículo físico.} A transferência para o carro é
-trabalho em curso, descrita como fase seguinte na
-Seção~\ref{sec:arte-s2r} do Capítulo~\ref{cap:estArte}, e nada neste capítulo
-deve ser lido como medição de campo.
+\textit{headless}, e nada neste capítulo deve ser lido como medição de campo.
 
 O capítulo apresenta, em ordem, a linha de base geométrica
-(Seção~\ref{sec:res-e1}), a rede de imitação (Seção~\ref{sec:res-e2}), o resíduo
-de aprendizado por reforço (Seção~\ref{sec:res-e3}) e a execução da política no
-contêiner (Seção~\ref{sec:res-deploy}). A Seção~\ref{sec:res-discussao} discute
-o conjunto, com atenção às três ressalvas que o trabalho declarou antes de medir.
+(Seção~\ref{sec:res-e1}), a rede de imitação (Seção~\ref{sec:res-e2}) e o
+resíduo de aprendizado por reforço (Seção~\ref{sec:res-e3}). A
+Seção~\ref{sec:res-discussao} discute o conjunto, com atenção às três ressalvas
+que o trabalho declarou antes de medir.
+
+% TODO-ESCOPO: ampliar esta abertura e a ordem das seções para o comparativo: reavaliação de E1, E2 e E3 com randomização e gravador passo a passo, seguidor de gap, pilotos humanos (autores e voluntários, duas vistas), tabela comparativa única e figuras (perfil de velocidade, suavidade × tempo de volta, curva de aprendizado humano). Nenhum número desses existe ainda.
 
 \section{Procedência dos resultados}\label{sec:res-proveniencia}
 
@@ -329,7 +325,7 @@ O custo da destilação aparece na segunda linha. A rede completa a volta em
 1,8\% mais lenta. Esse é o preço, medido, de trocar uma política que exige pose
 global por uma que enxerga apenas LiDAR e proprioceptiva --- e é exatamente o
 desempenho que a etapa E3 se propõe a recuperar, pelo argumento de
-embarcabilidade exposto na Seção~\ref{sec:arte-rl}.
+independência de localização exposto na Seção~\ref{sec:arte-rl}.
 
 \subsection{Generalização: o que este número mede e o que ele não mede}
 
@@ -563,440 +559,6 @@ contra 52,500~s sem ela --- uma piora relativa de 0,0019 contra um limiar de
 0,05. Não há ambiguidade estatística nesses dois números, e vale dizê-lo
 explicitamente porque a há nos outros dois.
 
-\section{A política dirigindo no contêiner ROS2}\label{sec:res-deploy}
-
-O último ponto medido antes do hardware é a política composta, exportada para
-ONNX num grafo único e executada como nó ROS2 dentro do contêiner, contra o
-simulador em tempo real. Os três critérios de aceite, e a razão de serem exigidos
-em conjunto, estão na Seção~\ref{sec:val-camadas}.
-
-Antes dos números, uma ressalva de identidade do objeto medido. \textbf{O
-artefato pontuado nesta seção não é numericamente idêntico ao que os portões da
-Seção~\ref{sec:res-e3} pontuaram}: o grafo e a composição de referência divergem
-no tipo numérico do vetor de ganhos, e a Seção~\ref{sec:val-camadas} mede a
-diferença resultante --- da ordem de $10^{-7}$ sobre 200 vetores, dentro da
-tolerância exigida --- e a discute. O que a torna relevante aqui é a segunda
-ressalva da Seção~\ref{sec:res-discussao}: uma diferença dessa ordem, neste
-sistema, basta para mover a taxa de conclusão do E3. Os 381~m abaixo pertencem,
-portanto, à realização exportada, e não necessariamente àquela que mediu 0,9891.
-
-\begin{table}[h]
-    \centering
-    \begin{tabular}{|l|c|c|c|}
-        \hline
-        \textbf{Grandeza} & \textbf{Medido} & \textbf{Limiar} & \\
-        \hline
-        Distância na janela de 60~s      & 381~m   & $\geq$ 150~m & aprovado \\
-        \hline
-        Frequência de controle           & 20,00~Hz & $\geq$ 19~Hz & aprovado \\
-        \hline
-        Latência de inferência ($p99$)   & 0,53~ms & $\leq$ 5~ms  & aprovado \\
-        \hline
-        Paradas de emergência            & 0       & (não é critério) & --- \\
-        \hline
-    \end{tabular}
-    \caption{A política da etapa E3 executando como nó ROS2 no contêiner,
-    medida contra os limiares do portão de deploy. Os valores vêm do documento
-    de estado do projeto, que é o registro durável que restou: o relatório de
-    verificação original foi sobrescrito em setembro de 2026}
-    \label{tab:res_deploy}
-\end{table}
-
-A leitura da primeira linha da Tabela~\ref{tab:res_deploy} depende de um detalhe
-do ambiente: a volta de Spielberg tem 343~m, e a ponte congela o veículo ao
-detectar colisão. Percorrer 381~m em 60~s significa, portanto, \textbf{mais de
-uma volta completa}, o que a ponte só permite se não tiver havido colisão ao
-longo do percurso --- antes da correção do detector, um veículo que atravessasse
-a parede continuaria integrando distância do lado de fora do circuito, e o número
-não teria esse significado. Zero paradas de emergência significa que a menor
-leitura do setor frontal do LiDAR nunca desceu abaixo de 0,25~m, que é o limiar
-da camada de segurança independente da rede.
-A comparação com o artefato da etapa E2 e com a versão de contrato incorreto,
-que é o caso que justifica a existência dessa camada de verificação, está na
-Tabela~\ref{tab:val_deploy}.
-
-\subsection{Uma discrepância que não se resolve}
-
-O valor de 331~m atribuído ao artefato da etapa E2 na Tabela~\ref{tab:val_deploy}
-carrega uma ressalva que este capítulo tem obrigação de declarar. \textbf{A mesma
-medição aparece no repositório do projeto com dois valores: 331~m e 329~m}, em
-seis lugares distintos entre documentação, contrato numérico e testes. Não são
-duas medições: é a mesma execução, citada com dois valores.
-
-A discrepância é \textbf{indecidível com a evidência disponível}. O artefato que
-a arbitraria --- o relatório de verificação da execução correspondente --- não
-sobrevive: ele é escrito na raiz do ambiente de pesquisa, uma execução por cima
-da outra, e não é versionado, porque reflete o estado da máquina no momento em
-que rodou. O relatório em disco hoje descreve a medição mais recente, da política
-da etapa E3, e não a da etapa E2 que estaria em disputa. Escolher entre 331 e 329
-seria escolher por gosto, e escolher por gosto é exatamente o modo de falha que a
-Seção~\ref{sec:val-problema} documenta e que a camada de documentação existe para
-não repetir --- limitada, como declarado na Seção~\ref{sec:val-limitacoes}, por
-não julgar número medido em prosa.
-
-A discrepância em si não alcança o valor desta seção, mas a \textit{durabilidade}
-dessa evidência sofreu o mesmo destino. O relatório de verificação que
-registrava os 381~m, a frequência e a latência da Tabela~\ref{tab:res_deploy}
-foi sobrescrito por uma execução da verificação em 10 de setembro de 2026, e
-não contém mais esses números. O registro que restou é o documento de estado do
-projeto (\texttt{STATUS.md}), que transcreve a medição --- 381~m a 20,00~Hz,
-$p99$ de 0,53~ms --- justamente para que ela sobrevivesse à próxima execução.
-É texto, e não artefato: nenhuma das seis camadas escreve num caminho
-versionado, e isso é o estado real do repositório, não uma política de retenção
-que falte redigir.
-
-A medição é também anterior a mudanças posteriores no executor de políticas: a
-exigência de odometria recente, a confirmação do comando aplicado pela guarda e
-a nova instrumentação de tempo de ciclo e de CPU. O nó medido não é,
-portanto, idêntico ao nó atual, e a medição não foi refeita depois dessas
-mudanças.
-
-\subsection{A medição de deploy não tem a proveniência das outras três}
-
-Há uma segunda ressalva sobre o mesmo relatório, e ela é de natureza diferente da
-durabilidade. Quando consultado para a redação deste capítulo, antes de ser
-sobrescrito, o relatório de verificação que registrava os 381~m trazia veredito
-global \textbf{reprovado}, e uma das camadas que reprovavam era justamente a de
-proveniência (Camada~E), com o motivo \textit{``árvore de trabalho suja: um
-\texttt{PASS} agora sairia como \texttt{PASS-NAO-REPRODUZIVEL}''}. Essa
-constatação não é mais reconferível em disco.
-
-A consequência precisa ser dita nos termos que a Seção~\ref{sec:val-congelado}
-estabelece. A Tabela~\ref{tab:res_proveniencia} pôde afirmar ``árvore limpa:
-sim'' para as três execuções de E1, E2 e E3, e é isso que torna aqueles três
-vereditos reportáveis. \textbf{A medição de deploy não tem essa propriedade}: ela
-foi feita sob exatamente a condição que a regra de proveniência declara
-suficiente para rebaixar um resultado. Não há veredito de etapa em disputa aqui
---- a camada de deploy não emite \texttt{PASS} de etapa, e os três limiares da
-Tabela~\ref{tab:res_deploy} foram atendidos ---, mas o identificador de commit
-gravado ao lado da
-medição não descreve com certeza o código que a produziu, e isso é precisamente o
-que a regra existe para tornar visível.
-
-Aplicá-la a si mesma é o único procedimento coerente com o capítulo anterior. Os
-381~m ficam reportados como estão, com esta ressalva ao lado: eles são a melhor
-medição disponível do artefato no contêiner, e são a única cifra deste capítulo
-cuja proveniência não satisfaz o padrão que o próprio trabalho exige das demais.
-Refazer a medição com a árvore limpa, e promover o relatório para um caminho
-versionado, fecha as duas ressalvas de uma vez.
-
-\subsection{O que esta medição não é}
-
-Ela não é uma medição no veículo. O nó ROS2 é real, o relógio é real, a fila de
-mensagens é real e o contrato de entradas e saídas do grafo é o mesmo que o carro
-usaria --- mas o simulador do outro lado da ponte continua sendo o simulador. Não
-há atrito real, latência de atuador real, ruído de LiDAR real, nem nenhum dos
-efeitos que caracterizam a transferência. \textbf{Nenhuma política deste trabalho
-foi executada no carro}, e a Seção~\ref{sec:arte-s2r} enumera as tarefas que a
-travessia dessa fronteira exige.
-
-\section{Sensibilidade ao contrato de observação do sensor real}\label{sec:res-s2r}
-
-As três seções anteriores mediram políticas sob o contrato de observação do
-simulador. Esta seção mede o que acontece com as mesmas políticas, \textbf{sem
-retreino}, quando a observação passa pelo sensor emulado e pelo adaptador
-descritos na Seção~\ref{sec:val-ponte}. É a única medição deste trabalho que
-atravessa, ainda que em simulação, a fronteira até o veículo.
-
-A campanha avaliou as políticas aprovadas das etapas E2 e E3 em duas pistas ---
-Spielberg, a de treino, e Oschersleben, a mais curta do conjunto de generalização
---- sob dez condições, com cinco sementes e três voltas por célula, as mesmas
-sementes em todas as condições. São quarenta células. Nenhuma célula teve
-\textit{scan} descartado pelo adaptador por fração de leituras válidas
-insuficiente. A execução, o arquivo de configuração com os limiares e o relatório
-de portão estão registrados sob o identificador
-\texttt{s2r\_Spielberg\_20260907-030702\_589c911\_fb4325}.
-
-\subsection{Taxa de conclusão por condição}
-
-\begin{table}[h]
-    \centering
-    \footnotesize
-    \begin{tabularx}{\textwidth}{|l|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|}
-        \hline
-        & \multicolumn{2}{c|}{\textbf{E3 (resíduo)}} &
-        \multicolumn{2}{c|}{\textbf{E2 (imitação)}} \\
-        \cline{2-5}
-        \textbf{Condição} & Spielberg & Oschersleben & Spielberg &
-        Oschersleben \\
-        \hline
-        \texttt{nominal} & 1,000 [0,80; 1,00] & 0,857 [0,60; 0,96] & 1,000 [0,80; 1,00] & 1,000 [0,80; 1,00] \\
-        \hline
-        \texttt{x4pro} & 0,636 [0,35; 0,85] & 0,818 [0,52; 0,95] & 0,667 [0,35; 0,88] & 0,667 [0,39; 0,86] \\
-        \hline
-        \texttt{x4pro\_fill30} & 0,000 [0,00; 0,43] & 0,000 [0,00; 0,43] & 0,000 [0,00; 0,43] & 0,000 [0,00; 0,43] \\
-        \hline
-        \texttt{x4pro\_off+3} & 0,000 [0,00; 0,43] & 0,000 [0,00; 0,43] & 0,167 [0,03; 0,56] & 0,667 [0,39; 0,86] \\
-        \hline
-        \texttt{x4pro\_off-3} & 0,000 [0,00; 0,43] & 0,000 [0,00; 0,43] & 0,167 [0,03; 0,56] & 0,286 [0,08; 0,64] \\
-        \hline
-        \texttt{x4pro\_drop10} & 0,000 [0,00; 0,43] & 0,000 [0,00; 0,43] & 0,000 [0,00; 0,43] & 0,000 [0,00; 0,43] \\
-        \hline
-        \texttt{x4pro\_hold3} & 0,667 [0,39; 0,86] & 0,429 [0,16; 0,75] & 0,556 [0,27; 0,81] & 0,286 [0,08; 0,64] \\
-        \hline
-        \texttt{x4pro\_cap1} & 1,000 [0,80; 1,00] & 1,000 [0,80; 1,00] & 1,000 [0,80; 1,00] & 1,000 [0,80; 1,00] \\
-        \hline
-        \texttt{x4pro\_cap2} & 1,000 [0,80; 1,00] & 1,000 [0,80; 1,00] & 1,000 [0,80; 1,00] & 1,000 [0,80; 1,00] \\
-        \hline
-        \texttt{x4pro\_cap3} & 1,000 [0,80; 1,00] & 0,923 [0,67; 0,99] & 1,000 [0,80; 1,00] & 0,923 [0,67; 0,99] \\
-        \hline
-    \end{tabularx}
-    \caption{Taxa de conclusão e intervalo de Wilson de 95\% por célula, sob o
-    sensor emulado. Cada célula é cinco sementes de três voltas; voltas
-    interrompidas por colisão contam como não concluídas, de modo que o
-    denominador varia entre células. A condição \texttt{nominal} é o controle,
-    sem emulação de sensor}
-    \label{tab:res_s2r}
-\end{table}
-
-A leitura da Tabela~\ref{tab:res_s2r} que interessa ao veredito é a linha
-\texttt{x4pro} da coluna E3/Spielberg: \textbf{0,636}, contra 1,000 sob o contrato
-do simulador. O sensor emulado, sozinho e sem nenhuma perturbação adicional,
-custa mais de um terço das voltas de uma política que tinha sido aprovada com
-taxa de conclusão de 0,9891. Os intervalos são largos --- cinco sementes ---, e a
-ressalva de largura de intervalo da Seção~\ref{sec:res-ic} se aplica aqui com
-força ainda maior do que nos portões das etapas.
-
-\subsection{Os três portões e as suas consequências}
-
-Os limiares e as consequências foram gravados no arquivo de configuração da
-execução antes da primeira avaliação, conforme \texttt{SPEC-PROV-01}. A
-Tabela~\ref{tab:res_s2r_gates} reporta o veredito de cada um; a coluna de
-consequência não é interpretação escrita depois, é o texto pré-declarado.
-
-\begin{table}[h]
-    \centering
-    \small
-    \begin{tabularx}{\textwidth}{|l|c|c|c|>{\raggedright\arraybackslash}X|}
-        \hline
-        \textbf{Portão} & \textbf{Medido} & \textbf{Limiar} & &
-        \textbf{Consequência pré-declarada} \\
-        \hline
-        \texttt{SPEC-S2R-30} & 0,636 & $\geq$ 0,80 & \textbf{reprovado} &
-        O adaptador sozinho não basta: retreinar sob o contrato de observação
-        real deixa de ser opcional, e a política não vai ao veículo antes disso.
-        O seguidor de parede vai \\
-        \hline
-        \texttt{SPEC-S2R-31} & 0,636 & $\leq$ 0,10 & \textbf{reprovado} &
-        A calibração do zero angular do LiDAR (\texttt{SPEC-CAR-05}) passa a ser
-        bloqueante antes de qualquer estágio com o veículo no chão \\
-        \hline
-        \texttt{SPEC-S2R-32} & 1,000 & $\geq$ 0,80 & aprovado &
-        O estágio de operação no chão roda a partir do menor envelope de
-        velocidade aprovado, que é 1~m/s \\
-        \hline
-    \end{tabularx}
-    \caption{Os três portões da campanha de sensibilidade. O valor medido do
-    segundo portão é a queda absoluta de taxa de conclusão entre
-    \texttt{x4pro} (0,636) e \texttt{x4pro\_off$\pm$3} (0,000 nos dois sentidos)}
-    \label{tab:res_s2r_gates}
-\end{table}
-
-O portão do zero angular é o mais severo dos três em magnitude. Um erro de
-$\pm 3^\circ$ --- que é a tolerância entre unidades declarada pelo próprio
-\textit{datasheet} do sensor, não um cenário adverso construído --- leva a
-política da etapa E3 de 0,636 a \textbf{zero} nas duas pistas e nos dois
-sentidos. A queda de 0,636 excede em mais de seis vezes o limiar de 0,10. O
-efeito prático é que uma medição de bancada que estava classificada como higiene
-de parametrização passou a ser pré-requisito de segurança para pôr o veículo no
-chão.
-
-O terceiro portão foi o único aprovado, e a consequência que ele libera é
-estreita: com a guarda saturando a velocidade em 1~m/s, a taxa de conclusão volta
-a 1,000. Isso autoriza o envelope, não a política --- a consequência do primeiro
-portão é anterior e continua valendo, de modo que o comandante autorizado a ir ao
-veículo continua sendo o seguidor de parede.
-
-Nenhum limiar foi reescrito depois de ver o número, e nenhuma das duas reprovações
-foi reclassificada. O perfil do sensor também não mudou: o que reprovou não foi o
-perfil, foi a política diante dele.
-
-\subsection{Observações posteriores à medição}
-
-Tudo nesta subseção é leitura da tabela \textbf{depois} de ver os números, e está
-rotulado como tal precisamente porque nada aqui altera limiar ou relaxa
-consequência já declarada. São hipóteses para a fase seguinte, não resultados
-pontuados.
-
-\begin{itemize}
-    \item \textbf{O envelope de velocidade compensa o sensor.} Com a guarda em 1,
-          2 ou 3~m/s, a política da etapa E3 completa 1,000 nas três condições em
-          Spielberg, contra 0,636 sem envelope. O preço aparece na mediana da
-          volta: 340,40~s sob o envelope de 1~m/s contra 55,51~s sem envelope. A
-          compensação é real e é cara.
-    \item \textbf{Duas condições zeram as duas políticas nas duas pistas.}
-          Preencher a lacuna de \textit{scan} com 30~m --- isto é, declarar espaço
-          livre além do alcance do sensor --- e quintuplicar a perda de pontos
-          produzem, cada um isoladamente, taxa de conclusão nula nas quatro
-          combinações. A regra de decisão do preenchimento, declarada antes,
-          confirma portanto o valor de 12~m.
-    \item \textbf{O resíduo é mais frágil ao zero angular do que a rede que ele
-          corrige.} Sob deslocamento angular, a política da etapa E3 zera nas duas
-          pistas, enquanto a da etapa E2 mantém 0,167 em Spielberg e chega a
-          0,667 em Oschersleben num dos sentidos. A assimetria entre $+3^\circ$ e
-          $-3^\circ$ que aparece na etapa E2 não é distinguível com cinco
-          sementes e nenhum portão a previa.
-    \item \textbf{A oscilação de esterço cresce com a degradação do sensor.} A
-          média de $|\Delta\delta|$ por passo de controle da política da etapa E3
-          em Spielberg passa de 0,0209 no controle para 0,0443~rad/passo sob o
-          sensor emulado, e o envelope de velocidade a devolve a
-          0,0162~rad/passo. O modo de falha por oscilação de esterço que Evans,
-          Jordaan e Engelbrecht \cite{Evans2023Comparing} relatam na passagem para
-          o hardware aparece aqui já em simulação, e o envelope o atenua.
-\end{itemize}
-
-Usar qualquer um desses itens para relaxar a consequência do primeiro portão ---
-argumentar, por exemplo, que sob envelope a política passa e portanto pode ir ao
-veículo --- seria escolher o critério depois de ver o número, que é exatamente o
-que a Seção~\ref{sec:val-congelado} existe para impedir.
-
-\subsection{Retreino sob o contrato emulado, com randomização de
-domínio}\label{sec:res-e41}
-
-A consequência pré-declarada do primeiro portão é retreinar sob o contrato de
-observação real, e o contrato real só existe depois da caracterização de bancada.
-O que foi executado, então, é a prévia dessa etapa, descrita no fim da
-Seção~\ref{sec:val-ponte}: o sensor emulado passa a operar \textbf{dentro}
-do laço de treino, com os três parâmetros incertos sorteados a cada episódio em
-vez de fixados, e a política resultante é medida contra os \textbf{mesmos}
-limiares já congelados. A Tabela~\ref{tab:res_e41} reporta as duas tentativas
-pré-registradas, ao lado da execução de controle sob o contrato do simulador.
-Duas outras execuções precederam essas e não entram na tabela nem em nenhum
-agregado: elas partiram dos parâmetros padrão da etapa em vez da configuração da
-política aprovada, e coletaram dados numa pista só --- um erro de pré-registro,
-identificado por diagnóstico antes de o resultado ser interpretado, e corrigido
-pela fixação explícita do ponto de partida antes de relançar. Ficam registradas
-no relatório de resultados como registro do erro, e não como medição.
-
-\begin{table}[h]
-    \centering
-    \small
-    \setlength{\tabcolsep}{3pt}
-    \begin{tabular}{|l|c|c|c|c|c|}
-        \hline
-        \textbf{Execução} & \textbf{Conclusão [IC95]} & \textbf{Volta (s)} &
-        \textbf{Generaliz.} & \textbf{Pior pista} & \textbf{Portão} \\
-        \hline
-        Controle (simulador) & 1,0000 [0,929; 1,000] & 60,050 & 1,0000 & 1,0000 &
-        aprovado \\
-        \hline
-        Tentativa 1 (sensor) & 0,1667 [0,030; 0,564] & 57,650 & 0,8744 & 0,7000 &
-        \textbf{reprovado} \\
-        \hline
-        Tentativa 2 (sensor) & 0,1667 [0,030; 0,564] & 57,650 & 0,8744 & 0,7000 &
-        \textbf{reprovado} \\
-        \hline
-        \multicolumn{6}{|l|}{\footnotesize Limiares: conclusão $\geq$ 0,95;
-        volta $\leq$ 64,900~s; generalização $\geq$ 0,80; pior pista $\geq$ 0,60} \\
-        \hline
-    \end{tabular}
-    \caption{Retreino da etapa E2 sob o sensor emulado com randomização de
-    domínio, em Spielberg, cinco sementes. As duas tentativas são as permitidas
-    pelo pré-registro e têm configuração idêntica: o laço ofereceu os dois
-    primeiros ajustes da lista pré-declarada do critério que reprovou, e ambos
-    foram sem efeito porque o ponto de partida já os trazia --- os parâmetros de
-    ajuste são cumulativos. O terceiro ajuste da lista, o único que teria mudado
-    alguma coisa, não chegou a ser tentado dentro do orçamento de duas
-    tentativas. O intervalo é de Wilson}
-    \label{tab:res_e41}
-\end{table}
-
-O veredito da prévia é \textbf{reprovado}, e ele é interessante pelo lugar onde
-falha. A taxa de conclusão na pista de treino cai de 1,000 para \textbf{0,1667} ---
-uma única volta completa em cinco sementes ---, enquanto os dois critérios de
-generalização, que medem pistas que a rede nunca viu, \textbf{passam}: 0,8744 na
-média contra limiar de 0,80, e 0,7000 na pior pista contra 0,60. O tempo de volta
-de 57,650~s cumpre o limiar, mas é o tempo da única volta que se completou, e não
-sustenta leitura de desempenho.
-
-O contraste entre esses dois lados exige uma ressalva de denominador, sem a qual
-ele diria mais do que os dados sustentam. Os critérios de generalização não são
-taxa de conclusão bruta: eles são a média, entre pistas, da razão entre a taxa da
-rede e a taxa do especialista naquela pista, saturada em 1,0 e excluindo as pistas
-em que o especialista não completa nenhuma volta --- a definição está na
-Seção~\ref{sec:val-relativo} e foi congelada muito antes desta execução. Em
-Oschersleben o especialista completa uma volta de seis, de modo que a rede
-retreinada, que ali completa metade das voltas, entra no agregado valendo 1,000;
-sozinha, essa saturação é a diferença entre 0,708 e o 0,8744 reportado. Comparada
-não com o especialista mas com a rede da etapa E2 treinada no simulador, a rede
-retreinada é \textbf{pior nas quatro} pistas de generalização, e sob esse
-denominador a média seria 0,708 e a pior pista 0,50 --- reprovaria os dois
-critérios.
-
-As duas leituras são verdadeiras, porque medem coisas diferentes: o portão
-pergunta quanto da competência do \textit{especialista} foi destilada, e essa é a
-pergunta pré-registrada. O que \textbf{não} se pode afirmar é que a randomização
-melhorou a generalização. A afirmação que os dados sustentam é a mais fraca: a
-pista de treino colapsou, e as pistas de generalização não colapsaram junto ---
-o que ainda assim é o oposto do modo de falha habitual, em que a rede memoriza o
-traçado de treino e falha fora dele.
-
-A comparação entre a política antiga e a retreinada, sob as mesmas dez condições
-da Tabela~\ref{tab:res_s2r}, mostra que a randomização entregou exatamente aquilo
-que ela cobriu, e nada além. A Tabela~\ref{tab:res_e41_cond} é uma
-\textbf{leitura exploratória}: a coluna da direita vem de uma campanha reduzida
---- uma pista, três sementes de duas voltas, contra as cinco sementes de três
-voltas em duas pistas da campanha completa ---, com os mesmos limiares e
-denominadores menores. Ela não substitui nem revisa os vereditos da
-Tabela~\ref{tab:res_s2r_gates}.
-
-\begin{table}[h]
-    \centering
-    \small
-    \begin{tabular}{|l|c|c|c|}
-        \hline
-        \textbf{Condição} & \textbf{E2 simulador} & \textbf{E2 randomizado} &
-        \textbf{Diferença} \\
-        \hline
-        \texttt{nominal} & 1,000 [0,80; 1,00] & 0,000 [0,00; 0,56] & $-1,000$ \\
-        \hline
-        \texttt{x4pro} & 0,667 [0,35; 0,88] & 0,800 [0,38; 0,96] & $+0,133$ \\
-        \hline
-        \texttt{x4pro\_fill30} & 0,000 [0,00; 0,43] & 0,000 [0,00; 0,56] & 0,000 \\
-        \hline
-        \texttt{x4pro\_off+3} & 0,167 [0,03; 0,56] & 1,000 [0,61; 1,00] & $+0,833$ \\
-        \hline
-        \texttt{x4pro\_off-3} & 0,167 [0,03; 0,56] & 1,000 [0,61; 1,00] & $+0,833$ \\
-        \hline
-        \texttt{x4pro\_drop10} & 0,000 [0,00; 0,43] & 0,600 [0,23; 0,88] & $+0,600$ \\
-        \hline
-        \texttt{x4pro\_hold3} & 0,556 [0,27; 0,81] & 0,500 [0,15; 0,85] & $-0,056$ \\
-        \hline
-        \texttt{x4pro\_cap1} & 1,000 [0,80; 1,00] & 1,000 [0,61; 1,00] & 0,000 \\
-        \hline
-        \texttt{x4pro\_cap2} & 1,000 [0,80; 1,00] & 1,000 [0,61; 1,00] & 0,000 \\
-        \hline
-        \texttt{x4pro\_cap3} & 1,000 [0,80; 1,00] & 1,000 [0,61; 1,00] & 0,000 \\
-        \hline
-    \end{tabular}
-    \caption{Leitura exploratória: a rede da etapa E2 treinada no simulador
-    contra a mesma rede retreinada com randomização de domínio, em Spielberg, sob
-    as dez condições. A coluna da esquerda é da campanha completa (cinco
-    sementes, três voltas); a da direita, de uma campanha reduzida (três
-    sementes, duas voltas). Os denominadores diferem e os intervalos da direita
-    são mais largos --- nenhuma diferença menor que o intervalo deve ser lida
-    como efeito}
-    \label{tab:res_e41_cond}
-\end{table}
-
-A troca é literal. A rede retreinada ganha onde a randomização cobriu --- zero
-angular de 0,167 para 1,000 nos dois sentidos, perda de pontos de 0,000 para
-0,600, o sensor emulado nominal de 0,667 para 0,800 --- e perde por completo onde
-não há cobertura: na condição de controle, o simulador limpo, ela cai de 1,000
-para \textbf{0,000}, porque nenhum feixe acima de 12~m aparece no seu conjunto de
-treino. O único parâmetro randomizado em que o ganho não se manifesta é a taxa
-efetiva, e com quatro voltas tentadas isso não distingue ausência de efeito de
-ausência de amostra.
-
-O que este resultado autoriza a dizer é estreito, e vale enunciá-lo com a mesma
-disciplina dos portões: retreinar sob a \textbf{incerteza declarada} do sensor
---- e não sob o sensor medido, que ainda não existe --- não recuperou o critério
-de conclusão na pista de treino, com a arquitetura e o orçamento de tentativas
-pré-registrados. Não se mediu a técnica de randomização de domínio, mediu-se uma
-configuração dela. A consequência pré-declarada permanece: o caminho é o retreino
-sob o contrato \textbf{real}, depois da caracterização de bancada, e nenhuma
-política aprendida vai ao veículo antes disso.
-
 \section{Discussão}\label{sec:res-discussao}
 
 \subsection{O que os números sustentam}
@@ -1168,17 +730,16 @@ deste capítulo. Nenhum deles é atenuado.
     \item \textbf{Veículo único, sem corrida direta.} Não há ultrapassagem, nem
           oponente, nem obstáculo dinâmico, pelos motivos que a
           Seção~\ref{sec:arte-lacuna} declara.
-    \item \textbf{Nenhum resultado no hardware.} A camada mais avançada mede o
-          artefato ONNX como nó ROS2 dentro do contêiner. Toda comparação
+    \item \textbf{Nenhum resultado fora da simulação.} Toda comparação
           numérica deste capítulo com resultados de campo da literatura é
           assimétrica, e assim deve ser lida.
     \item \textbf{A evidência não é durável.} Os relatórios que sustentam cada
           número deste capítulo não são versionados, e o relatório de
-          verificação é sobrescrito a cada execução --- o que registrava os
-          381~m já foi. A discrepância de 331~m contra 329~m da
-          Seção~\ref{sec:res-deploy} é o caso em que essa propriedade já
-          produziu uma pergunta sem resposta.
+          verificação é sobrescrito a cada execução, de modo que medições
+          feitas por esse relatório não podem ser reconferidas depois.
 \end{itemize}
+
+% TODO-ESCOPO: subseção de discussão do comparativo (humano × clássico × aprendizado de máquina), com a tab:res_sintese atualizada para incluir seguidor de gap, humanos por vista e as métricas novas; posição de cada política em relação à faixa do grupo humano. Sem teste de hipótese.
 
 \subsection{Síntese}
 
@@ -1188,7 +749,7 @@ largada e ruído de sensor, e percorre o circuito em 52,525~s --- 11,0\% mais
 rápido que o especialista geométrico que originou os seus rótulos e que depende
 de pose global para funcionar. A cascata de três etapas preserva, em cada passo,
 a propriedade conquistada no anterior: o especialista fornece competência, a
-imitação a transfere para uma política embarcável, e o resíduo recupera e supera
+imitação a transfere para uma política sem pose global, e o resíduo recupera e supera
 o desempenho perdido na destilação sem devolver a dependência de localização, com
 o pior caso da terceira etapa sendo o resultado da segunda.
 

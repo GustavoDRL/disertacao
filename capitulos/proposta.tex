@@ -2,28 +2,21 @@
 
 \noindent\textbf{Escopo e versão.} Este capítulo descreve a organização do
 workspace \texttt{f1tenth\_code} revisada em 10 de setembro de 2026, incluindo
-as correções posteriores ao commit \texttt{fabf7e5}, e atualizada em 12 de
-outubro de 2026 com o neutro de rearme da guarda de comando (commit
-\texttt{79a7c2c}). Os resultados apresentados
+as correções posteriores ao commit \texttt{fabf7e5}. Os resultados apresentados
 no capítulo de resultados pertencem às execuções identificadas naquele capítulo;
-esta atualização de arquitetura não constitui uma nova avaliação experimental.
-A validação física documentada cobre o controle manual, e foi feita antes da
-introdução do bloqueio do motor descrito adiante. Os controladores autônomos e
-os novos mecanismos de segurança ainda requerem validação no veículo.
+esta descrição de arquitetura não constitui uma nova avaliação experimental.
+O capítulo trata exclusivamente do sistema usado em simulação.
 
 \section{Organização do software}
 
 O projeto utiliza ROS2 Humble para comunicação e Docker para o ambiente de
-simulação. O repositório ativo reúne dois workspaces: \texttt{src/}, destinado
-ao simulador, e \texttt{car/src/}, destinado ao veículo. Pacotes homônimos podem
-ter implementações distintas e devem ser construídos em overlays separados.
-O repositório \texttt{f1tenth\_code\_rasp} conserva código histórico e não é a
-origem dos procedimentos operacionais atuais.
+simulação. O workspace \texttt{src/} reúne o simulador e os controladores
+reativos, e o diretório \texttt{research/} reúne treinamento e avaliação.
 
 Os principais componentes do workspace de simulação são:
 \begin{itemize}
-    \item \texttt{f1tenth\_gym\_ros}: ponte entre a dinâmica do F1TENTH Gym e os tópicos ROS2;
-    \item \texttt{joy\_converter}: conversão de comandos do joystick em mensagens Ackermann;
+    \item \texttt{f1tenth\_gym\_ros}: ponte entre a dinâmica do F1TENTH Gym e os tópicos ROS2
+          \cite{f1tenthgymros, f1tenthgymufabc};
     \item \texttt{wall\_follow}: implementação reativa de Disparity Extender, apesar do nome histórico do pacote;
     \item \texttt{gap\_follow}: seleção geométrica de aberturas e controle PID;
     \item \texttt{policy\_runner}: inferência das políticas exportadas para ONNX;
@@ -130,56 +123,28 @@ prazo de validade de 0,5~s; ausência ou expiração invalida o processamento e
 produz um comando de parada. Esse mecanismo evita perpetuar comandos a partir
 de uma observação antiga.
 
-\section{Controle no veículo físico}
+% TODO-ESCOPO: seção sobre o seguidor de gap portado para o ambiente de pesquisa (\texttt{research/}) como política sem ROS, usando o scan bruto e a ação normalizada pelos mesmos limites; varredura curta de parâmetros com critério de escolha escrito antes. Não preencher com números antes das medições.
 
-O pacote \path{car/src/wall_follow} contém um controlador de distância à
-parede separado do Disparity Extender. A geometria e o PID estão em
-\texttt{controle.py}; o nó ROS2 cuida dos parâmetros e mensagens. Antes de
-selecionar os raios usados na estimativa da parede, o nó aplica o espelhamento
-e o deslocamento angular do perfil de montagem do LiDAR.
-O erro lateral previsto determina o esterçamento e sua magnitude reduz a
-velocidade solicitada. Os ganhos permanecem sujeitos a calibração física.
-
-No veículo, os controladores autônomos publicam em \texttt{/drive\_raw}.
-O componente \texttt{drive\_guard} aplica limites, prazo de validade e
-habilitação pelo operador antes de publicar em \texttt{/drive}. A política
-recebe também o comando autorizado em \texttt{/drive\_guard/applied},
-correlacionado pelo carimbo da solicitação, para atualizar sua memória com a
-ação limitada pela guarda. Essa confirmação é do comando autorizado, não uma
-medição da posição física do atuador.
-
-O driver VESC condiciona os comandos de motor a uma habilitação periódica em
-\texttt{/safety/motor\_enable}. O monitor de direção retira essa habilitação
-quando perde o serviço do servo ou o fluxo de comandos. O driver bloqueia novas
-solicitações e envia potência nula quando a habilitação falta ou expira.
-Após uma falha, um comando neutro com a direção operacional é necessário para
-rearmar o sistema. Como em modo autônomo o primeiro comando repassado já viria
-do controlador com velocidade positiva, a guarda publica 0,2~s de comando
-neutro, com o motivo \texttt{rearme}, na borda de subida do botão de
-habilitação, antes de repassar qualquer comando. Essa interdição no driver
-impede que a parada dependa apenas da disputa entre publicações de velocidade e
-de potência nula.
+% TODO-ESCOPO: seção sobre a interface de pilotagem humana: joystick (analógico esquerdo = esterço, gatilho direito = velocidade), mesmos limites das políticas, passo em tempo real a 0,05 s, duas vistas (pista inteira e só LiDAR) e HUD.
 
 \section{Execução das políticas aprendidas}
 
-O pacote \texttt{policy\_runner} é compartilhado entre simulação e veículo.
-A política usa scan e odometria recentes; ausência, expiração ou saída não
-finita resulta em parada. O adaptador do LiDAR converte a geometria física
-para os 1080 feixes esperados e rejeita cobertura insuficiente. No veículo,
-o perfil de montagem deve corresponder à calibração real.
+O pacote \texttt{policy\_runner} executa, no simulador, as políticas exportadas
+para ONNX. A política usa scan e odometria recentes; ausência, expiração ou
+saída não finita resulta em parada. O adaptador do LiDAR verifica que o scan
+tem os 1080 feixes esperados e rejeita cobertura insuficiente.
 
-A memória recorrente separa a ação base da ação autorizada após os limites.
-Essa distinção é necessária para o residual do estágio E3, pois limitar uma
-solicitação altera o histórico de atuação observado no passo seguinte.
-No simulador, onde não há a guarda física, a memória usa o comando publicado.
+A memória recorrente separa a ação base da ação após a saturação. Essa
+distinção é necessária para o residual do estágio E3, pois limitar uma
+solicitação altera o histórico de atuação observado no passo seguinte. No
+simulador, a memória usa o comando publicado.
 
 O diagnóstico registra tempo do ciclo completo, contagem de inferências,
 consumo de CPU do processo e identidade da execução. O gate de operação mede
 uma janela de pelo menos 60~s após aquecimento, exige atualização contínua e
 reprova reinicializações ou dados incompletos. Os limiares declarados são taxa
 mínima de 19~Hz, percentil 99 do ciclo de até 20~ms e CPU de até 80\% nos
-intervalos medidos. O teste não substitui validação física de trajetória e
-atuação.
+intervalos medidos.
 
 \section{Simulador e reprodução}
 
