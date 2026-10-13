@@ -1,0 +1,104 @@
+{
+  "run_id": "cmp_Spielberg_20261013-080135_8d57af8_3a64c2",
+  "track": "Spielberg",
+  "randomize": true,
+  "n_seeds": 5,
+  "n_laps": 10,
+  "laps_completed": 0,
+  "laps_attempted": 5,
+  "collisions": 5,
+  "completion": {
+    "point": 0.0,
+    "ci95": [
+      0.0,
+      0.43448246478317476
+    ],
+    "method": "wilson",
+    "n": 5
+  },
+  "lap_time": {
+    "point": NaN,
+    "ci95": [
+      NaN,
+      NaN
+    ],
+    "method": "empty",
+    "n": 0
+  },
+  "lap_times_by_seed": [
+    [],
+    [],
+    [],
+    [],
+    []
+  ],
+  "sensor_dr_by_seed": [
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "heldout": {},
+  "heldout_control": {},
+  "mu_paired": {},
+  "laps": [
+    {
+      "seed": 1000,
+      "lap_index": 0,
+      "completed": false,
+      "lap_time_s": NaN,
+      "progress_m": 14.058734602946885,
+      "collision": true,
+      "mu": 0.9760507782599754,
+      "steps": 233,
+      "sensor_dr": null
+    },
+    {
+      "seed": 1001,
+      "lap_index": 0,
+      "completed": false,
+      "lap_time_s": NaN,
+      "progress_m": 8.843629950349055,
+      "collision": true,
+      "mu": 1.0286736387239677,
+      "steps": 171,
+      "sensor_dr": null
+    },
+    {
+      "seed": 1002,
+      "lap_index": 0,
+      "completed": false,
+      "lap_time_s": NaN,
+      "progress_m": 4.115770343261204,
+      "collision": true,
+      "mu": 0.8041440110398408,
+      "steps": 76,
+      "sensor_dr": null
+    },
+    {
+      "seed": 1003,
+      "lap_index": 0,
+      "completed": false,
+      "lap_time_s": NaN,
+      "progress_m": 7.606591693885804,
+      "collision": true,
+      "mu": 1.0308154354462427,
+      "steps": 158,
+      "sensor_dr": null
+    },
+    {
+      "seed": 1004,
+      "lap_index": 0,
+      "completed": false,
+      "lap_time_s": NaN,
+      "progress_m": 1.6446631347450875,
+      "collision": true,
+      "mu": 1.0394928611719452,
+      "steps": 23,
+      "sensor_dr": null
+    }
+  ],
+  "laps_truncated": 0,
+  "max_episode_steps": 137330
+}

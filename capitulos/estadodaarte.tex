@@ -34,10 +34,12 @@ resultado próprio com um resultado da literatura obtido em hardware, a
 assimetria será dita explicitamente.
 
 Além dessas três etapas, o comparativo inclui outros dois tipos de piloto, que
-completam o conjunto. O primeiro é o seguidor de gap por descontinuidade, um
-controlador reativo clássico que decide o comando só a partir da varredura do
-LiDAR, sem pose, sem mapa e sem linha de corrida; ele é descrito, com o Disparity
-Extender, na Seção~\ref{sec:arte-classico}, entre os métodos reativos. O segundo é
+completam o conjunto. O primeiro são dois controladores reativos clássicos, o
+Disparity Extender e o seguidor de gap por descontinuidade, que decidem o comando
+só a partir da varredura do LiDAR, sem pose, sem mapa e sem linha de corrida; os
+dois são descritos na Seção~\ref{sec:arte-classico}, entre os métodos reativos.
+Ao contrário deles, o \textit{pure pursuit} do E1 usa a pose fornecida pelo
+simulador e a linha de corrida calculada sobre o mapa. O segundo é
 o piloto humano, que conduz o veículo simulado com um \textit{joystick} sob os
 mesmos limites de ação das políticas e em duas condições de informação: a pista
 inteira vista de cima e apenas os pontos do LiDAR. A Seção~\ref{sec:arte-humanos}
@@ -304,16 +306,26 @@ planejar trajetória. O seguimento de parede regula a distância lateral a uma
 parede de referência por realimentação proporcional-integral-derivativa; o
 seguimento de vão, formalizado por Sezer e Gokasan
 \cite{Sezer2012FollowGap}, identifica a maior abertura livre no campo de visão e
-dirige para o seu centro, ponderando o alvo pela direção do objetivo.
+dirige para o seu centro, ponderando o alvo pela direção do objetivo. O
+Disparity Extender, divulgado por Otterness \cite{Otterness2019Disparity} a
+partir do carro da equipe da University of North Carolina que venceu a
+competição F1TENTH de 2019, é uma variante do seguimento de vão: antes de
+escolher a abertura, procura as descontinuidades (disparidades) entre feixes
+vizinhos e estende o alcance mais curto de cada uma pela largura do carro, de
+modo que o alvo escolhido não passe rente a uma borda; o carro segue então para o
+ponto livre mais distante, com velocidade dada pelo espaço à frente. Não há, até
+onde foi possível verificar, publicação formal do método; a fonte é a descrição
+do autor.
 
-Os dois são parte do repertório canônico da plataforma
+Os três são parte do repertório da plataforma
 \cite{Agnihotri2020Teaching, Babu2020Simulator}. Neste trabalho, o seguimento de
-vão e uma variante por extensão de disparidades estão implementados no
-simulador, conforme descrito no Capítulo~\ref{cap:proposta}. Eles não competem em
+vão e o Disparity Extender estão implementados no simulador, conforme descrito
+no Capítulo~\ref{cap:proposta}. Eles não competem em
 tempo de volta com uma linha de corrida otimizada --- não têm informação para
 isso, já que enxergam apenas o horizonte do sensor. O que eles têm, e que
 nenhum método baseado em trajetória global tem, é a independência de pose: um
-seguidor de vão funciona num circuito desconhecido, sem mapa e sem localização.
+seguidor de vão não depende de mapa nem de localização para operar, e por isso
+pode ser levado a um circuito desconhecido.
 
 Essa propriedade é o fio que liga esta seção às seguintes. A pergunta que
 organiza a segunda metade do capítulo é se é possível obter o desempenho de uma
@@ -436,7 +448,7 @@ discussão da incerteza de Poisson associada a poucos eventos por medição --- 
 que torna a escolha do nível robusta apesar dela --- está na
 Seção~\ref{sec:val-poisson}.
 
-Esta é a primeira das quatro diferenças que a Seção~\ref{sec:arte-lacuna} vai
+Esta é uma das cinco diferenças que a Seção~\ref{sec:arte-lacuna} vai
 consolidar: \textbf{a calibração por pista, contra um alvo pré-declarado, é uma
 operacionalização do DART que a literatura consultada não descreve}.
 
@@ -712,10 +724,22 @@ informação é equivalente à da política, e declara a assimetria da primeira 
 
 \subsection{O que este trabalho faz que os trabalhos citados não fazem}
 
-Quatro diferenças sustentam a contribuição, e nenhuma delas é ``um algoritmo
-novo''. Todas são decisões de composição e de método.
+Cinco diferenças sustentam a contribuição, e nenhuma delas é ``um algoritmo
+novo''. Todas são decisões de composição e de método. A primeira diz respeito ao
+comparativo, que é o objeto do trabalho; as outras quatro, à cascata de pilotos
+aprendidos.
 
-\textbf{Primeira: o resíduo é ancorado numa política que só enxerga LiDAR.} A
+\textbf{Primeira: os três tipos de piloto são medidos sob o mesmo avaliador e com
+a informação igualada.} Os trabalhos que comparam políticas com humanos
+(Seção~\ref{sec:arte-humanos}) comparam sobretudo tempo de volta, com o humano na
+vista que o jogo lhe oferece. Aqui controladores clássicos, políticas aprendidas
+e pilotos humanos correm no mesmo simulador, com os mesmos limites de ação, a
+mesma randomização e o mesmo avaliador, e o humano é medido também na vista só
+LiDAR, em que recebe informação equivalente à da política. Além do tempo de volta,
+a comparação cobre conclusão, colisões, suavidade do esterço, desvio da linha de
+corrida e perfil de velocidade.
+
+\textbf{Segunda: o resíduo é ancorado numa política que só enxerga LiDAR.} A
 literatura de aprendizado por reforço residual ancora o resíduo em controladores
 que dependem de estado estimado \cite{Silver2018ResidualPolicy,
 Johannink2019Residual}. O BayesRace \cite{Jain2020Bayesrace}, que é o vizinho
@@ -728,14 +752,14 @@ compra independência de localização. É um compromisso explícito, e não uma
 preferência estética: a política passa a receber a mesma informação que um
 piloto humano com a vista restrita ao LiDAR.
 
-\textbf{Segunda: falha graciosa por construção.} Com a saturação e o limite de
+\textbf{Terceira: falha graciosa por construção.} Com a saturação e o limite de
 autoridade do resíduo, o pior caso da política composta é o comportamento da
 política de imitação, que já satisfaz critérios próprios. Essa propriedade é
 mencionada qualitativamente na literatura residual; aqui ela é uma consequência
 verificável da forma da composição, e a política de imitação que serve de piso
 tem os seus próprios números medidos.
 
-\textbf{Terceira: o ruído de coleta é calibrado por pista contra um alvo
+\textbf{Quarta: o ruído de coleta é calibrado por pista contra um alvo
 pré-declarado.} O DART \cite{Laskey2017DART} fixa o arcabouço; a prática aplicada
 usa um escalar único. Este trabalho mediu que um escalar único produz risco de
 colisão que varia por um fator de ordem dez entre circuitos, e que o circuito mais
@@ -743,13 +767,13 @@ arriscado é o que produz menos dado e é o que a rede depois falha. A calibraç
 resultante é reportada com o alvo, a grade percorrida e o risco medido em cada
 nível.
 
-\textbf{Quarta: os critérios de aceite são congelados antes da medição e viajam
+\textbf{Quinta: os critérios de aceite são congelados antes da medição e viajam
 com o experimento.} A prática corrente na área reporta métrica agregada mais
 descrição de treino \cite{Betz2022Survey}. Este trabalho trata o momento em que o
 critério foi fixado como parte do resultado: um resultado obtido com critérios
 que não coincidem com os congelados no nascimento do experimento é declarado
 inválido, e não aprovado nem reprovado. O aparato completo é o assunto do
-Capítulo~\ref{cap:metodologia}, e é ele que dá sentido à quinta observação, que
+Capítulo~\ref{cap:metodologia}, e é ele que dá sentido à sexta observação, que
 não é uma contribuição mas uma ressalva: a medição da sensibilidade numérica da
 política composta, reportada como limitação em vez de omitida.
 
@@ -785,10 +809,11 @@ trabalhos mais próximos.
     \label{tab:arte_posicionamento}
 \end{table}
 
-A tabela não inclui os trabalhos da Seção~\ref{sec:arte-humanos}: as suas colunas
-(exigência de pose global, validação em hardware, critério congelado) descrevem
-políticas aprendidas sem pose, e os trabalhos de comparação com humanos citados
-ali não as reportam de forma que permita preencher a linha sem suposição.
+A tabela não inclui os trabalhos da Seção~\ref{sec:arte-humanos}, porque as suas
+colunas (exigência de pose global, validação em hardware, critério congelado)
+foram desenhadas para políticas aprendidas sem pose, e os trabalhos de comparação
+com humanos citados ali não reportam esses campos de forma que permita preencher
+a linha sem suposição.
 
 \subsection{O que os trabalhos citados fazem e este não faz}
 
@@ -858,9 +883,10 @@ O que falta a essa literatura, e o que este trabalho se propõe a medir, é a
 posição desses pilotos entre si e em relação a uma referência humana, no mesmo
 simulador e sob os mesmos critérios.
 
-Dois dos pilotos do comparativo ocupam as pontas desse arranjo. O seguidor de gap,
-descrito entre os métodos reativos (Seção~\ref{sec:arte-classico}), é o reativo
-sem mapa: decide só pela varredura atual, como a rede, mas sem aprender nada. O
+Os demais pilotos do comparativo ocupam as pontas desse arranjo. O Disparity
+Extender e o seguidor de gap, descritos entre os métodos reativos
+(Seção~\ref{sec:arte-classico}), são os reativos sem mapa: decidem só pela
+varredura atual, como a rede, mas sem aprender nada. O
 piloto humano é a referência de desempenho e de modo de decidir
 (Seção~\ref{sec:arte-humanos}), medida sob o formato \textit{time trial} da
 Seção~\ref{sec:arte-timetrial}: volta rápida e voltas completas sem colisão.

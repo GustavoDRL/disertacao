@@ -3,7 +3,7 @@
 % Capítulo sem numeração, mas presente no Sumário
 % ----------------------------------------------------------
 
-\chapter*[Conclusão e Trabalhos Futuros]{Conclusões e Trabalhos Futuros}\label{cap:conclusao}
+\chapter*[Conclusão e Trabalhos Futuros]{Conclusão e Trabalhos Futuros}\label{cap:conclusao}
 \addcontentsline{toc}{chapter}{Conclusão e Trabalhos Futuros}
 
 Este trabalho se propôs a comparar, num mesmo simulador da plataforma F1TENTH e
@@ -60,7 +60,7 @@ quantificado, antes de qualquer medição; a terceira foi encontrada conferindo 
 artefato contra o texto que o descrevia, e foi declarada em vez de corrigida
 retroativamente.
 
-Uma outra ressalva, declarada nos mesmos capítulos sem receber número, é de \textbf{protocolo}: o
+Uma outra ressalva, declarada nos mesmos capítulos fora da lista das três, é de \textbf{protocolo}: o
 denominador $T_{pp}$ é medido \textbf{sem} randomização, enquanto as etapas E2 e
 E3 são medidas \textbf{com} randomização de atrito, de posição de largada e de
 ruído de sensor. A comparação entre 52,525~s e 59,000~s não é, portanto, entre
@@ -84,7 +84,8 @@ maior desvio da linha de corrida. E o seguidor de gap não completa volta alguma
 nenhuma das 48 combinações das duas varreduras de parâmetros completou uma volta
 de sonda, e a configuração congelada colidiu nas cinco sementes da avaliação. Com
 o mesmo sensor em execução, as políticas aprendidas alcançaram o piloto que usa
-o mapa; os controladores reativos, não. A ressalva central dessa leitura está na
+a pose e a linha de corrida calculada sobre o mapa, o E1; os controladores
+reativos, que não usam mapa, não. A ressalva central dessa leitura está na
 Seção~\ref{sec:res-disc-cmp}: as políticas aprendidas não usam o mapa em
 execução, mas a informação dele entrou no treino, pelas demonstrações do
 especialista.
@@ -132,8 +133,10 @@ linha.
         \hline
         \textbf{\#} & \textbf{Objetivo específico declarado} & \textbf{Situação} \\
         \hline
-        1 & Implementar e avaliar em simulação controladores clássicos: o
-        especialista \textit{pure pursuit} e um seguidor de gap reativo &
+        1 & Implementar e avaliar em simulação três controladores clássicos: o
+        especialista \textit{pure pursuit}, que usa a linha de corrida calculada
+        sobre o mapa, e dois reativos que usam apenas o LiDAR, o Disparity
+        Extender e o seguidor de gap &
         atingido; o seguidor de gap não completa volta \\
         \hline
         2 & Treinar uma política de imitação sem pose global e refiná-la por
@@ -173,7 +176,8 @@ aprendizado por reforço (E3) foram treinados e avaliados sob portões cujos
 limiares foram congelados antes da medição, e ambos aprovaram os seus critérios,
 com as ressalvas declaradas acima (E2: 60,050~s e 50 de 50 voltas; E3: 52,525~s e
 91 de 92 voltas, ambos com randomização). Reavaliados sob o protocolo comum, sem
-retreino, repetiram as medianas (60,05~s e 52,55~s, ambos com 50 de 50 voltas).
+retreino e já sob o avaliador corrigido, reproduziram as medianas a menos de
+0,03~s (60,05~s e 52,55~s, ambos com 50 de 50 voltas).
 A percepção consumida pela política é exclusivamente LiDAR bidimensional e
 proprioceptiva, o que está declarado como limite na Seção~\ref{sec:arte-lacuna}.
 
@@ -190,10 +194,11 @@ voluntários depende da resposta sobre a necessidade de submissão ao Comitê de
 \textbf{Objetivo 4.} A comparação entre os pilotos automáticos está feita, nas
 seis métricas do objetivo, e a Tabela~\ref{tab:comparativo} já reserva as linhas
 humanas. Falta a parte humana: \pendentehumano{faixa do grupo humano por vista e
-posição de cada política em relação a ela}. Quatro limitações acompanham essa
-parte e estão declaradas antes da coleta: a ordem fixa das vistas, a amostra
-pequena, a separação entre autores e voluntários e a pista única
-(Seção~\ref{sec:val-limitacoes-comparativo}).
+posição de cada política em relação a ela}. Das limitações declaradas antes da
+coleta (Seção~\ref{sec:val-limitacoes-comparativo}), cinco pesam diretamente
+sobre essa parte: a informação desigual na vista da pista inteira, a ordem fixa
+das vistas, a amostra pequena, a separação entre autores e voluntários e a pista
+única.
 
 \subsection*{O que fica dito com precisão}
 
@@ -242,13 +247,16 @@ como trabalho futuro imediato:
           etapa E3 e a amplitude sob perturbação combina um número auditável com
           outro que já não é reconferível.
     \item \textbf{Tornar a evidência durável e completar o aparato.} Os
-          relatórios que sustentam cada número não são versionados e o relatório
+          relatórios das execuções oficiais não são versionados e o relatório
           de verificação é sobrescrito a cada execução; promovê-los para um
-          caminho versionado torna toda medição reconferível. No mesmo movimento cabe reavaliar as três
-          execuções sob o avaliador corrigido, em que a colisão tem precedência
-          sobre a chegada, e corrigir as poses de largada que nascem em colisão
-          em Monza e Oschersleben, aceitando a perda de comparabilidade com as
-          execuções anteriores.
+          caminho versionado, como já foi feito com os relatórios das cinco
+          execuções do comparativo, torna toda medição reconferível. Os pontos
+          de verificação das três etapas já foram medidos sob o avaliador
+          corrigido, em que a colisão tem precedência sobre a chegada, no
+          comparativo (Seção~\ref{sec:res-cmp-reavaliacao}); falta refazer sob
+          ele os portões oficiais, com os seus critérios, e corrigir as poses de
+          largada que nascem em colisão em Monza e Oschersleben, aceitando a
+          perda de comparabilidade com as execuções anteriores.
 \end{itemize}
 
 \subsection*{Extensões do comparativo}

@@ -12,6 +12,7 @@ Gerado em 2026-10-13 08:08:19. Os demais arquivos desta pasta dependem apenas do
 - `curva_aprendizado`: tempo por volta, na ordem, do treino e das sessões.
 - `trajetorias_curva`: trajetórias da volta de tempo mediano de cada piloto no trecho de maior curvatura da raceline (±15 m de `s`).
   Cada figura existe em PDF e PNG.
+- `runs/<run_id>/`: `config.yaml`, `eval_report.json` (cada volta por semente, com `progress_m` e `collision`) e `metrics.json` dos cinco runs abaixo, para conferir os números do texto que não estão no resumo agregado.
 
 ## Runs de origem
 

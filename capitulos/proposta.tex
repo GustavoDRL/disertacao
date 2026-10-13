@@ -1,48 +1,48 @@
 \chapter{Sistema Proposto}\label{cap:proposta}
 
-\noindent\textbf{Escopo e versão.} Este capítulo descreve a organização do
-workspace \texttt{f1tenth\_code} revisada em 10 de setembro de 2026, incluindo
-as correções posteriores ao commit \texttt{fabf7e5}. Os resultados apresentados
-no capítulo de resultados pertencem às execuções identificadas naquele capítulo;
-esta descrição de arquitetura não constitui uma nova avaliação experimental.
-O capítulo trata exclusivamente do sistema usado em simulação.
+\noindent\textbf{Escopo e versão.} Este capítulo descreve o sistema usado no
+comparativo, no estado do repositório \texttt{f1tenth\_code} de outubro de 2026,
+quando o escopo foi redefinido para o estudo em simulação. A versão exata de cada
+número não é a deste capítulo: cada execução grava o \textit{commit} do código que
+a produziu, e as tabelas de procedência do Capítulo~\ref{cap:resultados} os
+registram. Esta descrição de arquitetura não constitui uma nova avaliação
+experimental.
 
 \section{Organização do software}
 
-O projeto utiliza ROS2 Humble para comunicação e Docker para o ambiente de
-simulação. O workspace \texttt{src/} reúne o simulador e os controladores
-reativos, e o diretório \texttt{research/} reúne treinamento e avaliação.
+O objeto medido neste trabalho é o ambiente de pesquisa, o diretório
+\texttt{research/} do repositório, escrito em Python e sem dependência do ROS2.
+Ele reúne o simulador F1TENTH Gym \cite{OKelly2020F1TENTH}, executado sem
+interface gráfica, o avaliador comum a todos os pilotos, o treinamento e os
+critérios de aceite das etapas E1 a E3, os portes sem ROS dos dois controladores
+reativos (Seção~\ref{sec:prop-portes}) e a interface de pilotagem humana
+(Seção~\ref{sec:prop-humano}). Todo piloto, automático ou humano, é uma política
+com a mesma interface: a cada passo de controle recebe a observação e devolve a
+ação normalizada, e o avaliador não distingue um tipo de outro.
 
-Os principais componentes do workspace de simulação são:
-\begin{itemize}
-    \item \texttt{f1tenth\_gym\_ros}: ponte entre a dinâmica do F1TENTH Gym e os tópicos ROS2
-          \cite{f1tenthgymros, f1tenthgymufabc};
-    \item \texttt{wall\_follow}: implementação reativa de Disparity Extender, apesar do nome histórico do pacote;
-    \item \texttt{gap\_follow}: seleção geométrica de aberturas e controle PID;
-    \item \texttt{policy\_runner}: inferência das políticas exportadas para ONNX;
-    \item \texttt{data\_collector}: aquisição de telemetria e detecção de falhas;
-    \item \texttt{perfil\_lidar}: visualização de dados do sensor.
-\end{itemize}
-
-O diretório \texttt{research/} contém treinamento, avaliação e critérios de
-aceitação. O servidor MCP consulta os artefatos e inicia operações de pesquisa.
-Esses componentes não são controladores de atuação em tempo real.
-A Figura~\ref{fig:software_arch} apresenta a interface do simulador.
+O repositório guarda também um \textit{workspace} ROS2 (\texttt{src/}), herdado da
+fase em que o trabalho previa um veículo físico: a ponte entre o F1TENTH Gym e os
+tópicos ROS2 \cite{f1tenthgymros, f1tenthgymufabc}, os nós originais dos
+controladores reativos e um pacote de inferência das políticas exportadas. Esse
+\textit{workspace} é contexto e ponto de partida dos portes, e não objeto de
+medição: nenhum número deste texto foi produzido por ele. A
+Figura~\ref{fig:software_arch} mostra o laço que o comparativo mede.
 
 \begin{figure}[htb]
 \centering
 \begin{tikzpicture}[node distance=1cm, every node/.style={align=center},
 box/.style={draw, rounded corners, text width=10cm, minimum height=1cm}]
-\node[box] (gym) {F1TENTH Gym e ponte ROS2};
-\node[box, below=of gym] (sensor) {\texttt{/scan} e \texttt{/ego\_racecar/odom}};
-\node[box, below=of sensor] (control) {Controlador selecionado};
-\node[box, below=of control] (drive) {\texttt{/drive}: velocidade e esterçamento};
+\node[box] (gym) {F1TENTH Gym no ambiente de pesquisa (física a 100~Hz)};
+\node[box, below=of gym] (sensor) {Observação a cada 0,05~s: \textit{scan} de 1080 feixes e velocidade\\(e pose, só para o \textit{pure pursuit})};
+\node[box, below=of sensor] (control) {Piloto selecionado: clássico, política aprendida ou humano};
+\node[box, below=of control] (drive) {Ação normalizada: esterço e velocidade, com os limites comuns};
 \draw[->] (gym) -- (sensor);
 \draw[->] (sensor) -- (control);
 \draw[->] (control) -- (drive);
 \draw[->] (drive.east) -- ++(1,0) |- (gym.east);
 \end{tikzpicture}
-\caption{Fluxo de controle no simulador. A escolha de um controlador por vez evita comandos concorrentes.}
+\caption{Laço de controle medido no ambiente de pesquisa. Um piloto por vez
+recebe a observação e devolve a ação, sob o mesmo avaliador.}
 \label{fig:software_arch}
 \end{figure}
 
@@ -50,7 +50,9 @@ box/.style={draw, rounded corners, text width=10cm, minimum height=1cm}]
 
 \subsection{Disparity Extender}
 
-Esta subseção descreve o nó ROS2 original. O objeto medido no comparativo é o
+O Disparity Extender é o método divulgado por Otterness
+\cite{Otterness2019Disparity}, descrito na Seção~\ref{sec:arte-classico}. Esta
+subseção descreve o nó ROS2 original do repositório. O objeto medido no comparativo é o
 seu porte para o ambiente de pesquisa, sem ROS, descrito na
 Seção~\ref{sec:prop-portes}, que diverge do nó em pontos ali declarados.
 
@@ -59,7 +61,7 @@ O arquivo \path{src/wall_follow/wall_follow/wall_follow.py} define a classe
 o antigo controlador de distância lateral com a classe \texttt{WallFollow}.
 O nome do pacote foi preservado para compatibilidade com as ferramentas do projeto.
 
-O processamento limita os alcances a 5~m e aplica um filtro de média uniforme
+O processamento, resumido na Figura~\ref{fig:wall_follow_arch}, limita os alcances a 5~m e aplica um filtro de média uniforme
 de cinco amostras. Uma região de proteção é removida ao redor do obstáculo
 frontal mais próximo. Diferenças de alcance superiores a 0,3~m identificam
 bordas; o algoritmo estende o menor alcance para cobrir a largura considerada
@@ -97,7 +99,8 @@ usa dois temporizadores ROS2 configurados para 100~Hz e o executor padrão de
 processamento criadas pelo nó. Os grupos de callbacks são reentrantes, mas
 isso não transforma o executor padrão em um executor paralelo.
 
-O callback de scan guarda a observação mais recente. Um temporizador aplica
+A Figura~\ref{fig:gap_follow_arch} resume esse fluxo. O callback de scan guarda a
+observação mais recente. Um temporizador aplica
 filtro de mediana, converte os pontos para coordenadas cartesianas, identifica
 descontinuidades e escolhe uma abertura. O estado intermediário é armazenado
 em \texttt{latest\_scan\_data}. O outro temporizador calcula os comandos PID
@@ -175,7 +178,8 @@ disparidades detectadas no \textit{scan} original, pois detectá-las sobre o
 \textbf{Varredura de parâmetros e configuração congelada.} Os valores dos
 parâmetros dos nós foram escolhidos para outro regime de velocidade, e portanto
 cada porte passa por uma varredura curta em grade, no estilo da varredura do E1,
-com no máximo 24 combinações. Para o Disparity Extender, a grade varia o teto de
+com no máximo 24 combinações por grade; o seguidor de gap, que não completou volta
+na grade oficial, teve também uma grade ampliada, num total de 48 combinações. Para o Disparity Extender, a grade varia o teto de
 velocidade, a largura efetiva do carro, o raio da bolha de segurança e o ganho de
 esterço; para o seguidor de gap, o teto de velocidade, a profundidade máxima de
 descontinuidade, o ganho proporcional do esterço e o modo de velocidade. O
@@ -224,8 +228,9 @@ cada sessão há uma contagem regressiva de 3~s.
 mapa da pista é mostrado de cima, com o carro desenhado na pose atual. Na vista
 \textit{só LiDAR}, aparecem apenas os pontos do \textit{scan} atual no referencial
 do carro, com o carro fixo no centro apontando para cima, sem mapa e sem rastro,
-dentro de um alcance fixo. A segunda vista dá ao humano a mesma informação que a
-política recebe. Nas duas, um painel mostra a velocidade, o tempo da volta atual e
+dentro de um alcance fixo. A segunda vista dá ao humano informação equivalente à
+da política: o \textit{scan} atual, dentro de um alcance fixo, e a velocidade no
+painel. Nas duas, um painel mostra a velocidade, o tempo da volta atual e
 o da última, e o estágio (``Treino mm:ss'' ou ``Sessão $k$ · volta $j$/5'').
 
 \textbf{Gravação.} Para cada piloto e vista, a interface produz um registro no
@@ -237,39 +242,34 @@ que usa essa interface é descrito na Seção~\ref{sec:val-humano}.
 
 \section{Execução das políticas aprendidas}
 
-O pacote \texttt{policy\_runner} executa, no simulador, as políticas exportadas
-para ONNX. A política usa scan e odometria recentes; ausência, expiração ou
-saída não finita resulta em parada. O adaptador do LiDAR verifica que o scan
-tem os 1080 feixes esperados e rejeita cobertura insuficiente.
+No comparativo, as políticas aprendidas são executadas no próprio ambiente de
+pesquisa: o avaliador carrega o ponto de verificação aprovado de cada etapa e
+chama a rede a cada passo de controle, sem retreino e sem exportação
+(Seção~\ref{sec:res-cmp-proveniencia}). A política recebe o \textit{scan} e a
+informação proprioceptiva do passo, e a sua ação passa pelos mesmos limites dos
+demais pilotos.
 
 A memória recorrente separa a ação base da ação após a saturação. Essa
 distinção é necessária para o residual do estágio E3, pois limitar uma
-solicitação altera o histórico de atuação observado no passo seguinte. No
-simulador, a memória usa o comando publicado.
-
-O diagnóstico registra tempo do ciclo completo, contagem de inferências,
-consumo de CPU do processo e identidade da execução. O gate de operação mede
-uma janela de pelo menos 60~s após aquecimento, exige atualização contínua e
-reprova reinicializações ou dados incompletos. Os limiares declarados são taxa
-mínima de 19~Hz, percentil 99 do ciclo de até 20~ms e CPU de até 80\% nos
-intervalos medidos.
+solicitação altera o histórico de atuação observado no passo seguinte.
 
 \section{Simulador e reprodução}
 
-A ponte ROS2 publica o scan e a odometria de cada agente e recebe comandos
-Ackermann. O incremento angular é a abertura total dividida por $N-1$,
-coerente com os extremos inclusivos dos $N$ feixes do simulador.
-O servidor de mapas e os nós de transformação oferecem as informações
-necessárias à visualização no RViz.
+O ambiente de pesquisa executa a física do F1TENTH Gym a 100~Hz e o controle a
+20~Hz, com passo de 0,05~s e atraso de esterço de dois passos. A colisão é
+detectada pelo avaliador, e a randomização de atrito, de posição de largada e de
+ruído do LiDAR é sorteada por semente, de modo que dois pilotos avaliados na
+mesma semente enfrentam as mesmas condições. O incremento angular do
+\textit{scan} é a abertura total dividida por $N-1$, coerente com os extremos
+inclusivos dos $N$ feixes do simulador.
 
-O ambiente Docker é construído a partir do Dockerfile do projeto. O serviço
-\texttt{sim2} executa \texttt{scripts/start\_sim.sh}, que carrega ROS2,
-compila os pacotes em \texttt{src/}, carrega o overlay e inicia o launch da
-ponte. Uma falha de compilação interrompe a inicialização. O NoVNC fornece a
-interface gráfica na porta 8081. Os comandos completos estão no README do
-repositório ativo, mantendo os procedimentos operacionais junto ao código.
+Cada execução é reproduzida por um comando do ambiente de pesquisa, que lê a
+configuração gravada e grava, ao lado dos resultados, a versão do código, o
+\textit{hash} dos critérios e o estado da árvore de trabalho. Os comandos
+completos estão no README do ambiente de pesquisa, mantendo os procedimentos
+operacionais junto ao código.
 
 A comparação dos controladores deve distinguir algoritmo, configuração,
-versão e ambiente. A existência de pacotes ou temporizadores não comprova
-paralelismo, ausência de colisão ou conclusão de volta. Essas propriedades
+versão e ambiente. A existência de um controlador no repositório não comprova
+ausência de colisão nem conclusão de volta. Essas propriedades
 são avaliadas pelos procedimentos e artefatos descritos no capítulo seguinte.

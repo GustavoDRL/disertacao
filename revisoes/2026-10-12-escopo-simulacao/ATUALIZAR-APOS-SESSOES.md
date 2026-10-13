@@ -30,11 +30,11 @@ Antes de copiar, conferir em `comparativo.json`:
 
 ## 2. Copiar para a monografia
 
-Na worktree da monografia (`TG/.worktrees/texto-resultados` ou a branch que a suceder):
+No checkout principal da monografia (branch `main`):
 
 ```bash
 SRC=/home/disney/Documents/repos/UFABC/TG/.worktrees/cmp-execucao/research/runs/comparativo
-DST=/home/disney/Documents/repos/UFABC/TG/.worktrees/texto-resultados
+DST=/home/disney/Documents/repos/UFABC/TG/disertacao
 
 # resumo versionado (fonte dos números do texto); varreduras/ não muda
 cp "$SRC"/{LEIA-ME.md,comparativo.json,comparativo.csv,tabela_comparativo.tex} "$DST"/resultados-comparativo/
@@ -43,6 +43,27 @@ cp "$SRC"/*.pdf "$SRC"/*.png "$DST"/resultados-comparativo/
 # o que o LaTeX lê
 cp "$SRC"/tabela_comparativo.tex "$DST"/tabelas/tabela_comparativo.tex
 cp "$SRC"/{perfil_velocidade,esterco_vs_tempo,curva_aprendizado,trajetorias_curva}.pdf "$DST"/figs/comparativo/
+```
+
+Depois, versione também o relatório de cada run usado pela tabela (automáticos e humanos), para que todo número do
+texto continue com fonte. O `cmp tabela` reescreve o `LEIA-ME.md` e apaga a linha que descreve esta pasta; a última
+linha do comando a devolve.
+
+```bash
+RUNS=/home/disney/Documents/repos/UFABC/TG/.worktrees/cmp-execucao/research/runs
+python3 - "$SRC/comparativo.json" <<'PY' | while read -r rid; do
+import json, sys
+r = json.load(open(sys.argv[1]))["runs"]
+ids = list(r["automaticos"].values())
+ids += [h if isinstance(h, str) else h.get("run_id") for h in r["humanos"]]
+print("\n".join(i for i in ids if i))
+PY
+  mkdir -p "$DST/resultados-comparativo/runs/$rid"
+  for f in config.yaml eval_report.json metrics.json treino.json timing.json; do
+    [ -f "$RUNS/$rid/$f" ] && cp "$RUNS/$rid/$f" "$DST/resultados-comparativo/runs/$rid/"
+  done
+done
+echo '- `runs/<run_id>/`: `config.yaml`, `eval_report.json`, `metrics.json` (e, nos humanos, `treino.json` e `timing.json`) de cada run da tabela, para conferir os números do texto que não estão no resumo agregado.' >> "$DST/resultados-comparativo/LEIA-ME.md"
 ```
 
 `tabelas/tabela_comparativo.tex` é gerado: não editar. Com várias linhas humanas (uma por piloto e vista, mais as
